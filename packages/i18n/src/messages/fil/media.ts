@@ -8,7 +8,7 @@
  * next step rather than reporting that something failed.
  *
  * The vocabulary is deliberate. Nothing here says generate, enhance, upscale,
- * restore or fix, because Relay does not do any of those and copy that hinted
+ * restore or fix, because Post Array does not do any of those and copy that hinted
  * otherwise would be the first half of a promise the product cannot keep. The
  * word used throughout is "version": an edit adds one, and the original stays
  * exactly where it was.
@@ -72,7 +72,7 @@ export const mediaMessages = {
     'Hindi mae-edit dito ang video, audio, at dokumento. Ihanda ang file bago mo ito i-upload. Hindi rin nagbabago ang orihinal mong upload sa anumang kaso.',
 
   'mediaLib.derivative.nonGenerative':
-    'Hindi gumagawa ang Relay ng mga larawan o video. Ang editor na ito ay nag-c-crop, nag-r-rotate, nag-r-resize, nag-c-convert, at nag-c-compress lang sa in-upload mo.',
+    'Hindi gumagawa ang Post Array ng mga larawan o video. Ang editor na ito ay nag-c-crop, nag-r-rotate, nag-r-resize, nag-c-convert, at nag-c-compress lang sa in-upload mo.',
 
   // ==================================================== refusals ====
   'error.media_derivative_no_operations.message':

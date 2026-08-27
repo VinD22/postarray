@@ -1,6 +1,6 @@
 # @relay/i18n
 
-Every user visible string in Relay lives here, along with the locale registry,
+Every user visible string in Post Array lives here, along with the locale registry,
 the ICU runtime, the `Intl` formatters, the pseudo locale generator and the
 catalog lint rules.
 

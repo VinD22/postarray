@@ -1,5 +1,5 @@
 export const onboardingMessages = {
-  'onboarding.title': '設定 Relay',
+  'onboarding.title': '設定 Post Array',
   'onboarding.progress': '步驟 {current} / {total}',
   'onboarding.skipForNow': '暫時略過',
   'onboarding.goal': '在十分鐘內完成一篇已驗證的排程貼文。',

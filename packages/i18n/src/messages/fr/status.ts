@@ -97,6 +97,6 @@ export const statusMessages = {
     'Il ne sera pas publié. Le brouillon reste ici afin que vous puissiez le planifier à nouveau.',
   'confirm.publishNow.title': 'Publier maintenant ?',
   'confirm.publishNow.body':
-    '{count, plural, one {Ceci est publié immédiatement sur # compte} many {Cette publication est publiée immédiatement sur # comptes} other {Cette publication est publiée immédiatement sur # comptes}}. Il ne peut pas être rappelé à partir de Relay.',
+    '{count, plural, one {Ceci est publié immédiatement sur # compte} many {Cette publication est publiée immédiatement sur # comptes} other {Cette publication est publiée immédiatement sur # comptes}}. Il ne peut pas être rappelé à partir de Post Array.',
   'confirm.typeToConfirm': 'Taper {word} à confirmer.',
 } as const;

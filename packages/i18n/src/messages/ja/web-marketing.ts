@@ -1,18 +1,16 @@
 /** Japanese beta catalog. */
 export const webMarketingMessages = {
-  'web.brand.name': 'Relay',
+  'web.brand.name': 'Post Array',
   'web.brand.tagline': 'ユーザーとエージェント向けの多言語パブリッシング コントロール プレーン。',
   'web.skipToContent': 'メインコンテンツにスキップ',
   'web.nav.label': 'サイトナビゲーション',
   'web.nav.openMenu': 'メニュー',
   'web.nav.closeMenu': 'メニューを閉じる',
   'web.nav.footerLabel': 'フッターナビゲーション',
-  'web.cta.startTrial': '7 日間のトライアルを開始する',
+  'web.cta.startTrial': '無料で始める（カード不要）',
   'web.cta.seePricing': '価格を見る',
   'web.cta.seeCapabilities': '機能マトリックスを読む',
   'web.cta.readDocs': 'ドキュメントを読む',
-  'web.cta.trialFootnote':
-    'Polar は支払い方法を収集し、今日は 0 ドルを請求し、確認する前に正確な最初の請求日を表示します。',
   'web.label.lastReviewed': '最終レビュー済み{date}',
   'web.label.nextReview': '次のレビュー{date}',
   'web.label.researchDate': '研究した{date}',
@@ -27,42 +25,40 @@ export const webMarketingMessages = {
   'web.correction.title': 'このページに間違った点が見つかりました',
   'web.correction.body':
     'プラットフォームのルールが変わり、私たちは物事を間違えてしまいます。 URL と不正確な点を送信していただければ、ページを修正するか削除させていただきます。',
-  'web.correction.email': '修正@relay.example',
-  'web.meta.home.title': 'Relay、多言語パブリッシング コントロール プレーン',
+  'web.correction.email': '修正@postarray.com',
+  'web.meta.home.title': 'Post Array、多言語パブリッシング コントロール プレーン',
   'web.meta.home.description':
     'ソースから得た 1 つのアイデアをプラットフォーム ネイティブ コンテンツに変換し、一度承認して、公式プラットフォーム API を通じて確実に公開し、次に何を改善するかを学びます。',
-  'web.meta.product.title': 'Relay の仕組み',
+  'web.meta.product.title': 'Post Array の仕組み',
   'web.meta.product.description':
     'パブリッシュ デスクのウォークスルー: 一度作成し、プラットフォームごとに適応させ、実際の制限に照らして検証し、承認、スケジュール設定、公開、受領書の保管を行います。',
-  'web.meta.integrations.title': 'Relay が公開するプラットフォーム',
+  'web.meta.integrations.title': 'Post Array が公開するプラットフォーム',
   'web.meta.integrations.description':
-    'Relay が接続するプラットフォーム、各接続で現在実行できること、プラットフォーム自体が許可していないこと。',
+    'Post Array が接続するプラットフォーム、各接続で現在実行できること、プラットフォーム自体が許可していないこと。',
   'web.meta.capabilities.title': 'コネクタ機能マトリックス',
   'web.meta.capabilities.description':
     'コネクタ定義から生成されたプラットフォームごと、機能ごとのテーブル。当社が構築したものとプラットフォームが提供しないものを区別します。',
-  'web.meta.creators.title': 'Relay クリエイター向け',
+  'web.meta.creators.title': 'Post Array クリエイター向け',
   'web.meta.creators.description':
     'ソロのクリエイターが、同じアイデアを 5 回も書き直すことなく、複数の形式と言語で公開する場合。',
-  'web.meta.agencies.title': 'Relay 代理店向け',
+  'web.meta.agencies.title': 'Post Array 代理店向け',
   'web.meta.agencies.description':
     'クライアントの分離、承認、共有可能なレビュー リンク、領収書、および他の人に代わって公開するチームのレポート。',
-  'web.meta.developers.title': 'Relay 開発者向け',
+  'web.meta.developers.title': 'Post Array 開発者向け',
   'web.meta.developers.description':
     'Web アプリの背後にある 1 つのバックエンド、REST API、リモート MCP サーバー、CLI、および署名付き Webhook。すべての表面で同じ承認ルール。',
   'web.meta.pricing.title': '価格設定',
-  'web.meta.pricing.description':
-    '一つの計画。月額 29 ドル、または年間 300 ドル、つまり月額 25 ドルが年間請求されます。 30 のアクティブなチャネル、無制限のチームメンバー、機能レベルなし。',
   'web.meta.resources.title': 'リソース',
   'web.meta.resources.description':
     'ステータス、変更ログ、ドキュメント、方法論、比較、ツールレーダー、機会カタログ。',
   'web.meta.status.title': '状態',
   'web.meta.status.description':
-    'すべての Relay 表面とすべてのコネクタの現在の状態とインシデント履歴。',
+    'すべての Post Array 表面とすべてのコネクタの現在の状態とインシデント履歴。',
   'web.meta.changelog.title': '変更履歴',
   'web.meta.changelog.description': '出荷されたもの、コネクタの変更点、および修正された内容。',
   'web.meta.docs.title': 'ドキュメント',
   'web.meta.docs.description':
-    'Relay 上に構築するための REST API、MCP サーバー、CLI、および Webhook のドキュメント。',
+    'Post Array 上に構築するための REST API、MCP サーバー、CLI、および Webhook のドキュメント。',
   'web.meta.methodology.title': '方法論',
   'web.meta.methodology.description':
     'プラットフォームに関する主張をどのように調査し、どのように日付を記入し、他の製品を比較し、間違いを修正するのか。',
@@ -81,9 +77,7 @@ export const webMarketingMessages = {
   'web.home.promise':
     'ソースから得た 1 つのアイデアをプラットフォームネイティブのコンテンツに変換し、一度承認して確実に公開し、次に何を改善すべきかを学びます。',
   'web.home.lede':
-    'Relay は、世に出るものに対して責任を持つ人々のための出版デスクです。一度作成すれば、プラットフォームごとに適応し、スケジュールを立てる前に実際の制限を確認し、必要な承認を得て、公式プラットフォーム API を通じて公開し、投稿ごとに領収書を保管します。',
-  'web.home.summaryLine':
-    'プランは 1 か月あたり 29 ドル、または年間 300 ドルです。 30 のアクティブなソーシャル チャネル、無制限のチーム メンバー、機能階層なし。 7 日間のトライアルでは支払い方法を選択し、チェックアウト時に 0 ドルの請求が行われます。',
+    'Post Array は、世に出るものに対して責任を持つ人々のための出版デスクです。一度作成すれば、プラットフォームごとに適応し、スケジュールを立てる前に実際の制限を確認し、必要な承認を得て、公式プラットフォーム API を通じて公開し、投稿ごとに領収書を保管します。',
   'web.home.example.title': '1 つのアイデア、5 つのプラットフォーム ネイティブ バージョン',
   'web.home.example.body':
     '作曲家はマスターバージョンから始めます。 1 つのアカウントを選択すると、そのアカウントのみのオーバーライドが開き、独自のライブ制限と独自のプレビューが表示されます。 LinkedIn に何を書いても、X が受け取る内容は変わりません。',
@@ -110,7 +104,7 @@ export const webMarketingMessages = {
   'web.home.example.bluesky.account': 'Bluesky、ノースバウンドの例',
   'web.home.example.bluesky.variant': 'リンクカード付きのマスターテキスト',
   'web.home.example.bluesky.check': '文字数、リンクカードの解像度、代替テキストの存在',
-  'web.home.pillars.title': 'Relay が得意とすること',
+  'web.home.pillars.title': 'Post Array が得意とすること',
   'web.home.pillars.confidence.title': '自信を持って出版する',
   'web.home.pillars.confidence.body':
     'アカウントごとの真のプレビュー、何かがキューに入れられる前の決定論的なポリシーとプラットフォームのチェック、ワークスペースに必要な承認、外部投稿 ID を使用した不変の受信、およびすべての接続の健全性状態。',
@@ -123,7 +117,7 @@ export const webMarketingMessages = {
     'このインターフェースは選択した言語で利用できます。コンテンツの適応は 20 のコンテンツ言語をカバーしており、公開前にすべての言語をレビューできます。',
   'web.home.pillars.loop.title': 'ループを閉じる',
   'web.home.pillars.loop.body':
-    'メトリック、それを報告したプラットフォーム、分母、最後に更新された日時を指定する分析。プラットフォームが何かを報告しない場合、Relay はゼロを表示する代わりに報告します。',
+    'メトリック、それを報告したプラットフォーム、分母、最後に更新された日時を指定する分析。プラットフォームが何かを報告しない場合、Post Array はゼロを表示する代わりに報告します。',
   'web.home.pillars.loop.proof':
     '投稿は、誰も監査できないスコアではなく、自分自身の中央値と比較されます。',
   'web.home.pillars.anywhere.title': 'すでにいる場所から作業できる',
@@ -135,18 +129,18 @@ export const webMarketingMessages = {
   'web.home.pillars.economics.body':
     '単一の価格、すべての出荷機能、30 のアクティブなチャネル、無制限のチームメンバー。プロバイダーが操作ごとに請求するプラットフォームの使用量はコストでパススルーされ、アクションを確認する前に表示されます。',
   'web.home.pillars.economics.proof':
-    'Relay はメディアを生成しないため、画像やビデオの生成クレジット システムはありません。',
-  'web.home.honest.title': 'Relay が行わないこと',
+    'Post Array はメディアを生成しないため、画像やビデオの生成クレジット システムはありません。',
+  'web.home.honest.title': 'Post Array が行わないこと',
   'web.home.honest.lede':
     'これらは境界線であり、ロードマップをからかうものではありません。そのうちの 1 つが変更されると、最初に変更ログで変更されます。',
   'web.home.honest.noMedia':
-    'AI 画像生成や AI 動画生成はありません。 Relay は、お客様が持ち込んだメディアを調整、承認、公開、測定します。',
+    'AI 画像生成や AI 動画生成はありません。 Post Array は、お客様が持ち込んだメディアを調整、承認、公開、測定します。',
   'web.home.honest.noAutomationOfEngagement':
     '自動的な「いいね！」、フォロー、再投稿、一方的な返信、ダイレクト メッセージはありません。交戦ポッドや捏造された交戦はありません。',
   'web.home.honest.noUnofficial':
     'ブラウザーの自動化、Cookie の再生、スクレイピング、非公式の投稿エンドポイントはありません。公式プラットフォーム API のみ。',
   'web.home.honest.noPromises':
-    'リーチ、ランキング、エンゲージメントについては約束されません。 Relay は、何が起こったのか、次に何をテストする必要があるのか​​を示します。聴衆が何をするかはわかりません。',
+    'リーチ、ランキング、エンゲージメントについては約束されません。 Post Array は、何が起こったのか、次に何をテストする必要があるのか​​を示します。聴衆が何をするかはわかりません。',
   'web.home.honest.noUnattendedPublishing':
     'デフォルトでは無人公開は行われません。エージェントは、草案、検証、承認のリクエストを行うことができます。特定のポリシーを意図的にオプトアウトしない限り、何かが公表される前に人間が決定します。',
   'web.home.surfaces.title': '5 つのサーフェス、1 つのバックエンド',
@@ -168,7 +162,6 @@ export const webMarketingMessages = {
   'web.home.closing.body':
     '1 つのアカウントを接続し、1 つの投稿を下書きし、検証の実行を監視し、スケジュールを設定して、レシートを読みます。約10分で完成します。',
   'web.home.v2.heroTemplate': 'ネイティブのブランド投稿{platform}。',
-  'web.home.v2.sticker.trial': '7日間のトライアル',
   'web.home.v2.sticker.official': '公式APIのみ',
   'web.home.v2.marqueeCaption': '公式 API のみ。',
   'web.home.v2.surfacesStat': '1 つの共有バックエンド上の Surface',
@@ -219,7 +212,7 @@ export const webMarketingMessages = {
   'web.product.states.permission': 'ロールが許可しないアクション。許可するロールに名前を付けます。',
   'web.integrations.title': 'プラットフォーム',
   'web.integrations.lede':
-    'Relay は、公式プラットフォーム API を通じて接続します。各コネクタには、指定された所有者、記録されたポリシー URL、およびレビュー日があります。コネクタは、コネクタ定義の完了に合格するまでサポートされているものとしてリストされません。',
+    'Post Array は、公式プラットフォーム API を通じて接続します。各コネクタには、指定された所有者、記録されたポリシー URL、およびレビュー日があります。コネクタは、コネクタ定義の完了に合格するまでサポートされているものとしてリストされません。',
   'web.integrations.reviewNotice.title':
     'プラットフォームが承認する前にコネクタが公式として記述されることはありません',
   'web.integrations.reviewNotice.body':
@@ -241,7 +234,7 @@ export const webMarketingMessages = {
     'この表のすべてのプラットフォームに関する主張は、その出典となった公式ドキュメントと最後に読んだ日付にリンクしています。',
   'web.creators.title': 'クリエイター向け',
   'web.creators.lede':
-    '同じアイデアを複数の形式、場合によっては複数の言語で公開し、チーム全体がそのメンバーになります。 Relay が取り除く作業は、再入力、再トリミング、およびチェックです。',
+    '同じアイデアを複数の形式、場合によっては複数の言語で公開し、チーム全体がそのメンバーになります。 Post Array が取り除く作業は、再入力、再トリミング、およびチェックです。',
   'web.creators.job.adapt.title': '一度作成すれば 5 つのネイティブ バージョンを出荷可能',
   'web.creators.job.adapt.body':
     'マスターバージョンにはそのアイデアが引き継がれています。各アカウントは、プラットフォームが期待する長さ、クロップ、設定、トーンを取得し、コミットする前にそれらすべてを並べて確認できます。',
@@ -250,13 +243,13 @@ export const webMarketingMessages = {
     'Transcreation は言葉ではなく意図を保持し、プロジェクト用語集を使用し、ネイティブのレビュー担当者が読んだかどうかをマークします。あなたが明示しない限り、保証できない言語で出版されるものはありません。',
   'web.creators.job.rights.title': '権利記録をファイルに保存します',
   'web.creators.job.rights.body':
-    'メディアには、それがどこから来たのか、誰が権利を保持しているのか、生成ツールで作成されたのかどうかが記載されています。プラットフォームはますます求めています。 Relay は、再度質問するのではなく、回答をアセットに保存します。',
+    'メディアには、それがどこから来たのか、誰が権利を保持しているのか、生成ツールで作成されたのかどうかが記載されています。プラットフォームはますます求めています。 Post Array は、再度質問するのではなく、回答をアセットに保存します。',
   'web.creators.job.cost.title': '投稿する前にコストを知る',
   'web.creators.job.cost.body':
-    'X では操作ごとに料金が発生し、URL を含む投稿に対してはさらに料金がかかります。 Relay はユーザーが確認する前にそれを推定するため、リンクが多い週は予期せぬ請求ではなく決定となります。',
+    'X では操作ごとに料金が発生し、URL を含む投稿に対してはさらに料金がかかります。 Post Array はユーザーが確認する前にそれを推定するため、リンクが多い週は予期せぬ請求ではなく決定となります。',
   'web.creators.notFor.title': 'これは何ではないのか',
   'web.creators.notFor.body':
-    'Relay は画像やビデオを生成せず、エンゲージメントの自動化も実行せず、投稿のパフォーマンスを予測しません。これらのツールが必要な場合は、他の製品でも対応できるため、今すぐ知っていただきたいと思います。',
+    'Post Array は画像やビデオを生成せず、エンゲージメントの自動化も実行せず、投稿のパフォーマンスを予測しません。これらのツールが必要な場合は、他の製品でも対応できるため、今すぐ知っていただきたいと思います。',
   'web.agencies.title': '代理店向け',
   'web.agencies.lede':
     '他の人に代わって出版することになるため、帰属、承認、証拠が得られるものではなく、仕事の一部となります。',
@@ -277,7 +270,7 @@ export const webMarketingMessages = {
     '1 つのプランで 30 のアクティブなソーシャル チャネルがカバーされます。チャネルとは、1 つのソーシャル アカウント、ページ、プロフィール、グループ、または出版物の接続です。 30 を超える必要がある場合は、必要なものをお知らせください。隠れた層ではなく、直接答えます。',
   'web.developers.title': '開発者向け',
   'web.developers.lede':
-    '公開はワークフローの一部であり、間違いが公になり永久に残るものです。 Relay は、1 つのバックエンド、型指定されたエラー、すべての書き込みに対する冪等性、およびエージェントが対話できない承認モデルを提供します。',
+    '公開はワークフローの一部であり、間違いが公になり永久に残るものです。 Post Array は、1 つのバックエンド、型指定されたエラー、すべての書き込みに対する冪等性、およびエージェントが対話できない承認モデルを提供します。',
   'web.developers.surface.api.title': 'REST API',
   'web.developers.surface.api.body':
     'スコープ付き API キー、書き込みごとに必要な冪等キー、カーソルのページネーション、安定したコード、メッセージ キー、サニタイズされた詳細を運ぶ型指定されたエラー エンベロープ。プロバイダーのペイロードがそのまま反映されることはありません。',
@@ -299,10 +292,8 @@ export const webMarketingMessages = {
     'すべてのエージェントとすべてのワークスペースには、保留中の作業を削除せずに停止するキル スイッチがあります。',
   'web.developers.openSource.title': 'オープンピース',
   'web.developers.openSource.body':
-    'コネクタ コントラクト、CLI、スキーマ サンプル、MCP ツール定義、およびプロバイダー シミュレーターは、サンドボックス アカウントなしで Relay に対して構築する必要がある部分です。リポジトリがまだ公開されていない場合、このページには何もリンクするのではなく、その旨が表示されます。',
+    'コネクタ コントラクト、CLI、スキーマ サンプル、MCP ツール定義、およびプロバイダー シミュレーターは、サンドボックス アカウントなしで Post Array に対して構築する必要がある部分です。リポジトリがまだ公開されていない場合、このページには何もリンクするのではなく、その旨が表示されます。',
   'web.pricing.title': 'ワンプラン',
-  'web.pricing.lede':
-    '機能層がないため、参照する比較表はありません。どちらの請求期間でも、出荷されたすべての機能がロック解除されます。',
   'web.pricing.intervalHeading': '支払い方法を選択してください',
   'web.pricing.monthlyLabel': '毎月請求される',
   'web.pricing.annualLabel': '毎年請求される',
@@ -318,15 +309,9 @@ export const webMarketingMessages = {
   'web.pricing.beside.fairUse':
     '公開されたフェアユースおよびスパム対策ポリシーに基づいて、無制限の下書き、スケジュールされた投稿、保存されたレシートを保存できます。これらのコントロールは接続されたアカウントを保護するために存在し、すべての加入者に同様に適用されます。',
   'web.pricing.beside.metered':
-    'X は API 操作ごとに料金を請求し、URL を含む投稿に対してはさらに料金を請求します。 Relay は、コストをかけてそれを渡し、アクションを確認する前にそれを見積もり、使用状況に表示します。その他のプラットフォーム料金は、訴訟前に開示された場合にのみ適用されます。',
+    'X は API 操作ごとに料金を請求し、URL を含む投稿に対してはさらに料金を請求します。 Post Array は、コストをかけてそれを渡し、アクションを確認する前にそれを見積もり、使用状況に表示します。その他のプラットフォーム料金は、訴訟前に開示された場合にのみ適用されます。',
   'web.pricing.beside.noMedia':
-    'AI画像生成、AI動画生成は含まれておりませんので販売しておりません。 Relay はメディアを生成しないため、メディア クレジットはありません。',
-  'web.pricing.beside.trial':
-    '試用版は、すべての機能を使用して 7 日間実行されます。 Polar はチェックアウト時に支払い方法を徴収し、今日の請求額は 0 ドルです。確認する前に、正確な最初の請求金額と日付が開始アクションの横に表示されます。',
-  'web.pricing.beside.conversion':
-    '何もしない場合、トライアルは 7 日目に選択した間隔に変換され、Polar はチェックアウト時に表示された金額を請求します。 Polar は、その 3 日前にリマインダーをメールで送信します。',
-  'web.pricing.beside.cancel':
-    'サポートに連絡することなく、いつでも設定からキャンセルできます。試用版が変換される前にキャンセルすると、料金は請求されません。それ以降にキャンセルすると、有料期間が終了するまでアクセスし続けます。',
+    'AI画像生成、AI動画生成は含まれておりませんので販売しておりません。 Post Array はメディアを生成しないため、メディア クレジットはありません。',
   'web.pricing.beside.data':
     'サブスクリプションが終了しても何も削除されません。コンテンツ、領収書、分析をエクスポートしたり、自分で削除したりできます。',
   'web.pricing.included.title': '両方の間隔に含まれる',
@@ -348,13 +333,8 @@ export const webMarketingMessages = {
     '今日は違います。セルフホスト版があるかどうか、またどのライセンスに基づくかは自由に決定できます。答えを示唆するのではなく、答えを公開します。',
   'web.pricing.faq.xCost.q': 'X の実際の費用はいくらですか',
   'web.pricing.faq.xCost.a':
-    'X では価格が異なるため、公開する投稿の数と、URL を含む投稿の数によって異なります。 Relay は、ユーザーが確認する前に各アクションを見積もり、使用状況ビューで合計します。マークアップはしません。',
-  'web.pricing.faq.trialAbuse.q': '2回目のトライアルを開始できますか',
-  'web.pricing.faq.trialAbuse.a':
-    '繰り返しのトライアルは Polar によって制限されています。正当な理由がある場合は、サポートに連絡してください。担当者が調査します。',
+    'X では価格が異なるため、公開する投稿の数と、URL を含む投稿の数によって異なります。 Post Array は、ユーザーが確認する前に各アクションを見積もり、使用状況ビューで合計します。マークアップはしません。',
   'web.pricing.v2.closing.title': '自分のアカウントで 7 日間お試しいただけます',
-  'web.pricing.v2.closing.body':
-    'トライアルを開始し、実際に実行しているアカウントを接続し、料金が請求される前に検証とスケジュールがどのように感じられるかを確認してください。',
   'web.resources.title': 'リソース',
   'web.resources.lede':
     '製品に関する運用上の真実、およびプラットフォームについて当社が主張するすべての背後にある調査。',
@@ -379,7 +359,7 @@ export const webMarketingMessages = {
     '編集標準には、オリジナルの製品データ、再現可能なワークフロー、検証日が記載された主要なプラットフォーム ソース、および指名された人間の編集者が必要です。最初のガイドは、それを満たしたときに公開します。',
   'web.status.title': '状態',
   'web.status.lede':
-    'すべての Relay 表面とすべてのコネクタの状態。コネクタの状態は、アダプタとそれが依存するプラットフォーム API をカバーします。',
+    'すべての Post Array 表面とすべてのコネクタの状態。コネクタの状態は、アダプタとそれが依存するプラットフォーム API をカバーします。',
   'web.status.updated': 'ステータスは手動で設定しています。最終更新 {time}。',
   'web.status.surfaces.title': '表面',
   'web.status.connectors.title': 'コネクタ',
@@ -414,7 +394,7 @@ export const webMarketingMessages = {
   'web.changelog.kind.security': '安全',
   'web.changelog.empty': 'まだ何も公開されていません',
   'web.changelog.emptyBody':
-    'Relay はビルド中です。ここでの最初のエントリは、顧客が最初に使用できるものであり、私たち自身に関するマイルストーンではありません。',
+    'Post Array はビルド中です。ここでの最初のエントリは、顧客が最初に使用できるものであり、私たち自身に関するマイルストーンではありません。',
   'web.docs.title': 'ドキュメント',
   'web.docs.lede':
     '1 つのバックエンド、4 つの方法。各セクションでは同じ使用例が説明されているため、REST API で学習する概念は MCP および CLI でも同じ概念です。',
@@ -500,7 +480,7 @@ export const webMarketingMessages = {
     '各ページには、他の製品自体の価格設定やドキュメントと照らし合わせて、新たな事実確認が必要です。作業が完了すると、一度に 1 つずつ公開されます。',
   'web.toolRadar.title': 'クリエイティブツールレーダー',
   'web.toolRadar.lede':
-    'Relay は画像やビデオを生成しません。どの専門ツールを使用するかを決定し、権利記録をそのままにして完成した資産を持ち込むのに役立ちます。',
+    'Post Array は画像やビデオを生成しません。どの専門ツールを使用するかを決定し、権利記録をそのままにして完成した資産を持ち込むのに役立ちます。',
   'web.toolRadar.record.title': 'すべてのレコードが持つべきもの',
   'web.toolRadar.record.url': '公式 URL と製品を所有する組織。',
   'web.toolRadar.record.useCase': '推奨されているワークフローと、文書化された制限事項。',
@@ -523,7 +503,7 @@ export const webMarketingMessages = {
   'web.opportunities.rules.curated':
     'すべてのエントリは、公式 URL、現在の提出ルール、検証日を含むレビュー済みの記録です。モデルによって発見され、検証されたものとして提示されるものは何もありません。',
   'web.opportunities.rules.noAutomation':
-    'Relay は、ユーザーに代わってフォームを送信したり、連絡先を収集したり、一括メールを送信したり、コミュニティに投稿したりすることはありません。提出はあなたが行います。',
+    'Post Array は、ユーザーに代わってフォームを送信したり、連絡先を収集したり、一括メールを送信したり、コミュニティに投稿したりすることはありません。提出はあなたが行います。',
   'web.opportunities.rules.noGuarantee':
     'リストはランキングを約束するものではなく、リンクは成長戦略ではありません。フィット感、対象者、労力、費用、開示要件を示しているので、午後に参加する価値があるかどうかを判断できます。',
   'web.opportunities.rules.stale':
@@ -534,39 +514,39 @@ export const webMarketingMessages = {
     '各宛先ルールは、推奨される前に人が読んで記録する必要があります。カテゴリが上にリストされているので、今後の予定がわかります。',
   'web.legal.title': '法的および政策',
   'web.legal.lede':
-    'Relay の使用を規定する文書。特定の企業や管轄区域に合わせて弁護士が文言を起草する必要がある場合、そのページには、ふりをするのではなく、そのように記載されています。',
+    'Post Array の使用を規定する文書。特定の企業や管轄区域に合わせて弁護士が文言を起草する必要がある場合、そのページには、ふりをするのではなく、そのように記載されています。',
   'web.legal.counselPending.title': '発売前に弁護士による審査待ち',
   'web.legal.counselPending.body':
-    'このページの内容は、製品が実際にどのように動作するかを反映しており、現時点で正確です。法的拘束力のある文言、管轄区域、責任条項は資格のある弁護士と起草中であり、Relay が一般に利用可能になる前にこの文書に置き換わります。このページは法的アドバイスではなく、まだ契約でもありません。',
+    'このページの内容は、製品が実際にどのように動作するかを反映しており、現時点で正確です。法的拘束力のある文言、管轄区域、責任条項は資格のある弁護士と起草中であり、Post Array が一般に利用可能になる前にこの文書に置き換わります。このページは法的アドバイスではなく、まだ契約でもありません。',
   'web.legal.contact.title': '接触',
-  'web.legal.contact.privacy': 'プライバシー@relay.example',
-  'web.legal.contact.legal': 'legal@relay.example',
-  'web.legal.contact.security': 'security@relay.example',
-  'web.legal.contact.abuse': 'Abuse@relay.example',
-  'web.legal.contact.copyright': 'copyright@relay.example',
-  'web.legal.contact.affiliates': 'アフィリエイター@relay.example',
-  'web.legal.contact.accessibility': 'accessibility@relay.example',
+  'web.legal.contact.privacy': 'プライバシー@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
+  'web.legal.contact.security': 'support@postarray.com',
+  'web.legal.contact.abuse': 'Abuse@postarray.com',
+  'web.legal.contact.copyright': 'support@postarray.com',
+  'web.legal.contact.affiliates': 'アフィリエイター@postarray.com',
+  'web.legal.contact.accessibility': 'support@postarray.com',
   'web.legal.entity.pending':
     '契約主体、その登録住所、および管轄区域はオープンな決定であり、開始前にここで名前が指定されます。',
   'web.legal.index.updated': '更新されました{date}',
   'web.legal.terms.title': '利用規約',
   'web.legal.terms.summary':
-    'Relay が提供することに同意するもの、あなたが行うことに同意するもの、およびどちらかの側が停止した場合に何が起こるか。',
+    'Post Array が提供することに同意するもの、あなたが行うことに同意するもの、およびどちらかの側が停止した場合に何が起こるか。',
   'web.legal.terms.service.title': 'サービスとは',
   'web.legal.terms.service.body':
-    'Relay は、ソーシャル プラットフォームの公式 API を介してコンテンツを作成、承認、スケジュール設定し、その結果として得られる領収書、分析、監査記録とともに公開するためのホスト型サービスです。これはソーシャル プラットフォームではなく、投稿が公開された後のプラットフォームの扱いを制御するものではありません。',
+    'Post Array は、ソーシャル プラットフォームの公式 API を介してコンテンツを作成、承認、スケジュール設定し、その結果として得られる領収書、分析、監査記録とともに公開するためのホスト型サービスです。これはソーシャル プラットフォームではなく、投稿が公開された後のプラットフォームの扱いを制御するものではありません。',
   'web.legal.terms.content.title': 'あなたのコンテンツはあなたのもののまま',
   'web.legal.terms.content.body':
-    'アップロード、書き込み、インポートするすべてのものの所有権はお客様が保持します。 Relay には、保存、処理、要求したバリアントへの適合、選択したアカウントへの送信に必要なライセンスのみを付与します。そのライセンスは、当社が保持する必要がある記録を除き、コンテンツを削除すると終了します。',
+    'アップロード、書き込み、インポートするすべてのものの所有権はお客様が保持します。 Post Array には、保存、処理、要求したバリアントへの適合、選択したアカウントへの送信に必要なライセンスのみを付与します。そのライセンスは、当社が保持する必要がある記録を除き、コンテンツを削除すると終了します。',
   'web.legal.terms.warranties.title': '公開時に確認していること',
   'web.legal.terms.warranties.body':
     '接続したアカウントに公開する権限があること、コンテンツとメディアに対する権利を保持していること、コンテンツに登場する人物に必要な同意を得ていること、およびコンテンツの公開が宛先プラットフォームのルールに違反していないこと。',
   'web.legal.terms.platforms.title': 'プラットフォーム依存性',
   'web.legal.terms.platforms.body':
-    'コネクタは、それらの企業が管理するサードパーティ API に依存します。プラットフォームは、予告なく API を変更したり、権限を制限したり、アプリケーションを取り消したり、アクセスを終了したりする可能性があります。 Relay は、コネクタが引き続き使用可能であることを保証できません。また、コネクタが使用できなくなっても、この契約に違反するわけではありません。その際はステータスページと変更ログでお知らせします。',
+    'コネクタは、それらの企業が管理するサードパーティ API に依存します。プラットフォームは、予告なく API を変更したり、権限を制限したり、アプリケーションを取り消したり、アクセスを終了したりする可能性があります。 Post Array は、コネクタが引き続き使用可能であることを保証できません。また、コネクタが使用できなくなっても、この契約に違反するわけではありません。その際はステータスページと変更ログでお知らせします。',
   'web.legal.terms.ai.title': 'AI出力',
   'web.legal.terms.ai.body':
-    'テキスト支援、翻訳、トランスクリエーション、および計画機能により提案が生成されます。間違っていたり、時代遅れであったり、不適切だったりする可能性があります。自分が公開するものはすべてレビューする責任があります。 Relay は画像やビデオを生成しません。',
+    'テキスト支援、翻訳、トランスクリエーション、および計画機能により提案が生成されます。間違っていたり、時代遅れであったり、不適切だったりする可能性があります。自分が公開するものはすべてレビューする責任があります。 Post Array は画像やビデオを生成しません。',
   'web.legal.terms.billing.title': '支払い',
   'web.legal.terms.billing.body':
     'Polar は記録上の販売者です。 Polar は、チェックアウト、税金、請求書、返金を処理します。サブスクリプションは、キャンセルするまで、選択した間隔で自動的に更新されます。プロバイダーが操作ごとに請求するプラットフォームの使用量は、費用として別途請求され、それが発生するアクションの前に開示されます。',
@@ -584,7 +564,7 @@ export const webMarketingMessages = {
     'プログラムによるアクセスは、レート制限、スコープ要件、サービス アカウントが人間の完全な権限を決して継承しないというルールなど、API および MCP 規約によってさらに管理されます。',
   'web.legal.privacy.title': 'プライバシーポリシー',
   'web.legal.privacy.summary':
-    'Relay は何を収集するのか、その理由、誰が処理するのか、どのくらいの期間保存されるのか、どのように取り出したり削除したりするのか。',
+    'Post Array は何を収集するのか、その理由、誰が処理するのか、どのくらいの期間保存されるのか、どのように取り出したり削除したりするのか。',
   'web.legal.privacy.collect.title': '私たちが保持しているもの',
   'web.legal.privacy.collect.account':
     'アカウントとプロフィール: 名前、電子メール、ワークスペースのメンバーシップ、および役割。',
@@ -595,9 +575,9 @@ export const webMarketingMessages = {
   'web.legal.privacy.collect.schedules':
     'スケジュール、承認決定、出版物の受領書、および監査イベント。',
   'web.legal.privacy.collect.analytics':
-    'Relay を通じて公開した投稿に関するプラットフォームから取得された指標。',
+    'Post Array を通じて公開した投稿に関するプラットフォームから取得された指標。',
   'web.legal.privacy.collect.billing':
-    'Polar が保有する請求に関する参照。 Relay はカードの詳細を保存しません。',
+    'Polar が保有する請求に関する参照。 Post Array はカードの詳細を保存しません。',
   'web.legal.privacy.collect.technical':
     'サービスの運用と保護に必要なデバイスとログのデータは、デフォルトで編集されています。',
   'web.legal.privacy.collect.agent':
@@ -630,13 +610,13 @@ export const webMarketingMessages = {
     '同意の設定はバージョン管理されており監査可能であるため、いつ何を同意したかを確認できます。',
   'web.legal.privacy.deletion.title': 'プラットフォームに保持されているデータの削除',
   'web.legal.privacy.deletion.body':
-    'Relay でアカウントを切断すると、プラットフォームでトークンが取り消され、ここで資格情報が削除されます。プラットフォーム上ですでに公開されているコンテンツはそのプラットフォームによって管理されており、そこで削除する必要があります。プラットフォームが失効後の一定期間内に派生データを削除する必要がある場合、当社はその期間を守ります。 Google と YouTube データの場合、その期間は現在 30 日です。',
+    'Post Array でアカウントを切断すると、プラットフォームでトークンが取り消され、ここで資格情報が削除されます。プラットフォーム上ですでに公開されているコンテンツはそのプラットフォームによって管理されており、そこで削除する必要があります。プラットフォームが失効後の一定期間内に派生データを削除する必要がある場合、当社はその期間を守ります。 Google と YouTube データの場合、その期間は現在 30 日です。',
   'web.legal.privacy.transfers.title': '国際送金',
   'web.legal.privacy.transfers.body':
     'ホスティング地域と転送メカニズムは弁護士と最終調整中であり、開始前に適用される保護措置とともにここで名前が示されます。',
   'web.legal.aup.title': '利用規約',
   'web.legal.aup.summary':
-    'Relay は、公開を許可されているコンテンツを公開するのに役立ちます。これは、誰かがプラットフォームの制限を回避したり、支持を偽ったり、不要なメッセージを送信したりできるようにするために構築されたものではありません。',
+    'Post Array は、公開を許可されているコンテンツを公開するのに役立ちます。これは、誰かがプラットフォームの制限を回避したり、支持を偽ったり、不要なメッセージを送信したりできるようにするために構築されたものではありません。',
   'web.legal.aup.prohibited.title': '許可されていません',
   'web.legal.aup.prohibited.spam':
     'スパム、迷惑な大量メッセージ、返信やメンション、エンゲージメントの餌、および繰り返される不要なコンテンツ。',
@@ -678,10 +658,10 @@ export const webMarketingMessages = {
     '可能な場合は、外部アクションの後ではなく、その前にブロックし、その理由、ルールのバージョン、および異議申し立てのパスを記録します。繰り返しまたは重大な行為があった場合は、担当者による信頼審査が行われます。誰かが小切手を回避するのに役立つレベルの詳細なしで、何が起こったのかが知らされます。すべての決定には異議を申し立て、取り消すことができます。',
   'web.legal.aup.report.title': '不正行為の報告',
   'web.legal.aup.report.body':
-    'Relay を通じて公開されたコンテンツがこれらのルールに違反している場合は、お知らせください。投稿の URL とその問題点を含めてください。',
+    'Post Array を通じて公開されたコンテンツがこれらのルールに違反している場合は、お知らせください。投稿の URL とその問題点を含めてください。',
   'web.legal.ai.title': 'AI の使用と生成されたコンテンツのポリシー',
   'web.legal.ai.summary':
-    'どの機能がモデルを使用するか、何が送信され、何が保持されるか、ユーザーが引き続き責任を負うか、Relay がメディアを生成しない理由。',
+    'どの機能がモデルを使用するか、何が送信され、何が保持されるか、ユーザーが引き続き責任を負うか、Post Array がメディアを生成しない理由。',
   'web.legal.ai.features.title': 'モデルが使用される場所',
   'web.legal.ai.features.text':
     'コンポーザーでのテキスト支援: プラットフォームに合わせて書き直し、短縮し、適応させます。',
@@ -702,7 +682,7 @@ export const webMarketingMessages = {
     'モデルは確実に間違っている可能性があります。あなたは、公開する前に事実、主張、名前、数字、論調を確認し、プラットフォームが要求する開示については責任を負います。リーチ、エンゲージメント、ランキングを保証する AI 機能はなく、それらが 1 つとして提供されるものはありません。',
   'web.legal.ai.disclosure.title': '開示と出所',
   'web.legal.ai.disclosure.body':
-    'Relay は、コンテンツが内部履歴に AI 支援されたかどうかを記録し、プラットフォームが変更または合成メディアの開示を必要とする場所を通知し、インポートされたアセットで提供された出所を保存します。プラットフォームが開示フィールドを提供する場合、Relay は推測ではなく宣言に基づいてそれを設定します。',
+    'Post Array は、コンテンツが内部履歴に AI 支援されたかどうかを記録し、プラットフォームが変更または合成メディアの開示を必要とする場所を通知し、インポートされたアセットで提供された出所を保存します。プラットフォームが開示フィールドを提供する場合、Post Array は推測ではなく宣言に基づいてそれを設定します。',
   'web.legal.ai.blocks.title': 'AI機能が拒否するもの',
   'web.legal.ai.blocks.impersonation': '実在の人物または著名人になりすます。',
   'web.legal.ai.blocks.ncii': '形式を問わず、合意のない親密な画像。',
@@ -712,7 +692,7 @@ export const webMarketingMessages = {
     'モデルで生成された URL を検証済みの機会として提示します。機会とツールの推奨事項は、厳選されたカタログからのみ提供されます。',
   'web.legal.ai.noMedia.title': '画像やビデオが生成されない理由',
   'web.legal.ai.noMedia.body':
-    'Relay は、ブランド対応の出力に必要な検証済みのビジュアル システム、製品の詳細、アセットの権利、肖像権、キャンペーン コンテキストを収集していません。また、アプリの生成には独自の同意、来歴、安全性評価、コスト管理が必要です。メディア モデルの機能、ライセンス、価格設定、保持期間も急速に変化するため、ツールの推奨事項には日付が記載されています。専門ツールを選択し、承認されたアセットをインポートすることで、クリエイティブなコントロールを維持できます。 Relay は、適応、承認、公開、および測定を処理します。',
+    'Post Array は、ブランド対応の出力に必要な検証済みのビジュアル システム、製品の詳細、アセットの権利、肖像権、キャンペーン コンテキストを収集していません。また、アプリの生成には独自の同意、来歴、安全性評価、コスト管理が必要です。メディア モデルの機能、ライセンス、価格設定、保持期間も急速に変化するため、ツールの推奨事項には日付が記載されています。専門ツールを選択し、承認されたアセットをインポートすることで、クリエイティブなコントロールを維持できます。 Post Array は、適応、承認、公開、および測定を処理します。',
   'web.legal.ai.noMedia.caveat':
     '私たちのレーダーに表示されるツールは、その出力が安全であることや権利がクリアされていることを表明するものではありません。文書化された警告も一緒に示されており、通常の権利宣言が引き続き適用されます。',
   'web.legal.cookies.title': 'クッキーポリシー',
@@ -745,12 +725,10 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.column.region': '加工領域',
   'web.legal.subprocessors.platforms.title': 'ソーシャル プラットフォームは副処理者ではありません',
   'web.legal.subprocessors.platforms.body':
-    '公開すると、Relay は、ユーザーの指示に応じて、選択したプラットフォーム アカウントにコンテンツを送信します。これらのプラットフォームは受信するものを独立して管理しており、独自の規約がそれを管理します。',
+    '公開すると、Post Array は、ユーザーの指示に応じて、選択したプラットフォーム アカウントにコンテンツを送信します。これらのプラットフォームは受信するものを独立して管理しており、独自の規約がそれを管理します。',
   'web.legal.refunds.title': '返金およびキャンセルポリシー',
   'web.legal.refunds.summary': 'キャンセル方法、データはどうなるのか、いつ返金されるのか。',
   'web.legal.refunds.cancel.title': 'キャンセルする',
-  'web.legal.refunds.cancel.body':
-    'サポートに連絡せずに設定からキャンセルしてください。 7 日間の試用期間中にキャンセルすると、料金は請求されず、キャンセル画面でその旨が書面で確認されます。試用後にキャンセルすると、既に支払いを行った期間が終了するまでアクセスが継続されます。',
   'web.legal.refunds.refund.title': '払い戻し',
   'web.legal.refunds.refund.body':
     'サービスが説明どおりに機能しなかった場合は、サポートにご連絡ください。影響を受けた期間は返金されます。お客様に適用される法定のクーリングオフ期間を含む、消費者の強制的な撤回の権利は全面的に尊重され、このページのいかなる規定によっても制限されません。払い戻しは、当社の登録販売者である Polar によって元の支払い方法に対して行われます。',
@@ -765,10 +743,10 @@ export const webMarketingMessages = {
     'Polar が再試行してメールを送信します。猶予期間中は公開が続行されます。その後、ワークスペースは読み取り専用になり、スケジュールされた投稿は停止します。何も切断されず、何も削除されません。',
   'web.legal.dmca.title': '著作権と削除',
   'web.legal.dmca.summary':
-    'Relay がホストするコンテンツがあなたの権利を侵害していることを報告する方法と、あなたのコンテンツが削除された場合の対応方法。',
+    'Post Array がホストするコンテンツがあなたの権利を侵害していることを報告する方法と、あなたのコンテンツが削除された場合の対応方法。',
   'web.legal.dmca.scope.title': '私たちが行動できること',
   'web.legal.dmca.scope.body':
-    'Relay は、メディア ファイルやドラフトなど、システムに保存されている素材を削除できます。ソーシャル プラットフォームですでに公開されているコンテンツはそのプラットフォームに存在しており、ホストしていない投稿は削除できないため、そのプラットフォームに報告する必要があります。あなたのレポートに 2 つのどちらが当てはまるかをお知らせします。',
+    'Post Array は、メディア ファイルやドラフトなど、システムに保存されている素材を削除できます。ソーシャル プラットフォームですでに公開されているコンテンツはそのプラットフォームに存在しており、ホストしていない投稿は削除できないため、そのプラットフォームに報告する必要があります。あなたのレポートに 2 つのどちらが当てはまるかをお知らせします。',
   'web.legal.dmca.notice.title': '通知を送信する',
   'web.legal.dmca.notice.identify':
     '著作権で保護された作品と、それを侵害しているとされる素材を、アクセス可能な URL で特定します。',
@@ -786,7 +764,7 @@ export const webMarketingMessages = {
     '侵害を繰り返すアカウントは一時停止され、その後終了されます。競合他社のコンテンツを削除するために使用される悪意のある通知も終了の理由となります。',
   'web.legal.security.title': 'セキュリティと責任ある情報開示',
   'web.legal.security.summary':
-    'Relay が信頼する資格情報を保護する方法と、見つかった問題を報告する方法。',
+    'Post Array が信頼する資格情報を保護する方法と、見つかった問題を報告する方法。',
   'web.legal.security.tokens.title': 'ソーシャル認証情報',
   'web.legal.security.tokens.body':
     'プラットフォーム トークンは、管理されたキーの下でエンベロープ暗号化を使用して暗号化され、ローテーションされ、コンテンツや請求データとは別に保存され、すべてのログから編集されます。トークンがブラウザーに送信されることはなく、モデル コンテキストに配置されることも、エラー メッセージに含まれることもありません。',
@@ -818,10 +796,10 @@ export const webMarketingMessages = {
     '当社には、指名された意思決定者、重大度レベル、証拠保全および通知義務を伴うインシデント対応計画があります。出版に影響を与えたインシデントは、私たちが引き起こしたものも含め、タイムラインとその後の変化とともにステータス ページに公開されます。',
   'web.legal.accessibility.title': 'アクセシビリティに関する声明',
   'web.legal.accessibility.summary':
-    '標準 Relay は、私たちが検証したこと、まだ正しくないことが分かっていること、そしてそれを私たちに伝える方法に基づいて構築されています。',
+    '標準 Post Array は、私たちが検証したこと、まだ正しくないことが分かっていること、そしてそれを私たちに伝える方法に基づいて構築されています。',
   'web.legal.accessibility.standard.title': '標準',
   'web.legal.accessibility.standard.body':
-    'Relay は、製品とこのサイト全体で WCAG 2.2 レベル AA を対象としています。ここでのアクセシビリティはマージ要件であり、後のチケットではなく、失敗した画面は出荷されません。',
+    'Post Array は、製品とこのサイト全体で WCAG 2.2 レベル AA を対象としています。ここでのアクセシビリティはマージ要件であり、後のチケットではなく、失敗した画面は出荷されません。',
   'web.legal.accessibility.measures.title': 'それが実際に何を意味するか',
   'web.legal.accessibility.measures.keyboard':
     '目に見えるフォーカスリングと論理的なフォーカス順序により、すべてがキーボードから操作可能です。ドラッグのみのインタラクションはどこにもありません。',
@@ -860,7 +838,7 @@ export const webMarketingMessages = {
     '1 回の呼び出しが、接続されているすべてのアカウントにサイレントに公開されるわけではありません。一括操作、新しいドメイン、新しいアカウント、機密性の高いカテゴリ、有料の承認、プライバシーの変更、または承認後のコンテンツの変更は、常に人間の判断によってエスカレーションされます。すべてのエージェントとすべてのワークスペースにはキル スイッチがあります。',
   'web.legal.apiTerms.prohibited.title': 'API 経由では許可されません',
   'web.legal.apiTerms.prohibited.body':
-    '書面による同意のないアクセスの再販、公開を許可されていないコンテンツのリレーとして Relay を使用する、承認ポリシーを回避する、および利用規定に違反する使用。プログラムによるアクセスには、Web アプリと同じスパム対策制御が適用されます。',
+    '書面による同意のないアクセスの再販、公開を許可されていないコンテンツのリレーとして Post Array を使用する、承認ポリシーを回避する、および利用規定に違反する使用。プログラムによるアクセスには、Web アプリと同じスパム対策制御が適用されます。',
   'web.legal.apiTerms.changes.title': 'ポリシーの変更',
   'web.legal.apiTerms.changes.body':
     '添加物の変更は予告なく出荷されます。重大な変更には新しいバージョンが含まれ、非推奨期間が発表され、変更ログに移行メモが記載されます。エラー コードはバージョン内で意味が変わりません。',
@@ -896,35 +874,35 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.label': 'Bluesky',
   'web.marketing.provider.x.accountTypes': 'あなたが管理する個人またはビジネスの X アカウント。',
   'web.marketing.provider.x.restriction':
-    '自動投稿にはアカウント所有者の明示的な同意が必要であり、Relay はこれを記録します。アカウント間で重複した投稿や実質的に類似した投稿は許可されず、一方的な自動返信は構築されません。',
+    '自動投稿にはアカウント所有者の明示的な同意が必要であり、Post Array はこれを記録します。アカウント間で重複した投稿や実質的に類似した投稿は許可されず、一方的な自動返信は構築されません。',
   'web.marketing.provider.x.cost':
-    'X は API 操作ごとに料金を請求し、URL を含む投稿にはさらに料金を請求します。 Relay は、ユーザーが確認する前にコストを見積もり、マークアップなしで渡します。',
+    'X は API 操作ごとに料金を請求し、URL を含む投稿にはさらに料金を請求します。 Post Array は、ユーザーが確認する前にコストを見積もり、マークアップなしで渡します。',
   'web.marketing.provider.linkedin.accountTypes':
     'メンバーのプロフィール、または適切な役割を担っている組織のページ。',
   'web.marketing.provider.linkedin.restriction':
-    '組織に代わって公開するには、承認されたコミュニティ管理製品と検証されたビジネス ID が必要です。メンバーの投稿分析は、LinkedIn が新しいアプリケーションに対して閉じている読み取り権限に依存しているため、Relay はそれを提供しません。',
+    '組織に代わって公開するには、承認されたコミュニティ管理製品と検証されたビジネス ID が必要です。メンバーの投稿分析は、LinkedIn が新しいアプリケーションに対して閉じている読み取り権限に依存しているため、Post Array はそれを提供しません。',
   'web.marketing.provider.linkedin.cost':
     '操作ごとの料金はかかりません。アプリケーションとメンバーの 1 日あたりの制限が適用されます。',
   'web.marketing.provider.instagram.accountTypes':
     'プロの Instagram アカウント、ビジネス、またはクリエイター。',
   'web.marketing.provider.instagram.restriction':
-    'Instagram コンテンツの公開は、プロフェッショナル アカウントでのみ利用できます。コンシューマ アカウントは、このアプリケーションを含め、どのアプリケーションからも公開できません。公開では公式のコンテナと公開シーケンスが使用され、Relay はアップロードが成功として報告されるのではなく、最終状態を確認します。',
+    'Instagram コンテンツの公開は、プロフェッショナル アカウントでのみ利用できます。コンシューマ アカウントは、このアプリケーションを含め、どのアプリケーションからも公開できません。公開では公式のコンテナと公開シーケンスが使用され、Post Array はアップロードが成功として報告されるのではなく、最終状態を確認します。',
   'web.marketing.provider.instagram.cost':
     '操作ごとの料金はかかりません。メタアプリのレビューとビジネスの検証が必要です。',
   'web.marketing.provider.facebook.accountTypes': 'あなたが管理する Facebook ページ。',
   'web.marketing.provider.facebook.restriction':
-    '公開対象はページです。個人プロファイルの自動化は API では提供されておらず、Relay はそれを試みません。',
+    '公開対象はページです。個人プロファイルの自動化は API では提供されておらず、Post Array はそれを試みません。',
   'web.marketing.provider.facebook.cost':
     '操作ごとの料金はかかりません。メタアプリのレビューとビジネスの検証が必要です。',
   'web.marketing.provider.youtube.accountTypes':
     'Google アカウントを通じて接続された YouTube チャネル。',
   'web.marketing.provider.youtube.restriction':
-    'Google API コンプライアンス監査に合格していないプロジェクトは、非公開としてのみアップロードできます。 Relay では、監査に合格するまでパブリック アップロードが利用可能であるとは記載されず、接続画面にはアップロードがどの状態になるかが示されます。',
+    'Google API コンプライアンス監査に合格していないプロジェクトは、非公開としてのみアップロードできます。 Post Array では、監査に合格するまでパブリック アップロードが利用可能であるとは記載されず、接続画面にはアップロードがどの状態になるかが示されます。',
   'web.marketing.provider.youtube.cost':
     '操作ごとの料金はかかりません。 1 日あたりの割り当てが適用され、プロジェクト間で共有することはできません。',
   'web.marketing.provider.tiktok.accountTypes': 'ダイレクトポスト認証を持つ TikTok アカウント。',
   'web.marketing.provider.tiktok.restriction':
-    'Content Posting API の監査に合格するまで、投稿は非公開となり、アカウントごとに上限が適用されます。公開時に、Relay は現在の作成者情報を取得し、利用可能なプライバシー オプションを事前に選択せずに表示し、コメント、デュエット、ステッチの設定、および商用コンテンツの宣言を求めます。',
+    'Content Posting API の監査に合格するまで、投稿は非公開となり、アカウントごとに上限が適用されます。公開時に、Post Array は現在の作成者情報を取得し、利用可能なプライバシー オプションを事前に選択せずに表示し、コメント、デュエット、ステッチの設定、および商用コンテンツの宣言を求めます。',
   'web.marketing.provider.tiktok.cost':
     '操作ごとの料金はかかりません。無監査モードでは、毎日の投稿の上限が適用されます。',
   'web.marketing.provider.threads.accountTypes':
@@ -994,7 +972,7 @@ export const webMarketingMessages = {
     '{supported, plural, other {# 個の機能がサポートされています}}、{requiresReview, plural, other {# プラットフォームのレビューを待っています}}、{notImplemented, plural, other {# まだ構築されていません}}、{unsupported, plural, other {# プラットフォームでは提供されていません}}。',
   'web.capabilities.buildState.title': '顧客トラフィックを伝送するコネクタはまだありません',
   'web.capabilities.buildState.body':
-    'Relay はビルド中です。この表は現在のコネクタ定義を反映しているため、ほとんどのセルはまだ構築されていないと表示されます。セルは、記録されたプラットフォーム フィクスチャに対するコントラクト テストを含め、そのコネクタが完了の定義に合格した後にのみサポートされます。プラットフォームが何かを提供していないか、レビューの背後にゲートを置いているというセルは、プラットフォームに関する事実であり、すでに最終的なものです。',
+    'Post Array はビルド中です。この表は現在のコネクタ定義を反映しているため、ほとんどのセルはまだ構築されていないと表示されます。セルは、記録されたプラットフォーム フィクスチャに対するコントラクト テストを含め、そのコネクタが完了の定義に合格した後にのみサポートされます。プラットフォームが何かを提供していないか、レビューの背後にゲートを置いているというセルは、プラットフォームに関する事実であり、すでに最終的なものです。',
   'web.capabilities.note.instagramProfessional':
     'プロフェッショナルアカウントのみ。コンシューマ アカウントは、どのアプリケーションからも公開できません。',
   'web.capabilities.note.facebookPagesOnly':
@@ -1014,7 +992,7 @@ export const webMarketingMessages = {
   'web.capabilities.note.metaReview': 'メタアプリのレビューとビジネス検証が必要です。',
   'web.capabilities.note.xConsent': '自動投稿にはアカウント所有者からの記録による同意が必要です。',
   'web.capabilities.note.xDisclosure':
-    'プラットフォームには、Relay が宣言から設定する made with AI フィールドが用意されています。',
+    'プラットフォームには、Post Array が宣言から設定する made with AI フィールドが用意されています。',
   'web.capabilities.note.noDestinations':
     'このプラットフォームにはページ、ボード、コミュニティなどの目的地の概念はありません。',
   'web.capabilities.note.noThreads':
@@ -1030,7 +1008,7 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'このプラットフォームは、API を介してカスタム サムネイルを受け入れません。',
   'web.capabilities.note.inBuild':
-    'プラットフォームはこれを提供します。 Relay はまだ出荷されていません。',
+    'プラットフォームはこれを提供します。 Post Array はまだ出荷されていません。',
   'web.capabilities.note.noCarousel':
     'このプラットフォームはスワイプ式カルーセルを提供していません。',
   'web.capabilities.note.noDisclosure':
@@ -1057,7 +1035,7 @@ export const webMarketingMessages = {
   'web.status.surface.analytics': '分析コレクション',
   'web.status.surface.links': '短いリンクのリダイレクト',
   'web.status.surface.checkout': 'チェックアウトと請求',
-  'web.status.preLaunch.title': 'Relay はまだ一般提供されていません',
+  'web.status.preLaunch.title': 'Post Array はまだ一般提供されていません',
   'web.status.preLaunch.body':
     'このページは製品が公開される前に公開されるため、レポートの習慣は最初の停止後に追加されるのではなく、最初の顧客から存在します。まだビルド中のサーフェスは、正常とは表示されず、そのようにマークされます。',
   'web.compare.product.postiz': 'ポスティズ',
@@ -1110,8 +1088,6 @@ export const webMarketingMessages = {
     'Web アプリ、API、ショート リンク サービスを提供します。',
   'web.legal.subprocessors.hosting.data': 'メタデータと編集されたログをリクエストします。',
   'web.legal.subprocessors.email.label': 'トランザクションメール配信',
-  'web.legal.subprocessors.email.purpose':
-    'サインイン リンク、承認リクエスト、結果通知の発行、トライアル リマインダー。',
   'web.legal.subprocessors.email.data': '名前、メールアドレス、メッセージ内容。',
   'web.legal.subprocessors.monitoring.label': 'エラーとパフォーマンスの監視',
   'web.legal.subprocessors.monitoring.purpose':
@@ -1156,13 +1132,11 @@ export const webMarketingMessages = {
   'web.footer.legal': '法律上の',
   'web.footer.developers': '開発者',
   'web.footer.statement':
-    'Relay は、公式プラットフォーム API を通じてのみ公開します。コネクタの可用性はプラットフォームが管理する承認に依存し、このサイトのすべての機能に関する主張には日付と出典が記載されています。',
+    'Post Array は、公式プラットフォーム API を通じてのみ公開します。コネクタの可用性はプラットフォームが管理する承認に依存し、このサイトのすべての機能に関する主張には日付と出典が記載されています。',
   'web.footer.noAffiliation':
     'プラットフォームの名前とマークはその所有者に帰属します。ここでの使用はコネクタを識別するものであり、承認やパートナーシップを意味するものではありません。',
-  'web.footer.copyright': 'Relay{year}',
+  'web.footer.copyright': 'Post Array{year}',
   'web.marketing.v2.closing.title': '自分のアカウントで試してみる',
-  'web.marketing.v2.closing.body':
-    '7 日間、実際のコネクタ、段階的なデモ データなし。変換される前であればいつでもキャンセルできます。',
   'web.product.v2.demo.title': '1 つの簡単な、5 つのプラットフォームネイティブのドラフト',
   'web.product.v2.demo.body':
     'ホームページの同じシーン。作成ステップが実際に生成するものに範囲が限定されています。',

@@ -42,7 +42,8 @@ export const validationMessages = {
   'validation.thread_unsupported.message': '{provider} 不支援此帳號的討論串。',
   'validation.repeat_end_required.message': '重複貼文需要結束日期或重複次數。',
   'validation.schedule_in_past.message': '此時間在 {timeZone} 已過去。',
-  'validation.schedule_too_far_ahead.message': '這比此認證資料設定的 {limit} 前瞻時間更久。',
+  'validation.schedule_too_far_ahead.message':
+    '貼文最多可提前 {limit} 排程，上傳的媒體檔案也保留相同的時間。',
   'validation.schedule_outside_quiet_hours.message': '這落在為 {project} 設定的安靜時段內。',
   'validation.duplicate_within_window.message':
     '在 {window} 內，已有非常相似的內容為 {account} 排程或發布。',

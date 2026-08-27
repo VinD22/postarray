@@ -170,7 +170,7 @@ export function createApiClient(options: ApiClientOptions): ApiClient {
         'user-agent': options.userAgent ?? 'relay-cli',
       };
       if (options.workspaceId !== null && options.workspaceId !== undefined) {
-        headers['x-relay-workspace-id'] = options.workspaceId;
+        headers['x-postarray-workspace-id'] = options.workspaceId;
       }
       if (options.locale !== undefined) {
         headers['accept-language'] = options.locale;

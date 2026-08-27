@@ -24,7 +24,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'حساب الخدمة {name}',
   'receipt.actor.oauthApp': '{app} يمثل {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
 
   'receipt.timeline.title': 'الجدول الزمني',
   'receipt.timeline.created': 'مسودة تم إنشاؤها بواسطة {actor}',

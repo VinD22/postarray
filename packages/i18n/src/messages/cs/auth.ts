@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Přihlásit se',
   'auth.signIn.subtitle': 'Publikujte, schvalujte a sledujte, co se přesně stalo.',
   'auth.signUp.title': 'Vytvořte si účet',
-  'auth.signUp.subtitle': 'Sedm dní s každou funkcí. 0 $ splatných dnes.',
   'auth.continueWithGoogle': 'Pokračovat s Google',
   'auth.continueWithFacebook': 'Pokračovat na Facebooku',
   'auth.orUseEmail': 'Nebo použijte svůj e-mail',

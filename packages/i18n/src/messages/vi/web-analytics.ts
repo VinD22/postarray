@@ -21,7 +21,7 @@ export const webAnalyticsMessages = {
     '{count, plural, =0 {No filters} one {# filter} other {# filters}} applied. {results, plural, =0 {No posts match} one {# post matches} other {# posts match}}.',
   'analytics.rankMetric.label': 'Xếp hạng bài viết theo',
   'analytics.rankMetric.help':
-    'Không có điểm tổng hợp trong Relay. Chọn một số liệu có định nghĩa mà bạn tin cậy và bảng được sắp xếp theo chỉ số đó.',
+    'Không có điểm tổng hợp trong Post Array. Chọn một số liệu có định nghĩa mà bạn tin cậy và bảng được sắp xếp theo chỉ số đó.',
   'analytics.rankMetric.chosen':
     'Được xếp hạng bởi {metric}, theo báo cáo của từng nhà cung cấp tài khoản.',
   'analytics.outcome.awareness': 'Nhận thức',
@@ -79,7 +79,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Số người theo dõi trên {account} đã thay đổi bởi {percent} trong thời gian này.',
   'analytics.evidence.confounder.paid':
-    'Relay không thể biết liệu bất kỳ bài đăng nào trong số này có nhận được phân phối trả phí hay không.',
+    'Post Array không thể biết liệu bất kỳ bài đăng nào trong số này có nhận được phân phối trả phí hay không.',
   'analytics.evidence.confounder.provider':
     '{provider} đã thay đổi cách báo cáo {metric} trong giai đoạn này.',
   'analytics.definition.open': '{metric} nghĩa là gì',
@@ -110,7 +110,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Số sự kiện',
   'analytics.unit.seconds': 'Giây',
   'analytics.unit.percent': 'Tỷ lệ phần trăm nhà cung cấp đã tính toán',
-  'analytics.unit.ratio': 'Tỷ lệ Relay được tính từ hai trường nhà cung cấp',
+  'analytics.unit.ratio': 'Tỷ lệ Post Array được tính từ hai trường nhà cung cấp',
   'analytics.unit.currency_minor': 'Một số tiền tính theo đơn vị nhỏ',
   'analytics.denominator.none': 'Đây là một con số, không phải là một tỷ lệ. Nó không có mẫu số.',
   'analytics.denominator.impressions': 'Chia theo số lần hiển thị',
@@ -127,7 +127,7 @@ export const webAnalyticsMessages = {
   'analytics.format.document': 'tài liệu',
   'analytics.format.thread': 'chủ đề',
   'analytics.value.unavailableReason.notImplemented':
-    'Relay chưa xây dựng ánh xạ cho số liệu này trên {provider}.',
+    'Post Array chưa xây dựng ánh xạ cho số liệu này trên {provider}.',
   'analytics.value.estimated': 'ước tính',
   'analytics.value.estimatedMethod': 'Phương pháp: {method}.',
   'analytics.freshness.title': 'Những con số này đến từ đâu',
@@ -236,7 +236,7 @@ export const webAnalyticsMessages = {
     'Analytics cần có vai trò phân tích viên trở lên. Chủ sở hữu hoặc quản trị viên của không gian làm việc này có thể cấp quyền đó.',
   'analytics.state.rateLimitTitle': '{provider} là yêu cầu phân tích giới hạn tốc độ',
   'analytics.state.rateLimitCause':
-    'Tài khoản đã sử dụng phần hạn ngạch của nhà cung cấp cho thời lượng này. Relay không thử lại nhiều hơn vì điều đó sẽ trì hoãn việc xuất bản.',
+    'Tài khoản đã sử dụng phần hạn ngạch của nhà cung cấp cho thời lượng này. Post Array không thử lại nhiều hơn vì điều đó sẽ trì hoãn việc xuất bản.',
   'analytics.state.rateLimitAlternative':
     'Thu hẹp phạm vi ngày hoặc bộ lọc tài khoản để yêu cầu nhà cung cấp ít hơn.',
   'analytics.state.rateLimitReset': 'Tiếp tục yêu cầu',
@@ -244,9 +244,9 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Tạo liên kết được theo dõi',
   'analytics.links.empty': 'Chưa có liên kết nào được theo dõi',
   'analytics.links.emptyBody':
-    'Liên kết được theo dõi là một URL ngắn Relay chuyển hướng qua, do đó bạn có thể thấy các nhấp chuột ngay cả khi nền tảng không báo cáo. Đích đến ban đầu không bao giờ bị thay đổi nếu không có mục kiểm tra.',
+    'Liên kết được theo dõi là một URL ngắn Post Array chuyển hướng qua, do đó bạn có thể thấy các nhấp chuột ngay cả khi nền tảng không báo cáo. Đích đến ban đầu không bao giờ bị thay đổi nếu không có mục kiểm tra.',
   'analytics.links.emptyExample':
-    'Ví dụ: Relay.to/a7Kq2 chuyển hướng đến acme.com/blog/launch với chiến dịch q3-launch.',
+    'Ví dụ: Post Array.to/a7Kq2 chuyển hướng đến acme.com/blog/launch với chiến dịch q3-launch.',
   'analytics.links.table.caption':
     'Các liên kết được theo dõi trong không gian làm việc này và số lần nhấp chuột của bên thứ nhất.',
   'analytics.links.campaign': 'Chiến dịch',
@@ -274,7 +274,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, hoạt động từ {start} đến {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, hoạt động kể từ {start}',
   'analytics.links.domainLabel': 'Tên miền ngắn',
-  'analytics.links.domainDefault': 'Tên miền mặc định Relay',
+  'analytics.links.domainDefault': 'Tên miền mặc định Post Array',
   'analytics.links.domainVerified': 'Được xác minh bằng DNS trên {date}',
   'analytics.links.domainPending': 'Đang chờ bản ghi DNS',
   'analytics.links.domainPendingHelp':
@@ -297,7 +297,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Báo cáo liên kết này',
   'analytics.links.measurementLabel': 'Đo lường chuyển hướng của bên thứ nhất',
   'analytics.links.measurementExplained':
-    'Relay tính yêu cầu khi dịch vụ chuyển hướng được yêu cầu cho URL này. Nhấp chuột bị trùng lặp sẽ loại bỏ các yêu cầu lặp lại từ cùng một khách truy cập trong một cửa sổ ngắn và các yêu cầu phù hợp với các mẫu trình thu thập thông tin đã biết sẽ bị loại trừ thay vì bị xóa.',
+    'Post Array tính yêu cầu khi dịch vụ chuyển hướng được yêu cầu cho URL này. Nhấp chuột bị trùng lặp sẽ loại bỏ các yêu cầu lặp lại từ cùng một khách truy cập trong một cửa sổ ngắn và các yêu cầu phù hợp với các mẫu trình thu thập thông tin đã biết sẽ bị loại trừ thay vì bị xóa.',
   'analytics.links.botsNote':
     '{count, plural, one {# request} other {# requests}} were classified as automated and are excluded from the deduplicated count.',
   'analytics.links.series.title': 'Số yêu cầu và số lần nhấp chuột trùng lặp theo thời gian',
@@ -320,7 +320,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'Liên kết này chưa được yêu cầu kể từ khi nó được tạo. Đó là con số 0 thực sự, được đo lường bởi dịch vụ chuyển hướng của chúng tôi.',
   'analytics.links.compareWarning':
-    '{provider} báo cáo số lần nhấp vào liên kết {providerValue} cho bài đăng này. Relay đã ghi lại {relayValue} số lần nhấp chuột trùng lặp. Cả hai đếm các sự kiện khác nhau và không thay thế sự kiện kia.',
+    '{provider} báo cáo số lần nhấp vào liên kết {providerValue} cho bài đăng này. Post Array đã ghi lại {relayValue} số lần nhấp chuột trùng lặp. Cả hai đếm các sự kiện khác nhau và không thay thế sự kiện kia.',
   'analytics.links.errorTitle': 'Không thể tải số liệu thống kê liên kết',
   'analytics.links.errorBody':
     'Dịch vụ chuyển hướng vẫn hoạt động nên liên kết tiếp tục đưa khách truy cập đến đích. Chỉ có báo cáo bị ảnh hưởng.',
@@ -330,7 +330,7 @@ export const webAnalyticsMessages = {
   'analytics.links.createCampaign': 'Tên chiến dịch',
   'analytics.links.createSlug': 'Kết thúc tùy chỉnh',
   'analytics.links.createSlugHelp':
-    'Để trống phần này và Relay tạo ra một kết thúc ngắn ngẫu nhiên.',
+    'Để trống phần này và Post Array tạo ra một kết thúc ngắn ngẫu nhiên.',
   'analytics.links.createUtm': 'thông số UTM',
   'analytics.links.blockedScheme': 'Chỉ các điểm đến https mới được chấp nhận.',
   'analytics.links.blockedPrivate':
@@ -455,7 +455,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# action is} other {# actions are}} not listed because the selected accounts cannot perform them.',
   'automation.picker.hiddenDetail': '{action} không có sẵn cho {provider}. {reason}',
   'automation.picker.consequential': 'Tạo một cái gì đó trên nền tảng',
-  'automation.picker.internalOnly': 'Ở bên trong Relay',
+  'automation.picker.internalOnly': 'Ở bên trong Post Array',
   'automation.accounts.label': 'Các tài khoản mà quy tắc này có thể áp dụng',
   'automation.accounts.help':
     'Một quy tắc không bao giờ có thể chạm vào tài khoản không được liệt kê ở đây, bất kể điều kiện của nó nói gì.',
@@ -540,7 +540,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} không vượt qua nên luật dừng ở đây',
   'automation.test.actionSimulated': '{action} sẽ chạy',
   'automation.test.actionSkipped': '{action} sẽ bị bỏ qua: {reason}',
-  'automation.test.noExternalEffect': 'Không còn gì Relay trong quá trình thử nghiệm này.',
+  'automation.test.noExternalEffect': 'Không còn gì Post Array trong quá trình thử nghiệm này.',
   'automation.test.failed': 'Bài kiểm tra không thể hoàn thành: {reason}',
   'automation.runs.table.caption': 'Các lần chạy gần đây của quy tắc này.',
   'automation.runs.startedAt': 'Đã bắt đầu',
@@ -591,7 +591,7 @@ export const webAnalyticsMessages = {
     'Biến nguồn cấp dữ liệu thành bản nháp hoặc bài đăng được lên lịch, với cùng mức xác thực và phê duyệt như bất kỳ nội dung nào bạn tự viết.',
   'automation.rss.empty': 'Chưa có nguồn cấp dữ liệu nào',
   'automation.rss.emptyBody':
-    'Thêm nguồn cấp dữ liệu và Relay sẽ kiểm tra nguồn cấp dữ liệu đó theo lịch trình. Mỗi mục mới sẽ trở thành bản nháp, bài đăng được lên lịch hoặc yêu cầu phê duyệt, tùy theo lựa chọn của bạn.',
+    'Thêm nguồn cấp dữ liệu và Post Array sẽ kiểm tra nguồn cấp dữ liệu đó theo lịch trình. Mỗi mục mới sẽ trở thành bản nháp, bài đăng được lên lịch hoặc yêu cầu phê duyệt, tùy theo lựa chọn của bạn.',
   'automation.rss.emptyExample':
     'Ví dụ: nguồn cấp dữ liệu blog Acme tạo bản nháp cho X và LinkedIn mỗi khi một bài viết được xuất bản và chờ người phê duyệt.',
   'automation.rss.table.caption': 'Cung cấp các cuộc thăm dò không gian làm việc này.',
@@ -606,7 +606,7 @@ export const webAnalyticsMessages = {
   'automation.rss.step.policy': 'Nó được xuất bản như thế nào',
   'automation.rss.stepOf': 'Bước {current} của {total}',
   'automation.rss.urlHelp':
-    'Relay tìm nạp nguồn cấp dữ liệu từ máy chủ của chúng tôi chứ không phải từ trình duyệt của bạn. Địa chỉ mạng riêng bị từ chối.',
+    'Post Array tìm nạp nguồn cấp dữ liệu từ máy chủ của chúng tôi chứ không phải từ trình duyệt của bạn. Địa chỉ mạng riêng bị từ chối.',
   'automation.rss.validateAction': 'Kiểm tra nguồn cấp dữ liệu này',
   'automation.rss.validateFailed': 'Địa chỉ đó không trả về nguồn cấp dữ liệu có thể đọc được',
   'automation.rss.validateFailedReason': 'Những gì chúng tôi nhận được: {reason}',
@@ -618,7 +618,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Không có hình ảnh trong mục này',
   'automation.rss.previewImageAlt': 'Hình ảnh từ mục nguồn cấp dữ liệu {title}',
   'automation.rss.previewNoDate':
-    'Mục này không có dấu thời gian, vì vậy Relay sử dụng thời điểm lần đầu tiên nó nhìn thấy nó.',
+    'Mục này không có dấu thời gian, vì vậy Post Array sử dụng thời điểm lần đầu tiên nó nhìn thấy nó.',
   'automation.rss.previewFieldsTitle': 'Các trường mà nguồn cấp dữ liệu này cung cấp',
   'automation.rss.previewFieldMissing': 'Không có trong nguồn cấp dữ liệu này',
   'automation.rss.seenTitle': 'Những gì được tính là đã thấy',
@@ -642,7 +642,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'Xem trước với mục mới nhất',
   'automation.rss.adaptWithAi': 'Điều chỉnh văn bản cho từng mục tiêu',
   'automation.rss.adaptHelp':
-    'Từ ngữ được viết lại để phù hợp với từng nền tảng và được hiển thị dưới dạng khác biệt mà bạn chấp nhận hoặc từ chối. Phương tiện đến từ mục nguồn cấp dữ liệu. Relay không tạo ra hình ảnh.',
+    'Từ ngữ được viết lại để phù hợp với từng nền tảng và được hiển thị dưới dạng khác biệt mà bạn chấp nhận hoặc từ chối. Phương tiện đến từ mục nguồn cấp dữ liệu. Post Array không tạo ra hình ảnh.',
   'automation.rss.noImageGeneration':
     'Nếu một mục nguồn cấp dữ liệu không có hình ảnh, bài đăng sẽ không có hình ảnh.',
   'automation.rss.imageFromFeed': 'Sử dụng hình ảnh từ mục nguồn cấp dữ liệu khi nó có',
@@ -677,10 +677,10 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Tiếp tục nguồn cấp dữ liệu này',
   'automation.rss.deleteTitle': 'Xóa {title}?',
   'automation.rss.deleteBody':
-    'Relay ngừng kiểm tra nguồn cấp dữ liệu này. Các bản nháp và bài đăng đã được tạo vẫn giữ nguyên như cũ.',
+    'Post Array ngừng kiểm tra nguồn cấp dữ liệu này. Các bản nháp và bài đăng đã được tạo vẫn giữ nguyên như cũ.',
   'automation.rss.errorTitle': 'Không thể đọc được nguồn cấp dữ liệu này',
   'automation.rss.errorBody':
-    'Relay tiếp tục kiểm tra theo lịch trình bình thường. Không có gì được công bố từ một phản hồi một phần.',
+    'Post Array tiếp tục kiểm tra theo lịch trình bình thường. Không có gì được công bố từ một phản hồi một phần.',
   'automation.refuse.title': 'Không có sẵn trong bất kỳ quy tắc nào',
   'automation.refuse.body':
     'Tự động thích và theo dõi, nhóm tương tác, trả lời và tin nhắn không được yêu cầu cũng như đăng cùng một nội dung từ nhiều tài khoản để làm cho nội dung đó trông phổ biến không phải là các tùy chọn ở đây. Các nền tảng cấm chúng và chúng làm hỏng các tài khoản sử dụng chúng.',

@@ -38,6 +38,7 @@ export const navMessages = {
   'settings.nav.notifications': 'Mga kagustuhan sa notification',
 
   'nav.public.product': 'produkto',
+  'nav.public.demo': 'Demo',
   'nav.public.integrations': 'Mga pagsasama',
   'nav.public.forCreators': 'Para sa mga creator',
   'nav.public.forAgencies': 'Para sa mga ahensya',

@@ -100,7 +100,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Ang panuntunang ito ay hindi maaaring gawin',
   'automation.notPermitted.body':
-    'Hindi ino-automate ng Relay ang mga like, follow, hindi hinihinging mga tugon o mensahe, duplicate na mass posting o anumang bagay na nakasalalay sa pag-automate ng browser. {provider} ipinagbabawal ito at gayon din tayo.',
+    'Hindi ino-automate ng Post Array ang mga like, follow, hindi hinihinging mga tugon o mensahe, duplicate na mass posting o anumang bagay na nakasalalay sa pag-automate ng browser. {provider} ipinagbabawal ito at gayon din tayo.',
   'automation.notPermitted.providerCapability':
     '{provider} hindi nag-aalok {action} sa pamamagitan ng opisyal nitong API, kaya hindi mapipili ang pagkilos na ito para dito.',
 
@@ -113,7 +113,7 @@ export const automationMessages = {
   'automation.rss.targets': 'I-publish sa',
   'automation.rss.template': 'Template ng teksto',
   'automation.rss.templateHelp':
-    'Gamitin ang mga field ng feed na iyong nakamapa. Ang Relay ay hindi bumubuo ng mga larawan para sa mga feed item.',
+    'Gamitin ang mga field ng feed na iyong nakamapa. Ang Post Array ay hindi bumubuo ng mga larawan para sa mga feed item.',
   'automation.rss.policy.draft': 'Gumawa ng draft',
   'automation.rss.policy.approval': 'Gumawa ng draft at humiling ng pag-apruba',
   'automation.rss.policy.nextSlot': 'Mag-iskedyul sa susunod na libreng puwang',

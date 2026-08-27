@@ -1,6 +1,6 @@
 /** id beta catalog namespace. */
 export const onboardingMessages = {
-  'onboarding.title': 'Siapkan Relay',
+  'onboarding.title': 'Siapkan Post Array',
   'onboarding.progress': 'Langkah {current} dari {total}',
   'onboarding.skipForNow': 'Lewati untuk saat ini',
   'onboarding.goal':

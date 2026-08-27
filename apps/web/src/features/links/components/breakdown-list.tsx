@@ -15,7 +15,7 @@ import type { BreakdownEntry } from '../types';
  * and no tooltip. A pie chart of five referrer classes would take more space
  * and answer fewer questions.
  *
- * Country is coarse by design. Relay keeps a country and a device class, not a
+ * Country is coarse by design. Post Array keeps a country and a device class, not a
  * city and not a raw address, and the note under the list says so rather than
  * leaving the reader to wonder what was collected.
  */

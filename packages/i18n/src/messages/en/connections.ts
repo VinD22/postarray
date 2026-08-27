@@ -36,7 +36,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Granted',
   'connection.permissions.missing': 'Not granted',
   'connection.permissions.explainBeforeOAuth':
-    'Relay will ask {provider} for these permissions. You can disconnect at any time.',
+    'Post Array will ask {provider} for these permissions. You can disconnect at any time.',
   'connection.permissions.whyNeeded': 'Why this is needed',
 
   'connection.reconnect.title': 'Reconnect {account}',
@@ -96,11 +96,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Needs platform review',
   'capability.level.beta': 'Beta',
   'capability.level.unknown': 'Unavailable',
-  'capability.explain.supported': 'Relay can do this for this account today.',
+  'capability.explain.supported': 'Post Array can do this for this account today.',
   'capability.explain.unsupported':
     '{provider} does not offer this through its official API, so no tool can do it safely.',
   'capability.explain.not_implemented':
-    '{provider} offers this, but Relay has not built it yet. It is on the connector roadmap.',
+    '{provider} offers this, but Post Array has not built it yet. It is on the connector roadmap.',
   'capability.explain.requires_review':
     '{provider} grants this only after it reviews the app or the account. It stays unavailable until that review passes.',
   'capability.explain.beta':

@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'Een publicatiebureau voor mensen en agenten.',
   'shell.menu.open': 'Open het menu',
   'shell.menu.title': 'Menukaart',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Demogegevens',
   'shell.demo.title': 'U bekijkt demogegevens',
   'shell.demo.body':
-    'De Relay API is niet bereikbaar vanuit deze browser, dus de schermen zijn gevuld met een geplaatste voorbeeldwerkruimte. Niets hier is verbonden met een echt account en niets kan publiceren.',
+    'De Post Array API is niet bereikbaar vanuit deze browser, dus de schermen zijn gevuld met een geplaatste voorbeeldwerkruimte. Niets hier is verbonden met een echt account en niets kan publiceren.',
   'shell.demo.howToConnect':
     'Stel NEXT_PUBLIC_RELAY_API_URL in en start de app opnieuw om live gegevens te gebruiken.',
 
@@ -146,7 +146,7 @@ export const webShellMessages = {
   'home.trial.manage': 'Beheer of annuleer',
   'home.error.title': 'Thuis kon niet laden',
   'home.error.body':
-    'Uw werkruimte is intact. Dit is een probleem bij het bereiken van de Relay API.',
+    'Uw werkruimte is intact. Dit is een probleem bij het bereiken van de Post Array API.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': "Publiceer via officiële API's en zie precies wat er is gebeurd.",
@@ -158,9 +158,9 @@ export const webShellMessages = {
     'Dezelfde workflow vanuit de webapp, de REST API, MCP, de CLI en webhooks.',
   'auth.provider.title': 'Voordat u verdergaat',
   'auth.provider.google.access':
-    'Google deelt uw naam, e-mailadres en profielfoto met Relay. Relay kan uw Gmail, Drive of Agenda niet lezen.',
+    'Google deelt uw naam, e-mailadres en profielfoto met Post Array. Post Array kan uw Gmail, Drive of Agenda niet lezen.',
   'auth.provider.facebook.access':
-    'Facebook deelt uw naam, e-mailadres en profielfoto met Relay. Het verbinden van een pagina om op te publiceren is een aparte stap die u later goedkeurt.',
+    'Facebook deelt uw naam, e-mailadres en profielfoto met Post Array. Het verbinden van een pagina om op te publiceren is een aparte stap die u later goedkeurt.',
   'auth.provider.note':
     'Hiermee wordt u aangemeld. Er wordt geen account gekoppeld om naar te publiceren.',
   'auth.continueWithEmail': 'Ga verder met e-mail',
@@ -184,9 +184,7 @@ export const webShellMessages = {
   'auth.failure.provider':
     'Het aanmelden met {provider} is niet voltooid. Er werd niets veranderd.',
   'auth.failure.network':
-    'We konden Relay niet bereiken. Controleer uw verbinding en probeer het opnieuw.',
-  'auth.signUp.trialNote':
-    'Zeven volledige proefdagen. Er is een betaalmethode vereist. Vandaag $ 0 verschuldigd.',
+    'We konden Post Array niet bereiken. Controleer uw verbinding en probeer het opnieuw.',
   'auth.signUp.emailInUseNote':
     'Als dit adres al een account heeft, e-mailen we een inloglink in plaats van een tweede aan te maken.',
   'auth.legal.readTerms': 'Lees de voorwaarden',
@@ -220,7 +218,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Gedetecteerd door dit apparaat: {timeZone}',
   'onboarding.connect.permissionsTitle': 'Waar {provider} om zal worden gevraagd',
   'onboarding.connect.permissionsFooter':
-    'Relay vraagt nooit om toestemming die het niet gebruikt, en u kunt op elk moment de verbinding verbreken.',
+    'Post Array vraagt nooit om toestemming die het niet gebruikt, en u kunt op elk moment de verbinding verbreken.',
   'onboarding.connect.chooseProvider': 'Kies een platform',
   'onboarding.connect.opensProvider': 'Als u doorgaat, wordt {provider} op dit tabblad geopend.',
   'onboarding.compose.help':

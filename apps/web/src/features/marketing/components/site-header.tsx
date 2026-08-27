@@ -56,13 +56,12 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
   return (
     <header className="border-border-default bg-surface-canvas relative sticky top-0 z-(--z-index-sticky) border-b">
       {/*
-        The header opts out of the 80rem editorial measure. That cap is right
-        for reading text and wrong for a navigation bar: with French or German
-        labels the row needs about a fifth more room than English, and squeezing
-        it into 1280px on a 2400px screen made the items overlap each other
-        rather than simply run out of space.
+        The header takes the shared marketing measure with no override. It used
+        to opt out, because the old 80rem cap was right for reading text and
+        wrong for a navigation bar; now the page itself is that width, so the
+        bar and the content below it line up on the same two edges.
       */}
-      <Container className="max-w-[110rem]">
+      <Container>
         <div className="flex h-16 items-stretch justify-between gap-4">
           <div className="flex items-center">
             <Link

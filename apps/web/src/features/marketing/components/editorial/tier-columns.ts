@@ -94,6 +94,9 @@ function featuresFor(t: Translator, tier: WebPlanTier): readonly TierFeature[] {
     id: 'allowance',
     text: t.format('billing.tier.projectAllowance', { count: tier.projectAllowance }),
     strong: true,
+    // The one line that differs between columns, and the only thing the
+    // compact teaser is allowed to promote out of the checklist.
+    distinguishing: true,
   };
   // Read from the tier module rather than restated here. A per-tier list would
   // be feature gating, which `features/billing/tiers.test.ts` and the billing

@@ -572,6 +572,22 @@ enum BillingInterval {
   @@schema("private")
 }
 
+/// Why a publishing credit moved. Each value is a decision somebody made about
+/// money, which is why this is an enum and not free text.
+enum PostCreditReason {
+  /// The standing grant every new workspace opens with.
+  signup_grant
+  /// One published post. The only reason that ever spends.
+  publication
+  /// Paid out by hand for a referral or an affiliate arrangement.
+  referral_grant
+  /// Anything else an operator decides, always with a note.
+  operator_grant
+
+  @@map("post_credit_reason")
+  @@schema("private")
+}
+
 enum EntitlementKind {
   boolean_flag
   numeric_limit
@@ -882,6 +898,8 @@ model Workspace {
   polarCustomer           PolarCustomer?
   subscriptions           Subscription[]
   entitlements            Entitlement[]
+  postCreditBalance       PostCreditBalance?
+  postCreditLedger        PostCreditLedgerEntry[]
   usageEvents             UsageEvent[]
   affiliatePartners       AffiliatePartner[]
   referralAttributions    ReferralAttribution[]
@@ -1139,6 +1157,54 @@ model OnboardingState {
   @@index([workspaceId])
   @@index([userId])
   @@map("onboarding_states")
+  @@schema("app")
+}
+
+/// Publishing credits remaining on the free plan.
+///
+/// There is no trial clock. A workspace connects its accounts, composes and
+/// schedules with the whole product, and spends one credit each time a post is
+/// actually published. At zero the next publish is refused and nothing else is.
+///
+/// Deliberately not an `Entitlement` row: entitlements are derived from
+/// verified subscription state and rewritten wholesale on reconciliation, which
+/// would silently refund or confiscate a balance that ordinary product traffic
+/// spends one at a time. Migration `0077` holds the check constraints and
+/// `app.spend_post_credit`, which is the only thing that decrements this.
+model PostCreditBalance {
+  id          String   @id @default(dbgenerated("app.new_id('credit')"))
+  workspaceId String   @unique @map("workspace_id")
+  balance     Int      @default(3)
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@map("post_credit_balances")
+  @@schema("app")
+}
+
+/// Why a workspace has the balance it has. Append only.
+///
+/// `contentItemId` is set for a spend and null for a grant, and it is not a
+/// foreign key on purpose: deleting a draft must never erase the record that
+/// publishing it cost a credit.
+model PostCreditLedgerEntry {
+  id            String           @id @default(dbgenerated("app.new_id('credit')"))
+  workspaceId   String           @map("workspace_id")
+  /// Negative spends, positive grants. Never zero.
+  delta         Int
+  reason        PostCreditReason
+  balanceAfter  Int              @map("balance_after")
+  contentItemId String?          @map("content_item_id")
+  /// Who decided. Null for the automatic signup grant.
+  actorId       String?          @map("actor_id")
+  note          String?
+  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@map("post_credit_ledger")
   @@schema("app")
 }
 

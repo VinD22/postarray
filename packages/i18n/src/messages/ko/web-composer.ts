@@ -125,7 +125,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider}이 계정 유형에 대한 엔터티 조회를 제공하지 않습니다.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay은(는) 다음에 대한 엔터티 조회를 구축하지 않았습니다.{provider}아직. 그 동안에는 아무것도 추측되지 않습니다.',
+    'Post Array은(는) 다음에 대한 엔터티 조회를 구축하지 않았습니다.{provider}아직. 그 동안에는 아무것도 추측되지 않습니다.',
   'composerWeb.entity.searchHint': '2자 이상 입력한 후 결과를 선택하세요.',
   'composerWeb.entity.resultCount': '{count, plural, other {# 일치}}',
   'composerWeb.links.heading': '모래밭',
@@ -139,7 +139,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': '용어',
   'composerWeb.links.utmContent': '콘텐츠',
   'composerWeb.links.domainVerified': '{domain}, 이 작업공간에 대해 확인됨',
-  'composerWeb.links.domainDefault': 'Relay 기본 도메인',
+  'composerWeb.links.domainDefault': 'Post Array 기본 도메인',
   'composerWeb.links.domainNone': '아직 확인된 브랜드 도메인이 없습니다.',
   'composerWeb.links.notAllowedHere': '{account}여기에는 링크가 허용되지 않습니다.',
   'composerWeb.sequence.kindComment': '논평',
@@ -195,7 +195,7 @@ export const webComposerMessages = {
   'composerWeb.assist.failed':
     '지원 요청이 완료되지 않았습니다. 귀하의 텍스트는 변경되지 않습니다.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay은 이미지나 비디오를 생성하지 않습니다. 완성된 파일을 라이브러리로 가져와 여기에 게시하세요.',
+    'Post Array은 이미지나 비디오를 생성하지 않습니다. 완성된 파일을 라이브러리로 가져와 여기에 게시하세요.',
   'composerWeb.autosave.pinned':
     '이것은 승인된 버전입니다. 편집하면 새 버전이 생성되고 승인이 취소됩니다.',
   'composerWeb.autosave.pinnedAcknowledge': '승인 편집 및 지우기',
@@ -239,7 +239,7 @@ export const webComposerMessages = {
     '아무것도 잃지 않았습니다. 다시 시도해 보세요. 계속해서 실패하는 경우 아래 참조를 참조하면 지원팀이 요청을 찾는 데 도움이 됩니다.',
   'composerWeb.page.noConnectionsTitle': '작성하기 전에 계정을 연결하세요',
   'composerWeb.page.noConnectionsBody':
-    '초안에는 Relay이 표시할 제한, 미리보기 및 설정을 알 수 있도록 연결된 계정이 하나 이상 필요합니다.',
+    '초안에는 Post Array이 표시할 제한, 미리보기 및 설정을 알 수 있도록 연결된 계정이 하나 이상 필요합니다.',
   'composerWeb.page.noConnectionsExample':
     '예: X 및 LinkedIn이 연결된 경우 하나의 초안은 자체 카운터를 포함하는 두 개의 기본 버전이 됩니다.',
   'composerWeb.page.permissionTitle': '이 작업공간에서는 게시물을 작성할 수 없습니다.',
@@ -267,7 +267,7 @@ export const webComposerMessages = {
   'mediaLib.openDetail': '열려 있는{name}',
   'mediaLib.empty.title': '아직 미디어가 없습니다.',
   'mediaLib.empty.body':
-    '이미 가지고 있는 이미지와 비디오를 업로드하거나 URL에서 파일을 가져옵니다. Relay은 게시하는 각 계정에 대해 유형과 크기를 확인합니다.',
+    '이미 가지고 있는 이미지와 비디오를 업로드하거나 URL에서 파일을 가져옵니다. Post Array은 게시하는 각 계정에 대해 유형과 크기를 확인합니다.',
   'mediaLib.empty.example':
     '예: launch_hero.jpg, 1600 x 900, 대체 텍스트 세트, 게시물 2개에 사용됨.',
   'mediaLib.error.title': '라이브러리를 로드할 수 없습니다.',
@@ -314,7 +314,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': '미디어 가져오는 중',
   'mediaLib.import.succeeded': '파일이 라이브러리에 있습니다',
   'mediaLib.import.scanPending':
-    'Relay가 출처를 기록했습니다. 안전 검사가 끝날 때까지 게시가 대기합니다.',
+    'Post Array가 출처를 기록했습니다. 안전 검사가 끝날 때까지 게시가 대기합니다.',
   'mediaLib.import.failed': '파일을 가져올 수 없습니다',
   'mediaLib.import.failedHelp':
     '링크가 공개되어 있고 지원되는 미디어 파일을 직접 가리키는지 확인한 후 다시 시도하세요.',
@@ -325,7 +325,7 @@ export const webComposerMessages = {
   'mediaLib.import.issue.credentials': '사용자 이름이나 비밀번호가 없는 링크를 사용하세요.',
   'mediaLib.retention.title': '저장된 파일은 게시물 생성 후 30일 동안 보관됩니다',
   'mediaLib.retention.body':
-    '파일이 게시물에 첨부되면, 해당 게시물이 생성된 후 30일이 지나면 Relay 저장소에서 영구적으로 삭제됩니다. 첨부를 기다리는 파일은 업로드 날짜를 정리 기준으로 사용합니다. 게시물 텍스트, 게시 영수증, 감사 기록은 더 오래 유지됩니다. 소셜 플랫폼에 이미 게시된 게시물은 저장된 파일의 보관 기간이 끝나도 삭제되지 않습니다.',
+    '파일이 게시물에 첨부되면, 해당 게시물이 생성된 후 30일이 지나면 Post Array 저장소에서 영구적으로 삭제됩니다. 첨부를 기다리는 파일은 업로드 날짜를 정리 기준으로 사용합니다. 게시물 텍스트, 게시 영수증, 감사 기록은 더 오래 유지됩니다. 소셜 플랫폼에 이미 게시된 게시물은 저장된 파일의 보관 기간이 끝나도 삭제되지 않습니다.',
   'mediaLib.retention.limits':
     '이미지, 오디오, PDF 파일은 최대 {imageSize}까지 가능합니다. 동영상은 최대 {videoSize}까지 가능합니다.',
   'mediaLib.retention.expiresLabel': '파일 삭제 날짜',
@@ -428,7 +428,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     '이 파일에는 내장된 콘텐츠 자격 증명이 없습니다. 이는 흔한 일이며 아무 문제가 없다는 의미는 아닙니다.',
   'mediaLib.provenance.unverified':
-    '이러한 세부정보는 Relay이 아닌 소스에서 가져옵니다. 의존하기 전에 확인해 보세요.',
+    '이러한 세부정보는 Post Array이 아닌 소스에서 가져옵니다. 의존하기 전에 확인해 보세요.',
   'mediaLib.picker.title': '미디어 선택',
   'mediaLib.picker.description': '이 초안에서 선택한 계정과 비교하여 파일을 확인합니다.',
   'mediaLib.picker.confirm': '{count, plural, other {파일 #개 추가}}',

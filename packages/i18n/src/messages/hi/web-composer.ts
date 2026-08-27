@@ -158,7 +158,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} does not offer entity lookup for this account type.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay has not built entity lookup for {provider} yet. Nothing is guessed in the meantime.',
+    'Post Array has not built entity lookup for {provider} yet. Nothing is guessed in the meantime.',
   'composerWeb.entity.searchHint': 'कम से कम दो अक्षर टाइप करें, फिर एक परिणाम चुनें।',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {No matches} one {# match} other {# matches}}',
@@ -176,7 +176,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'अवधि',
   'composerWeb.links.utmContent': 'सामग्री',
   'composerWeb.links.domainVerified': '{domain}, verified for this workspace',
-  'composerWeb.links.domainDefault': 'Relay डिफ़ॉल्ट डोमेन',
+  'composerWeb.links.domainDefault': 'Post Array डिफ़ॉल्ट डोमेन',
   'composerWeb.links.domainNone': 'अभी तक कोई ब्रांडेड डोमेन सत्यापित नहीं है.',
   'composerWeb.links.notAllowedHere': '{account} does not allow a link here.',
 
@@ -242,7 +242,7 @@ export const webComposerMessages = {
     'इस दावे का कोई स्रोत नहीं मिला. प्रकाशन से पहले इसकी जांच कर लें.',
   'composerWeb.assist.failed': 'सहायता अनुरोध पूरा नहीं हुआ. आपका पाठ अपरिवर्तित है.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay चित्र या वीडियो नहीं बनाता है। तैयार फ़ाइलें लाइब्रेरी में लाएँ और उन्हें यहाँ प्रकाशित करें।',
+    'Post Array चित्र या वीडियो नहीं बनाता है। तैयार फ़ाइलें लाइब्रेरी में लाएँ और उन्हें यहाँ प्रकाशित करें।',
 
   // ------------------------------------------------------------- autosave
   'composerWeb.autosave.pinned':
@@ -292,7 +292,7 @@ export const webComposerMessages = {
     'कुछ भी नहीं खोया. पुनः प्रयास करें, और यदि यह विफल रहता है तो नीचे दिया गया संदर्भ अनुरोध ढूंढने में सहायता करता है।',
   'composerWeb.page.noConnectionsTitle': 'रचना करने से पहले एक खाता कनेक्ट करें',
   'composerWeb.page.noConnectionsBody':
-    'ड्राफ्ट के लिए कम से कम एक कनेक्टेड खाते की आवश्यकता होती है ताकि Relay को सीमाएं, पूर्वावलोकन और दिखाने के लिए सेटिंग्स पता हो।',
+    'ड्राफ्ट के लिए कम से कम एक कनेक्टेड खाते की आवश्यकता होती है ताकि Post Array को सीमाएं, पूर्वावलोकन और दिखाने के लिए सेटिंग्स पता हो।',
   'composerWeb.page.noConnectionsExample':
     'उदाहरण: X और LinkedIn कनेक्ट होने पर, एक ड्राफ्ट अपने स्वयं के काउंटरों के साथ दो मूल संस्करण बन जाता है।',
   'composerWeb.page.permissionTitle': 'आप इस कार्यक्षेत्र में पोस्ट नहीं बना सकते',
@@ -323,7 +323,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'अभी तक कोई मीडिया नहीं',
   'mediaLib.empty.body':
-    'आपके पास पहले से मौजूद चित्र और वीडियो अपलोड करें, या URL से एक फ़ाइल आयात करें। Relay आपके द्वारा प्रकाशित प्रत्येक खाते के प्रकार और आकार की जाँच करता है।',
+    'आपके पास पहले से मौजूद चित्र और वीडियो अपलोड करें, या URL से एक फ़ाइल आयात करें। Post Array आपके द्वारा प्रकाशित प्रत्येक खाते के प्रकार और आकार की जाँच करता है।',
   'mediaLib.empty.example':
     'उदाहरण: लॉन्च_हीरो.जेपीजी, 1600 गुणा 900, वैकल्पिक टेक्स्ट सेट, 2 पोस्ट में उपयोग किया गया।',
   'mediaLib.error.title': 'लाइब्रेरी लोड नहीं की जा सकी',
@@ -452,7 +452,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'इस फ़ाइल में कोई एम्बेडेड सामग्री क्रेडेंशियल नहीं है। यह सामान्य है और इसका मतलब यह नहीं है कि कुछ भी गलत है।',
   'mediaLib.provenance.unverified':
-    'ये विवरण स्रोत से आते हैं, Relay से नहीं। उन पर भरोसा करने से पहले उनकी जांच कर लें।',
+    'ये विवरण स्रोत से आते हैं, Post Array से नहीं। उन पर भरोसा करने से पहले उनकी जांच कर लें।',
 
   'mediaLib.picker.title': 'मीडिया चुनें',
   'mediaLib.picker.description': 'इस ड्राफ्ट में चयनित खातों के विरुद्ध फाइलों की जाँच की जाती है।',

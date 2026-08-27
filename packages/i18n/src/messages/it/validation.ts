@@ -66,7 +66,7 @@ export const validationMessages = {
     'Un post ripetuto necessita di una data di fine o di un numero di ripetizioni.',
   'validation.schedule_in_past.message': 'Quel tempo è passato in {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Questo è più avanti rispetto allo sguardo al futuro di {limit} impostato per questa credenziale.',
+    'I post possono essere programmati fino a {limit} in anticipo, che è anche il periodo di conservazione dei file caricati.',
   'validation.schedule_outside_quiet_hours.message':
     'Questo rientra nelle ore tranquille impostate per {project}.',
   'validation.duplicate_within_window.message':

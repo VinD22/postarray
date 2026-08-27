@@ -64,7 +64,7 @@ export const growthMessages = {
   'growth.ugc.review': '审核标准',
   'growth.ugc.reuse': '再利用计划',
   'growth.ugc.boundary':
-    '这计划了您与真人一起开展的活动。 Relay 无法找到创作者、联系他们或写推荐信。',
+    '这计划了您与真人一起开展的活动。 Post Array 无法找到创作者、联系他们或写推荐信。',
   'growth.opportunities.title': '晋升机会',
   'growth.opportunities.help':
     '审查了我们目录中的清单，按适合度排名。准备一份好的提交材料就是工作。没有批量提交。',
@@ -84,7 +84,7 @@ export const growthMessages = {
   'growth.opportunities.dismissReason': '你为什么要驳回这个？',
   'growth.opportunities.noGuarantee': '匹配是一个建议。它不是承诺的链接、展示位置或排名。',
   'growth.opportunities.boundary':
-    'Relay 不会提交表格、创建帐户、向联系人发送电子邮件、在社区中发帖或购买链接。',
+    'Post Array 不会提交表格、创建帐户、向联系人发送电子邮件、在社区中发帖或购买链接。',
   'growth.opportunities.empty': '尚未验证与此配置文件相符的机会。一个空列表比一个虚构的列表要好。',
   'growth.tools.title': '工具雷达',
   'growth.tools.help': '最多有五个针对您所在工作流程的经过审查的工具，以及它们无法执行的操作。',
@@ -92,7 +92,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': '为什么适合',
   'growth.tools.limitations': '局限性',
   'growth.tools.requiredSkills': '您需要的技能',
-  'growth.tools.handoff': 'Relay。输出如何返回到继电器',
+  'growth.tools.handoff': 'Post Array。输出如何返回到继电器',
   'growth.tools.rights': '权利和隐私说明',
   'growth.tools.priceChecked': '最后检查的价格 {date}',
   'growth.tools.affiliateDisclosure': '我们可以通过此链接赚取佣金。它不会改变排名。',

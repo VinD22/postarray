@@ -96,7 +96,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'لا يمكن إنشاء هذه القاعدة',
   'automation.notPermitted.body':
-    'Relay لا يقوم بأتمتة الإعجابات أو المتابعات أو الردود أو الرسائل غير المرغوب فيها أو النشر الجماعي المكرر أو أي شيء يعتمد على أتمتة المتصفح. {provider} يحرم ذلك ونحن كذلك.',
+    'Post Array لا يقوم بأتمتة الإعجابات أو المتابعات أو الردود أو الرسائل غير المرغوب فيها أو النشر الجماعي المكرر أو أي شيء يعتمد على أتمتة المتصفح. {provider} يحرم ذلك ونحن كذلك.',
   'automation.notPermitted.providerCapability':
     '{provider} لا يقدم {action} من خلال واجهة برمجة التطبيقات الرسمية الخاصة به، لذلك لا يمكن تحديد هذا الإجراء له.',
 
@@ -109,7 +109,7 @@ export const automationMessages = {
   'automation.rss.targets': 'نشر ل',
   'automation.rss.template': 'قالب النص',
   'automation.rss.templateHelp':
-    'استخدم حقول الخلاصة التي قمت بتعيينها. Relay لا يقوم بإنشاء صور لعناصر الخلاصة.',
+    'استخدم حقول الخلاصة التي قمت بتعيينها. Post Array لا يقوم بإنشاء صور لعناصر الخلاصة.',
   'automation.rss.policy.draft': 'قم بإنشاء مسودة',
   'automation.rss.policy.approval': 'إنشاء مسودة وطلب الموافقة',
   'automation.rss.policy.nextSlot': 'الجدول الزمني في الفتحة المجانية التالية',

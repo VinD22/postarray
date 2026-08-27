@@ -9,7 +9,7 @@ const ONE_YEAR_IN_SECONDS = 31_536_000;
 
 function withLocaleRewrite(request: NextRequest, locale: string, pathname: string): NextResponse {
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-relay-locale', locale);
+  requestHeaders.set('x-postarray-locale', locale);
   const url = request.nextUrl.clone();
   url.pathname = pathname;
   return NextResponse.rewrite(url, { request: { headers: requestHeaders } });
@@ -59,5 +59,10 @@ export function proxy(request: NextRequest): NextResponse {
 }
 
 export const config = {
-  matcher: ['/((?!_next|api|.*\\..*).*)'],
+  // The exclusions are the routes that must reach the app root untouched.
+  // `_next` and anything with a file extension were always excluded; the
+  // generated metadata routes have neither a prefix nor an extension, so
+  // without naming them the fallthrough rewrote `/icon` to `/en/icon`, which
+  // does not exist, and every share card and favicon 404ed.
+  matcher: ['/((?!_next|api|icon|apple-icon|opengraph-image|twitter-image|.*\\..*).*)'],
 };

@@ -116,7 +116,7 @@ export function buildInstagramCapabilities(input: InstagramCapabilityInput): Cap
       historyWindowDays: 90,
     },
     // The Instagram Graph API does not offer media deletion. This is a provider
-    // limitation, so deleting in Relay never implies deleting on Instagram.
+    // limitation, so deleting in Post Array never implies deleting on Instagram.
     deletion: { support: 'unsupported', windowSeconds: null },
     drafts: { support: 'unsupported' },
     rateLimit: {

@@ -58,7 +58,7 @@ function sessionCookieFrom(headers: Headers, body: unknown): string | null {
 /**
  * Neon Auth's managed Better Auth REST surface.
  *
- * The API process owns a separate Relay session, so only Neon's opaque session
+ * The API process owns a separate Post Array session, so only Neon's opaque session
  * cookie is retained for provider sign-out. Provider responses are parsed at
  * this boundary and no provider payload is logged or exposed to a caller.
  */

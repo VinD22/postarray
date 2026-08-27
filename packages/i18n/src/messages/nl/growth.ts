@@ -76,7 +76,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Beoordelingscriteria',
   'growth.ugc.reuse': 'Hergebruiksplan',
   'growth.ugc.boundary':
-    'Hiermee wordt een campagne gepland die u met echte mensen voert. Relay vindt geen makers, neemt geen contact met hen op en schrijft geen getuigenissen.',
+    'Hiermee wordt een campagne gepland die u met echte mensen voert. Post Array vindt geen makers, neemt geen contact met hen op en schrijft geen getuigenissen.',
 
   'growth.opportunities.title': 'Promotiemogelijkheden',
   'growth.opportunities.help':
@@ -98,7 +98,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'Een match is een suggestie. Het is geen beloofde link, plaatsing of ranking.',
   'growth.opportunities.boundary':
-    'Relay verzendt geen formulieren, maakt geen accounts aan, e-mailt geen contacten, plaatst geen berichten in communities en koopt geen links.',
+    'Post Array verzendt geen formulieren, maakt geen accounts aan, e-mailt geen contacten, plaatst geen berichten in communities en koopt geen links.',
   'growth.opportunities.empty':
     'Er zijn nog geen geverifieerde vacatures die overeenkomen met dit profiel. Een lege lijst is beter dan een verzonnen lijst.',
 
@@ -109,7 +109,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'Waarom het past',
   'growth.tools.limitations': 'Beperkingen',
   'growth.tools.requiredSkills': 'Vaardigheden die je nodig hebt',
-  'growth.tools.handoff': 'Hoe de uitvoer terugkomt in Relay',
+  'growth.tools.handoff': 'Hoe de uitvoer terugkomt in Post Array',
   'growth.tools.rights': 'Rechten en privacyopmerkingen',
   'growth.tools.priceChecked': 'Prijs laatst gecontroleerd {date}',
   'growth.tools.affiliateDisclosure':

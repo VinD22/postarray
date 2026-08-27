@@ -20,18 +20,18 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon 使用您在您自己的实例上创建的访问令牌连接，而不是您的密码。',
   'web.connection.requirement.telegram':
-    'Relay 以机器人身份发布。将机器人添加到您要发布到的频道或群组。',
+    'Post Array 以机器人身份发布。将机器人添加到您要发布到的频道或群组。',
   'web.connection.requirement.reddit':
     '写入 Reddit 需要经批准的应用，并且每条帖子都需要标题和 subreddit。',
   'web.connection.requirement.wordpress':
-    'Relay 使用您在 WordPress 中创建的应用密码通过站点 REST API 发布。',
-  'web.connection.requirement.medium': 'Medium 通过 OAuth 连接，Relay 以 Markdown 发布公开文章。',
+    'Post Array 使用您在 WordPress 中创建的应用密码通过站点 REST API 发布。',
+  'web.connection.requirement.medium': 'Medium 通过 OAuth 连接，Post Array 以 Markdown 发布公开文章。',
   'web.connection.requirement.devto': 'Dev.to 使用您在 Dev.to 设置中创建的 API 密钥连接。',
   'web.connection.requirement.pinterest':
     '写入 Pinterest 需要经批准的应用访问权限，图钉需要图片和您自己的画板。',
   'web.connection.requirement.discord':
-    'Relay 以机器人身份发布。将机器人添加到您要发布到的服务器和频道。',
-  'web.connection.requirement.slack': 'Relay 以应用身份发布。将应用添加到您要发布到的频道。',
+    'Post Array 以机器人身份发布。将机器人添加到您要发布到的服务器和频道。',
+  'web.connection.requirement.slack': 'Post Array 以应用身份发布。将应用添加到您要发布到的频道。',
   'web.provider.fake': '测试连接器',
   'web.accountType.personal_profile': '个人简介',
   'web.accountType.creator_profile': '创作者帐户',
@@ -128,7 +128,7 @@ export const webCalendarMessages = {
   'web.calendar.reschedule.pastBody': '选择未来的时间，或者现在发布。',
   'web.calendar.published.title': '这篇文章已经发布了',
   'web.calendar.published.body':
-    '{provider} 上有一个帖子，地址为 {permalinkLabel}。在 Relay 中移动条目不会移动平台上的帖子。选择您想要发生的事情。',
+    '{provider} 上有一个帖子，地址为 {permalinkLabel}。在 Post Array 中移动条目不会移动平台上的帖子。选择您想要发生的事情。',
   'web.calendar.published.optionLocal': '只更新本地记录',
   'web.calendar.published.optionLocalHint':
     '收据保留了真实的发布时间。只有计划条目会移动，因此您的日历符合您的计划。',
@@ -211,17 +211,17 @@ export const webCalendarMessages = {
   'web.receipt.cost.notMetered': '对于此帖子类型，{provider} 不按操作收费。',
   'web.receipt.analytics.never': '这篇文章的分析尚未同步。',
   'web.receipt.analytics.explain':
-    '提供商按照自己的时间表进行汇总。下面的时间是 Relay 最后一次读取它们的时间，而不是数字为真的时间。',
+    '提供商按照自己的时间表进行汇总。下面的时间是 Post Array 最后一次读取它们的时间，而不是数字为真的时间。',
   'web.receipt.export.download': '下载收据',
   'web.receipt.export.copyReference': '复制收据参考',
   'web.receipt.export.denied': '共享收据需要所有者、管理员或审批者角色。您是{role}。',
   'web.receipt.partial.retryFailedOnly': '仅重试失败的目标',
   'web.receipt.partial.retryHint': '重试永远不会触及已经生成外部帖子的目标。',
   'web.receipt.remediation.user_action_required':
-    'Relay。这需要在继电器或 {provider} 上进行更改，然后才能再次运行。',
+    'Post Array。这需要在继电器或 {provider} 上进行更改，然后才能再次运行。',
   'web.receipt.remediation.content_invalid': '编辑内容，使其通过 {provider} 验证，然后再次安排。',
   'web.receipt.remediation.transient_provider':
-    'Relay。{provider} 返回临时错误。中继按照自己的时间表重试。',
+    'Post Array。{provider} 返回临时错误。中继按照自己的时间表重试。',
   'web.receipt.remediation.permanent_provider':
     '{provider} 永久拒绝了这一点。重试相同的内容不会改变答案。',
   'web.receipt.remediation.internal': '这是我们这边的错误。现记录如下，供参考。',
@@ -272,26 +272,26 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '此帐户的 {count, plural, one {# scheduled post} other {# scheduled posts}} 将不会发布。',
   'web.connection.disconnect.consequence.published':
-    'Relay。已发布的帖子将保留在 {provider} 上。中继不会删除它们。',
+    'Post Array。已发布的帖子将保留在 {provider} 上。中继不会删除它们。',
   'web.connection.disconnect.consequence.analytics': '已收集的指标保留在此工作区中并停止更新。',
   'web.connection.connect.title': '连接账户',
   'web.connection.connect.chooseProvider': '哪个平台',
-  'web.connection.connect.permissionHeading': 'Relay 会向 {provider} 询问什么',
+  'web.connection.connect.permissionHeading': 'Post Array 会向 {provider} 询问什么',
   'web.connection.connect.requirementHeading': '在继续之前',
   'web.connection.connect.continue': '继续前往{provider}',
   'web.connection.connect.handoffNote':
-    '下一个屏幕是 {provider}，而不是中继。 Relay 永远不会看到您的密码。',
+    '下一个屏幕是 {provider}，而不是中继。 Post Array 永远不会看到您的密码。',
   'web.connection.connect.noWriteWithoutApproval':
     '连接帐户不会发布任何内容。每个帖子仍然遵循此工作区批准政策。',
   'web.connection.requirement.instagram':
     'Instagram 发布需要一个专业帐户，这意味着链接到 Facebook 页面的企业或创作者帐户。',
-  'web.connection.requirement.facebook': 'Relay 发布到 Facebook Pages。个人资料不能作为发布目标。',
+  'web.connection.requirement.facebook': 'Post Array 发布到 Facebook Pages。个人资料不能作为发布目标。',
   'web.connection.requirement.linkedin':
     '要为组织发布内容，您需要该 LinkedIn 页面上的内容管理员角色。',
   'web.connection.requirement.youtube':
     '在 Google 完成应用审核之前，从此项目上传的内容将作为私有发布。之后您可以更改 YouTube 上的可见性。',
   'web.connection.requirement.tiktok':
-    'TikTok 要求您自行选择每个帖子的受众。 Relay 无法为您预先选择一个。',
+    'TikTok 要求您自行选择每个帖子的受众。 Post Array 无法为您预先选择一个。',
   'web.connection.requirement.x':
     '每次操作收取 X 笔费用。包含 URL 的帖子比纯文本帖子的成本更高，并且在您安排之前会显示估算值。',
   'web.connection.requirement.threads':
@@ -299,18 +299,18 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky 使用在 Bluesky 设置中创建的应用程序密码（而不是您的帐户密码）进行连接。',
   'web.connection.requirement.generic':
-    'Relay。您需要获得平台本身的许可才能在此帐户上发帖。中继无法授予它。',
-  'web.connection.purpose.publish': '发布您在 Relay 中安排的帖子。',
-  'web.connection.purpose.readPosts': '读回 Relay 发布的帖子，这样收据就可以证明它是实时的。',
+    'Post Array。您需要获得平台本身的许可才能在此帐户上发帖。中继无法授予它。',
+  'web.connection.purpose.publish': '发布您在 Post Array 中安排的帖子。',
+  'web.connection.purpose.readPosts': '读回 Post Array 发布的帖子，这样收据就可以证明它是实时的。',
   'web.connection.purpose.identity':
-    '在 Relay 中显示准确的帐户名称，这样您就不会发布到错误的帐户。',
+    '在 Post Array 中显示准确的帐户名称，这样您就不会发布到错误的帐户。',
   'web.connection.purpose.analytics': '阅读该平台为您自己的帖子报告的指标。',
   'web.connection.purpose.refresh': '保持访问活动，这样预定的帖子就不会在一夜之间失败。',
   'web.connection.purpose.chooseDestination': '列出您可以选择作为发布目标的页面和频道。',
   'web.connection.permissions.title': '{account} 上的权限',
   'web.connection.permissions.scopeColumn': '允许',
   'web.connection.permissions.stateColumn': '状态',
-  'web.connection.permissions.purposeColumn': 'Relay。继电器的用途是什么',
+  'web.connection.permissions.purposeColumn': 'Post Array。继电器的用途是什么',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# permission is missing} other {# permissions are missing}}。重新连接并接受它以恢复以下功能。',
   'web.connection.permissions.snapshot': '从 {provider} {relativeTime} 读取',
@@ -320,9 +320,9 @@ export const webCalendarMessages = {
   'web.connection.capability.tableLabel': '按平台划分的功能',
   'web.connection.capability.featureColumn': '能力',
   'web.connection.capability.legendTitle': '如何阅读此内容',
-  'web.connection.capability.legend.supported': '今天，Relay 可以为正确类型的连接帐户执行此操作。',
+  'web.connection.capability.legend.supported': '今天，Post Array 可以为正确类型的连接帐户执行此操作。',
   'web.connection.capability.legend.not_implemented':
-    '该平台提供了此功能，但 Relay 尚未构建它。它位于连接器路线图上。',
+    '该平台提供了此功能，但 Post Array 尚未构建它。它位于连接器路线图上。',
   'web.connection.capability.legend.unsupported':
     '该平台不通过其官方 API 提供此服务，因此没有工具可以安全地做到这一点。',
   'web.connection.capability.legend.requires_review':

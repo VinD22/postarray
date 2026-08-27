@@ -67,7 +67,7 @@ export const validationMessages = {
     'Для повторяющегося сообщения должна быть указана дата окончания или количество повторов.',
   'validation.schedule_in_past.message': 'Это время прошло в {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Это дальше, чем прогнозный прогноз {limit}, установленный для этих учетных данных.',
+    'Публикации можно планировать не более чем на {limit} вперёд; столько же хранятся загруженные файлы.',
   'validation.schedule_outside_quiet_hours.message':
     'Это соответствует тихим часам, установленным для {project}.',
   'validation.duplicate_within_window.message':

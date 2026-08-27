@@ -22,7 +22,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': '서비스 계정{name}',
   'receipt.actor.oauthApp': '{app}~을 위해 행동하다{name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
   'receipt.timeline.title': '타임라인',
   'receipt.timeline.created': '초안 작성자:{actor}',
   'receipt.timeline.approvalRequested': '승인 요청자:{approver}',

@@ -397,7 +397,7 @@ first-person customer claim without a `consentAssetId` is rejected.
 Same catalog machinery as opportunities, table `tool_catalog`. Maximum five results per request, always.
 
 Each shown record must carry: `Best for`, `Why it fits` (referencing a plan item), limitations, required
-skills and time, output handoff into Relay, rights and privacy caveats, price with the date it was
+skills and time, output handoff into Post Array, rights and privacy caveats, price with the date it was
 checked, and an affiliate disclosure sentence when the link is commercial. Ranking is computed from fit
 only. Affiliate status is a display attribute and is excluded from the ranking function by construction,
 which is covered by a unit test asserting that flipping `isAffiliate` does not change the returned order.
@@ -511,10 +511,10 @@ Changing one never silently changes another. The UI states which one a control a
 
 Use this wording, or wording that preserves both halves:
 
-> The Relay interface ships in English in V1. You can create and adapt content in 30 languages today.
+> The Post Array interface ships in English in V1. You can create and adapt content in 30 languages today.
 > Additional interface languages are planned and will be labeled when they arrive.
 
-Never write "Relay supports 30 languages" without the interface and content distinction. This applies to
+Never write "Post Array supports 30 languages" without the interface and content distinction. This applies to
 the marketing site, the pricing page, app store listings, provider review submissions, sales email and
 the API documentation.
 

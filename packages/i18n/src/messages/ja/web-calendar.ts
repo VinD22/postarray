@@ -20,20 +20,20 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodonは自分のインスタンスで作成したアクセストークンで接続します。パスワードではありません。',
   'web.connection.requirement.telegram':
-    'Relayはボットとして投稿します。投稿したいチャンネルまたはグループにボットを追加してください。',
+    'Post Arrayはボットとして投稿します。投稿したいチャンネルまたはグループにボットを追加してください。',
   'web.connection.requirement.reddit':
     'Redditへの書き込みには承認済みアプリが必要で、各投稿にはタイトルとサブレディットが必要です。',
   'web.connection.requirement.wordpress':
-    'RelayはWordPressで作成したアプリパスワードでサイトのREST APIを通じて公開します。',
+    'Post ArrayはWordPressで作成したアプリパスワードでサイトのREST APIを通じて公開します。',
   'web.connection.requirement.medium':
-    'MediumはOAuthで接続し、RelayはMarkdownで公開記事を公開します。',
+    'MediumはOAuthで接続し、Post ArrayはMarkdownで公開記事を公開します。',
   'web.connection.requirement.devto': 'Dev.toはDev.to設定で作成したAPIキーで接続します。',
   'web.connection.requirement.pinterest':
     'Pinterestへの書き込みには承認済みアプリアクセスが必要で、ピンには画像と自分のボードが必要です。',
   'web.connection.requirement.discord':
-    'Relayはボットとして投稿します。投稿したいサーバーとチャンネルにボットを追加してください。',
+    'Post Arrayはボットとして投稿します。投稿したいサーバーとチャンネルにボットを追加してください。',
   'web.connection.requirement.slack':
-    'Relayはアプリとして投稿します。投稿したいチャンネルにアプリを追加してください。',
+    'Post Arrayはアプリとして投稿します。投稿したいチャンネルにアプリを追加してください。',
   'web.provider.fake': 'テストコネクタ',
   'web.accountType.personal_profile': '個人プロフィール',
   'web.accountType.creator_profile': 'クリエイターアカウント',
@@ -132,7 +132,7 @@ export const webCalendarMessages = {
   'web.calendar.reschedule.pastBody': '将来の時刻を選択するか、代わりに今すぐ公開してください。',
   'web.calendar.published.title': 'この投稿はすでに公開されています',
   'web.calendar.published.body':
-    '投稿が存在します{provider}で{permalinkLabel}。 Relay のエントリを移動しても、プラットフォーム上の投稿は移動しません。何が起こりたいかを選択してください。',
+    '投稿が存在します{provider}で{permalinkLabel}。 Post Array のエントリを移動しても、プラットフォーム上の投稿は移動しません。何が起こりたいかを選択してください。',
   'web.calendar.published.optionLocal': 'ローカルレコードのみを更新します',
   'web.calendar.published.optionLocalHint':
     'レシートには実際の公開時間が記録されます。計画エントリのみが移動するため、カレンダーは計画と一致します。',
@@ -222,7 +222,7 @@ export const webCalendarMessages = {
   'web.receipt.cost.notMetered': '{provider}この投稿タイプの操作ごとに料金はかかりません。',
   'web.receipt.analytics.never': 'アナリティクスはこの投稿に対してまだ同期していません。',
   'web.receipt.analytics.explain':
-    'プロバイダーは独自のスケジュールに基づいて集計します。以下の時刻は、Relay が最後にそれらを読み取った時刻であり、数値が真だった時刻ではありません。',
+    'プロバイダーは独自のスケジュールに基づいて集計します。以下の時刻は、Post Array が最後にそれらを読み取った時刻であり、数値が真だった時刻ではありません。',
   'web.receipt.export.download': '領収書をダウンロードする',
   'web.receipt.export.copyReference': '領収書の参照をコピーする',
   'web.receipt.export.denied':
@@ -231,11 +231,11 @@ export const webCalendarMessages = {
   'web.receipt.partial.retryHint':
     '再試行では、すでに外部ポストを生成したターゲットには触れません。',
   'web.receipt.remediation.user_action_required':
-    'これには Relay 以降の変更が必要です{provider}再び実行できるようになる前に。',
+    'これには Post Array 以降の変更が必要です{provider}再び実行できるようになる前に。',
   'web.receipt.remediation.content_invalid':
     '合格するようにコンテンツを編集してください{provider}検証してから、再度スケジュールを設定します。',
   'web.receipt.remediation.transient_provider':
-    '{provider}一時的なエラーを返しました。 Relay は独自のスケジュールで再試行されました。',
+    '{provider}一時的なエラーを返しました。 Post Array は独自のスケジュールで再試行されました。',
   'web.receipt.remediation.permanent_provider':
     '{provider}これを永久に拒否した。同じ内容を再試行しても答えは変わりません。',
   'web.receipt.remediation.internal': 'これは私たちの過失でした。以下を参考に記録しておきます。',
@@ -289,28 +289,28 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, other {# 件の投稿が予定されています}}このアカウントでは公開しません。',
   'web.connection.disconnect.consequence.published':
-    'すでに公開された投稿はそのまま残ります{provider}。 Relay はそれらを削除しません。',
+    'すでに公開された投稿はそのまま残ります{provider}。 Post Array はそれらを削除しません。',
   'web.connection.disconnect.consequence.analytics':
     'すでに収集されたメトリクスはこのワークスペースに残り、更新が停止されます。',
   'web.connection.connect.title': 'アカウントを接続する',
   'web.connection.connect.chooseProvider': 'どのプラットフォームか',
-  'web.connection.connect.permissionHeading': 'Relay が尋ねること{provider}のために',
+  'web.connection.connect.permissionHeading': 'Post Array が尋ねること{provider}のために',
   'web.connection.connect.requirementHeading': '続行する前に',
   'web.connection.connect.continue': '続けて{provider}',
   'web.connection.connect.handoffNote':
-    '次の画面は、{provider}Relay ではありません。 Relay はあなたのパスワードを決して参照しません。',
+    '次の画面は、{provider}Post Array ではありません。 Post Array はあなたのパスワードを決して参照しません。',
   'web.connection.connect.noWriteWithoutApproval':
     'アカウントを接続しても何も公開されません。すべての投稿は引き続きこのワークスペース承認ポリシーに従っています。',
   'web.connection.requirement.instagram':
     'Instagram パブリッシングにはプロフェッショナル アカウントが必要です。これは、Facebook ページにリンクされているビジネス アカウントまたはクリエイター アカウントを意味します。',
   'web.connection.requirement.facebook':
-    'Relay は Facebook Pages にパブリッシュされます。個人プロフィールを公開対象にすることはできません。',
+    'Post Array は Facebook Pages にパブリッシュされます。個人プロフィールを公開対象にすることはできません。',
   'web.connection.requirement.linkedin':
     '組織に対して公開するには、その LinkedIn ページに対するコンテンツ管理者の役割が必要です。',
   'web.connection.requirement.youtube':
     'Google がアプリの監査を完了するまで、このプロジェクトからのアップロードは非公開として公開されます。 YouTube の可視性は後で変更できます。',
   'web.connection.requirement.tiktok':
-    'TikTok では、各投稿の対象読者を自分で選択する必要があります。 Relay は事前に選択できません。',
+    'TikTok では、各投稿の対象読者を自分で選択する必要があります。 Post Array は事前に選択できません。',
   'web.connection.requirement.x':
     'X は操作ごとに料金がかかります。 URL を含む投稿はプレーン テキストの投稿よりも費用がかかり、スケジュールを設定する前に見積もりが表示されます。',
   'web.connection.requirement.threads':
@@ -318,12 +318,12 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky は、アカウントのパスワードではなく、Bluesky 設定で作成されたアプリ パスワードを使用して接続します。',
   'web.connection.requirement.generic':
-    'このアカウントに投稿するには、プラットフォーム自体からの許可が必要です。 Relay はそれを許可できません。',
-  'web.connection.purpose.publish': 'Relay でスケジュールした投稿を公開します。',
+    'このアカウントに投稿するには、プラットフォーム自体からの許可が必要です。 Post Array はそれを許可できません。',
+  'web.connection.purpose.publish': 'Post Array でスケジュールした投稿を公開します。',
   'web.connection.purpose.readPosts':
-    '公開された投稿 Relay を読み返すことで、その投稿が公開されていることを領収書で証明できます。',
+    '公開された投稿 Post Array を読み返すことで、その投稿が公開されていることを領収書で証明できます。',
   'web.connection.purpose.identity':
-    'Relay に正確なアカウント名が表示されるため、間違ったアカウントに公開することがなくなります。',
+    'Post Array に正確なアカウント名が表示されるため、間違ったアカウントに公開することがなくなります。',
   'web.connection.purpose.analytics':
     'このプラットフォームが自分の投稿についてレポートする指標を読んでください。',
   'web.connection.purpose.refresh':
@@ -333,7 +333,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': '権限{account}',
   'web.connection.permissions.scopeColumn': '許可',
   'web.connection.permissions.stateColumn': '州',
-  'web.connection.permissions.purposeColumn': 'Relay の用途',
+  'web.connection.permissions.purposeColumn': 'Post Array の用途',
   'web.connection.permissions.missingWarning':
     '{count, plural, other {# 個の権限がありません}}。再接続して承認すると、以下の機能が復元されます。',
   'web.connection.permissions.snapshot': 'から読む{provider}{relativeTime}',
@@ -344,9 +344,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': '能力',
   'web.connection.capability.legendTitle': 'これの読み方',
   'web.connection.capability.legend.supported':
-    'Relay は、適切な種類の接続されたアカウントに対してこれを今すぐ実行できます。',
+    'Post Array は、適切な種類の接続されたアカウントに対してこれを今すぐ実行できます。',
   'web.connection.capability.legend.not_implemented':
-    'プラットフォームはこれを提供しますが、Relay はまだそれを構築していません。これはコネクタのロードマップに記載されています。',
+    'プラットフォームはこれを提供しますが、Post Array はまだそれを構築していません。これはコネクタのロードマップに記載されています。',
   'web.connection.capability.legend.unsupported':
     'プラットフォームは公式 API を通じてこれを提供していないため、これを安全に実行できるツールはありません。',
   'web.connection.capability.legend.requires_review':

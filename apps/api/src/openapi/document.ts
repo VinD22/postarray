@@ -175,7 +175,7 @@ export function buildOpenApiDocument(options: DocumentOptions): JsonSchema {
     openapi: OPENAPI_VERSION,
     jsonSchemaDialect: JSON_SCHEMA_DIALECT,
     info: {
-      title: 'Relay API',
+      title: 'Post Array API',
       version: options.version,
       summary: 'Multi-tenant social publishing control plane.',
       description: [
@@ -186,7 +186,7 @@ export function buildOpenApiDocument(options: DocumentOptions): JsonSchema {
         'machine code and a message key that resolves through the product message catalog,',
         'so a client renders text in the caller’s language rather than the server’s.',
       ].join(' '),
-      license: { name: 'Proprietary', identifier: 'LicenseRef-Relay-Proprietary' },
+      license: { name: 'Proprietary', identifier: 'LicenseRef-Post Array-Proprietary' },
     },
     servers: [{ url: options.serverUrl, description: 'This deployment.' }],
     'x-relay-api-version': API_VERSION,

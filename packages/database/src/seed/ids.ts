@@ -5,7 +5,7 @@ import { ID_PREFIXES, type IdPrefix } from '@relay/contracts';
 /**
  * Deterministic identifiers for unmistakably synthetic seed data.
  *
- * The body is a stable 128-bit digest encoded in Relay's 26-character
+ * The body is a stable 128-bit digest encoded in Post Array's 26-character
  * Crockford representation. The label category selects the same entity prefix
  * production rows use, so seeded data exercises every boundary validator.
  */

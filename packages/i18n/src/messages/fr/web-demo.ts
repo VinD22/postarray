@@ -27,6 +27,10 @@ export const webDemoMessages = {
   /* La démonstration en vedette sur la page d'accueil                     */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Voir la démo',
+  'web.demo.hero.projectsLine':
+    'Un seul compte gère plusieurs activités. Chaque projet est une activité à part entière, avec ses propres comptes connectés, son propre calendrier et ses propres validations, et vous passez de l\'un à l\'autre depuis un seul menu, comme on change de propriété dans une console de recherche.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# compte} many {# comptes} other {# comptes}}',
   'web.demo.hero.caption':
     "Un brouillon devient une version par plateforme, reçoit un horaire et atterrit dans la semaine. Contenu d'exemple, pas un compte réel.",
   'web.demo.hero.more': 'Parcourir tout le flux de travail',

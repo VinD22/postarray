@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Dane demonstracyjne',
   'shell.demo.title': 'Przeglądasz dane demonstracyjne',
   'shell.demo.body':
-    'Interfejs API Relay nie jest dostępny z tej przeglądarki, dlatego ekrany są wypełnione przykładowym obszarem roboczym z rozstawionymi źródłami. Nic tutaj nie jest połączone z prawdziwym kontem i nic nie może zostać opublikowane.',
+    'Interfejs API Post Array nie jest dostępny z tej przeglądarki, dlatego ekrany są wypełnione przykładowym obszarem roboczym z rozstawionymi źródłami. Nic tutaj nie jest połączone z prawdziwym kontem i nic nie może zostać opublikowane.',
   'shell.demo.howToConnect':
     'Ustaw NEXT_PUBLIC_RELAY_API_URL i uruchom ponownie aplikację, aby korzystać z bieżących danych.',
 
@@ -144,7 +144,7 @@ export const webShellMessages = {
   'home.trial.manage': 'Zarządzaj lub anuluj',
   'home.error.title': 'Nie można załadować strony głównej',
   'home.error.body':
-    'Twój obszar roboczy jest nienaruszony. Jest to problem z dostępem do API Relay.',
+    'Twój obszar roboczy jest nienaruszony. Jest to problem z dostępem do API Post Array.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title':
@@ -157,9 +157,9 @@ export const webShellMessages = {
     'Ten sam przepływ pracy w aplikacji internetowej, REST API, MCP, CLI i webhookach.',
   'auth.provider.title': 'Zanim będziesz kontynuować',
   'auth.provider.google.access':
-    'Google udostępnia Relay Twoje imię i nazwisko, adres e-mail i zdjęcie profilowe. Przekaźnik nie może odczytać Twojego Gmaila, Dysku ani Kalendarza.',
+    'Google udostępnia Post Array Twoje imię i nazwisko, adres e-mail i zdjęcie profilowe. Przekaźnik nie może odczytać Twojego Gmaila, Dysku ani Kalendarza.',
   'auth.provider.facebook.access':
-    'Facebook udostępnia Relay Twoje imię i nazwisko, adres e-mail i zdjęcie profilowe. Podłączenie strony, na której chcesz publikować, to osobny krok, który zatwierdzasz później.',
+    'Facebook udostępnia Post Array Twoje imię i nazwisko, adres e-mail i zdjęcie profilowe. Podłączenie strony, na której chcesz publikować, to osobny krok, który zatwierdzasz później.',
   'auth.provider.note': 'To oznacza logowanie. Nie łączy konta, na którym można publikować.',
   'auth.continueWithEmail': 'Kontynuuj, wysyłając e-mail',
   'auth.method.password': 'Hasło',
@@ -183,8 +183,6 @@ export const webShellMessages = {
     'Zaloguj się za pomocą {provider} nie został ukończony. Nic nie zostało zmienione.',
   'auth.failure.network':
     'Nie udało nam się połączyć z przekaźnikiem. Sprawdź połączenie i spróbuj ponownie.',
-  'auth.signUp.trialNote':
-    'Siedem pełnych dni próbnych. Wymagana jest metoda płatności. Termin płatności: 0 USD na dzisiaj.',
   'auth.signUp.emailInUseNote':
     'Jeśli pod tym adresem istnieje już konto, zamiast tworzyć drugie, wyślemy e-mailem link do logowania.',
   'auth.legal.readTerms': 'Przeczytaj Warunki',

@@ -98,7 +98,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Bu kural oluşturulamıyor',
   'automation.notPermitted.body':
-    'Relay; beğenileri, takipleri, istenmeyen yanıtları veya mesajları, yinelenen toplu gönderileri veya tarayıcı otomasyonuna bağlı herhangi bir şeyi otomatikleştirmez. {provider} bunu yasaklıyor, biz de öyle.',
+    'Post Array; beğenileri, takipleri, istenmeyen yanıtları veya mesajları, yinelenen toplu gönderileri veya tarayıcı otomasyonuna bağlı herhangi bir şeyi otomatikleştirmez. {provider} bunu yasaklıyor, biz de öyle.',
   'automation.notPermitted.providerCapability':
     "{provider} resmi API'si aracılığıyla {action} sunmadığından bu eylem onun için seçilemez.",
 

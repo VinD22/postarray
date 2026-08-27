@@ -93,7 +93,7 @@ export function isPermission(value: unknown): value is Permission {
 }
 
 /**
- * Permissions whose exercise creates or destroys something outside Relay, or
+ * Permissions whose exercise creates or destroys something outside Post Array, or
  * moves money. They can never be granted implicitly by a broader permission.
  */
 export const CONSEQUENTIAL_PERMISSIONS: readonly Permission[] = [

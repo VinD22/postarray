@@ -21,7 +21,7 @@ export const webAnalyticsMessages = {
     '{count, plural, =0 {No filters} one {# filter} other {# filters}} applied. {results, plural, =0 {No posts match} one {# post matches} other {# posts match}}.',
   'analytics.rankMetric.label': 'จัดอันดับกระทู้โดย',
   'analytics.rankMetric.help':
-    'ไม่มีคะแนนรวมใน Relay เลือกหนึ่งหน่วยเมตริกที่มีคำจำกัดความที่คุณเชื่อถือ และตารางจะเรียงลำดับตามหน่วยเมตริกนั้นเพียงอย่างเดียว',
+    'ไม่มีคะแนนรวมใน Post Array เลือกหนึ่งหน่วยเมตริกที่มีคำจำกัดความที่คุณเชื่อถือ และตารางจะเรียงลำดับตามหน่วยเมตริกนั้นเพียงอย่างเดียว',
   'analytics.rankMetric.chosen': 'จัดอันดับโดย {metric} ตามที่รายงานโดยผู้ให้บริการบัญชีแต่ละราย',
   'analytics.outcome.awareness': 'ความตระหนักรู้',
   'analytics.outcome.awarenessHelp':
@@ -77,7 +77,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'จำนวนผู้ติดตาม {account} เปลี่ยนแปลง {percent} ในช่วงเวลานี้',
   'analytics.evidence.confounder.paid':
-    'Relay ไม่สามารถบอกได้ว่าโพสต์เหล่านี้ได้รับการเผยแพร่แบบชำระเงินหรือไม่',
+    'Post Array ไม่สามารถบอกได้ว่าโพสต์เหล่านี้ได้รับการเผยแพร่แบบชำระเงินหรือไม่',
   'analytics.evidence.confounder.provider':
     '{provider} เปลี่ยนวิธีการรายงาน {metric} ภายในระยะเวลานี้',
   'analytics.definition.open': '{metric} หมายถึงอะไร',
@@ -107,7 +107,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'จำนวนเหตุการณ์',
   'analytics.unit.seconds': 'วินาที',
   'analytics.unit.percent': 'เปอร์เซ็นต์ที่ผู้ให้บริการคำนวณไว้แล้ว',
-  'analytics.unit.ratio': 'อัตราส่วน Relay คำนวณจากช่องผู้ให้บริการสองช่อง',
+  'analytics.unit.ratio': 'อัตราส่วน Post Array คำนวณจากช่องผู้ให้บริการสองช่อง',
   'analytics.unit.currency_minor': 'จำนวนเงินในหน่วยย่อย',
   'analytics.denominator.none': 'นี่คือการนับไม่ใช่อัตรา มันไม่มีตัวส่วน.',
   'analytics.denominator.impressions': 'แบ่งตามความประทับใจ',
@@ -124,7 +124,7 @@ export const webAnalyticsMessages = {
   'analytics.format.document': 'เอกสาร',
   'analytics.format.thread': 'ด้าย',
   'analytics.value.unavailableReason.notImplemented':
-    'Relay ยังไม่ได้สร้างการแมปสำหรับหน่วยวัดนี้บน {provider}',
+    'Post Array ยังไม่ได้สร้างการแมปสำหรับหน่วยวัดนี้บน {provider}',
   'analytics.value.estimated': 'ประมาณ',
   'analytics.value.estimatedMethod': 'วิธีการ: {method}.',
   'analytics.freshness.title': 'ตัวเลขเหล่านี้มาจากไหน',
@@ -228,7 +228,7 @@ export const webAnalyticsMessages = {
     'การวิเคราะห์จำเป็นต้องมีบทบาทนักวิเคราะห์หรือสูงกว่า เจ้าของหรือผู้ดูแลระบบของพื้นที่ทำงานนี้สามารถให้สิทธิ์ได้',
   'analytics.state.rateLimitTitle': '{provider} เป็นการจำกัดอัตราคำขอการวิเคราะห์',
   'analytics.state.rateLimitCause':
-    'บัญชีได้ใช้ส่วนแบ่งโควต้าผู้ให้บริการสำหรับหน้าต่างนี้แล้ว Relay ไม่ลองอีกครั้ง เนื่องจากจะทำให้การเผยแพร่ล่าช้า',
+    'บัญชีได้ใช้ส่วนแบ่งโควต้าผู้ให้บริการสำหรับหน้าต่างนี้แล้ว Post Array ไม่ลองอีกครั้ง เนื่องจากจะทำให้การเผยแพร่ล่าช้า',
   'analytics.state.rateLimitAlternative':
     'จำกัดช่วงวันที่หรือตัวกรองบัญชีให้แคบลง ซึ่งขอจากผู้ให้บริการน้อยลง',
   'analytics.state.rateLimitReset': 'ขอเรซูเม่',
@@ -236,9 +236,9 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'สร้างลิงค์ที่ติดตาม',
   'analytics.links.empty': 'ยังไม่มีลิงก์ที่ติดตาม',
   'analytics.links.emptyBody':
-    'ลิงก์ที่ติดตามคือ URL แบบสั้น Relay ที่เปลี่ยนเส้นทาง ดังนั้นคุณจึงสามารถดูการคลิกได้แม้ว่าแพลตฟอร์มจะรายงานว่าไม่มีการคลิกก็ตาม ปลายทางเดิมจะไม่เปลี่ยนแปลงหากไม่มีรายการตรวจสอบ',
+    'ลิงก์ที่ติดตามคือ URL แบบสั้น Post Array ที่เปลี่ยนเส้นทาง ดังนั้นคุณจึงสามารถดูการคลิกได้แม้ว่าแพลตฟอร์มจะรายงานว่าไม่มีการคลิกก็ตาม ปลายทางเดิมจะไม่เปลี่ยนแปลงหากไม่มีรายการตรวจสอบ',
   'analytics.links.emptyExample':
-    'ตัวอย่าง: Relay.to/a7Kq2 เปลี่ยนเส้นทางไปที่ acme.com/blog/launch ด้วยแคมเปญ q3-launch',
+    'ตัวอย่าง: Post Array.to/a7Kq2 เปลี่ยนเส้นทางไปที่ acme.com/blog/launch ด้วยแคมเปญ q3-launch',
   'analytics.links.table.caption': 'ลิงก์ที่ติดตามในพื้นที่ทำงานนี้และจำนวนการคลิกของบุคคลที่หนึ่ง',
   'analytics.links.campaign': 'แคมเปญ',
   'analytics.links.created': 'สร้างแล้ว',
@@ -266,7 +266,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination} ใช้งานตั้งแต่ {start} ถึง {end}',
   'analytics.links.destinationHistoryCurrent': '{destination} ใช้งานตั้งแต่ {start}',
   'analytics.links.domainLabel': 'โดเมนแบบสั้น',
-  'analytics.links.domainDefault': 'Relay โดเมนเริ่มต้น',
+  'analytics.links.domainDefault': 'Post Array โดเมนเริ่มต้น',
   'analytics.links.domainVerified': 'ตรวจสอบโดย DNS เมื่อ {date}',
   'analytics.links.domainPending': 'กำลังรอบันทึก DNS',
   'analytics.links.domainPendingHelp':
@@ -289,7 +289,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'รายงานลิงค์นี้ครับ',
   'analytics.links.measurementLabel': 'การวัดการเปลี่ยนเส้นทางจากบุคคลที่หนึ่ง',
   'analytics.links.measurementExplained':
-    'Relay นับคำขอเมื่อมีการขอบริการเปลี่ยนเส้นทางสำหรับ URL นี้ การคลิกที่กรองข้อมูลที่ซ้ำกันจะลบคำขอซ้ำจากผู้เข้าชมรายเดิมภายในหน้าต่างสั้นๆ และคำขอที่ตรงกับรูปแบบการรวบรวมข้อมูลที่รู้จักจะถูกแยกออกแทนที่จะถูกลบออก',
+    'Post Array นับคำขอเมื่อมีการขอบริการเปลี่ยนเส้นทางสำหรับ URL นี้ การคลิกที่กรองข้อมูลที่ซ้ำกันจะลบคำขอซ้ำจากผู้เข้าชมรายเดิมภายในหน้าต่างสั้นๆ และคำขอที่ตรงกับรูปแบบการรวบรวมข้อมูลที่รู้จักจะถูกแยกออกแทนที่จะถูกลบออก',
   'analytics.links.botsNote':
     '{count, plural, one {# request} other {# requests}} were classified as automated and are excluded from the deduplicated count.',
   'analytics.links.series.title': 'คำขอและการคลิกที่กรองข้อมูลที่ซ้ำกันเมื่อเวลาผ่านไป',
@@ -312,7 +312,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'ไม่มีการร้องขอลิงก์นี้ตั้งแต่ถูกสร้างขึ้น นั่นคือศูนย์จริง ซึ่งวัดได้จากบริการเปลี่ยนเส้นทางของเราเอง',
   'analytics.links.compareWarning':
-    '{provider} รายงานการคลิกลิงก์ {providerValue} สำหรับโพสต์นี้ Relay บันทึกการคลิกที่ซ้ำกัน {relayValue} ทั้งสองนับเหตุการณ์ที่แตกต่างกันและไม่มีการแทนที่เหตุการณ์อื่น',
+    '{provider} รายงานการคลิกลิงก์ {providerValue} สำหรับโพสต์นี้ Post Array บันทึกการคลิกที่ซ้ำกัน {relayValue} ทั้งสองนับเหตุการณ์ที่แตกต่างกันและไม่มีการแทนที่เหตุการณ์อื่น',
   'analytics.links.errorTitle': 'ไม่สามารถโหลดสถิติลิงก์ได้',
   'analytics.links.errorBody':
     'บริการเปลี่ยนเส้นทางยังคงทำงานอยู่ ดังนั้นลิงก์จึงส่งผู้เยี่ยมชมไปยังปลายทางต่อไป เฉพาะการรายงานเท่านั้นที่ได้รับผลกระทบ',
@@ -321,7 +321,7 @@ export const webAnalyticsMessages = {
     'ต้องเป็นที่อยู่ https สาธารณะ ที่อยู่เครือข่ายส่วนตัวและลูกโซ่การเปลี่ยนเส้นทางถูกปฏิเสธโดยบริการเปลี่ยนเส้นทาง',
   'analytics.links.createCampaign': 'ชื่อแคมเปญ',
   'analytics.links.createSlug': 'ตอนจบแบบกำหนดเอง',
-  'analytics.links.createSlugHelp': 'ปล่อยว่างไว้และ Relay จะสร้างการสิ้นสุดแบบสุ่มสั้นๆ',
+  'analytics.links.createSlugHelp': 'ปล่อยว่างไว้และ Post Array จะสร้างการสิ้นสุดแบบสุ่มสั้นๆ',
   'analytics.links.createUtm': 'พารามิเตอร์ UTM',
   'analytics.links.blockedScheme': 'ยอมรับเฉพาะปลายทาง https เท่านั้น',
   'analytics.links.blockedPrivate':
@@ -444,7 +444,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# action is} other {# actions are}} not listed because the selected accounts cannot perform them.',
   'automation.picker.hiddenDetail': '{action} ไม่พร้อมใช้งานสำหรับ {provider} {reason}',
   'automation.picker.consequential': 'สร้างบางสิ่งบางอย่างบนแพลตฟอร์ม',
-  'automation.picker.internalOnly': 'อยู่ภายใน Relay',
+  'automation.picker.internalOnly': 'อยู่ภายใน Post Array',
   'automation.accounts.label': 'บัญชีที่กฎนี้อาจมีผลบังคับใช้',
   'automation.accounts.help':
     'กฎไม่สามารถแตะต้องบัญชีที่ไม่อยู่ในรายการนี้ได้ ไม่ว่าเงื่อนไขจะระบุไว้ก็ตาม',
@@ -527,7 +527,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} ไม่ผ่าน กฎจึงหยุดอยู่ตรงนี้',
   'automation.test.actionSimulated': '{action} จะทำงาน',
   'automation.test.actionSkipped': '{action} จะถูกข้าม: {reason}',
-  'automation.test.noExternalEffect': 'ไม่มีสิ่งใดเหลือ Relay ในระหว่างการทดสอบนี้',
+  'automation.test.noExternalEffect': 'ไม่มีสิ่งใดเหลือ Post Array ในระหว่างการทดสอบนี้',
   'automation.test.failed': 'การทดสอบไม่เสร็จสมบูรณ์: {reason}',
   'automation.runs.table.caption': 'การดำเนินการล่าสุดของกฎนี้',
   'automation.runs.startedAt': 'เริ่มแล้ว',
@@ -578,7 +578,7 @@ export const webAnalyticsMessages = {
     'เปลี่ยนฟีดให้เป็นฉบับร่างหรือโพสต์ตามกำหนดเวลา โดยมีการตรวจสอบและการอนุมัติเช่นเดียวกับสิ่งที่คุณเขียนด้วยตัวเอง',
   'automation.rss.empty': 'ยังไม่มีฟีด',
   'automation.rss.emptyBody':
-    'เพิ่มฟีดและ Relay ตรวจสอบตามกำหนดเวลา แต่ละรายการใหม่จะกลายเป็นฉบับร่าง โพสต์ตามกำหนดการ หรือคำขออนุมัติ ไม่ว่าคุณจะเลือกแบบไหนก็ตาม',
+    'เพิ่มฟีดและ Post Array ตรวจสอบตามกำหนดเวลา แต่ละรายการใหม่จะกลายเป็นฉบับร่าง โพสต์ตามกำหนดการ หรือคำขออนุมัติ ไม่ว่าคุณจะเลือกแบบไหนก็ตาม',
   'automation.rss.emptyExample':
     'ตัวอย่าง: ฟีดบล็อกของ Acme สร้างฉบับร่างสำหรับ X และ LinkedIn แต่ละครั้งที่มีการเผยแพร่บทความ และรอผู้อนุมัติ',
   'automation.rss.table.caption': 'ฟีดการสำรวจพื้นที่ทำงานนี้',
@@ -593,7 +593,7 @@ export const webAnalyticsMessages = {
   'automation.rss.step.policy': 'มีการเผยแพร่อย่างไร',
   'automation.rss.stepOf': 'ขั้นตอนที่ {current} จาก {total}',
   'automation.rss.urlHelp':
-    'Relay ดึงฟีดจากเซิร์ฟเวอร์ของเรา ไม่ใช่จากเบราว์เซอร์ของคุณ ที่อยู่เครือข่ายส่วนตัวถูกปฏิเสธ',
+    'Post Array ดึงฟีดจากเซิร์ฟเวอร์ของเรา ไม่ใช่จากเบราว์เซอร์ของคุณ ที่อยู่เครือข่ายส่วนตัวถูกปฏิเสธ',
   'automation.rss.validateAction': 'ตรวจสอบฟีดนี้',
   'automation.rss.validateFailed': 'ที่อยู่นั้นไม่ได้ส่งคืนฟีดที่อ่านได้',
   'automation.rss.validateFailedReason': 'สิ่งที่เราได้รับกลับมา: {reason}',
@@ -605,7 +605,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'ไม่มีรูปภาพในรายการนี้',
   'automation.rss.previewImageAlt': 'รูปภาพจากรายการฟีด {title}',
   'automation.rss.previewNoDate':
-    'รายการนี้ไม่มีการประทับเวลา ดังนั้น Relay ใช้เวลาที่เห็นครั้งแรก',
+    'รายการนี้ไม่มีการประทับเวลา ดังนั้น Post Array ใช้เวลาที่เห็นครั้งแรก',
   'automation.rss.previewFieldsTitle': 'ช่องที่ฟีดนี้มีให้',
   'automation.rss.previewFieldMissing': 'ไม่มีอยู่ในฟีดนี้',
   'automation.rss.seenTitle': 'สิ่งที่นับตามที่เห็นแล้ว',
@@ -629,7 +629,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'ดูตัวอย่างด้วยรายการใหม่ล่าสุด',
   'automation.rss.adaptWithAi': 'ปรับข้อความสำหรับแต่ละเป้าหมาย',
   'automation.rss.adaptHelp':
-    'ข้อความจะถูกเขียนใหม่เพื่อให้เหมาะสมกับแต่ละแพลตฟอร์มและแสดงเป็นส่วนต่างที่คุณยอมรับหรือปฏิเสธ สื่อมาจากรายการฟีด Relay ไม่สร้างภาพ',
+    'ข้อความจะถูกเขียนใหม่เพื่อให้เหมาะสมกับแต่ละแพลตฟอร์มและแสดงเป็นส่วนต่างที่คุณยอมรับหรือปฏิเสธ สื่อมาจากรายการฟีด Post Array ไม่สร้างภาพ',
   'automation.rss.noImageGeneration': 'หากรายการฟีดไม่มีรูปภาพ โพสต์จะออกไปโดยไม่มีรูปภาพ',
   'automation.rss.imageFromFeed': 'ใช้รูปภาพจากรายการฟีดเมื่อมี',
   'automation.rss.policyHelp':
@@ -663,10 +663,10 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'ดำเนินการฟีดนี้ต่อ',
   'automation.rss.deleteTitle': 'ลบ {title} ออกใช่ไหม',
   'automation.rss.deleteBody':
-    'Relay หยุดตรวจสอบฟีดนี้ ร่างและโพสต์ที่สร้างไว้แล้วจะยังคงเหมือนเดิม',
+    'Post Array หยุดตรวจสอบฟีดนี้ ร่างและโพสต์ที่สร้างไว้แล้วจะยังคงเหมือนเดิม',
   'automation.rss.errorTitle': 'ไม่สามารถอ่านฟีดนี้ได้',
   'automation.rss.errorBody':
-    'Relay ตรวจสอบตามกำหนดเวลาปกติต่อไป ไม่มีการเผยแพร่จากการตอบกลับบางส่วน',
+    'Post Array ตรวจสอบตามกำหนดเวลาปกติต่อไป ไม่มีการเผยแพร่จากการตอบกลับบางส่วน',
   'automation.refuse.title': 'ไม่มีอยู่ในกฎเกณฑ์ใดๆ',
   'automation.refuse.body':
     'การถูกใจและการติดตามอัตโนมัติ กลุ่มการมีส่วนร่วม การตอบกลับและข้อความที่ไม่พึงประสงค์ และการโพสต์เนื้อหาเดียวกันจากหลายบัญชีเพื่อทำให้ดูเป็นที่นิยมไม่ใช่ตัวเลือกที่นี่ แพลตฟอร์มห้ามและสร้างความเสียหายให้กับบัญชีที่ใช้งาน',

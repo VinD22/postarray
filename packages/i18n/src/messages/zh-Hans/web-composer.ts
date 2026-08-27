@@ -125,7 +125,7 @@ export const webComposerMessages = {
     '{count, plural, =0 {No mentions} one {# mention} other {# mentions}}, {resolved} 与真实账户匹配',
   'composerWeb.entity.lookupUnsupported': '{provider} 不提供此帐户类型的实体查找。',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay 尚未为 {provider} 构建实体查找。在此期间没有任何猜测。',
+    'Post Array 尚未为 {provider} 构建实体查找。在此期间没有任何猜测。',
   'composerWeb.entity.searchHint': '至少键入两个字符，然后选择一个结果。',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {No matches} one {# match} other {# matches}}',
@@ -141,7 +141,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': '学期',
   'composerWeb.links.utmContent': '内容',
   'composerWeb.links.domainVerified': '{domain}，已针对此工作区进行验证',
-  'composerWeb.links.domainDefault': 'Relay。中继默认域',
+  'composerWeb.links.domainDefault': 'Post Array。中继默认域',
   'composerWeb.links.domainNone': '尚未验证任何品牌域名。',
   'composerWeb.links.notAllowedHere': '{account} 不允许此处链接。',
   'composerWeb.sequence.kindComment': '评论',
@@ -197,7 +197,7 @@ export const webComposerMessages = {
   'composerWeb.assist.claimUnverified': '没有找到此说法的来源。发布前检查一下。',
   'composerWeb.assist.failed': '协助请求未完成。您的文字没有改变。',
   'composerWeb.assist.noMediaGeneration':
-    'Relay 不会创建图像或视频。将完成的文件带入库并在此处发布。',
+    'Post Array 不会创建图像或视频。将完成的文件带入库并在此处发布。',
   'composerWeb.autosave.pinned': '这是批准的版本。编辑它会创建一个新版本并清除批准。',
   'composerWeb.autosave.pinnedAcknowledge': '编辑并清除批准',
   'composerWeb.autosave.conflictTitle': '该草案有两个版本',
@@ -239,7 +239,7 @@ export const webComposerMessages = {
     '什么都没有丢失。再试一次，如果仍然失败，下面的参考可以帮助支持人员找到请求。',
   'composerWeb.page.noConnectionsTitle': '撰写前连接帐户',
   'composerWeb.page.noConnectionsBody':
-    '草稿需要至少一个连接的帐户，以便 Relay 了解限制、预览和要显示的设置。',
+    '草稿需要至少一个连接的帐户，以便 Post Array 了解限制、预览和要显示的设置。',
   'composerWeb.page.noConnectionsExample':
     '示例：通过连接 X 和 LinkedIn，一份草稿变成两个具有各自计数器的本机版本。',
   'composerWeb.page.permissionTitle': '您无法在此工作区中创建帖子',
@@ -266,7 +266,7 @@ export const webComposerMessages = {
   'mediaLib.openDetail': '打开{name}',
   'mediaLib.empty.title': '还没有媒体',
   'mediaLib.empty.body':
-    '上传您已有的图像和视频，或从 URL 导入文件。 Relay 检查您发布到的每个帐户的类型和大小。',
+    '上传您已有的图像和视频，或从 URL 导入文件。 Post Array 检查您发布到的每个帐户的类型和大小。',
   'mediaLib.empty.example': '示例：launch_hero.jpg，1600 x 900，替代文本集，在 2 个帖子中使用。',
   'mediaLib.error.title': '无法加载库',
   'mediaLib.error.body': '您的文件是安全的。这次失败并没有改变什么。',
@@ -372,7 +372,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     '该文件不包含嵌入的内容凭据。这是很常见的现象，并不意味着有什么问题。',
   'mediaLib.provenance.unverified':
-    '这些详细信息来自来源，而不是来自 Relay。在依赖它们之前先检查一下它们。',
+    '这些详细信息来自来源，而不是来自 Post Array。在依赖它们之前先检查一下它们。',
   'mediaLib.picker.title': '选择媒体',
   'mediaLib.picker.description': '文件将根据本草稿中选择的帐户进行检查。',
   'mediaLib.picker.confirm':

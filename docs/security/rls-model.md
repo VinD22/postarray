@@ -42,7 +42,7 @@ escalation, so that pin is not decoration.
 | Function | Returns |
 | --- | --- |
 | `app.jwt_claims()` | The request claims as `jsonb`, or `{}`. Never raises. |
-| `app.current_user_id()` | The Relay user id, from the `relay_user_id` claim or resolved from the Supabase `sub`. `NULL` denies everything. |
+| `app.current_user_id()` | The Post Array user id, from the `relay_user_id` claim or resolved from the Supabase `sub`. `NULL` denies everything. |
 | `app.is_service_role()` | True for trusted server-side traffic. |
 | `app.current_workspace_ids()` | Active memberships in live workspaces, optionally narrowed by `relay_workspace_id`. |
 | `app.has_workspace_role(ws, roles)` | Membership role check. |

@@ -2,7 +2,7 @@
 
 Research and product inspection date: 4 August 2026.
 
-This document is the authoritative feature-scope update. Competitor observations come only from the current pricing page, public site and demo, official documentation, and user-supplied screenshots. Relay's architecture and implementation are independently designed.
+This document is the authoritative feature-scope update. Competitor observations come only from the current pricing page, public site and demo, official documentation, and user-supplied screenshots. Post Array's architecture and implementation are independently designed.
 
 ## Final product decision
 

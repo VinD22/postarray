@@ -76,7 +76,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Критерії огляду',
   'growth.ugc.reuse': 'План повторного використання',
   'growth.ugc.boundary':
-    'Це планує кампанію, яку ви проводите з реальними людьми. Relay не знаходить творців, не зв’язується з ними та не пише відгуків.',
+    'Це планує кампанію, яку ви проводите з реальними людьми. Post Array не знаходить творців, не зв’язується з ними та не пише відгуків.',
 
   'growth.opportunities.title': 'Можливості просування по службі',
   'growth.opportunities.help':
@@ -98,7 +98,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'Збіг: це пропозиція. Це не обіцяне посилання, місце розташування чи рейтинг.',
   'growth.opportunities.boundary':
-    'Relay не надсилає форми, не створює облікових записів, не контактує електронною поштою, не публікує в спільнотах і не купує посилання.',
+    'Post Array не надсилає форми, не створює облікових записів, не контактує електронною поштою, не публікує в спільнотах і не купує посилання.',
   'growth.opportunities.empty':
     'Ще немає перевірених можливостей, які відповідають цьому профілю. Порожній список краще вигаданого.',
 
@@ -109,7 +109,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'Чому це підходить',
   'growth.tools.limitations': 'Обмеження',
   'growth.tools.requiredSkills': 'Навички, які вам потрібні',
-  'growth.tools.handoff': 'Як вихід повертається в Relay',
+  'growth.tools.handoff': 'Як вихід повертається в Post Array',
   'growth.tools.rights': 'Примітки щодо прав і конфіденційності',
   'growth.tools.priceChecked': 'Ціна залишку перевірена{date}',
   'growth.tools.affiliateDisclosure':

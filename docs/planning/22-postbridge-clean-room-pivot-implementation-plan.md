@@ -7,12 +7,12 @@ commercial decisions in section 4 before billing or public copy changes.
 
 **Evidence basis:** [`10-postbridge-public-product-research-2026-08-10.md`](../research/10-postbridge-public-product-research-2026-08-10.md)
 records the public, first-party evidence used here. It distinguishes verified
-behaviour from unknowns. Existing Relay plans remain authoritative for
+behaviour from unknowns. Existing Post Array plans remain authoritative for
 architecture, security, connector gates, billing, design, and localization.
 
 ## 1. Decision in one page
 
-Relay should pivot to **feature parity in customer outcomes** with the public
+Post Array should pivot to **feature parity in customer outcomes** with the public
 PostBridge product surface: connect accounts, create one campaign with native
 variants, upload media, schedule or publish, manage a calendar/queue, inspect
 results, and automate permitted workflows. It should do so with materially
@@ -95,7 +95,7 @@ an unchecked specification.
    never leaks into another target.
 3. **Capability before promise.** Every field and control comes from a
    versioned, account-specific capability snapshot. `unsupported` means the
-   provider cannot do it. `not_implemented` means Relay has not done it yet.
+   provider cannot do it. `not_implemented` means Post Array has not done it yet.
 4. **A schedule is a promise.** Store the UTC instant and IANA zone, make DST
    ambiguity explicit, use durable Temporal workflows, and never change a
    chosen time through jitter.
@@ -134,7 +134,7 @@ support policy together.
 
 ## 5. Scope map: retain, complete, add, defer
 
-| Area | Current Relay position | Pivot decision | Delivery priority |
+| Area | Current Post Array position | Pivot decision | Delivery priority |
 | --- | --- | --- | --- |
 | Workspaces/projects, roles, RLS, audit | Implemented foundation | Retain. Rename only at the product boundary where needed. | P0 |
 | Connections and capability snapshots | Implemented UI/foundation; real provider release proof pending | Complete official connector vertical slices and expose all ten target families progressively. | P0/P1 |
@@ -480,7 +480,7 @@ content focal point, condensed display typography used sparingly, and playful
 motion that guides attention. They are inspiration, not templates. Do not reuse
 their layouts, photographs, copy, red/orange treatment, or brand marks.
 
-Relay keeps the repository’s authoritative paper/electric-blue/sunshine/blush
+Post Array keeps the repository’s authoritative paper/electric-blue/sunshine/blush
 system, 2px ink outlines and hard offset shadows. The improvement is in
 composition, not trend effects:
 
@@ -508,7 +508,7 @@ receipt that answers “what happened?” immediately.
 
 ## 13. Fifteen-language plan: ready first, translated after core product
 
-“15 languages from day one” has two separate meanings. Relay must be
+“15 languages from day one” has two separate meanings. Post Array must be
 **localization-ready from the first implementation commit**, but it must not
 claim that fifteen human-quality locales are live until the product and public
 content have passed language review. The sequence below honors both the speed
@@ -668,7 +668,7 @@ The correct plan is a two-stage programme:
    competitor tool URL, title, screenshot, login requirement, inputs, outputs,
    indexing state, privacy claim, last-seen date and the customer job it serves.
    It records evidence only; it does not copy code or wording.
-2. **Value gate:** Relay ships a tool only if it has an original UX, a concrete
+2. **Value gate:** Post Array ships a tool only if it has an original UX, a concrete
    customer outcome, a named owner, a privacy/data-retention decision,
    accessibility acceptance criteria, a canonical SEO page and a maintenance
    source for any changing platform constraints.
@@ -688,7 +688,7 @@ workflow foundation.
 
 | Phase | Outcome | Main deliverables | Exit gate |
 | --- | --- | --- | --- |
-| 0. Evidence and decisions (1 week) | No assumptions enter scope | Capture competitor unknowns, choose Relay prices/channel/member entitlement, lock three-project messaging, create capability matrix and change log. | Founder, legal and connector owner sign the scope/claim register. |
+| 0. Evidence and decisions (1 week) | No assumptions enter scope | Capture competitor unknowns, choose Post Array prices/channel/member entitlement, lock three-project messaging, create capability matrix and change log. | Founder, legal and connector owner sign the scope/claim register. |
 | 1. One real vertical slice (2–4 weeks) | A customer can safely publish through one provider | Production-like Auth/Storage/Temporal, one official connector, composer flow, approval/schedule/publish/receipt, action centre and cross-workspace tests. | Live canary proves OAuth → receipt → recovery without duplicates. |
 | 2. Composer and scheduler completion (3–5 weeks) | Core product is faster and clearer than basic scheduler apps | Target memory, native previews/settings, asset roles, queue, recurrence, sequences, calendar parity, bulk drafts/import and mobile/accessibility pass. | All composer/scheduler tools have contracts, tests and error/partial states. |
 | 3. Connector expansion (parallel, 1–2 weeks/provider after approval) | Ten provider families become available progressively | Adapter, simulator fixtures, OAuth, capability snapshot, media, read-back, canary and public matrix for each. | Each connector passes definition-of-done independently; no blanket “all supported” launch claim. |

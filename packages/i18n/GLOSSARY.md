@@ -1,4 +1,4 @@
-# Relay interface glossary
+# Post Array interface glossary
 
 Use this glossary before translating a catalog. It is a constraint for machine
 translation and a checklist for human review. It applies to interface copy only;
@@ -21,12 +21,12 @@ it does not change the separate per-brand glossary used for post content.
 
 | Term | Required handling | Notes |
 | --- | --- | --- |
-| `Relay` | Keep exactly as written | Product and service name. |
+| `Post Array` | Keep exactly as written | Product and service name. |
 | `Composer` | Keep exactly as written | Product feature name. |
 | `Growth Advisor` | Keep exactly as written | Product feature name. |
 | `Action Center` | Keep exactly as written | Product feature name. |
-| `Project` | Translate to this language's ordinary word for "project" | Relay's tenant-scoping noun (a workspace-owned publishing context). Renamed from "Brand" in the English source; do not translate it as this language's word for "brand" even where older, unreviewed catalog entries still do. |
-| `Workspace` | Keep exactly as written | Relay tenant-domain noun, not a generic office use. |
+| `Project` | Translate to this language's ordinary word for "project" | Post Array's tenant-scoping noun (a workspace-owned publishing context). Renamed from "Brand" in the English source; do not translate it as this language's word for "brand" even where older, unreviewed catalog entries still do. |
+| `Workspace` | Keep exactly as written | Post Array tenant-domain noun, not a generic office use. |
 
 ## Protected connector names
 
@@ -88,6 +88,6 @@ Before a locale catalog becomes active, check that:
 2. Every instance of the six mandated concepts uses the locale row above unless
    sentence grammar requires an inflection.
 3. Connector capability, account-type, approval, and policy wording continues
-   to describe only the capability supplied by the normalized Relay data.
+   to describe only the capability supplied by the normalized Post Array data.
 4. Legal, billing, consent, and disclosure copy follows the human-review gate
    in [the i18n README](./README.md#beta-versus-human-reviewed).

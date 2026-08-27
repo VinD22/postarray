@@ -1,7 +1,7 @@
 /** Korean beta catalog. */
 export const billingMessages = {
   'billing.title': '청구',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': '하나의 계획. 모든 기능. 등급이 없습니다.',
   'billing.plan.monthlyPrice': '$29/월',
   'billing.plan.annualPrice': '$300/년',
@@ -21,7 +21,6 @@ export const billingMessages = {
   'billing.plan.includes.support': '이메일 및 앱 내 지원',
   'billing.plan.fairUse':
     '공정한 사용은 귀하의 계정을 보호하는 스팸 방지, 요금 및 공급자 비용 통제를 의미합니다. 모든 가입자에게 동일하게 작동합니다.',
-  'billing.trial.length': '모든 기능을 갖춘 7일 평가판',
   'billing.trial.dueToday': '오늘 결제 금액은 0달러입니다.',
   'billing.trial.paymentMethodRequired':
     'Polar는 지금 결제 방법을 수집하고 오늘은 비용을 청구하지 않습니다.',
@@ -73,7 +72,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': '이 작업의 예상 금액은 다음과 같습니다.{amount}.',
   'billing.usage.periodTotal': '{amount}이후 사용{date}',
   'billing.usage.noMediaCredits':
-    'Relay은 미디어를 생성하지 않으므로 이미지 또는 비디오 생성 크레딧이 없습니다.',
+    'Post Array은 미디어를 생성하지 않으므로 이미지 또는 비디오 생성 크레딧이 없습니다.',
   'billing.downgrade.overLimit':
     '이 작업공간에는{count, plural, other {채널 #개}}한도를 초과했습니다. 해당 채널의 새로운 작업은 차단됩니다. 당신을 위해 연결이 끊어진 것은 없습니다.',
   'billing.mediaGeneration.title': '이미지나 비디오를 생성하지 않는 이유',

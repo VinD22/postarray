@@ -21,7 +21,7 @@ export const webAnalyticsMessages = {
     '{count, plural, =0 {無濾鏡} one {#篩選} other {#過濾器}}應用。{results, plural, =0 {沒有匹配的貼文} one {#比賽後} other {#貼文匹配}}。',
   'analytics.rankMetric.label': '對貼文進行排名',
   'analytics.rankMetric.help':
-    'Relay 中沒有綜合得分。選擇您信任其定義的一個指標，該表將僅按該指標排序。',
+    'Post Array 中沒有綜合得分。選擇您信任其定義的一個指標，該表將僅按該指標排序。',
   'analytics.rankMetric.chosen': '排名依據{metric}，由每個帳號提供者報告。',
   'analytics.outcome.awareness': '意識',
   'analytics.outcome.awarenessHelp':
@@ -71,7 +71,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.time': '基準貼文一天中的發佈時間各不相同。',
   'analytics.evidence.confounder.format': '圖片貼文和影片貼文在這裡不能直接比較。',
   'analytics.evidence.confounder.followers': '追隨者依靠{account}改變為{percent}在此期間。',
-  'analytics.evidence.confounder.paid': 'Relay 無法判斷這些貼文是否收到了付費分發。',
+  'analytics.evidence.confounder.paid': 'Post Array 無法判斷這些貼文是否收到了付費分發。',
   'analytics.evidence.confounder.provider': '{provider}改變了它的報告方式{metric}這個時期內。',
   'analytics.definition.open': '什麼{metric}方法',
   'analytics.definition.inlineHeading': '定義',
@@ -100,7 +100,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': '事件計數',
   'analytics.unit.seconds': '秒數',
   'analytics.unit.percent': '提供者已計算的百分比',
-  'analytics.unit.ratio': '根據兩個提供者欄位計算的比率 Relay',
+  'analytics.unit.ratio': '根據兩個提供者欄位計算的比率 Post Array',
   'analytics.unit.currency_minor': '以小單位表示的金額',
   'analytics.denominator.none': '這是計數，而不是比率。它沒有分母。',
   'analytics.denominator.impressions': '按展示次數劃分',
@@ -116,7 +116,7 @@ export const webAnalyticsMessages = {
   'analytics.format.long_video': '長影片',
   'analytics.format.document': '文件',
   'analytics.format.thread': '線',
-  'analytics.value.unavailableReason.notImplemented': 'Relay 尚未建立此指標的映射{provider}然而。',
+  'analytics.value.unavailableReason.notImplemented': 'Post Array 尚未建立此指標的映射{provider}然而。',
   'analytics.value.estimated': '估計的',
   'analytics.value.estimatedMethod': '方法：{method}。',
   'analytics.freshness.title': '這些數字從何而來',
@@ -210,14 +210,14 @@ export const webAnalyticsMessages = {
     '分析需要分析師或更高層級的角色。此Workspace的擁有者或管理員可以授予它。',
   'analytics.state.rateLimitTitle': '{provider}限制分析請求的速率',
   'analytics.state.rateLimitCause':
-    '該帳號已使用該視窗的提供者配額份額。 Relay 不會更努力重試，因為這會延遲發布。',
+    '該帳號已使用該視窗的提供者配額份額。 Post Array 不會更努力重試，因為這會延遲發布。',
   'analytics.state.rateLimitAlternative': '縮小日期範圍或帳號過濾器，這會減少對提供者的要求。',
   'analytics.state.rateLimitReset': '請求簡歷',
   'analytics.state.reference': '診斷參考',
   'analytics.links.new': '建立追蹤連結',
   'analytics.links.empty': '還沒有跟踪鏈接',
   'analytics.links.emptyBody':
-    '追蹤連結是 Relay 重定向的短 URL，因此即使平台報告沒有點擊，您也可以看到點擊。如果沒有審核條目，原始目的地永遠不會更改。',
+    '追蹤連結是 Post Array 重定向的短 URL，因此即使平台報告沒有點擊，您也可以看到點擊。如果沒有審核條目，原始目的地永遠不會更改。',
   'analytics.links.emptyExample':
     '範例：relay.to/a7Kq2 透過行銷活動 q3-launch 重定向到 acme.com/blog/launch。',
   'analytics.links.table.caption': '此Workspace中追蹤的連結及其第一方點擊計數。',
@@ -246,7 +246,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}，活躍於{start}到{end}',
   'analytics.links.destinationHistoryCurrent': '{destination}，活躍以來{start}',
   'analytics.links.domainLabel': '短域',
-  'analytics.links.domainDefault': 'Relay 預設域',
+  'analytics.links.domainDefault': 'Post Array 預設域',
   'analytics.links.domainVerified': '透過 DNS 驗證{date}',
   'analytics.links.domainPending': '等待 DNS 記錄',
   'analytics.links.domainPendingHelp':
@@ -269,7 +269,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': '檢舉此連結',
   'analytics.links.measurementLabel': '第一方重定向測量',
   'analytics.links.measurementExplained':
-    '當重定向服務請求此 URL 時，Relay 會對請求進行計數。重複資料刪除點擊可在短視窗內刪除來自相同訪客的重複請求，並且排除而不是刪除與已知爬蟲模式相符的請求。',
+    '當重定向服務請求此 URL 時，Post Array 會對請求進行計數。重複資料刪除點擊可在短視窗內刪除來自相同訪客的重複請求，並且排除而不是刪除與已知爬蟲模式相符的請求。',
   'analytics.links.botsNote':
     '{count, plural, one {#要求} other {#要求}}被歸類為自動化，並被排除在重複資料刪除計數之外。',
   'analytics.links.series.title': '隨著時間的推移，請求和重複資料刪除點擊次數',
@@ -292,7 +292,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     '該連結自創建以來尚未被請求。這是一個真正的零，由我們自己的重定向服務測量。',
   'analytics.links.compareWarning':
-    '{provider}報告{providerValue}這篇文章的連結點擊。 Relay 已記錄{relayValue}去重複點擊。兩者計算的是不同的事件，兩者都不能取代對方。',
+    '{provider}報告{providerValue}這篇文章的連結點擊。 Post Array 已記錄{relayValue}去重複點擊。兩者計算的是不同的事件，兩者都不能取代對方。',
   'analytics.links.errorTitle': '無法載入連結統計訊息',
   'analytics.links.errorBody':
     '重定向服務仍在運行，因此該連結會繼續將訪客發送到其目的地。僅報告受到影響。',
@@ -301,7 +301,7 @@ export const webAnalyticsMessages = {
     '必須是公共 https 位址。私有網路位址和重定向鏈被重定向服務拒絕。',
   'analytics.links.createCampaign': '活動名稱',
   'analytics.links.createSlug': '自訂結局',
-  'analytics.links.createSlugHelp': '將其留空，Relay 會產生一個簡短的隨機結尾。',
+  'analytics.links.createSlugHelp': '將其留空，Post Array 會產生一個簡短的隨機結尾。',
   'analytics.links.createUtm': 'UTM參數',
   'analytics.links.blockedScheme': '僅接受 https 目的地。',
   'analytics.links.blockedPrivate': '該位址位於專用網路上，因此重定向服務不會接受它。',
@@ -421,7 +421,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {#行動是} other {#行動是}}未列出，因為所選帳號無法執行這些操作。',
   'automation.picker.hiddenDetail': '{action}不適用於{provider}。{reason}',
   'automation.picker.consequential': '在平台上創建一些東西',
-  'automation.picker.internalOnly': '留在 Relay 內',
+  'automation.picker.internalOnly': '留在 Post Array 內',
   'automation.accounts.label': '此規則可能作用的帳號',
   'automation.accounts.help': '無論其條件如何，規則永遠不會觸及此處未列出的帳號。',
   'automation.accounts.none': '尚未選擇帳號',
@@ -497,7 +497,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition}沒有通過，所以規則到這裡就停止了',
   'automation.test.actionSimulated': '{action}會跑',
   'automation.test.actionSkipped': '{action}將被跳過：{reason}',
-  'automation.test.noExternalEffect': '在這次測試中，Relay 並沒有留下任何東西。',
+  'automation.test.noExternalEffect': '在這次測試中，Post Array 並沒有留下任何東西。',
   'automation.test.failed': '測試無法完成：{reason}',
   'automation.runs.table.caption': '該規則的最近運行。',
   'automation.runs.startedAt': '開始',
@@ -545,7 +545,7 @@ export const webAnalyticsMessages = {
     '將提要轉換為草稿或預定貼文，並與您自己編寫的任何內容一樣進行驗證和核准。',
   'automation.rss.empty': '還沒有動態',
   'automation.rss.emptyBody':
-    '添加提要，Relay 按計劃檢查它。每個新項目都會成為草稿、計劃發布或核准請求，無論您選擇哪一個。',
+    '添加提要，Post Array 按計劃檢查它。每個新項目都會成為草稿、計劃發布或核准請求，無論您選擇哪一個。',
   'automation.rss.emptyExample':
     '範例：每次發布文章時，Acme 部落格提要都會為 X 和 LinkedIn 建立草稿，並等待核准者。',
   'automation.rss.table.caption': '提供此Workspace民調。',
@@ -559,7 +559,7 @@ export const webAnalyticsMessages = {
   'automation.rss.step.template': '貼文說了什麼',
   'automation.rss.step.policy': '如何發布',
   'automation.rss.stepOf': '步{current}的{total}',
-  'automation.rss.urlHelp': 'Relay 從我們的伺服器而不是您的瀏覽器取得來源。專用網路位址被拒絕。',
+  'automation.rss.urlHelp': 'Post Array 從我們的伺服器而不是您的瀏覽器取得來源。專用網路位址被拒絕。',
   'automation.rss.validateAction': '檢查此提要',
   'automation.rss.validateFailed': '該位址沒有傳回可讀的提要',
   'automation.rss.validateFailedReason': '我們得到了什麼：{reason}',
@@ -570,7 +570,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewItemPublished': '已發表{dateTime}',
   'automation.rss.previewNoImage': '該商品中沒有圖片',
   'automation.rss.previewImageAlt': '圖片來自 feed 項目{title}',
-  'automation.rss.previewNoDate': '這個項目沒有時間戳，因此 Relay 使用它第一次看到它的時間。',
+  'automation.rss.previewNoDate': '這個項目沒有時間戳，因此 Post Array 使用它第一次看到它的時間。',
   'automation.rss.previewFieldsTitle': '此 Feed 提供的字段',
   'automation.rss.previewFieldMissing': '不存在於該 Feed 中',
   'automation.rss.seenTitle': '什麼算已經看過',
@@ -592,7 +592,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': '預覽最新項目',
   'automation.rss.adaptWithAi': '針對每個目標調整文字',
   'automation.rss.adaptHelp':
-    '措辭會被重寫以適應每個平台，並顯示為您接受或拒絕的差異。媒體來自提要項目。 Relay 不產生影像。',
+    '措辭會被重寫以適應每個平台，並顯示為您接受或拒絕的差異。媒體來自提要項目。 Post Array 不產生影像。',
   'automation.rss.noImageGeneration': '如果提要項目沒有圖像，則該貼文將在沒有圖像的情況下消失。',
   'automation.rss.imageFromFeed': '當 Feed 項目有圖像時，使用該圖像',
   'automation.rss.policyHelp': '飼料項目並不特殊。它遵循與您自己撰寫的貼文相同的核准政策。',
@@ -624,9 +624,9 @@ export const webAnalyticsMessages = {
   'automation.rss.pauseFeed': '暫停此供稿',
   'automation.rss.resumeFeed': '恢復此提要',
   'automation.rss.deleteTitle': '消除{title}？',
-  'automation.rss.deleteBody': 'Relay 停止檢查此提要。它已經創建的草稿和貼文保持原樣。',
+  'automation.rss.deleteBody': 'Post Array 停止檢查此提要。它已經創建的草稿和貼文保持原樣。',
   'automation.rss.errorTitle': '無法讀取此提要',
-  'automation.rss.errorBody': 'Relay 繼續檢查正常的時間表。部分回應並未發表任何內容。',
+  'automation.rss.errorBody': 'Post Array 繼續檢查正常的時間表。部分回應並未發表任何內容。',
   'automation.refuse.title': '不適用於任何規則',
   'automation.refuse.body':
     '自動按讚和追蹤、參與群組、主動回覆和訊息，以及從多個帳號發布相同內容以使其看起來很受歡迎，這些都不是這裡的選擇。平台禁止它們，並且它們會損害使用它們的帳號。',

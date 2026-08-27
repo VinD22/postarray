@@ -21,7 +21,7 @@ export const webAnalyticsMessages = {
     '{count, plural, =0 {Sin filtros} one {#filtrar} other {#filtros} many {#filtros}}aplicado. {results, plural, =0 {Ninguna publicación coincide} one {#publicar partidos} other {#las publicaciones coinciden} many {#las publicaciones coinciden}}.',
   'analytics.rankMetric.label': 'Clasificar publicaciones por',
   'analytics.rankMetric.help':
-    'No hay puntuación combinada en Relay. Elija una métrica en cuya definición confíe y la tabla se ordenará únicamente según esa métrica.',
+    'No hay puntuación combinada en Post Array. Elija una métrica en cuya definición confíe y la tabla se ordenará únicamente según esa métrica.',
   'analytics.rankMetric.chosen':
     'Clasificado por {metric}, según lo informado por cada proveedor de cuenta.',
   'analytics.outcome.awareness': 'Conciencia',
@@ -79,7 +79,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'El seguidor cuenta con {account}cambiado por {percent}durante este período.',
   'analytics.evidence.confounder.paid':
-    'Relay no puede decir si alguna de estas publicaciones recibió distribución paga.',
+    'Post Array no puede decir si alguna de estas publicaciones recibió distribución paga.',
   'analytics.evidence.confounder.provider':
     '{provider}cambió la forma en que informa {metric}dentro de este periodo.',
   'analytics.definition.open': 'que {metric}significa',
@@ -110,7 +110,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Un recuento de eventos',
   'analytics.unit.seconds': 'Segundos',
   'analytics.unit.percent': 'Un porcentaje que el proveedor ya calculó',
-  'analytics.unit.ratio': 'Una relación Relay calculada a partir de dos campos de proveedor',
+  'analytics.unit.ratio': 'Una relación Post Array calculada a partir de dos campos de proveedor',
   'analytics.unit.currency_minor': 'Una cantidad de dinero en unidades menores.',
   'analytics.denominator.none': 'Esto es un conteo, no una tasa. No tiene denominador.',
   'analytics.denominator.impressions': 'Dividido por impresiones',
@@ -128,7 +128,7 @@ export const webAnalyticsMessages = {
   'analytics.format.document': 'Documento',
   'analytics.format.thread': 'Hilo',
   'analytics.value.unavailableReason.notImplemented':
-    'Relay no ha creado la asignación para esta métrica el {provider}todavía.',
+    'Post Array no ha creado la asignación para esta métrica el {provider}todavía.',
   'analytics.value.estimated': 'Estimado',
   'analytics.value.estimatedMethod': 'Método: {method}.',
   'analytics.freshness.title': 'De dónde vinieron estos números',
@@ -236,7 +236,7 @@ export const webAnalyticsMessages = {
     'Analytics necesita el rol de analista o superior. Un propietario o administrador de este espacio de trabajo puede otorgarlo.',
   'analytics.state.rateLimitTitle': '{provider}es la tasa que limita las solicitudes de análisis',
   'analytics.state.rateLimitCause':
-    'La cuenta ha utilizado su parte de la cuota del proveedor para esta ventana. Relay no vuelve a intentarlo con más fuerza, porque eso retrasaría la publicación.',
+    'La cuenta ha utilizado su parte de la cuota del proveedor para esta ventana. Post Array no vuelve a intentarlo con más fuerza, porque eso retrasaría la publicación.',
   'analytics.state.rateLimitAlternative':
     'Limite el rango de fechas o el filtro de cuenta, que solicita menos al proveedor.',
   'analytics.state.rateLimitReset': 'Solicitudes de currículum',
@@ -244,9 +244,9 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Crear un enlace rastreado',
   'analytics.links.empty': 'Aún no hay enlaces rastreados',
   'analytics.links.emptyBody':
-    'Un enlace rastreado es una URL corta a la que Relay redirecciona, por lo que puede ver los clics incluso cuando una plataforma no informa ninguno. El destino original nunca se cambia sin una entrada de auditoría.',
+    'Un enlace rastreado es una URL corta a la que Post Array redirecciona, por lo que puede ver los clics incluso cuando una plataforma no informa ninguno. El destino original nunca se cambia sin una entrada de auditoría.',
   'analytics.links.emptyExample':
-    'Ejemplo: Relay.to/a7Kq2 redirige a acme.com/blog/launch con la campaña q3-launch.',
+    'Ejemplo: Post Array.to/a7Kq2 redirige a acme.com/blog/launch con la campaña q3-launch.',
   'analytics.links.table.caption':
     'Enlaces rastreados en este espacio de trabajo y recuentos de clics propios.',
   'analytics.links.campaign': 'Campaña',
@@ -275,7 +275,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, activo desde {start}a {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, activo desde {start}',
   'analytics.links.domainLabel': 'Dominio corto',
-  'analytics.links.domainDefault': 'Relay dominio predeterminado',
+  'analytics.links.domainDefault': 'Post Array dominio predeterminado',
   'analytics.links.domainVerified': 'Verificado por DNS en {date}',
   'analytics.links.domainPending': 'Esperando el registro DNS',
   'analytics.links.domainPendingHelp':
@@ -298,7 +298,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Reportar este enlace',
   'analytics.links.measurementLabel': 'Medición de redirección propia',
   'analytics.links.measurementExplained':
-    'Relay cuenta una solicitud cuando se solicita esta URL al servicio de redireccionamiento. Un clic deduplicado elimina las solicitudes repetidas del mismo visitante dentro de una ventana corta, y las solicitudes que coinciden con patrones de rastreo conocidos se excluyen en lugar de eliminarse.',
+    'Post Array cuenta una solicitud cuando se solicita esta URL al servicio de redireccionamiento. Un clic deduplicado elimina las solicitudes repetidas del mismo visitante dentro de una ventana corta, y las solicitudes que coinciden con patrones de rastreo conocidos se excluyen en lugar de eliminarse.',
   'analytics.links.botsNote':
     '{count, plural, one {#solicitud} other {#solicitudes} many {#solicitudes}}fueron clasificados como automatizados y están excluidos del recuento de duplicados.',
   'analytics.links.series.title': 'Solicitudes y clics deduplicados a lo largo del tiempo',
@@ -321,7 +321,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'Este enlace no ha sido solicitado desde su creación. Eso es un cero real, medido por nuestro propio servicio de redireccionamiento.',
   'analytics.links.compareWarning':
-    '{provider}informes {providerValue}Clics en el enlace para esta publicación. Relay grabado {relayValue}clics deduplicados. Los dos cuentan eventos diferentes y ninguno reemplaza al otro.',
+    '{provider}informes {providerValue}Clics en el enlace para esta publicación. Post Array grabado {relayValue}clics deduplicados. Los dos cuentan eventos diferentes y ninguno reemplaza al otro.',
   'analytics.links.errorTitle': 'No se pudieron cargar las estadísticas del enlace',
   'analytics.links.errorBody':
     'El servicio de redireccionamiento sigue funcionando, por lo que el enlace sigue enviando visitantes a su destino. Sólo los informes se ven afectados.',
@@ -330,7 +330,7 @@ export const webAnalyticsMessages = {
     'Debe ser una dirección https pública. El servicio de redireccionamiento rechaza las direcciones de red privadas y las cadenas de redireccionamiento.',
   'analytics.links.createCampaign': 'Nombre de la campaña',
   'analytics.links.createSlug': 'Final personalizado',
-  'analytics.links.createSlugHelp': 'Deje esto vacío y Relay generará un final aleatorio corto.',
+  'analytics.links.createSlugHelp': 'Deje esto vacío y Post Array generará un final aleatorio corto.',
   'analytics.links.createUtm': 'Parámetros UTM',
   'analytics.links.blockedScheme': 'Sólo se aceptan destinos https.',
   'analytics.links.blockedPrivate':
@@ -457,7 +457,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {#la acción es} other {#las acciones son} many {#las acciones son}}no aparecen en la lista porque las cuentas seleccionadas no pueden realizarlas.',
   'automation.picker.hiddenDetail': '{action}no está disponible para {provider}. {reason}',
   'automation.picker.consequential': 'Crea algo en una plataforma.',
-  'automation.picker.internalOnly': 'Se queda dentro Relay',
+  'automation.picker.internalOnly': 'Se queda dentro Post Array',
   'automation.accounts.label': 'Cuentas sobre las que esta regla puede actuar',
   'automation.accounts.help':
     'Una regla nunca puede afectar a una cuenta que no figura aquí, independientemente de lo que digan sus condiciones.',
@@ -543,7 +543,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition}no pasó, por lo que la regla se detuvo aquí',
   'automation.test.actionSimulated': '{action}correría',
   'automation.test.actionSkipped': '{action}se omitiría: {reason}',
-  'automation.test.noExternalEffect': 'No quedó nada Relay durante esta prueba.',
+  'automation.test.noExternalEffect': 'No quedó nada Post Array durante esta prueba.',
   'automation.test.failed': 'La prueba no se pudo completar: {reason}',
   'automation.runs.table.caption': 'Ejecuciones recientes de esta regla.',
   'automation.runs.startedAt': 'iniciado',
@@ -594,7 +594,7 @@ export const webAnalyticsMessages = {
     'Convierte un feed en borradores o publicaciones programadas, con la misma validación y aprobación que cualquier cosa que escribas tú mismo.',
   'automation.rss.empty': 'Aún no hay feeds',
   'automation.rss.emptyBody':
-    'Agregue un feed y Relay lo verifica según un cronograma. Cada elemento nuevo se convierte en un borrador, una publicación programada o una solicitud de aprobación, lo que elijas.',
+    'Agregue un feed y Post Array lo verifica según un cronograma. Cada elemento nuevo se convierte en un borrador, una publicación programada o una solicitud de aprobación, lo que elijas.',
   'automation.rss.emptyExample':
     'Ejemplo: el feed del blog de Acme crea un borrador para X y LinkedIn cada vez que se publica un artículo y espera a un aprobador.',
   'automation.rss.table.caption': 'Alimenta las encuestas de este espacio de trabajo.',
@@ -609,7 +609,7 @@ export const webAnalyticsMessages = {
   'automation.rss.step.policy': 'como se publica',
   'automation.rss.stepOf': 'paso {current}de {total}',
   'automation.rss.urlHelp':
-    'Relay obtiene el feed de nuestros servidores, no de su navegador. Se rechazan las direcciones de redes privadas.',
+    'Post Array obtiene el feed de nuestros servidores, no de su navegador. Se rechazan las direcciones de redes privadas.',
   'automation.rss.validateAction': 'Mira este feed',
   'automation.rss.validateFailed': 'Esa dirección no devolvió un feed legible.',
   'automation.rss.validateFailedReason': 'Lo que recuperamos: {reason}',
@@ -622,7 +622,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'No hay imagen en este artículo',
   'automation.rss.previewImageAlt': 'Imagen del elemento del feed {title}',
   'automation.rss.previewNoDate':
-    'Este elemento no tiene marca de tiempo, por lo que Relay usa la hora en que lo vio por primera vez.',
+    'Este elemento no tiene marca de tiempo, por lo que Post Array usa la hora en que lo vio por primera vez.',
   'automation.rss.previewFieldsTitle': 'Campos que proporciona este feed',
   'automation.rss.previewFieldMissing': 'No presente en este feed',
   'automation.rss.seenTitle': 'Lo que cuenta como ya visto',
@@ -647,7 +647,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'Vista previa con el elemento más nuevo',
   'automation.rss.adaptWithAi': 'Adaptar el texto para cada target',
   'automation.rss.adaptHelp':
-    'El texto se reescribe para adaptarse a cada plataforma y se muestra como una diferencia que usted acepta o rechaza. Los medios provienen del elemento del feed. Relay no genera imágenes.',
+    'El texto se reescribe para adaptarse a cada plataforma y se muestra como una diferencia que usted acepta o rechaza. Los medios provienen del elemento del feed. Post Array no genera imágenes.',
   'automation.rss.noImageGeneration':
     'Si un elemento del feed no tiene imagen, la publicación se publica sin ella.',
   'automation.rss.imageFromFeed': 'Utilice la imagen del elemento del feed cuando tenga una.',
@@ -683,10 +683,10 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Reanudar este feed',
   'automation.rss.deleteTitle': 'Quitar {title}?',
   'automation.rss.deleteBody':
-    'Relay deja de verificar este feed. Los borradores y publicaciones que ya creó permanecen exactamente como están.',
+    'Post Array deja de verificar este feed. Los borradores y publicaciones que ya creó permanecen exactamente como están.',
   'automation.rss.errorTitle': 'Este feed no se pudo leer.',
   'automation.rss.errorBody':
-    'Relay sigue comprobando según el horario normal. No se publicó nada a partir de una respuesta parcial.',
+    'Post Array sigue comprobando según el horario normal. No se publicó nada a partir de una respuesta parcial.',
   'automation.refuse.title': 'No disponible en ninguna regla',
   'automation.refuse.body':
     'Me gusta y seguidores automáticos, grupos de participación, respuestas y mensajes no solicitados y publicar el mismo contenido desde varias cuentas para que parezca popular no son opciones aquí. Las plataformas los prohíben y dañan las cuentas que los utilizan.',

@@ -31,7 +31,7 @@ export interface JsonEnvelope {
 }
 
 /**
- * One thing that would happen outside Relay. `--dry-run` prints exactly this
+ * One thing that would happen outside Post Array. `--dry-run` prints exactly this
  * list, so "what will this actually do" is answerable before it does it.
  */
 export interface PlannedExternalAction {

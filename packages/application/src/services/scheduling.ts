@@ -1,4 +1,5 @@
 import {
+  MAX_SCHEDULE_HORIZON_DAYS,
   scheduleSpecSchema,
   type Paginated,
   type PublishState,
@@ -158,6 +159,17 @@ export function createSchedulingService(
             const next = new Date(spec.instant);
             if (next.getTime() <= deps.clock.now().getTime()) {
               throw invalid('errors.schedule_in_past', { instant: spec.instant });
+            }
+            // The same thirty day horizon the publish path enforces on a new
+            // schedule. A reschedule must not be the loophole.
+            if (
+              next.getTime() >
+              deps.clock.now().getTime() + MAX_SCHEDULE_HORIZON_DAYS * 24 * 60 * 60 * 1000
+            ) {
+              throw invalid('validation.schedule_too_far_ahead.message', {
+                limit: `${MAX_SCHEDULE_HORIZON_DAYS} days`,
+                instant: spec.instant,
+              });
             }
 
             // A daylight-saving shift changes the wall-clock time the user

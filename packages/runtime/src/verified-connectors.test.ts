@@ -110,7 +110,7 @@ describe('createVerifiedConnectorRegistry', () => {
 
   it('never dispatches the fake connector in production, even with the opt-in flag set', () => {
     const registry = createVerifiedConnectorRegistry({
-      config: config({ NODE_ENV: 'production', RELAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+      config: config({ NODE_ENV: 'production', POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true' }),
       logger,
       clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
     });
@@ -134,9 +134,9 @@ describe('createVerifiedConnectorRegistry', () => {
     );
   });
 
-  it('dispatches the fake connector in development once RELAY_ALLOW_FAKE_CONNECTOR is set', () => {
+  it('dispatches the fake connector in development once POSTARRAY_ALLOW_FAKE_CONNECTOR is set', () => {
     const registry = createVerifiedConnectorRegistry({
-      config: config({ RELAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+      config: config({ POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true' }),
       logger,
       clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
     });
@@ -147,7 +147,7 @@ describe('createVerifiedConnectorRegistry', () => {
 
   it('dispatches the fake connector under NODE_ENV=test with the opt-in flag', () => {
     const registry = createVerifiedConnectorRegistry({
-      config: config({ NODE_ENV: 'test', RELAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+      config: config({ NODE_ENV: 'test', POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true' }),
       logger,
       clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
     });

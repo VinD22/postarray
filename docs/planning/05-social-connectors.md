@@ -117,7 +117,7 @@ applies to. No network call except where the provider itself offers a validation
 runs at compose, at schedule and again at dispatch.
 
 **`prepareMedia(input): Promise<PreparedMedia[]>`**
-Turn a Relay media asset into whatever this provider needs: an uploaded media ID, a resumable
+Turn a Post Array media asset into whatever this provider needs: an uploaded media ID, a resumable
 upload session, a container ID, or a signed public URL for providers that pull from a URL. It
 records the derivative used and its checksum. It is idempotent on `(asset, connection, variant)`,
 so a retry does not upload twice.
@@ -141,7 +141,7 @@ Poll a pending publish. Returns `processing`, `published` (with external ID and 
 "did the post actually get created?" before we consider retrying.
 
 **`deletePost?(input): Promise<void>`**
-Delete the external post where the API allows it. Deleting in Relay never implies deleting
+Delete the external post where the API allows it. Deleting in Post Array never implies deleting
 externally; the UI asks explicitly and the receipt records both facts separately.
 
 **`fetchMetrics(input): Promise<MetricObservation[]>`**
@@ -441,7 +441,7 @@ they are unusual and high-performing. Exact ceilings from the snapshot.
 Organization analytics are possible with approved access. **New access to member post readback is
 restricted**, so we must not promise member-post analytics. Where member analytics are unavailable,
 show `unavailable` with the reason "LinkedIn does not provide this data to new applications for
-member posts", which is a provider limitation, not a Relay gap, and the UI must say which.
+member posts", which is a provider limitation, not a Post Array gap, and the UI must say which.
 
 **Rate limits and costs**
 Application-level and member-level daily limits apply. Exact numbers may be visible only in the
@@ -645,7 +645,7 @@ An unaudited project may upload videos **only as private**. This is a provider r
   video to public in YouTube Studio."
 - We do **not** market YouTube as a supported connector until the audit is complete and the
   definition of done is satisfied. Until then it is labelled beta with the exact limitation shown.
-  This is `requires_permission`, not `unsupported`, and not a Relay bug.
+  This is `requires_permission`, not `unsupported`, and not a Post Array bug.
 
 **Publishing workflow: resumable upload**
 
@@ -761,7 +761,7 @@ Hard requirements from TikTok's guidelines that are product requirements, not ni
 
 - **Fetch creator info at publish time**, not at connect time. Options change.
 - **Never default the privacy selection.** An unselected privacy is a validation error.
-- **Never add a Relay watermark or logo** to content destined for TikTok.
+- **Never add a Post Array watermark or logo** to content destined for TikTok.
 - **Use a verified owned domain** for pull-from-URL uploads.
 - **A media upload alone is not success.** Poll or await the status callback for the final state.
 

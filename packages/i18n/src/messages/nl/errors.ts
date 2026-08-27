@@ -12,7 +12,7 @@ export const errorMessages = {
   'error.internal.message': 'Dit is een probleem aan onze kant, niet met uw inhoud.',
   'error.internal.action':
     'Uw werk is opgeslagen. Wij zijn gewaarschuwd. Probeer het over een paar minuten opnieuw.',
-  'error.not_implemented.message': 'Relay heeft dit nog niet gebouwd.',
+  'error.not_implemented.message': 'Post Array heeft dit nog niet gebouwd.',
   'error.not_implemented.action': 'Volg de changelog voor wanneer deze wordt verzonden.',
   'error.offline.message': 'Je bent offline.',
   'error.offline.action':
@@ -60,6 +60,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Update de betaalmethode in de Polar portal.',
   'error.trial_expired.message': 'De proefperiode eindigde op {date}.',
   'error.trial_expired.action': 'Start het abonnement om door te gaan met publiceren.',
+  'error.post_credits_exhausted.message':
+    'Deze werkruimte heeft al haar gratis berichten gebruikt. Al het andere blijft werken.',
+  'error.post_credits_exhausted.action':
+    'Kies een abonnement om te blijven publiceren. Je accounts blijven verbonden en je concepten en planningen blijven behouden.',
   'error.entitlement_missing.message': 'Deze werkruimte heeft geen toegang tot die functie.',
   'error.entitlement_missing.action':
     'Controleer de factureringsinstellingen of neem contact op met de ondersteuning.',
@@ -101,7 +105,7 @@ export const errorMessages = {
     'Berichten worden privé gepubliceerd totdat de beoordeling is goedgekeurd. We werken deze pagina bij wanneer deze verandert.',
   'error.capability_unsupported.message': '{provider} biedt dit niet aan via zijn officiële API.',
   'error.capability_unsupported.action': 'Gebruik een indeling die dit account ondersteunt.',
-  'error.capability_not_implemented.message': 'Relay heeft dit nog niet gebouwd voor {provider}.',
+  'error.capability_not_implemented.message': 'Post Array heeft dit nog niet gebouwd voor {provider}.',
   'error.capability_not_implemented.action':
     'Op de mogelijkhedenpagina wordt vermeld wat elke connector vandaag kan doen.',
   'error.capability_requires_review.message':

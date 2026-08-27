@@ -293,7 +293,7 @@ export const webSettingsMessages = {
   'settings.ui.security.apiKeyCredentialLabel': 'API key',
   'settings.ui.security.apiKeyCredentialWarning': 'This is the only time this API key is shown',
   'settings.ui.security.apiKeyCredentialWarningBody':
-    'Copy it into your secret store now. Relay keeps only a hash and cannot show it again.',
+    'Copy it into your secret store now. Post Array keeps only a hash and cannot show it again.',
   'settings.ui.security.apiKeyCredentialConsumed':
     'The API key is no longer displayed. Revoke it and create another if you did not store it.',
   'settings.ui.security.apiKeyCredentialStored': 'I have stored this API key',
@@ -310,7 +310,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Granted permissions',
   'settings.ui.security.socialPermissionsTitle': 'Social account permissions',
   'settings.ui.security.socialPermissionsBody':
-    'What each connected account has allowed Relay to do, from the capability snapshot taken at connection time.',
+    'What each connected account has allowed Post Array to do, from the capability snapshot taken at connection time.',
   'settings.ui.security.viewInSection': 'Manage in {section}',
   'settings.ui.security.emptySessions': 'Only this session is signed in.',
   'settings.ui.security.emptyGrants':
@@ -355,7 +355,7 @@ export const webSettingsMessages = {
     'Choose the smallest thing that solves your problem. Each option below says what survives.',
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
-    'Removes Relay access to that account. The workspace, its content and its receipts stay.',
+    'Removes Post Array access to that account. The workspace, its content and its receipts stay.',
   'settings.ui.data.deleteProject': 'Archive a project',
   'settings.ui.data.deleteProjectHelp':
     'Open Projects to archive that publishing context. Content published under it keeps its receipts.',
@@ -374,7 +374,7 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteRequestSubmit': 'Start cooling-off window',
   'settings.ui.data.deleteRequestScheduled': 'Workspace closure is scheduled',
   'settings.ui.data.deleteRequestScheduledBody':
-    'Deletion is scheduled for {date}. You can cancel before then. Relay credentials will be removed and stored media will be deleted. Provider-side removal depends on each connector.',
+    'Deletion is scheduled for {date}. You can cancel before then. Post Array credentials will be removed and stored media will be deleted. Provider-side removal depends on each connector.',
   'settings.ui.data.deleteRequestCancel': 'Cancel workspace closure',
   'settings.ui.data.deleteRequestCanceled': 'Workspace closure canceled',
   'settings.ui.data.deleteRequestCanceledBody':
@@ -384,7 +384,7 @@ export const webSettingsMessages = {
     'Deletion has started and cannot be canceled. Published posts remain on their platforms.',
   'settings.ui.data.deleteRequestCompleted': 'Workspace closure completed',
   'settings.ui.data.deleteRequestCompletedBody':
-    'Workspace access is closed. Stored media and Relay credentials were removed. Retention-bound audit and publication records may remain. Published posts remain on their platforms.',
+    'Workspace access is closed. Stored media and Post Array credentials were removed. Retention-bound audit and publication records may remain. Published posts remain on their platforms.',
   'settings.ui.data.deleteRequestFailed': 'Workspace closure needs attention',
   'settings.ui.data.deleteRequestFailedBody':
     'The request stopped after a deletion step failed. Earlier steps may have completed. Contact support with the request reference so the remaining work can be retried safely.',
@@ -402,7 +402,7 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConsequence.jobs':
     'Every scheduled post is canceled before anything is removed.',
   'settings.ui.data.deleteConsequence.connections':
-    'Relay credentials are removed. Relay never claims provider-side access removal until that connector confirms it.',
+    'Post Array credentials are removed. Post Array never claims provider-side access removal until that connector confirms it.',
   'settings.ui.data.deleteConsequence.media': 'Stored media is deleted and cannot be recovered.',
   'settings.ui.data.deleteConsequence.receipts':
     'Publication receipts are kept for the retention period stated in the Terms, then removed.',
@@ -413,7 +413,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'Share Relay with a disclosed link. Commission is never conditional on a positive review.',
+    'Share Post Array with a disclosed link. Commission is never conditional on a positive review.',
   'settings.ui.referral.linkLabel': 'Your referral link',
   'settings.ui.referral.linkCopied': 'Copied',
   'settings.ui.referral.tableCaption': 'Attributed signups and their commission state',
@@ -558,7 +558,7 @@ export const webSettingsMessages = {
     'Register an application so other people can grant it access to their workspace. Each app has its own identity, its own redirect allowlist and its own audit trail.',
   'developer.ui.apps.emptyTitle': 'No apps registered',
   'developer.ui.apps.emptyBody':
-    'Register an app when another product needs to act on behalf of a Relay user. For your own automation, use a service account instead.',
+    'Register an app when another product needs to act on behalf of a Post Array user. For your own automation, use a service account instead.',
   'developer.ui.apps.emptyExample':
     'Example: "Acme Publisher", confidential client, redirect https://acme.example/oauth/callback, scopes accounts:read and drafts:write.',
   'developer.ui.apps.typeHelp':
@@ -580,7 +580,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroup.consequential': 'Consequential permissions',
   'developer.ui.apps.scopeGroupHelp.read': 'These let the app look at data. Nothing changes.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'These let the app create or edit things inside Relay. Nothing reaches a platform.',
+    'These let the app create or edit things inside Post Array. Nothing reaches a platform.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'These can cause a post on a real account, or change who can reach your accounts. They are always listed separately and are never bundled.',
   'developer.ui.apps.noBundling':
@@ -746,7 +746,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X and some other providers charge per operation. Those charges are passed through at cost and are not part of the plan price.',
   'billing.ui.allowanceNoMedia':
-    'Image generation and video generation are not included and are not sold. Relay does not generate media.',
+    'Image generation and video generation are not included and are not sold. Post Array does not generate media.',
   'billing.ui.readFairUse': 'Read the fair use policy',
   'billing.ui.readMeteredPolicy': 'Read how metered usage is billed',
   'billing.ui.usageCaption': 'Metered provider usage this period, billed at cost',
@@ -811,7 +811,7 @@ export const webSettingsMessages = {
   'billing.ui.resume': 'Start the subscription again',
   'billing.ui.noSubscriptionTitle': 'No subscription on this workspace',
   'billing.ui.noSubscriptionBody':
-    'Start the seven day trial to publish. Polar collects a payment method and charges nothing today.',
+    'This workspace is on the free plan: your remaining free posts are shown above, and everything else is unmetered. Choose a plan to publish without the cap.',
   'billing.ui.noSubscriptionExample':
     'Monthly is $29. Annual is $300, which is $25/month billed annually. Save $48/year.',
   'billing.ui.overChannelLimitAction': 'Review connected channels',
@@ -928,7 +928,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'An incentive must be disclosed on every post that results from it, by you and by the participant.',
   'growth.ui.ugc.honesty':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them, write testimonials or create customer content.',
+    'This plans a campaign you run with real people. Post Array does not find creators, contact them, write testimonials or create customer content.',
 
   'growth.ui.opportunities.caption':
     'Verified opportunities from the catalog, ranked by fit with your profile',
@@ -951,7 +951,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Their rules, quoted',
   'growth.ui.opportunities.prepareChecklist': 'What to have ready',
   'growth.ui.opportunities.prepareManual':
-    'You submit this yourself on their site. Relay does not fill in forms, create accounts or email anyone.',
+    'You submit this yourself on their site. Post Array does not fill in forms, create accounts or email anyone.',
   'growth.ui.opportunities.pitchTitle': 'Pitch draft',
   'growth.ui.opportunities.pitchHelp':
     'Edit it before you send it. It uses only the facts you confirmed.',
@@ -969,7 +969,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Every entry needs a checked price, checked rights terms and a named limitation before it appears here.',
   'growth.ui.tools.emptyExample':
-    'An entry says what it is best for, why it fits your plan, what it cannot do, the skills it needs, how the output comes back into Relay, and when the price was last checked.',
+    'An entry says what it is best for, why it fits your plan, what it cannot do, the skills it needs, how the output comes back into Post Array, and when the price was last checked.',
   'growth.ui.tools.openSite': 'Open the official site for {name}',
   'growth.ui.tools.stale': 'Past its review date. Excluded from generated plans.',
 

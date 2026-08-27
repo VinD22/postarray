@@ -16,9 +16,9 @@ const messages: ComboboxMessages = {
 };
 
 const ITEMS: ComboboxItem[] = [
-  { id: 'ext_1', label: 'Relay HQ', description: '@relayhq' },
-  { id: 'ext_2', label: 'Relay Support', description: '@relaysupport' },
-  { id: 'ext_3', label: 'Relay Status', description: '@relaystatus', disabled: true },
+  { id: 'ext_1', label: 'Post Array HQ', description: '@relayhq' },
+  { id: 'ext_2', label: 'Post Array Support', description: '@relaysupport' },
+  { id: 'ext_3', label: 'Post Array Status', description: '@relaystatus', disabled: true },
 ];
 
 function Example({
@@ -79,7 +79,7 @@ describe('Combobox', () => {
     expect(input).toHaveFocus();
     const activeId = input.getAttribute('aria-activedescendant');
     expect(activeId).toBeTruthy();
-    expect(document.getElementById(activeId ?? '')).toHaveTextContent('Relay Support');
+    expect(document.getElementById(activeId ?? '')).toHaveTextContent('Post Array Support');
   });
 
   it('skips a disabled option when moving', async () => {
@@ -90,7 +90,7 @@ describe('Combobox', () => {
     // From the first selectable option: down twice wraps past the disabled one.
     await user.keyboard('{ArrowDown}{ArrowDown}');
     const activeId = input.getAttribute('aria-activedescendant');
-    expect(document.getElementById(activeId ?? '')).toHaveTextContent('Relay HQ');
+    expect(document.getElementById(activeId ?? '')).toHaveTextContent('Post Array HQ');
   });
 
   it('commits the active option on Enter', async () => {
@@ -102,7 +102,7 @@ describe('Combobox', () => {
     await user.keyboard('{Enter}');
 
     expect(onValueChange).toHaveBeenCalledWith(expect.objectContaining({ id: 'ext_1' }));
-    expect(input).toHaveValue('Relay HQ');
+    expect(input).toHaveValue('Post Array HQ');
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 

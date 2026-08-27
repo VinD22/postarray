@@ -173,7 +173,7 @@ export interface PolicyNote<Code extends string> {
 export interface AgentDecision {
   /** False means the request is refused outright, not merely escalated. */
   readonly allowed: boolean;
-  /** True when a human must explicitly confirm before anything leaves Relay. */
+  /** True when a human must explicitly confirm before anything leaves Post Array. */
   readonly requiresHumanConfirmation: boolean;
   readonly blockers: readonly PolicyNote<RestrictionCode>[];
   readonly escalations: readonly PolicyNote<EscalationCode>[];
@@ -521,7 +521,7 @@ export function evaluateAgentAction(request: AgentActionRequest): AgentDecision 
     );
   }
 
-  // Restrictions only bind actions that reach outside Relay. Reading and
+  // Restrictions only bind actions that reach outside Post Array. Reading and
   // drafting inside a narrowed identity is still allowed.
   const consequential =
     request.kind === 'schedule' || request.kind === 'reschedule' || request.kind === 'publish_now';

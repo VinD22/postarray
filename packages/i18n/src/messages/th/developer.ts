@@ -73,7 +73,7 @@ export const developerMessages = {
   'developer.activity.empty': 'ยังไม่มีการโทร',
   'developer.activity.redacted': 'เนื้อหาคำขอและการตอบกลับจะถูกจัดเก็บโดยลบความลับออก',
   'developer.apps.title': 'แอพสำหรับนักพัฒนา',
-  'developer.apps.subtitle': 'ปล่อยให้ผลิตภัณฑ์อื่นดำเนินการผ่าน Relay โดยมีสิทธิ์ที่ผู้ใช้มอบให้',
+  'developer.apps.subtitle': 'ปล่อยให้ผลิตภัณฑ์อื่นดำเนินการผ่าน Post Array โดยมีสิทธิ์ที่ผู้ใช้มอบให้',
   'developer.apps.create': 'ลงทะเบียนแอพ',
   'developer.apps.name': 'ชื่อแอป',
   'developer.apps.type.label': 'ประเภทลูกค้า',

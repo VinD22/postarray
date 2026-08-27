@@ -29,7 +29,7 @@ const meRoute = {
   body: {
     id: 7,
     username: 'relay',
-    name: 'Relay User',
+    name: 'Post Array User',
     profile_image: 'https://dev.to/avatar.png',
     website_url: null,
   },

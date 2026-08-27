@@ -146,7 +146,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'This post is already published',
   'web.calendar.published.body':
-    'A post exists on {provider} at {permalinkLabel}. Moving the entry in Relay does not move the post on the platform. Choose what you want to happen.',
+    'A post exists on {provider} at {permalinkLabel}. Moving the entry in Post Array does not move the post on the platform. Choose what you want to happen.',
   'web.calendar.published.optionLocal': 'Update the local record only',
   'web.calendar.published.optionLocalHint':
     'The receipt keeps the real publish time. Only the planning entry moves, so your calendar matches your plan.',
@@ -250,7 +250,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Analytics have not synced for this post yet.',
   'web.receipt.analytics.explain':
-    'Providers aggregate on their own schedules. The time below is when Relay last read them, not when the numbers were true.',
+    'Providers aggregate on their own schedules. The time below is when Post Array last read them, not when the numbers were true.',
 
   'web.receipt.export.download': 'Download the receipt',
   'web.receipt.export.copyReference': 'Copy the receipt reference',
@@ -265,11 +265,11 @@ export const webCalendarMessages = {
     'Schedule the failed account again as a new post. Accounts that already published will not be touched.',
 
   'web.receipt.remediation.user_action_required':
-    'This needs a change in Relay or on {provider} before it can run again.',
+    'This needs a change in Post Array or on {provider} before it can run again.',
   'web.receipt.remediation.content_invalid':
     'Edit the content so it passes {provider} validation, then schedule it again.',
   'web.receipt.remediation.transient_provider':
-    '{provider} returned a temporary error. Relay retried on its own schedule.',
+    '{provider} returned a temporary error. Post Array retried on its own schedule.',
   'web.receipt.remediation.permanent_provider':
     '{provider} refused this permanently. Retrying the same content will not change the answer.',
   'web.receipt.remediation.internal':
@@ -332,19 +332,19 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# scheduled post} other {# scheduled posts}} for this account will not publish.',
   'web.connection.disconnect.consequence.published':
-    'Posts already published stay on {provider}. Relay does not delete them.',
+    'Posts already published stay on {provider}. Post Array does not delete them.',
   'web.connection.disconnect.consequence.analytics':
     'Metrics already collected stay in this workspace and stop updating.',
 
   'web.connection.connect.title': 'Connect an account',
   'web.connection.connect.projectContext':
-    'Connect {provider} to {project}. Relay keeps this account, its media and its posts inside that project.',
+    'Connect {provider} to {project}. Post Array keeps this account, its media and its posts inside that project.',
   'web.connection.connect.chooseProvider': 'Which platform',
-  'web.connection.connect.permissionHeading': 'What Relay will ask {provider} for',
+  'web.connection.connect.permissionHeading': 'What Post Array will ask {provider} for',
   'web.connection.connect.requirementHeading': 'Before you continue',
   'web.connection.connect.continue': 'Continue to {provider}',
   'web.connection.connect.handoffNote':
-    'The next screen is {provider}, not Relay. Relay never sees your password.',
+    'The next screen is {provider}, not Post Array. Post Array never sees your password.',
   'web.connection.connect.noWriteWithoutApproval':
     'Connecting an account does not publish anything. Every post still follows this workspace approval policy.',
   'web.connection.projectScope.title': 'Showing channels for {project}',
@@ -357,13 +357,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Instagram publishing needs a professional account, which means a business or creator account linked to a Facebook Page.',
   'web.connection.requirement.facebook':
-    'Relay publishes to Facebook Pages. A personal profile cannot be a publishing target.',
+    'Post Array publishes to Facebook Pages. A personal profile cannot be a publishing target.',
   'web.connection.requirement.linkedin':
     'To publish for an organization you need a content admin role on that LinkedIn Page.',
   'web.connection.requirement.youtube':
     'Until Google completes the app audit, uploads from this project publish as private. You can change the visibility on YouTube afterwards.',
   'web.connection.requirement.tiktok':
-    'TikTok requires you to choose the audience for each post yourself. Relay cannot preselect one for you.',
+    'TikTok requires you to choose the audience for each post yourself. Post Array cannot preselect one for you.',
   'web.connection.requirement.x':
     'X charges per operation. A post that contains a URL costs more than a plain text post, and the estimate is shown before you schedule.',
   'web.connection.requirement.threads':
@@ -373,29 +373,29 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon connects with an access token you create on your own instance, not your account password.',
   'web.connection.requirement.telegram':
-    'Relay posts as a bot. Add the bot to the channel or group you want to publish into.',
+    'Post Array posts as a bot. Add the bot to the channel or group you want to publish into.',
   'web.connection.requirement.reddit':
     'Writing to Reddit requires an approved application, and every post needs a title and a subreddit.',
   'web.connection.requirement.wordpress':
-    'Relay publishes through the site REST API with an application password you create in WordPress.',
+    'Post Array publishes through the site REST API with an application password you create in WordPress.',
   'web.connection.requirement.medium':
-    'Medium connects through OAuth and Relay publishes public stories in Markdown.',
+    'Medium connects through OAuth and Post Array publishes public stories in Markdown.',
   'web.connection.requirement.devto':
     'Dev.to connects with an API key created in your Dev.to settings.',
   'web.connection.requirement.pinterest':
     'Writing to Pinterest requires approved app access, and a pin needs an image and a board you own.',
   'web.connection.requirement.discord':
-    'Relay posts as a bot. Add the bot to the servers and channels you want to publish into.',
+    'Post Array posts as a bot. Add the bot to the servers and channels you want to publish into.',
   'web.connection.requirement.slack':
-    'Relay posts as an app. Add the app to the channels you want to publish into.',
+    'Post Array posts as an app. Add the app to the channels you want to publish into.',
   'web.connection.requirement.generic':
-    'You need permission to post on this account from the platform itself. Relay cannot grant it.',
+    'You need permission to post on this account from the platform itself. Post Array cannot grant it.',
 
-  'web.connection.purpose.publish': 'Publishing the posts you schedule in Relay.',
+  'web.connection.purpose.publish': 'Publishing the posts you schedule in Post Array.',
   'web.connection.purpose.readPosts':
-    'Reading back a post Relay published, so the receipt can prove it is live.',
+    'Reading back a post Post Array published, so the receipt can prove it is live.',
   'web.connection.purpose.identity':
-    'Showing the exact account name in Relay, so you never publish to the wrong one.',
+    'Showing the exact account name in Post Array, so you never publish to the wrong one.',
   'web.connection.purpose.analytics':
     'Reading the metrics this platform reports for your own posts.',
   'web.connection.purpose.refresh':
@@ -406,7 +406,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Permissions on {account}',
   'web.connection.permissions.scopeColumn': 'Permission',
   'web.connection.permissions.stateColumn': 'State',
-  'web.connection.permissions.purposeColumn': 'What Relay uses it for',
+  'web.connection.permissions.purposeColumn': 'What Post Array uses it for',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# permission is missing} other {# permissions are missing}}. Reconnect and accept it to restore the features below.',
   'web.connection.permissions.snapshot': 'Read from {provider} {relativeTime}',
@@ -418,9 +418,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'Capability',
   'web.connection.capability.legendTitle': 'How to read this',
   'web.connection.capability.legend.supported':
-    'Relay can do this today for a connected account of the right type.',
+    'Post Array can do this today for a connected account of the right type.',
   'web.connection.capability.legend.not_implemented':
-    'The platform offers this and Relay has not built it yet. It is on the connector roadmap.',
+    'The platform offers this and Post Array has not built it yet. It is on the connector roadmap.',
   'web.connection.capability.legend.unsupported':
     'The platform does not offer this through its official API, so no tool can do it safely.',
   'web.connection.capability.legend.requires_review':

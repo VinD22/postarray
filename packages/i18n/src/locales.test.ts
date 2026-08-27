@@ -68,23 +68,26 @@ describe('locale registry', () => {
     expect(new Set(codes).size).toBe(codes.length);
   });
 
-  it('exposes exactly the twenty launch locales', () => {
+  it('exposes exactly the twenty-five launch locales', () => {
     expect(ACTIVE_LOCALES.map((locale) => locale.bcp47).sort()).toEqual(
       [...PUBLIC_LOCALE_CODES].sort(),
     );
-    expect(PUBLIC_LOCALE_CODES).toHaveLength(20);
-    expect(new Set(PUBLIC_LOCALE_CODES).size).toBe(20);
-    expect([...RETIRED_LOCALE_CODES].sort()).toEqual(['cs', 'es-419', 'fil', 'sv', 'zh-Hant']);
+    expect(PUBLIC_LOCALE_CODES).toHaveLength(25);
+    expect(new Set(PUBLIC_LOCALE_CODES).size).toBe(25);
+    expect([...RETIRED_LOCALE_CODES].sort()).toEqual([]);
     expect(RETIRED_LOCALES.every((locale) => locale.status === 'retired')).toBe(true);
     expect(ACTIVE_LOCALES.map((locale) => locale.bcp47)).toEqual([
       'en',
       'es',
+      'es-419',
       'pt-BR',
       'fr',
       'de',
       'it',
       'nl',
       'pl',
+      'cs',
+      'sv',
       'tr',
       'ru',
       'uk',
@@ -94,7 +97,9 @@ describe('locale registry', () => {
       'id',
       'vi',
       'th',
+      'fil',
       'zh-Hans',
+      'zh-Hant',
       'ja',
       'ko',
     ]);
@@ -106,10 +111,13 @@ describe('locale registry', () => {
     expect(isActiveLocale('ar')).toBe(true);
     expect(isActiveLocale('he')).toBe(true);
     expect(isActiveLocale('zh-Hans')).toBe(true);
-    expect(isActiveLocale('zh-Hant')).toBe(false);
-    expect(isActiveLocale('es-419')).toBe(false);
-    expect(isRetiredLocale('zh-Hant')).toBe(true);
-    expect(isRetiredLocale('es-419')).toBe(true);
+    expect(isActiveLocale('zh-Hant')).toBe(true);
+    expect(isActiveLocale('es-419')).toBe(true);
+    expect(isActiveLocale('cs')).toBe(true);
+    expect(isActiveLocale('sv')).toBe(true);
+    expect(isActiveLocale('fil')).toBe(true);
+    expect(isRetiredLocale('zh-Hant')).toBe(false);
+    expect(isRetiredLocale('es-419')).toBe(false);
     expect(isRetiredLocale('de')).toBe(false);
   });
 
@@ -154,7 +162,7 @@ describe('locale registry', () => {
       (locale) => locale.bcp47,
     );
     expect(rtl.sort()).toEqual(['ar', 'he']);
-    expect(ACTIVE_LOCALES.filter((locale) => locale.direction === 'ltr')).toHaveLength(18);
+    expect(ACTIVE_LOCALES.filter((locale) => locale.direction === 'ltr')).toHaveLength(23);
   });
 
   it('marks Arabic, Hebrew and Urdu as right to left and nothing else', () => {

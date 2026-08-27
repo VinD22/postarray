@@ -39,6 +39,12 @@ const POST_BASELINE_TABLE_EXCEPTIONS = [
   '0074_seo_keyword_targets.sql',
   '0075_rename_brand_to_project.sql',
   '0076_onboarding_states.sql',
+  // The free plan's credit balance and ledger. Same situation once more: 0004
+  // was applied and checksummed long before the trial was replaced by
+  // credits, so the two tables are created post-baseline, with RLS enabled,
+  // forced and policied in the same file and the completeness assertion
+  // repeated at the end.
+  '0077_publishing_credits.sql',
 ];
 
 function modelIdDefaults(source: string): ReadonlyMap<string, string> {

@@ -356,8 +356,10 @@ describe('resume', () => {
     );
   });
 
-  it('asks for daylight saving confirmation when the clocks change in between', async () => {
-    // Held in British Summer Time, resumed after the October transition.
+  it('refuses a resume beyond the thirty day schedule horizon', async () => {
+    // The horizon is enforced before the daylight-saving confirmation: a time
+    // we will refuse outright must not first ask the user to confirm a clock
+    // change on it.
     seedJob({
       scheduledFor: new Date('2026-10-20T12:00:00.000Z'),
       pausedAt: NOW,
@@ -373,22 +375,50 @@ describe('resume', () => {
           repeat: null,
         },
       }),
-      'errors.schedule_crosses_dst',
+      'validation.schedule_too_far_ahead.message',
     );
+  });
 
-    const confirmed = await service().resume(
-      { ...ctx, correlationId: 'c3' },
-      {
-        jobId: 'job_1',
-        scheduleSpec: {
-          instant: '2026-11-10T12:00:00.000Z',
-          ianaTimeZone: 'Europe/London',
-          repeat: null,
+  it('asks for daylight saving confirmation when the clocks change in between', async () => {
+    // Held just before the October transition, resumed just after it, with the
+    // test clock moved close enough that both instants sit inside the thirty
+    // day horizon.
+    clock.set('2026-10-18T10:00:00.000Z');
+    try {
+      seedJob({
+        scheduledFor: new Date('2026-10-20T12:00:00.000Z'),
+        pausedAt: new Date('2026-10-18T10:00:00.000Z'),
+        pausedReason: 'user',
+        pausedByUserId: 'user_1',
+      });
+      await expectRefusal(
+        service().resume(ctx, {
+          jobId: 'job_1',
+          scheduleSpec: {
+            instant: '2026-11-10T12:00:00.000Z',
+            ianaTimeZone: 'Europe/London',
+            repeat: null,
+          },
+        }),
+        'errors.schedule_crosses_dst',
+      );
+
+      const confirmed = await service().resume(
+        { ...ctx, correlationId: 'c3' },
+        {
+          jobId: 'job_1',
+          scheduleSpec: {
+            instant: '2026-11-10T12:00:00.000Z',
+            ianaTimeZone: 'Europe/London',
+            repeat: null,
+          },
+          confirmDst: true,
         },
-        confirmDst: true,
-      },
-    );
-    expect(confirmed.scheduledInstant).toBe('2026-11-10T12:00:00.000Z');
+      );
+      expect(confirmed.scheduledInstant).toBe('2026-11-10T12:00:00.000Z');
+    } finally {
+      clock.set(NOW);
+    }
   });
 
   it('records the release, and says whether the time moved', async () => {

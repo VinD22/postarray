@@ -1,7 +1,7 @@
 /** Simplified Chinese interface messages. */
 export const billingMessages = {
   'billing.title': '计费',
-  'billing.plan.name': 'Relay。中继',
+  'billing.plan.name': 'Post Array。中继',
   'billing.plan.single': '一个计划。每个功能。无等级。',
   'billing.plan.monthlyPrice': '29 美元/月',
   'billing.plan.annualPrice': '300 美元/年',
@@ -21,7 +21,6 @@ export const billingMessages = {
   'billing.plan.includes.support': '电子邮件和应用内支持',
   'billing.plan.fairUse':
     '合理使用意味着反垃圾邮件、费率和提供商成本控制，以保护您的帐户。它们对每个订阅者的作用都是一样的。',
-  'billing.trial.length': '每项功能均可试用 7 天',
   'billing.trial.dueToday': '今天到期 0 美元',
   'billing.trial.paymentMethodRequired': 'Polar 立即收集付款方式，今天不收取任何费用。',
   'billing.trial.firstCharge': '首次在 {date} 上收费 {amount}',
@@ -67,7 +66,7 @@ export const billingMessages = {
   'billing.usage.balance': '使用余额 {amount}',
   'billing.usage.estimatedBeforeAction': '此操作预计为 {amount}。',
   'billing.usage.periodTotal': '{amount} 自 {date} 起使用',
-  'billing.usage.noMediaCredits': '没有图像或视频生成积分，因为 Relay 不生成媒体。',
+  'billing.usage.noMediaCredits': '没有图像或视频生成积分，因为 Post Array 不生成媒体。',
   'billing.downgrade.overLimit':
     '此工作区的 {count, plural, one {# channel} other {# channels}} 超出限制。这些通道上的新操作将被阻止。一切都不会为您断开。',
   'billing.mediaGeneration.title': '为什么我们不生成图像或视频',

@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Log in',
   'auth.signIn.subtitle': 'Publiceer, keur het goed en zie precies wat er is gebeurd.',
   'auth.signUp.title': 'Maak uw account aan',
-  'auth.signUp.subtitle': 'Zeven dagen met elke functie. Vandaag $ 0 verschuldigd.',
   'auth.continueWithGoogle': 'Ga verder met Google',
   'auth.continueWithFacebook': 'Ga verder met Facebook',
   'auth.orUseEmail': 'Of gebruik uw e-mailadres',

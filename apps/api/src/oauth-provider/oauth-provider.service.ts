@@ -31,7 +31,7 @@ import { resolveRedirectUri, verifyCodeVerifier } from './pkce';
 import type { AuthorizeQuery, ConsentDecision, TokenRequest, TokenResponse } from './oauth.schemas';
 
 /**
- * Relay's own OAuth 2.1 authorization server.
+ * Post Array's own OAuth 2.1 authorization server.
  *
  * Lifetimes, from section 7.4 of the security plan: a 60 second single-use
  * authorization code, a 30 minute opaque reference access token, and a 30 day

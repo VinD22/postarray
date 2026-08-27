@@ -11,7 +11,7 @@ export const errorMessages = {
     'Tekrar deneyin. Bu durum devam ederse bize aşağıdaki referansı gönderin.',
   'error.internal.message': 'Bu sizin içeriğinizle ilgili değil, bizden kaynaklanan bir sorundur.',
   'error.internal.action': 'Çalışmanız kaydedildi. Uyarıldık. Birkaç dakika sonra tekrar deneyin.',
-  'error.not_implemented.message': 'Relay bunu henüz oluşturmadı.',
+  'error.not_implemented.message': 'Post Array bunu henüz oluşturmadı.',
   'error.not_implemented.action': 'Gönderildiği zaman için değişiklik günlüğünü takip edin.',
   'error.offline.message': 'Çevrimdışısınız.',
   'error.offline.action':
@@ -58,6 +58,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Ödeme yöntemini Polar portalında güncelleyin.',
   'error.trial_expired.message': "Duruşma {date}'da sona erdi.",
   'error.trial_expired.action': 'Yayınlamaya devam etmek için aboneliği başlatın.',
+  'error.post_credits_exhausted.message':
+    'Bu çalışma alanı ücretsiz gönderilerinin tamamını kullandı. Diğer her şey çalışmaya devam ediyor.',
+  'error.post_credits_exhausted.action':
+    'Yayımlamayı sürdürmek için bir plan seçin. Hesaplarınız bağlı kalır, taslaklarınız ve zamanlamalarınız korunur.',
   'error.entitlement_missing.message': 'Bu çalışma alanının bu özelliğe erişimi yok.',
   'error.entitlement_missing.action':
     'Faturalandırma ayarlarını kontrol edin veya destek ekibiyle iletişime geçin.',

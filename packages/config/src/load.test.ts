@@ -29,7 +29,9 @@ describe('loadConfig', () => {
     expect(config.temporal.taskQueue).toBe('relay-publishing');
     expect(config.polar.server).toBe('sandbox');
     expect(config.polar.checkoutEnabled).toBe(false);
-    expect(config.polar.trialDays).toBe(7);
+    // Zero: the product sells no trial, and the checkout disclosure reads this
+    // value to decide whether to promise a deferred charge.
+    expect(config.polar.trialDays).toBe(0);
     expect(config.ai.provider).toBe('deepseek');
     expect(config.ai.deepseek.baseUrl).toBe('https://api.deepseek.com');
     expect(config.ai.deepseek.model).toBe('deepseek-v4-flash');
@@ -199,7 +201,7 @@ describe('loadConfigFor', () => {
       loadConfigFor('worker', {});
       throw new Error('expected a failure');
     } catch (caught) {
-      expect((caught as Error).message).toContain('Relay worker');
+      expect((caught as Error).message).toContain('Post Array worker');
     }
   });
 

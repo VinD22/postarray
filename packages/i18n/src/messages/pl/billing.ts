@@ -33,7 +33,6 @@ export const billingMessages = {
   'billing.plan.fairUse':
     'Dozwolony użytek oznacza ochronę przed spamem, kontrolę stawek i kosztów dostawcy, która chroni Twoje konta. Działają tak samo dla każdego abonenta.',
 
-  'billing.trial.length': 'Siedmiodniowy okres próbny ze wszystkimi funkcjami',
   'billing.trial.dueToday': 'Należność 0 USD na dzisiaj',
   'billing.trial.paymentMethodRequired':
     'Polar wybiera teraz metodę płatności i dzisiaj nic nie pobiera.',
@@ -93,7 +92,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'To działanie jest szacowane na {amount}.',
   'billing.usage.periodTotal': '{amount} używane od {date}',
   'billing.usage.noMediaCredits':
-    'Nie ma przypisów do wygenerowania obrazów ani filmów, ponieważ Relay nie generuje multimediów.',
+    'Nie ma przypisów do wygenerowania obrazów ani filmów, ponieważ Post Array nie generuje multimediów.',
 
   'billing.downgrade.overLimit':
     'W tym obszarze roboczym znajduje się {count, plural, one {# kanał} other {# kanały} few {# kanały} many {# kanały}} przekroczył limit. Nowe akcje na tych kanałach są blokowane. Nic nie jest dla Ciebie odłączone.',

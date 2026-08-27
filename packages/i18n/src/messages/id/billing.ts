@@ -1,7 +1,7 @@
 /** id beta catalog namespace. */
 export const billingMessages = {
   'billing.title': 'Penagihan',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': 'Satu rencana. Setiap fitur. Tidak ada tingkatan.',
   'billing.plan.monthlyPrice': '$29/bulan',
   'billing.plan.annualPrice': '$300/tahun',
@@ -21,7 +21,6 @@ export const billingMessages = {
   'billing.plan.includes.support': 'Dukungan email dan aplikasi',
   'billing.plan.fairUse':
     'Penggunaan wajar berarti anti spam, kontrol tarif dan biaya penyedia yang melindungi akun Anda. Mereka bekerja sama untuk setiap pelanggan.',
-  'billing.trial.length': 'Uji coba tujuh hari dengan setiap fitur',
   'billing.trial.dueToday': '$0 jatuh tempo hari ini',
   'billing.trial.paymentMethodRequired':
     'Polar mengumpulkan metode pembayaran sekarang dan tidak mengenakan biaya apa pun hari ini.',
@@ -78,7 +77,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'Tindakan ini diperkirakan sebesar {amount}.',
   'billing.usage.periodTotal': '{amount} digunakan sejak {date}',
   'billing.usage.noMediaCredits':
-    'Tidak ada kredit pembuatan gambar atau video, karena Relay tidak menghasilkan media.',
+    'Tidak ada kredit pembuatan gambar atau video, karena Post Array tidak menghasilkan media.',
   'billing.downgrade.overLimit':
     'This workspace has {count, plural, one {# channel} other {# channels}} over the limit. New actions on those channels are blocked. Nothing is disconnected for you.',
   'billing.mediaGeneration.title': 'Mengapa kami tidak menghasilkan gambar atau video',

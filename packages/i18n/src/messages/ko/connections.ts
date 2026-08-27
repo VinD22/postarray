@@ -32,7 +32,7 @@ export const connectionMessages = {
   'connection.permissions.granted': '부여된',
   'connection.permissions.missing': '부여되지 않음',
   'connection.permissions.explainBeforeOAuth':
-    'Relay이 물어볼 것입니다{provider}이러한 권한을 위해. 언제든지 연결을 끊을 수 있습니다.',
+    'Post Array이 물어볼 것입니다{provider}이러한 권한을 위해. 언제든지 연결을 끊을 수 있습니다.',
   'connection.permissions.whyNeeded': '이것이 필요한 이유',
   'connection.reconnect.title': '다시 연결{account}',
   'connection.reconnect.body':
@@ -79,11 +79,11 @@ export const connectionMessages = {
   'capability.level.requires_review': '플랫폼 검토 필요',
   'capability.level.beta': '베타',
   'capability.level.unknown': '없는',
-  'capability.explain.supported': 'Relay은 오늘 이 계정에 대해 이 작업을 수행할 수 있습니다.',
+  'capability.explain.supported': 'Post Array은 오늘 이 계정에 대해 이 작업을 수행할 수 있습니다.',
   'capability.explain.unsupported':
     '{provider}공식 API를 통해 이를 제공하지 않으므로 어떤 도구도 이를 안전하게 수행할 수 없습니다.',
   'capability.explain.not_implemented':
-    '{provider}이것을 제공하지만 Relay은 아직 이를 구축하지 않았습니다. 커넥터 로드맵에 있습니다.',
+    '{provider}이것을 제공하지만 Post Array은 아직 이를 구축하지 않았습니다. 커넥터 로드맵에 있습니다.',
   'capability.explain.requires_review':
     '{provider}앱이나 계정을 검토한 후에만 이를 부여합니다. 해당 검토가 통과될 때까지 사용할 수 없습니다.',
   'capability.explain.beta':

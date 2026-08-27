@@ -24,7 +24,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'Сервісний обліковий запис{name}',
   'receipt.actor.oauthApp': '{app}виступаючи за{name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
 
   'receipt.timeline.title': 'Хронологія',
   'receipt.timeline.created': 'Чернетку створив{actor}',

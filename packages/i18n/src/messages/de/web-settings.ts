@@ -242,7 +242,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Gewährte Berechtigungen',
   'settings.ui.security.socialPermissionsTitle': 'Berechtigungen für soziale Konten',
   'settings.ui.security.socialPermissionsBody':
-    'Was jedes verbundene Konto Relay ermöglicht hat, anhand des zum Zeitpunkt der Verbindung erstellten Fähigkeits-Snapshots.',
+    'Was jedes verbundene Konto Post Array ermöglicht hat, anhand des zum Zeitpunkt der Verbindung erstellten Fähigkeits-Snapshots.',
   'settings.ui.security.viewInSection': 'Verwalten Sie in {section}',
   'settings.ui.security.emptySessions': 'Nur diese Sitzung ist angemeldet.',
   'settings.ui.security.emptyGrants':
@@ -281,7 +281,7 @@ export const webSettingsMessages = {
     'Choose the smallest thing that solves your problem. Each option below says what survives.',
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
-    'Removes Relay access to that account. The workspace, its content and its receipts stay.',
+    'Removes Post Array access to that account. The workspace, its content and its receipts stay.',
   'settings.ui.data.deleteProject': 'Delete a project',
   'settings.ui.data.deleteProjectHelp':
     'Removes the project, its rules and its glossary. Content published under it keeps its receipts.',
@@ -311,7 +311,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'Teilen Sie Relay mit einem offengelegten Link. Die Provision ist niemals von einer positiven Bewertung abhängig.',
+    'Teilen Sie Post Array mit einem offengelegten Link. Die Provision ist niemals von einer positiven Bewertung abhängig.',
   'settings.ui.referral.linkLabel': 'Ihr Empfehlungslink',
   'settings.ui.referral.tableCaption': 'Zugeordnete Anmeldungen und deren Provisionsstatus',
   'settings.ui.referral.column.signup': 'Anmelden',
@@ -463,7 +463,7 @@ export const webSettingsMessages = {
     'Registrieren Sie eine Anwendung, damit andere Personen ihr Zugriff auf ihren Arbeitsbereich gewähren können. Jede App hat ihre eigene Identität, ihre eigene Weiterleitungs-Zulassungsliste und ihren eigenen Prüfpfad.',
   'developer.ui.apps.emptyTitle': 'Keine Apps registriert',
   'developer.ui.apps.emptyBody':
-    'Registrieren Sie eine App, wenn ein anderes Produkt im Namen eines Relay-Benutzers agieren muss. Verwenden Sie für Ihre eigene Automatisierung stattdessen ein Dienstkonto.',
+    'Registrieren Sie eine App, wenn ein anderes Produkt im Namen eines Post Array-Benutzers agieren muss. Verwenden Sie für Ihre eigene Automatisierung stattdessen ein Dienstkonto.',
   'developer.ui.apps.emptyExample':
     'Beispiel: „Acme Publisher“, vertraulicher Client, Weiterleitung https://acme.example/oauth/callback, Bereiche Konten:Lesen und Entwürfe:Schreiben.',
   'developer.ui.apps.typeHelp':
@@ -487,7 +487,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Dadurch kann die App Daten einsehen. Es ändert sich nichts.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Dadurch kann die App Dinge in Relay erstellen oder bearbeiten. Nichts erreicht eine Plattform.',
+    'Dadurch kann die App Dinge in Post Array erstellen oder bearbeiten. Nichts erreicht eine Plattform.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Diese können zu einem Beitrag auf einem echten Konto führen oder dazu führen, dass sich die Zugriffsrechte für Ihre Konten ändern. Sie werden immer separat aufgeführt und niemals gebündelt.',
   'developer.ui.apps.noBundling':
@@ -654,7 +654,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X and some other providers charge per operation. Those charges are passed through at cost and are not part of the plan price.',
   'billing.ui.allowanceNoMedia':
-    'Image generation and video generation are not included and are not sold. Relay does not generate media.',
+    'Image generation and video generation are not included and are not sold. Post Array does not generate media.',
   'billing.ui.readFairUse': 'Read the fair use policy',
   'billing.ui.readMeteredPolicy': 'Read how metered usage is billed',
   'billing.ui.usageCaption': 'Metered provider usage this period, billed at cost',
@@ -714,8 +714,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'This subscription is canceled.',
   'billing.ui.resume': 'Start the subscription again',
   'billing.ui.noSubscriptionTitle': 'No subscription on this workspace',
-  'billing.ui.noSubscriptionBody':
-    'Start the seven day trial to publish. Polar collects a payment method and charges nothing today.',
   'billing.ui.noSubscriptionExample':
     'Monthly is $29. Annual is $300, which is $25/month billed annually. Save $48/year.',
   'billing.ui.overChannelLimitAction': 'Review connected channels',
@@ -840,7 +838,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'An incentive must be disclosed on every post that results from it, by you and by the participant.',
   'growth.ui.ugc.honesty':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them, write testimonials or create customer content.',
+    'This plans a campaign you run with real people. Post Array does not find creators, contact them, write testimonials or create customer content.',
 
   'growth.ui.opportunities.caption':
     'Verifizierte Möglichkeiten aus dem Katalog, sortiert nach Übereinstimmung mit Ihrem Profil',
@@ -863,7 +861,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Ihre Regeln, zitiert',
   'growth.ui.opportunities.prepareChecklist': 'Was Sie bereithalten sollten',
   'growth.ui.opportunities.prepareManual':
-    'Sie reichen dies selbst auf ihrer Website ein. Relay füllt keine Formulare aus, erstellt keine Konten und sendet keine E-Mails an Dritte.',
+    'Sie reichen dies selbst auf ihrer Website ein. Post Array füllt keine Formulare aus, erstellt keine Konten und sendet keine E-Mails an Dritte.',
   'growth.ui.opportunities.pitchTitle': 'Pitch-Entwurf',
   'growth.ui.opportunities.pitchHelp':
     'Bearbeiten Sie es, bevor Sie es senden. Es werden nur die von Ihnen bestätigten Fakten verwendet.',
@@ -882,7 +880,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Jeder Eintrag benötigt einen geprüften Preis, geprüfte Rechtebedingungen und eine benannte Einschränkung, bevor er hier erscheint.',
   'growth.ui.tools.emptyExample':
-    'In einem Eintrag wird angegeben, wozu es am besten geeignet ist, warum es zu Ihrem Plan passt, was es nicht kann, welche Fähigkeiten es benötigt, wie die Ausgabe in Relay zurückkommt und wann der Preis zuletzt überprüft wurde.',
+    'In einem Eintrag wird angegeben, wozu es am besten geeignet ist, warum es zu Ihrem Plan passt, was es nicht kann, welche Fähigkeiten es benötigt, wie die Ausgabe in Post Array zurückkommt und wann der Preis zuletzt überprüft wurde.',
   'growth.ui.tools.openSite': 'Öffnen Sie die offizielle Website für {name}',
   'growth.ui.tools.stale':
     'Das Überprüfungsdatum ist überschritten. Von generierten Plänen ausgeschlossen.',

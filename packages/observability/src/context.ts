@@ -6,7 +6,7 @@ import type { CreationSurface } from '@relay/contracts';
 /**
  * Request context.
  *
- * Every flow in Relay carries a correlation id, the workspace it belongs to,
+ * Every flow in Post Array carries a correlation id, the workspace it belongs to,
  * who asked for it and which of the five surfaces it came from. The context is
  * ambient so a repository or a connector activity never has to thread it
  * through every signature, and so a log line can never forget it.
@@ -89,7 +89,7 @@ export function getContext(): RelayContext | undefined {
 export function requireContext(): RelayContext {
   const context = storage.getStore();
   if (context === undefined) {
-    throw new Error('No Relay context is active. Wrap this call in runWithContext.');
+    throw new Error('No Post Array context is active. Wrap this call in runWithContext.');
   }
   return context;
 }

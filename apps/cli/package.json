@@ -9,7 +9,7 @@
     ".": "./src/index.ts"
   },
   "bin": {
-    "relay": "./src/bin.ts"
+    "postarray": "./src/bin.ts"
   },
   "scripts": {
     "build": "tsc --noEmit",

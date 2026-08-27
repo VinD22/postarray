@@ -6,7 +6,7 @@
  * English, matching the other translated catalogs.
  */
 export const webDemoMessages = {
-  'web.meta.demo.title': 'Relay가 작동하는 방식 보기',
+  'web.meta.demo.title': 'Post Array가 작동하는 방식 보기',
   'web.meta.demo.description':
     '새 프로젝트부터 영수증까지, 게시 워크플로를 실제 인터페이스에서 샘플 콘텐츠로 보여주는 안내 투어입니다. 아직 아무것도 게시되지 않으며, 투어는 그 경계가 어디인지 알려줍니다.',
 
@@ -22,6 +22,10 @@ export const webDemoMessages = {
   'web.demo.control.play': '데모 재생',
   'web.demo.control.replay': '데모 다시 재생',
 
+  'web.demo.hero.viewCta': '데모 보기',
+  'web.demo.hero.projectsLine':
+    '하나의 계정으로 여러 비즈니스를 운영합니다. 각 프로젝트는 저마다의 연결된 계정, 캘린더, 승인 절차를 갖춘 독립된 비즈니스이며, 검색 콘솔에서 속성을 바꾸듯 하나의 메뉴에서 전환합니다.',
+  'web.demo.hero.projectsChip': '{count, plural, other {계정 #개}}',
   'web.demo.hero.caption':
     '하나의 초안이 플랫폼별 버전이 되고, 시간이 정해지고, 주간 일정에 배치됩니다. 샘플 콘텐츠이며 실제 계정이 아닙니다.',
   'web.demo.hero.more': '전체 워크플로 둘러보기',

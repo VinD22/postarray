@@ -1,6 +1,6 @@
 /** First run: checkout, workspace, role, first connection, first post. */
 export const onboardingMessages = {
-  'onboarding.title': 'Настройте Relay',
+  'onboarding.title': 'Настройте Post Array',
   'onboarding.progress': 'Шаг {current} из {total}',
   'onboarding.skipForNow': 'Пропустить сейчас',
   'onboarding.goal': 'Подтвержденная запланированная публикация менее чем за десять минут.',

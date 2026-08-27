@@ -20,21 +20,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon kết nối bằng mã truy cập bạn tạo trên máy chủ của mình, không phải mật khẩu của bạn.',
   'web.connection.requirement.telegram':
-    'Relay đăng với tư cách bot. Thêm bot vào kênh hoặc nhóm nơi bạn muốn đăng.',
+    'Post Array đăng với tư cách bot. Thêm bot vào kênh hoặc nhóm nơi bạn muốn đăng.',
   'web.connection.requirement.reddit':
     'Viết lên Reddit yêu cầu ứng dụng được phê duyệt và mỗi bài đăng cần tiêu đề và subreddit.',
   'web.connection.requirement.wordpress':
-    'Relay xuất bản qua REST API của trang bằng mật khẩu ứng dụng bạn tạo trong WordPress.',
+    'Post Array xuất bản qua REST API của trang bằng mật khẩu ứng dụng bạn tạo trong WordPress.',
   'web.connection.requirement.medium':
-    'Medium kết nối qua OAuth và Relay xuất bản bài viết công khai bằng Markdown.',
+    'Medium kết nối qua OAuth và Post Array xuất bản bài viết công khai bằng Markdown.',
   'web.connection.requirement.devto':
     'Dev.to kết nối bằng khóa API tạo trong cài đặt Dev.to của bạn.',
   'web.connection.requirement.pinterest':
     'Viết lên Pinterest yêu cầu quyền truy cập ứng dụng được phê duyệt và một pin cần hình ảnh và bảng của bạn.',
   'web.connection.requirement.discord':
-    'Relay đăng với tư cách bot. Thêm bot vào máy chủ và kênh nơi bạn muốn đăng.',
+    'Post Array đăng với tư cách bot. Thêm bot vào máy chủ và kênh nơi bạn muốn đăng.',
   'web.connection.requirement.slack':
-    'Relay đăng với tư cách ứng dụng. Thêm ứng dụng vào các kênh nơi bạn muốn đăng.',
+    'Post Array đăng với tư cách ứng dụng. Thêm ứng dụng vào các kênh nơi bạn muốn đăng.',
   'web.provider.fake': 'Đầu nối thử nghiệm',
   'web.accountType.personal_profile': 'Hồ sơ cá nhân',
   'web.accountType.creator_profile': 'Tài khoản người sáng tạo',
@@ -134,7 +134,7 @@ export const webCalendarMessages = {
     'Hãy chọn một thời điểm trong tương lai hoặc xuất bản ngay bây giờ.',
   'web.calendar.published.title': 'Bài đăng này đã được xuất bản',
   'web.calendar.published.body':
-    'Một bài đăng tồn tại trên {provider} tại {permalinkLabel}. Việc di chuyển mục trong Relay không di chuyển bài đăng trên nền tảng. Chọn những gì bạn muốn xảy ra.',
+    'Một bài đăng tồn tại trên {provider} tại {permalinkLabel}. Việc di chuyển mục trong Post Array không di chuyển bài đăng trên nền tảng. Chọn những gì bạn muốn xảy ra.',
   'web.calendar.published.optionLocal': 'Chỉ cập nhật bản ghi cục bộ',
   'web.calendar.published.optionLocalHint':
     'Biên nhận giữ thời gian xuất bản thực sự. Chỉ mục kế hoạch mới di chuyển, do đó lịch của bạn phù hợp với kế hoạch của bạn.',
@@ -227,7 +227,7 @@ export const webCalendarMessages = {
     '{provider} không tính phí cho mỗi thao tác đối với loại bài đăng này.',
   'web.receipt.analytics.never': 'Phân tích chưa được đồng bộ hóa cho bài đăng này.',
   'web.receipt.analytics.explain':
-    'Các nhà cung cấp tổng hợp theo lịch trình riêng của họ. Thời gian bên dưới là thời điểm Relay đọc chúng lần cuối chứ không phải thời điểm các con số là đúng.',
+    'Các nhà cung cấp tổng hợp theo lịch trình riêng của họ. Thời gian bên dưới là thời điểm Post Array đọc chúng lần cuối chứ không phải thời điểm các con số là đúng.',
   'web.receipt.export.download': 'Tải xuống biên nhận',
   'web.receipt.export.copyReference': 'Sao chép tài liệu tham khảo biên nhận',
   'web.receipt.export.denied':
@@ -236,11 +236,11 @@ export const webCalendarMessages = {
   'web.receipt.partial.retryHint':
     'Việc thử lại không bao giờ chạm vào mục tiêu đã tạo ra một bài đăng bên ngoài.',
   'web.receipt.remediation.user_action_required':
-    'Điều này cần thay đổi trong Relay hoặc trên {provider} trước khi có thể chạy lại.',
+    'Điều này cần thay đổi trong Post Array hoặc trên {provider} trước khi có thể chạy lại.',
   'web.receipt.remediation.content_invalid':
     'Chỉnh sửa nội dung để vượt qua quá trình xác thực {provider}, sau đó lên lịch lại.',
   'web.receipt.remediation.transient_provider':
-    '{provider} trả về lỗi tạm thời. Relay đã thử lại theo lịch trình riêng của mình.',
+    '{provider} trả về lỗi tạm thời. Post Array đã thử lại theo lịch trình riêng của mình.',
   'web.receipt.remediation.permanent_provider':
     '{provider} đã từ chối điều này vĩnh viễn. Việc thử lại cùng một nội dung sẽ không thay đổi câu trả lời.',
   'web.receipt.remediation.internal':
@@ -295,16 +295,16 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# scheduled post} other {# scheduled posts}} for this account will not publish.',
   'web.connection.disconnect.consequence.published':
-    'Các bài viết đã được xuất bản vẫn còn trên {provider}. Relay không xóa chúng.',
+    'Các bài viết đã được xuất bản vẫn còn trên {provider}. Post Array không xóa chúng.',
   'web.connection.disconnect.consequence.analytics':
     'Các số liệu đã được thu thập sẽ vẫn ở trong không gian làm việc này và ngừng cập nhật.',
   'web.connection.connect.title': 'Kết nối một tài khoản',
   'web.connection.connect.chooseProvider': 'Nền tảng nào',
-  'web.connection.connect.permissionHeading': 'Relay sẽ yêu cầu {provider} điều gì',
+  'web.connection.connect.permissionHeading': 'Post Array sẽ yêu cầu {provider} điều gì',
   'web.connection.connect.requirementHeading': 'Trước khi bạn tiếp tục',
   'web.connection.connect.continue': 'Tiếp tục tới {provider}',
   'web.connection.connect.handoffNote':
-    'Màn hình tiếp theo là {provider}, không phải Relay. Relay không bao giờ nhìn thấy mật khẩu của bạn.',
+    'Màn hình tiếp theo là {provider}, không phải Post Array. Post Array không bao giờ nhìn thấy mật khẩu của bạn.',
   'web.connection.connect.noWriteWithoutApproval':
     'Kết nối một tài khoản không xuất bản bất cứ điều gì. Mọi bài đăng vẫn tuân theo chính sách phê duyệt không gian làm việc này.',
   'web.connection.projectScope.title': 'Hiển thị kênh cho {project}',
@@ -316,13 +316,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Việc xuất bản Instagram cần có tài khoản chuyên nghiệp, nghĩa là tài khoản doanh nghiệp hoặc người sáng tạo được liên kết với Trang Facebook.',
   'web.connection.requirement.facebook':
-    'Relay xuất bản lên Facebook Pages. Hồ sơ cá nhân không thể là mục tiêu xuất bản.',
+    'Post Array xuất bản lên Facebook Pages. Hồ sơ cá nhân không thể là mục tiêu xuất bản.',
   'web.connection.requirement.linkedin':
     'Để xuất bản cho một tổ chức, bạn cần có vai trò quản trị viên nội dung trên Trang LinkedIn đó.',
   'web.connection.requirement.youtube':
     'Cho đến khi Google hoàn tất quá trình kiểm tra ứng dụng, các video tải lên từ dự án này sẽ được xuất bản ở chế độ riêng tư. Bạn có thể thay đổi chế độ hiển thị trên YouTube sau đó.',
   'web.connection.requirement.tiktok':
-    'TikTok yêu cầu bạn phải tự chọn đối tượng cho mỗi bài đăng. Relay không thể chọn trước một cái cho bạn.',
+    'TikTok yêu cầu bạn phải tự chọn đối tượng cho mỗi bài đăng. Post Array không thể chọn trước một cái cho bạn.',
   'web.connection.requirement.x':
     'X tính phí cho mỗi hoạt động. Một bài đăng chứa URL có chi phí cao hơn một bài đăng văn bản thuần túy và ước tính được hiển thị trước khi bạn lên lịch.',
   'web.connection.requirement.threads':
@@ -330,12 +330,12 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky kết nối bằng mật khẩu ứng dụng được tạo trong cài đặt Bluesky chứ không phải mật khẩu tài khoản của bạn.',
   'web.connection.requirement.generic':
-    'Bạn cần có quyền đăng bài trên tài khoản này từ chính nền tảng này. Relay không thể cấp nó.',
-  'web.connection.purpose.publish': 'Xuất bản các bài đăng bạn lên lịch trong Relay.',
+    'Bạn cần có quyền đăng bài trên tài khoản này từ chính nền tảng này. Post Array không thể cấp nó.',
+  'web.connection.purpose.publish': 'Xuất bản các bài đăng bạn lên lịch trong Post Array.',
   'web.connection.purpose.readPosts':
-    'Đọc lại một bài đăng Relay đã xuất bản nên biên nhận có thể chứng minh nó đang hoạt động.',
+    'Đọc lại một bài đăng Post Array đã xuất bản nên biên nhận có thể chứng minh nó đang hoạt động.',
   'web.connection.purpose.identity':
-    'Hiển thị tên tài khoản chính xác trong Relay, do đó bạn không bao giờ xuất bản sai tài khoản.',
+    'Hiển thị tên tài khoản chính xác trong Post Array, do đó bạn không bao giờ xuất bản sai tài khoản.',
   'web.connection.purpose.analytics':
     'Đọc số liệu mà nền tảng này báo cáo cho các bài đăng của riêng bạn.',
   'web.connection.purpose.refresh':
@@ -345,7 +345,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Quyền trên {account}',
   'web.connection.permissions.scopeColumn': 'Quyền',
   'web.connection.permissions.stateColumn': 'tiểu bang',
-  'web.connection.permissions.purposeColumn': 'Relay sử dụng nó để làm gì',
+  'web.connection.permissions.purposeColumn': 'Post Array sử dụng nó để làm gì',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# permission is missing} other {# permissions are missing}}. Reconnect and accept it to restore the features below.',
   'web.connection.permissions.snapshot': 'Đọc từ {provider} {relativeTime}',
@@ -356,9 +356,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'Khả năng',
   'web.connection.capability.legendTitle': 'Làm thế nào để đọc cái này',
   'web.connection.capability.legend.supported':
-    'Relay có thể thực hiện việc này ngay hôm nay đối với tài khoản được kết nối đúng loại.',
+    'Post Array có thể thực hiện việc này ngay hôm nay đối với tài khoản được kết nối đúng loại.',
   'web.connection.capability.legend.not_implemented':
-    'Nền tảng này cung cấp điều này và Relay vẫn chưa xây dựng nó. Nó nằm trên lộ trình kết nối.',
+    'Nền tảng này cung cấp điều này và Post Array vẫn chưa xây dựng nó. Nó nằm trên lộ trình kết nối.',
   'web.connection.capability.legend.unsupported':
     'Nền tảng này không cung cấp tính năng này thông qua API chính thức nên không có công cụ nào có thể thực hiện việc đó một cách an toàn.',
   'web.connection.capability.legend.requires_review':

@@ -267,7 +267,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Przydzielone uprawnienia',
   'settings.ui.security.socialPermissionsTitle': 'Uprawnienia konta społecznościowego',
   'settings.ui.security.socialPermissionsBody':
-    'Co każde połączone konto umożliwia Relay, na podstawie migawki możliwości wykonanej w momencie połączenia.',
+    'Co każde połączone konto umożliwia Post Array, na podstawie migawki możliwości wykonanej w momencie połączenia.',
   'settings.ui.security.viewInSection': 'Zarządzaj w {section}',
   'settings.ui.security.emptySessions': 'Tylko ta sesja jest zalogowana.',
   'settings.ui.security.emptyGrants':
@@ -486,7 +486,7 @@ export const webSettingsMessages = {
     'Zarejestruj aplikację, aby inne osoby mogły przyznać jej dostęp do swojego obszaru roboczego. Każda aplikacja ma własną tożsamość, własną listę dozwolonych przekierowań i własną ścieżkę audytu.',
   'developer.ui.apps.emptyTitle': 'Brak zarejestrowanych aplikacji',
   'developer.ui.apps.emptyBody':
-    'Zarejestruj aplikację, gdy inny produkt musi działać w imieniu użytkownika Relay. Do własnej automatyzacji użyj zamiast tego konta usługi.',
+    'Zarejestruj aplikację, gdy inny produkt musi działać w imieniu użytkownika Post Array. Do własnej automatyzacji użyj zamiast tego konta usługi.',
   'developer.ui.apps.emptyExample':
     'Przykład: „Acme Publisher”, klient poufny, przekierowanie https://acme.example/oauth/callback, zakresy kont:odczyt i wersje robocze:zapis.',
   'developer.ui.apps.typeHelp':
@@ -510,7 +510,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Dzięki nim aplikacja może przeglądać dane. Nic się nie zmienia.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Pozwalają one aplikacji tworzyć i edytować rzeczy w Relay. Nic nie dociera do platformy.',
+    'Pozwalają one aplikacji tworzyć i edytować rzeczy w Post Array. Nic nie dociera do platformy.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Mogą one spowodować publikację postu na prawdziwym koncie lub zmianę tego, kto może uzyskać dostęp do Twoich kont. Zawsze są wymienione osobno i nigdy nie są łączone.',
   'developer.ui.apps.noBundling':
@@ -739,8 +739,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'Ta subskrypcja została anulowana.',
   'billing.ui.resume': 'Rozpocznij subskrypcję ponownie',
   'billing.ui.noSubscriptionTitle': 'Brak subskrypcji w tym obszarze roboczym',
-  'billing.ui.noSubscriptionBody':
-    'Rozpocznij siedmiodniowy okres próbny, aby opublikować. Polar wybiera dzisiaj metodę płatności i nie pobiera żadnych opłat.',
   'billing.ui.noSubscriptionExample':
     'Miesięczny koszt wynosi 29 USD. Roczna opłata wynosi 300 USD, co stanowi opłatę roczną w wysokości 25 USD miesięcznie. Zaoszczędź 48 USD rocznie.',
   'billing.ui.overChannelLimitAction': 'Przejrzyj połączone kanały',
@@ -884,7 +882,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Ich zasady, cytowane',
   'growth.ui.opportunities.prepareChecklist': 'Co przygotować',
   'growth.ui.opportunities.prepareManual':
-    'Przesyłasz to samodzielnie na ich stronie. Relay nie wypełnia formularzy, nie tworzy kont ani nie wysyła e-maili do nikogo.',
+    'Przesyłasz to samodzielnie na ich stronie. Post Array nie wypełnia formularzy, nie tworzy kont ani nie wysyła e-maili do nikogo.',
   'growth.ui.opportunities.pitchTitle': 'Projekt prezentacji',
   'growth.ui.opportunities.pitchHelp':
     'Edytuj go przed wysłaniem. Wykorzystuje tylko potwierdzone przez Ciebie fakty.',
@@ -903,7 +901,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Każdy wpis wymaga sprawdzenia ceny, sprawdzonych warunków praw i nazwanego ograniczenia, zanim pojawi się tutaj.',
   'growth.ui.tools.emptyExample':
-    'Wpis mówi, do czego jest najlepszy, dlaczego pasuje do Twojego planu, czego nie może zrobić, jakich umiejętności potrzebuje, w jaki sposób dane wyjściowe wracają do Relay i kiedy ostatni raz sprawdzano cenę.',
+    'Wpis mówi, do czego jest najlepszy, dlaczego pasuje do Twojego planu, czego nie może zrobić, jakich umiejętności potrzebuje, w jaki sposób dane wyjściowe wracają do Post Array i kiedy ostatni raz sprawdzano cenę.',
   'growth.ui.tools.openSite': 'Otwórz oficjalną stronę dla {name}',
   'growth.ui.tools.stale': 'Minęła data przeglądu. Wykluczono z wygenerowanych planów.',
 

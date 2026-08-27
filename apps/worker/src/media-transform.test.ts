@@ -131,7 +131,7 @@ describe('sharp media transform', () => {
  * The assertion `docs/planning/media-v1-policy.md` names explicitly.
  *
  * A generative step needs a provider: a model, an endpoint, a credential. This
- * checks the source of the only module in Relay that touches pixels and the
+ * checks the source of the only module in Post Array that touches pixels and the
  * package manifest that feeds it, so a future edit that adds one fails here
  * rather than in review.
  */

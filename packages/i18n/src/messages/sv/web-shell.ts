@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Demodata',
   'shell.demo.title': 'Du tittar på demodata',
   'shell.demo.body':
-    'Relay API kan inte nås från den här webbläsaren, så skärmarna är fyllda med en seedad arbetsyta. Inget här är kopplat till ett riktigt konto och ingenting kan publiceras.',
+    'Post Array API kan inte nås från den här webbläsaren, så skärmarna är fyllda med en seedad arbetsyta. Inget här är kopplat till ett riktigt konto och ingenting kan publiceras.',
   'shell.demo.howToConnect':
     'Ställ in NEXT_PUBLIC_RELAY_API_URL och starta om appen för att använda livedata.',
 
@@ -143,7 +143,7 @@ export const webShellMessages = {
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'Manage or cancel',
   'home.error.title': 'Hemmet kunde inte laddas',
-  'home.error.body': 'Din arbetsyta är intakt. Det här är ett problem med att nå Relay API.',
+  'home.error.body': 'Din arbetsyta är intakt. Det här är ett problem med att nå Post Array API.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': 'Publicera via officiella API:er och se exakt vad som hände.',
@@ -154,9 +154,9 @@ export const webShellMessages = {
   'auth.aside.point.surfaces': 'Samma arbetsflöde från webbappen, REST API, MCP, CLI och webhooks.',
   'auth.provider.title': 'Innan du fortsätter',
   'auth.provider.google.access':
-    'Google delar ditt namn, din e-postadress och din profilbild med Relay. Relay kan inte läsa din Gmail, Drive eller Kalender.',
+    'Google delar ditt namn, din e-postadress och din profilbild med Post Array. Post Array kan inte läsa din Gmail, Drive eller Kalender.',
   'auth.provider.facebook.access':
-    'Facebook delar ditt namn, din e-postadress och din profilbild med Relay. Att ansluta en sida att publicera till är ett separat steg som du godkänner senare.',
+    'Facebook delar ditt namn, din e-postadress och din profilbild med Post Array. Att ansluta en sida att publicera till är ett separat steg som du godkänner senare.',
   'auth.provider.note': 'Detta loggar in dig. Det kopplar inte ett konto att publicera till.',
   'auth.continueWithEmail': 'Fortsätt med e-post',
   'auth.method.password': 'Lösenord',
@@ -177,7 +177,6 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak': 'För din säkerhet säger vi inte om en adress är registrerad.',
   'auth.failure.provider': 'Inloggningen med {provider} slutfördes inte. Ingenting ändrades.',
   'auth.failure.network': 'Vi kunde inte nå relä. Kontrollera din anslutning och försök igen.',
-  'auth.signUp.trialNote': 'Sju hela provdagar. En betalningsmetod krävs. $0 förfaller idag.',
   'auth.signUp.emailInUseNote':
     'Om den här adressen redan har ett konto skickar vi en inloggningslänk via e-post istället för att skapa en andra.',
   'auth.legal.readTerms': 'Läs Villkoren',
@@ -210,7 +209,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Upptäckt från den här enheten: {timeZone}',
   'onboarding.connect.permissionsTitle': 'Vad {provider} kommer att efterfrågas',
   'onboarding.connect.permissionsFooter':
-    'Relay ber aldrig om ett tillstånd som det inte använder, och du kan koppla från när som helst.',
+    'Post Array ber aldrig om ett tillstånd som det inte använder, och du kan koppla från när som helst.',
   'onboarding.connect.chooseProvider': 'Välj en plattform',
   'onboarding.connect.opensProvider': 'Om du fortsätter öppnar {provider} på den här fliken.',
   'onboarding.compose.help':

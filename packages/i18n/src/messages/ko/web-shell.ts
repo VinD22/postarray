@@ -1,7 +1,7 @@
 /** Korean beta catalog. */
 export const webShellMessages = {
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page}· Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page}· Post Array',
   'shell.tagline': '사람과 에이전트를 위한 출판 데스크입니다.',
   'shell.menu.open': '메뉴 열기',
   'shell.menu.title': '메뉴',
@@ -20,7 +20,7 @@ export const webShellMessages = {
   'shell.demo.badge': '데모 데이터',
   'shell.demo.title': '데모 데이터를 보고 계십니다',
   'shell.demo.body':
-    '이 브라우저에서는 Relay API에 접근할 수 없으므로 화면은 시드된 예제 작업 공간으로 채워집니다. 여기에는 실제 계정과 연결된 것이 없으며 게시할 수 있는 것도 없습니다.',
+    '이 브라우저에서는 Post Array API에 접근할 수 없으므로 화면은 시드된 예제 작업 공간으로 채워집니다. 여기에는 실제 계정과 연결된 것이 없으며 게시할 수 있는 것도 없습니다.',
   'shell.demo.howToConnect':
     '라이브 데이터를 사용하려면 NEXT_PUBLIC_RELAY_API_URL을 설정하고 앱을 다시 시작하세요.',
   'shell.offline.title': '오프라인 상태입니다',
@@ -122,7 +122,7 @@ export const webShellMessages = {
   'home.trial.manage': '관리 또는 취소',
   'home.error.title': '홈을 로드할 수 없습니다.',
   'home.error.body':
-    '귀하의 작업 공간은 그대로 유지됩니다. Relay API에 접근하는 데 문제가 있습니다.',
+    '귀하의 작업 공간은 그대로 유지됩니다. Post Array API에 접근하는 데 문제가 있습니다.',
   'auth.aside.title': '공식 API를 통해 게시하고 정확히 무슨 일이 일어났는지 확인하세요.',
   'auth.aside.point.receipts':
     '모든 출판물에는 승인자, 발송 시기, 플랫폼에서 반환한 내용 등 영수증이 생성됩니다.',
@@ -130,9 +130,9 @@ export const webShellMessages = {
   'auth.aside.point.surfaces': '웹 앱, REST API, MCP, CLI 및 웹훅의 워크플로가 동일합니다.',
   'auth.provider.title': '계속하기 전에',
   'auth.provider.google.access':
-    'Google은 귀하의 이름, 이메일 주소, 프로필 사진을 Relay과(와) 공유합니다. Relay은 Gmail, 드라이브 또는 캘린더를 읽을 수 없습니다.',
+    'Google은 귀하의 이름, 이메일 주소, 프로필 사진을 Post Array과(와) 공유합니다. Post Array은 Gmail, 드라이브 또는 캘린더를 읽을 수 없습니다.',
   'auth.provider.facebook.access':
-    'Facebook은 귀하의 이름, 이메일 주소, 프로필 사진을 Relay과(와) 공유합니다. 게시할 페이지를 연결하는 것은 나중에 승인하는 별도의 단계입니다.',
+    'Facebook은 귀하의 이름, 이메일 주소, 프로필 사진을 Post Array과(와) 공유합니다. 게시할 페이지를 연결하는 것은 나중에 승인하는 별도의 단계입니다.',
   'auth.provider.note': '이렇게 하면 로그인됩니다. 게시할 계정을 연결하지 않습니다.',
   'auth.continueWithEmail': '이메일로 계속',
   'auth.method.password': '비밀번호',
@@ -153,9 +153,7 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak': '귀하의 안전을 위해 주소 등록 여부를 알려드리지 않습니다.',
   'auth.failure.provider':
     '다음으로 로그인{provider}완료하지 않았습니다. 아무것도 변경되지 않았습니다.',
-  'auth.failure.network': 'Relay에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.',
-  'auth.signUp.trialNote':
-    '7일 전체 평가판 기간입니다. 결제 수단이 필요합니다. 오늘 결제 금액은 0달러입니다.',
+  'auth.failure.network': 'Post Array에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.',
   'auth.signUp.emailInUseNote':
     '이 주소에 이미 계정이 있는 경우 두 번째 계정을 만드는 대신 로그인 링크를 이메일로 보내드립니다.',
   'auth.legal.readTerms': '약관 읽기',
@@ -186,7 +184,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': '이 장치에서 감지됨:{timeZone}',
   'onboarding.connect.permissionsTitle': '무엇{provider}요청될 것이다',
   'onboarding.connect.permissionsFooter':
-    'Relay은 사용하지 않는 권한을 요청하지 않으며 언제든지 연결을 끊을 수 있습니다.',
+    'Post Array은 사용하지 않는 권한을 요청하지 않으며 언제든지 연결을 끊을 수 있습니다.',
   'onboarding.connect.chooseProvider': '플랫폼을 선택하세요',
   'onboarding.connect.opensProvider': '계속 오픈{provider}이 탭에서.',
   'onboarding.compose.help':

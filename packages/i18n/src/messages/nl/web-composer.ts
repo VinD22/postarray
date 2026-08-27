@@ -158,7 +158,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} biedt geen zoekfunctie voor entiteiten voor dit accounttype.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay heeft nog geen entiteitszoekopdracht voor {provider} gebouwd. Er wordt intussen niets geraden.',
+    'Post Array heeft nog geen entiteitszoekopdracht voor {provider} gebouwd. Er wordt intussen niets geraden.',
   'composerWeb.entity.searchHint': 'Typ minimaal twee tekens en kies vervolgens een resultaat.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {Geen overeenkomsten} one {# overeenkomst} other {# overeenkomsten}}',
@@ -176,7 +176,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'Termijn',
   'composerWeb.links.utmContent': 'Inhoud',
   'composerWeb.links.domainVerified': '{domain}, geverifieerd voor deze werkruimte',
-  'composerWeb.links.domainDefault': 'Relay standaarddomein',
+  'composerWeb.links.domainDefault': 'Post Array standaarddomein',
   'composerWeb.links.domainNone': 'Er is nog geen merkdomein geverifieerd.',
   'composerWeb.links.notAllowedHere': '{account} staat een link hier niet toe.',
 
@@ -244,7 +244,7 @@ export const webComposerMessages = {
     'Er is geen bron gevonden voor deze bewering. Controleer het voordat u het publiceert.',
   'composerWeb.assist.failed': 'Het hulpverzoek is niet voltooid. Uw tekst is ongewijzigd.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay maakt geen afbeeldingen of video. Breng voltooide bestanden naar de bibliotheek en publiceer ze hier.',
+    'Post Array maakt geen afbeeldingen of video. Breng voltooide bestanden naar de bibliotheek en publiceer ze hier.',
 
   // ------------------------------------------------------------- autosave
   'composerWeb.autosave.pinned':
@@ -294,7 +294,7 @@ export const webComposerMessages = {
     'Er ging niets verloren. Probeer het opnieuw. Als het blijft mislukken, helpt de onderstaande referentie de ondersteuning bij het vinden van het verzoek.',
   'composerWeb.page.noConnectionsTitle': 'Koppel een account aan voordat u gaat componeren',
   'composerWeb.page.noConnectionsBody':
-    'Voor een concept is minimaal één verbonden account nodig, zodat Relay de limieten, het voorbeeld en de instellingen kent die moeten worden weergegeven.',
+    'Voor een concept is minimaal één verbonden account nodig, zodat Post Array de limieten, het voorbeeld en de instellingen kent die moeten worden weergegeven.',
   'composerWeb.page.noConnectionsExample':
     'Voorbeeld: als X en LinkedIn zijn verbonden, wordt één concept twee native versies met hun eigen tellers.',
   'composerWeb.page.permissionTitle': 'In deze werkruimte kunt u geen berichten maken',
@@ -325,7 +325,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'Nog geen media',
   'mediaLib.empty.body':
-    'Upload de afbeeldingen en video die u al heeft, of importeer een bestand vanaf een URL. Relay controleert het type en de grootte van elk account waarnaar u publiceert.',
+    'Upload de afbeeldingen en video die u al heeft, of importeer een bestand vanaf een URL. Post Array controleert het type en de grootte van elk account waarnaar u publiceert.',
   'mediaLib.empty.example':
     'Voorbeeld: launch_hero.jpg, 1600 bij 900, alt-tekstset, gebruikt in 2 berichten.',
   'mediaLib.error.title': 'De bibliotheek kan niet worden geladen',
@@ -376,7 +376,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Media wordt geïmporteerd',
   'mediaLib.import.succeeded': 'Het bestand staat in je bibliotheek',
   'mediaLib.import.scanPending':
-    'Relay heeft de bron ervan vastgelegd. Publiceren wacht tot de veiligheidscontrole is voltooid.',
+    'Post Array heeft de bron ervan vastgelegd. Publiceren wacht tot de veiligheidscontrole is voltooid.',
   'mediaLib.import.failed': 'Het bestand kon niet worden geïmporteerd',
   'mediaLib.import.failedHelp':
     'Controleer of de link openbaar is en direct naar een ondersteund mediabestand verwijst, en probeer het dan opnieuw.',
@@ -388,7 +388,7 @@ export const webComposerMessages = {
   'mediaLib.retention.title':
     'Opgeslagen bestanden worden 30 dagen bewaard nadat het bericht is gemaakt',
   'mediaLib.retention.body':
-    'Zodra een bestand aan een bericht is gekoppeld, verwijderen we het permanent uit de Relay-opslag 30 dagen nadat dat bericht is gemaakt. Bestanden die wachten om gekoppeld te worden, gebruiken de uploaddatum als opschoning-terugval. Berichttekst, publicatiebevestigingen en auditgeschiedenis blijven langer beschikbaar. Een gepubliceerd bericht op een sociaal platform wordt niet verwijderd wanneer het opgeslagen bestand verloopt.',
+    'Zodra een bestand aan een bericht is gekoppeld, verwijderen we het permanent uit de Post Array-opslag 30 dagen nadat dat bericht is gemaakt. Bestanden die wachten om gekoppeld te worden, gebruiken de uploaddatum als opschoning-terugval. Berichttekst, publicatiebevestigingen en auditgeschiedenis blijven langer beschikbaar. Een gepubliceerd bericht op een sociaal platform wordt niet verwijderd wanneer het opgeslagen bestand verloopt.',
   'mediaLib.retention.limits':
     "Afbeeldingen, audio en PDF-bestanden mogen tot {imageSize} zijn. Video's mogen tot {videoSize} zijn.",
   'mediaLib.retention.expiresLabel': 'Datum van bestandsverwijdering',
@@ -501,7 +501,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Dit bestand bevat geen ingebedde inhoudsreferenties. Dat is gebruikelijk en betekent niet dat er iets mis is.',
   'mediaLib.provenance.unverified':
-    'Deze details komen van de bron, niet van Relay. Controleer ze voordat u erop vertrouwt.',
+    'Deze details komen van de bron, niet van Post Array. Controleer ze voordat u erop vertrouwt.',
 
   'mediaLib.picker.title': 'Kies medium',
   'mediaLib.picker.description':

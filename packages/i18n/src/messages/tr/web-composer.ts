@@ -289,7 +289,7 @@ export const webComposerMessages = {
     'Hiçbir şey kaybolmadı. Tekrar deneyin ve başarısız olmaya devam ederse aşağıdaki referans, desteğin isteği bulmasına yardımcı olur.',
   'composerWeb.page.noConnectionsTitle': 'Oluşturmadan önce bir hesap bağlayın',
   'composerWeb.page.noConnectionsBody':
-    'Taslağın en az bir bağlı hesaba ihtiyacı vardır, böylece Relay sınırları, önizlemeyi ve gösterilecek ayarları bilir.',
+    'Taslağın en az bir bağlı hesaba ihtiyacı vardır, böylece Post Array sınırları, önizlemeyi ve gösterilecek ayarları bilir.',
   'composerWeb.page.noConnectionsExample':
     'Örnek: X ve LinkedIn bağlandığında, bir taslak kendi sayaçlarına sahip iki yerel versiyona dönüşür.',
   'composerWeb.page.permissionTitle': 'Bu çalışma alanında yayın oluşturamazsınız',
@@ -372,7 +372,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Medya içe aktarılıyor',
   'mediaLib.import.succeeded': 'Dosya kitaplığınızda',
   'mediaLib.import.scanPending':
-    'Relay kaynağını kaydetti. Güvenlik kontrolü tamamlanana kadar yayınlama bekler.',
+    'Post Array kaynağını kaydetti. Güvenlik kontrolü tamamlanana kadar yayınlama bekler.',
   'mediaLib.import.failed': 'Dosya içe aktarılamadı',
   'mediaLib.import.failedHelp':
     'Bağlantının herkese açık olduğunu ve doğrudan desteklenen bir medya dosyasına işaret ettiğini kontrol edip tekrar deneyin.',
@@ -384,7 +384,7 @@ export const webComposerMessages = {
   'mediaLib.retention.title':
     'Saklanan dosyalar, gönderi oluşturulduktan sonra 30 gün boyunca tutulur',
   'mediaLib.retention.body':
-    'Bir dosya bir gönderiye eklendiğinde, o gönderi oluşturulduktan 30 gün sonra dosyayı Relay depolamasından kalıcı olarak sileriz. Eklenmeyi bekleyen dosyalar için yükleme tarihi temizleme yedeği olarak kullanılır. Gönderi metni, yayın alındıları ve denetim geçmişi daha uzun süre kullanılabilir kalır. Sosyal platformda yayınlanmış bir gönderi, saklanan dosyasının süresi dolduğunda kaldırılmaz.',
+    'Bir dosya bir gönderiye eklendiğinde, o gönderi oluşturulduktan 30 gün sonra dosyayı Post Array depolamasından kalıcı olarak sileriz. Eklenmeyi bekleyen dosyalar için yükleme tarihi temizleme yedeği olarak kullanılır. Gönderi metni, yayın alındıları ve denetim geçmişi daha uzun süre kullanılabilir kalır. Sosyal platformda yayınlanmış bir gönderi, saklanan dosyasının süresi dolduğunda kaldırılmaz.',
   'mediaLib.retention.limits':
     'Görseller, ses ve PDF dosyaları en fazla {imageSize} olabilir. Videolar en fazla {videoSize} olabilir.',
   'mediaLib.retention.expiresLabel': 'Dosya silme tarihi',
@@ -492,7 +492,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Bu dosya hiçbir gömülü içerik kimlik bilgisi taşımamaktadır. Bu yaygındır ve herhangi bir şeyin yanlış olduğu anlamına gelmez.',
   'mediaLib.provenance.unverified':
-    "Bu ayrıntılar Relay'den değil kaynaktan geliyor. Onlara güvenmeden önce onları kontrol edin.",
+    "Bu ayrıntılar Post Array'den değil kaynaktan geliyor. Onlara güvenmeden önce onları kontrol edin.",
 
   'mediaLib.picker.title': 'Medyayı seçin',
   'mediaLib.picker.description': 'Dosyalar bu taslakta seçilen hesaplara göre kontrol edilir.',

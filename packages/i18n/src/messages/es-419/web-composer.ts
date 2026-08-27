@@ -133,7 +133,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider}no ofrece búsqueda de entidades para este tipo de cuenta.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay no ha creado una búsqueda de entidades para {provider}todavía. Mientras tanto no se adivina nada.',
+    'Post Array no ha creado una búsqueda de entidades para {provider}todavía. Mientras tanto no se adivina nada.',
   'composerWeb.entity.searchHint': 'Escriba al menos dos caracteres y luego elija un resultado.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {No hay coincidencias} one {#partido} other {#partidos} many {#partidos}}',
@@ -149,7 +149,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'Término',
   'composerWeb.links.utmContent': 'Contenido',
   'composerWeb.links.domainVerified': '{domain}, verificado para este espacio de trabajo',
-  'composerWeb.links.domainDefault': 'Relay dominio predeterminado',
+  'composerWeb.links.domainDefault': 'Post Array dominio predeterminado',
   'composerWeb.links.domainNone': 'Aún no se ha verificado ningún dominio de marca.',
   'composerWeb.links.notAllowedHere': '{account}no permite un enlace aquí.',
   'composerWeb.sequence.kindComment': 'Comentario',
@@ -209,7 +209,7 @@ export const webComposerMessages = {
   'composerWeb.assist.failed':
     'La solicitud de asistencia no se completó. Su texto no ha cambiado.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay no crea imágenes ni videos. Traiga los archivos terminados a la biblioteca y publíquelos aquí.',
+    'Post Array no crea imágenes ni videos. Traiga los archivos terminados a la biblioteca y publíquelos aquí.',
   'composerWeb.autosave.pinned':
     'Esta es la versión aprobada. Editarlo crea una nueva versión y borra la aprobación.',
   'composerWeb.autosave.pinnedAcknowledge': 'Editar y borrar la aprobación',
@@ -251,7 +251,7 @@ export const webComposerMessages = {
     'No se perdió nada. Inténtelo de nuevo y, si sigue fallando, la referencia siguiente le ayudará a encontrar la solicitud.',
   'composerWeb.page.noConnectionsTitle': 'Conecte una cuenta antes de componer',
   'composerWeb.page.noConnectionsBody':
-    'Un borrador necesita al menos una cuenta conectada para que Relay conozca los límites, la vista previa y la configuración que se mostrará.',
+    'Un borrador necesita al menos una cuenta conectada para que Post Array conozca los límites, la vista previa y la configuración que se mostrará.',
   'composerWeb.page.noConnectionsExample':
     'Ejemplo: con X y LinkedIn conectados, un borrador se convierte en dos versiones nativas con sus propios contadores.',
   'composerWeb.page.permissionTitle': 'No puedes crear publicaciones en este espacio de trabajo.',
@@ -279,7 +279,7 @@ export const webComposerMessages = {
   'mediaLib.openDetail': 'Abierto {name}',
   'mediaLib.empty.title': 'Aún no hay medios',
   'mediaLib.empty.body':
-    'Sube las imágenes y videos que ya tienes, o importa un archivo desde una URL. Relay verifica el tipo y el tamaño de cada cuenta en la que publica.',
+    'Sube las imágenes y videos que ya tienes, o importa un archivo desde una URL. Post Array verifica el tipo y el tamaño de cada cuenta en la que publica.',
   'mediaLib.empty.example':
     'Ejemplo: launch_hero.jpg, 1600 por 900, conjunto de texto alternativo, usado en 2 publicaciones.',
   'mediaLib.error.title': 'No se pudo cargar la biblioteca',
@@ -327,7 +327,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Importando medio',
   'mediaLib.import.succeeded': 'El archivo está en tu biblioteca',
   'mediaLib.import.scanPending':
-    'Relay registró su origen. La publicación espera hasta que finalice la verificación de seguridad.',
+    'Post Array registró su origen. La publicación espera hasta que finalice la verificación de seguridad.',
   'mediaLib.import.failed': 'No se pudo importar el archivo',
   'mediaLib.import.failedHelp':
     'Verifique que el enlace sea público y apunte directamente a un archivo multimedia compatible, luego intente de nuevo.',
@@ -339,7 +339,7 @@ export const webComposerMessages = {
   'mediaLib.retention.title':
     'Los archivos almacenados se conservan 30 días después de crear la publicación',
   'mediaLib.retention.body':
-    'Una vez que un archivo se adjunta a una publicación, lo eliminamos de forma permanente del almacenamiento de Relay 30 días después de crearse esa publicación. Los archivos que esperan ser adjuntados usan la fecha de subida como referencia de limpieza. El texto de la publicación, los recibos de publicación y el historial de auditoría siguen disponibles por más tiempo. Una publicación ya publicada en una plataforma social no se elimina cuando vence su archivo almacenado.',
+    'Una vez que un archivo se adjunta a una publicación, lo eliminamos de forma permanente del almacenamiento de Post Array 30 días después de crearse esa publicación. Los archivos que esperan ser adjuntados usan la fecha de subida como referencia de limpieza. El texto de la publicación, los recibos de publicación y el historial de auditoría siguen disponibles por más tiempo. Una publicación ya publicada en una plataforma social no se elimina cuando vence su archivo almacenado.',
   'mediaLib.retention.limits':
     'Las imágenes, el audio y los archivos PDF pueden pesar hasta {imageSize}. Los videos pueden pesar hasta {videoSize}.',
   'mediaLib.retention.expiresLabel': 'Fecha de eliminación del archivo',
@@ -447,7 +447,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Este archivo no lleva credenciales de contenido incrustado. Esto es común y no significa que algo esté mal.',
   'mediaLib.provenance.unverified':
-    'Estos detalles provienen de la fuente, no de Relay. Compruébalos antes de confiar en ellos.',
+    'Estos detalles provienen de la fuente, no de Post Array. Compruébalos antes de confiar en ellos.',
   'mediaLib.picker.title': 'Elige medios',
   'mediaLib.picker.description':
     'Los archivos se comparan con las cuentas seleccionadas en este borrador.',

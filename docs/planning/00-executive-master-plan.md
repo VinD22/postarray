@@ -14,7 +14,7 @@ requirements and the traceability matrix.
 
 ## 1. Product vision
 
-**Relay is a multilingual social publishing control plane for people and agents.**
+**Post Array is a multilingual social publishing control plane for people and agents.**
 
 A user brings a brief or a finished asset, creates platform-native variants, gets them
 approved once, publishes them reliably through official provider APIs, and sees exactly
@@ -38,7 +38,7 @@ Three commitments distinguish us from a scheduler:
 3. **Agents are first-class but never privileged.** An agent gets scoped credentials and
    the same approval gate a human gets. There is no `publish_everywhere` tool.
 
-`Relay` is a working codename. The name decision is tracked in section 7.
+`Post Array` is a working codename. The name decision is tracked in section 7.
 
 ---
 
@@ -82,7 +82,7 @@ date in the source register.
 ### Positioning statement
 
 For creators, lean multilingual brands, small agencies and agent-driven teams who need
-publishing they can defend to a client or a platform, Relay is the publishing control
+publishing they can defend to a client or a platform, Post Array is the publishing control
 plane that proves every post: one plan, one approval system, five surfaces, and a receipt
 for everything. Unlike broad schedulers that compete on connector count and generated
 media, we compete on correctness, safety and multilingual quality.
@@ -363,7 +363,7 @@ is made by the deadline. There is no "TBD".
 
 | ID | Open item | Decision owner | Deadline | Recommended default if undecided |
 | --- | --- | --- | --- | --- |
-| D-01 | Final product name, domain and trademark clearance | Founder | Fri 21 Aug 2026 (end week 2) | Keep `Relay` as internal codename, register the best available `.com` at week 2, and ship under it. All copy is in `packages/i18n`, so a rename is a catalog edit. |
+| D-01 | Final product name, domain and trademark clearance | Founder | Fri 21 Aug 2026 (end week 2) | Keep `Post Array` as internal codename, register the best available `.com` at week 2, and ship under it. All copy is in `packages/i18n`, so a rename is a catalog edit. |
 | D-02 | Legal entity, jurisdiction and counsel engagement | Founder | Fri 21 Aug 2026 | Single-member entity in the founder's jurisdiction, Polar as merchant of record handling sales tax and VAT, counsel engaged for Terms, Privacy, DPA and AUP review before public beta. |
 | D-03 | Which fallback connector ships if a target is not approved by week 12 | Technical lead + founder | Fri 30 Oct 2026 (end week 12) | **Bluesky first** (lowest approval risk, official protocol), Threads second. Ship the fallback and label the delayed target `awaiting provider review` on the public capability page. Never label it `coming soon` without a date. |
 | D-04 | Object storage: stay on Supabase Storage or add Cloudflare R2 | Technical lead | Fri 27 Nov 2026 (end week 16) | Stay on Supabase Storage for V1 behind the storage adapter. Move to R2 only when measured monthly egress exceeds $150. |
@@ -451,7 +451,7 @@ Week 1 is Monday 10 August 2026. A holiday freeze runs 21 December 2026 to 1 Jan
 gantt
     dateFormat YYYY-MM-DD
     axisFormat %d %b
-    title Relay critical path to paid launch
+    title Post Array critical path to paid launch
     section Critical path
     Provider applications submitted        :crit, p0a, 2026-08-10, 10d
     Provider review waiting and responses  :crit, p0b, after p0a, 60d

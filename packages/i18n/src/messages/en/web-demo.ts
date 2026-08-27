@@ -23,7 +23,7 @@ export const webDemoMessages = {
   /* Metadata and navigation                                                 */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': 'See how Relay works',
+  'web.meta.demo.title': 'See how Post Array works',
   'web.meta.demo.description':
     'A guided tour of the publishing workflow, from a new project to the receipt, shown in the real interface with sample content. Nothing publishes yet, and the tour says where that line is.',
 
@@ -47,6 +47,10 @@ export const webDemoMessages = {
   /* The home page hero demonstration                                        */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'View the demo',
+  'web.demo.hero.projectsLine':
+    'One account runs many businesses. Each project is its own business, with its own connected accounts, its own calendar and its own approvals, and you switch between them from one menu, the way you switch properties in a search console.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# account} other {# accounts}}',
   'web.demo.hero.caption':
     'One draft becomes a version per platform, gets a time, and lands on the week. Sample content, not a live account.',
   'web.demo.hero.more': 'Walk through the whole workflow',

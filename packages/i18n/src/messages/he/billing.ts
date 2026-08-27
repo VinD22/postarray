@@ -22,7 +22,6 @@ export const billingMessages = withHebrewPluralForms({
   'billing.plan.includes.support': 'תמיכה באימייל ובאפליקציה',
   'billing.plan.fairUse':
     'שימוש הוגן פירושו אנטי ספאם, בקרות תעריפים ועלויות ספקים המגנות על החשבונות שלך. הם עובדים אותו הדבר עבור כל מנוי.',
-  'billing.trial.length': 'ניסיון של שבעה ימים עם כל תכונה',
   'billing.trial.dueToday': '0 דולר לפירעון היום',
   'billing.trial.paymentMethodRequired': 'Polar אוספת אמצעי תשלום עכשיו ולא גובה כלום היום.',
   'billing.trial.firstCharge': 'טעינה ראשונה {amount} ב-{date}',
@@ -71,7 +70,7 @@ export const billingMessages = withHebrewPluralForms({
   'billing.usage.estimatedBeforeAction': 'פעולה זו מוערכת ב-{amount}.',
   'billing.usage.periodTotal': '{amount} בשימוש מאז {date}',
   'billing.usage.noMediaCredits':
-    'אין קרדיטים ליצירת תמונות או וידאו, מכיוון ש-Relay אינו מייצר מדיה.',
+    'אין קרדיטים ליצירת תמונות או וידאו, מכיוון ש-Post Array אינו מייצר מדיה.',
   'billing.downgrade.overLimit':
     'בסביבת העבודה הזו יש {count, plural, one {# ערוץ} other {# ערוצים}} מעבר למגבלה. פעולות חדשות בערוצים האלה חסומות. שום דבר לא מנותק עבורך.',
   'billing.mediaGeneration.title': 'למה אנחנו לא יוצרים תמונות או וידאו',

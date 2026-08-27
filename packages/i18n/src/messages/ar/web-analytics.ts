@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'ترتيب المشاركات حسب',
   'analytics.rankMetric.help':
-    'لا توجد نتيجة مجمعة في Relay. اختر مقياسًا واحدًا تثق في تعريفه وسيتم ترتيب الجدول حسب هذا المقياس وحده.',
+    'لا توجد نتيجة مجمعة في Post Array. اختر مقياسًا واحدًا تثق في تعريفه وسيتم ترتيب الجدول حسب هذا المقياس وحده.',
   'analytics.rankMetric.chosen': 'تم تصنيفها حسب {metric}، وفقًا لما أفاد به كل مزود حساب.',
 
   /* ----------------------------------------------------------------------
@@ -105,7 +105,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'تم تغيير عدد المتابعين على {account} بـ {percent} خلال هذه الفترة.',
   'analytics.evidence.confounder.paid':
-    'Relay لا يمكنه معرفة ما إذا كان أي من هذه المنشورات قد تلقى توزيعًا مدفوع الأجر.',
+    'Post Array لا يمكنه معرفة ما إذا كان أي من هذه المنشورات قد تلقى توزيعًا مدفوع الأجر.',
   'analytics.evidence.confounder.provider':
     '{provider} غيّر طريقة الإبلاغ عن {metric} خلال هذه الفترة.',
 
@@ -141,7 +141,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'عدد من الأحداث',
   'analytics.unit.seconds': 'ثواني',
   'analytics.unit.percent': 'النسبة المئوية التي قام الموفر باحتسابها بالفعل',
-  'analytics.unit.ratio': 'نسبة Relay محسوبة من حقلين للموفرين',
+  'analytics.unit.ratio': 'نسبة Post Array محسوبة من حقلين للموفرين',
   'analytics.unit.currency_minor': 'مبلغ من المال في وحدات صغيرة',
 
   'analytics.denominator.none': 'وهذا إحصاء وليس معدل. ليس لها قاسم.',
@@ -161,7 +161,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'الموضوع',
 
   'analytics.value.unavailableReason.notImplemented':
-    'لم يقم Relay ببناء التعيين لهذا المقياس على {provider} حتى الآن.',
+    'لم يقم Post Array ببناء التعيين لهذا المقياس على {provider} حتى الآن.',
   'analytics.value.estimated': 'يقدر',
   'analytics.value.estimatedMethod': 'الطريقة: {method}.',
 
@@ -284,7 +284,7 @@ export const webAnalyticsMessages = {
     'تحتاج التحليلات إلى دور المحلل أو أعلى. يمكن لمالك مساحة العمل هذه أو مسؤولها منحها.',
   'analytics.state.rateLimitTitle': '{provider} هو معدل تحديد طلبات التحليلات',
   'analytics.state.rateLimitCause':
-    'لقد استخدم الحساب حصته من حصة الموفر لهذه النافذة. Relay لا يعيد المحاولة بجهد أكبر، لأن ذلك قد يؤخر النشر.',
+    'لقد استخدم الحساب حصته من حصة الموفر لهذه النافذة. Post Array لا يعيد المحاولة بجهد أكبر، لأن ذلك قد يؤخر النشر.',
   'analytics.state.rateLimitAlternative':
     'قم بتضييق النطاق الزمني أو مرشح الحساب، الذي يطلب من الموفر مبلغًا أقل.',
   'analytics.state.rateLimitReset': 'استئناف الطلبات',
@@ -296,9 +296,9 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'قم بإنشاء رابط متعقب',
   'analytics.links.empty': 'لا توجد روابط متعقبة حتى الآن',
   'analytics.links.emptyBody':
-    'الرابط الذي يتم تتبعه هو عنوان URL قصير يقوم Relay بإعادة التوجيه من خلاله، حتى تتمكن من رؤية النقرات حتى عندما لا يبلغ النظام الأساسي عن أي نقرات. ولا يتم تغيير الوجهة الأصلية أبدًا بدون إدخال التدقيق.',
+    'الرابط الذي يتم تتبعه هو عنوان URL قصير يقوم Post Array بإعادة التوجيه من خلاله، حتى تتمكن من رؤية النقرات حتى عندما لا يبلغ النظام الأساسي عن أي نقرات. ولا يتم تغيير الوجهة الأصلية أبدًا بدون إدخال التدقيق.',
   'analytics.links.emptyExample':
-    'مثال: يعيد Relay.to/a7Kq2 التوجيه إلى acme.com/blog/launch مع الحملة q3-launch.',
+    'مثال: يعيد Post Array.to/a7Kq2 التوجيه إلى acme.com/blog/launch مع الحملة q3-launch.',
   'analytics.links.table.caption': 'الارتباطات المتعقبة في مساحة العمل هذه وعدد نقرات الطرف الأول.',
   'analytics.links.campaign': 'حملة',
   'analytics.links.created': 'تم إنشاؤها',
@@ -327,7 +327,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}، نشط من {start} إلى {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}، نشط منذ {start}',
   'analytics.links.domainLabel': 'مجال قصير',
-  'analytics.links.domainDefault': 'Relay المجال الافتراضي',
+  'analytics.links.domainDefault': 'Post Array المجال الافتراضي',
   'analytics.links.domainVerified': 'تم التحقق منه بواسطة DNS على {date}',
   'analytics.links.domainPending': 'في انتظار سجل DNS',
   'analytics.links.domainPendingHelp':
@@ -350,7 +350,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'الإبلاغ عن هذا الرابط',
   'analytics.links.measurementLabel': 'قياس إعادة توجيه الطرف الأول',
   'analytics.links.measurementExplained':
-    'يحسب Relay طلبًا عندما يُطلب من خدمة إعادة التوجيه الحصول على عنوان URL هذا. تؤدي النقرة المكررة إلى إزالة الطلبات المتكررة من نفس الزائر داخل نافذة قصيرة، ويتم استبعاد الطلبات المطابقة لأنماط الزاحف المعروفة بدلاً من حذفها.',
+    'يحسب Post Array طلبًا عندما يُطلب من خدمة إعادة التوجيه الحصول على عنوان URL هذا. تؤدي النقرة المكررة إلى إزالة الطلبات المتكررة من نفس الزائر داخل نافذة قصيرة، ويتم استبعاد الطلبات المطابقة لأنماط الزاحف المعروفة بدلاً من حذفها.',
   'analytics.links.botsNote':
     '{count, plural, one {#طلب} zero {#طلبات} two {#طلبات} few {#طلبات} many {#طلبات} other {#طلبات}} تم تصنيفها على أنها تلقائية وتم استبعادها من العدد المكرر.',
   'analytics.links.series.title': 'الطلبات والنقرات المكررة بمرور الوقت',
@@ -373,7 +373,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'لم يتم طلب هذا الارتباط منذ إنشائه. وهذا هو الصفر الحقيقي، الذي يتم قياسه بواسطة خدمة إعادة التوجيه الخاصة بنا.',
   'analytics.links.compareWarning':
-    '{provider} تقارير {providerValue} نقرات الرابط لهذا المنشور. Relay تم تسجيل {relayValue} نقرات مكررة. الاثنان يحسبان أحداثًا مختلفة ولا يحل أي منهما محل الآخر.',
+    '{provider} تقارير {providerValue} نقرات الرابط لهذا المنشور. Post Array تم تسجيل {relayValue} نقرات مكررة. الاثنان يحسبان أحداثًا مختلفة ولا يحل أي منهما محل الآخر.',
   'analytics.links.errorTitle': 'تعذر تحميل إحصائيات الارتباط',
   'analytics.links.errorBody':
     'لا تزال خدمة إعادة التوجيه تعمل، لذا يستمر الرابط في إرسال الزوار إلى وجهتهم. يتأثر التقارير فقط.',
@@ -382,7 +382,7 @@ export const webAnalyticsMessages = {
     'يجب أن يكون عنوان https عامًا. يتم رفض عناوين الشبكة الخاصة وسلاسل إعادة التوجيه بواسطة خدمة إعادة التوجيه.',
   'analytics.links.createCampaign': 'اسم الحملة',
   'analytics.links.createSlug': 'نهاية مخصصة',
-  'analytics.links.createSlugHelp': 'اترك هذا فارغًا وسينشئ Relay نهاية عشوائية قصيرة.',
+  'analytics.links.createSlugHelp': 'اترك هذا فارغًا وسينشئ Post Array نهاية عشوائية قصيرة.',
   'analytics.links.createUtm': 'معلمات UTM',
   'analytics.links.blockedScheme': 'يتم قبول وجهات https فقط.',
   'analytics.links.blockedPrivate':
@@ -530,7 +530,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {#الفعل هو} zero {#الافعال هي} two {#الافعال هي} few {#الافعال هي} many {#الافعال هي} other {#الافعال هي}} غير مدرج لأن الحسابات المحددة لا يمكنها تنفيذها.',
   'automation.picker.hiddenDetail': '{action} غير متاح لـ {provider}. {reason}',
   'automation.picker.consequential': 'يخلق شيئا على منصة',
-  'automation.picker.internalOnly': 'يبقى في الداخل Relay',
+  'automation.picker.internalOnly': 'يبقى في الداخل Post Array',
 
   'automation.accounts.label': 'الحسابات التي قد تعمل عليها هذه القاعدة',
   'automation.accounts.help': 'لا يمكن للقاعدة أبدًا أن تمس حسابًا غير مدرج هنا، مهما كانت شروطه.',
@@ -629,7 +629,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} لم يمر، فتوقفت القاعدة هنا',
   'automation.test.actionSimulated': 'سيتم تشغيل {action}',
   'automation.test.actionSkipped': 'سيتم تخطي {action}: {reason}',
-  'automation.test.noExternalEffect': 'لم يتبق شيء Relay خلال هذا الاختبار.',
+  'automation.test.noExternalEffect': 'لم يتبق شيء Post Array خلال هذا الاختبار.',
   'automation.test.failed': 'لا يمكن إكمال الاختبار: {reason}',
 
   'automation.runs.table.caption': 'أحدث تشغيل لهذه القاعدة.',
@@ -691,7 +691,7 @@ export const webAnalyticsMessages = {
     'قم بتحويل الموجز إلى مسودات أو منشورات مجدولة، بنفس التحقق والموافقة مثل أي شيء تكتبه بنفسك.',
   'automation.rss.empty': 'لا توجد خلاصات حتى الآن',
   'automation.rss.emptyBody':
-    'أضف خلاصة وRelay يتحقق منها وفقًا لجدول زمني. يصبح كل عنصر جديد مسودة أو منشورًا مجدولاً أو طلب موافقة، أيًا كان اختيارك.',
+    'أضف خلاصة وPost Array يتحقق منها وفقًا لجدول زمني. يصبح كل عنصر جديد مسودة أو منشورًا مجدولاً أو طلب موافقة، أيًا كان اختيارك.',
   'automation.rss.emptyExample':
     'مثال: تقوم خلاصة مدونة Acme بإنشاء مسودة لـ X وLinkedIn في كل مرة يتم فيها نشر مقال، وتنتظر الموافقة.',
   'automation.rss.table.caption': 'يغذي استطلاعات مساحة العمل هذه.',
@@ -708,7 +708,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'الخطوة {current} من {total}',
 
   'automation.rss.urlHelp':
-    'Relay يجلب الخلاصة من خوادمنا، وليس من متصفحك. تم رفض عناوين الشبكة الخاصة.',
+    'Post Array يجلب الخلاصة من خوادمنا، وليس من متصفحك. تم رفض عناوين الشبكة الخاصة.',
   'automation.rss.validateAction': 'تحقق من هذه التغذية',
   'automation.rss.validateFailed': 'لم يُرجع هذا العنوان خلاصة قابلة للقراءة',
   'automation.rss.validateFailedReason': 'ما حصلنا عليه: {reason}',
@@ -720,7 +720,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'لا توجد صورة في هذا البند',
   'automation.rss.previewImageAlt': 'صورة من عنصر الخلاصة {title}',
   'automation.rss.previewNoDate':
-    'لا يحتوي هذا العنصر على طابع زمني، لذا يستخدم Relay الوقت الذي رآه فيه لأول مرة.',
+    'لا يحتوي هذا العنصر على طابع زمني، لذا يستخدم Post Array الوقت الذي رآه فيه لأول مرة.',
   'automation.rss.previewFieldsTitle': 'الحقول التي توفرها هذه الخلاصة',
   'automation.rss.previewFieldMissing': 'غير موجود في هذه الخلاصة',
 
@@ -747,7 +747,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'معاينة مع العنصر الأحدث',
   'automation.rss.adaptWithAi': 'قم بتكييف النص لكل هدف',
   'automation.rss.adaptHelp':
-    'تتم إعادة كتابة الصياغة لتناسب كل منصة وتظهر على أنها اختلاف بين قبولك أو رفضك. تأتي الوسائط من عنصر الخلاصة. Relay لا يقوم بإنشاء صور.',
+    'تتم إعادة كتابة الصياغة لتناسب كل منصة وتظهر على أنها اختلاف بين قبولك أو رفضك. تأتي الوسائط من عنصر الخلاصة. Post Array لا يقوم بإنشاء صور.',
   'automation.rss.noImageGeneration': 'إذا لم يكن لعنصر الموجز صورة، فسيخرج المنشور بدون صورة.',
   'automation.rss.imageFromFeed': 'استخدم الصورة من عنصر الخلاصة عندما تحتوي على صورة',
 
@@ -784,13 +784,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'استئناف هذه الخلاصة',
   'automation.rss.deleteTitle': 'إزالة {title}؟',
   'automation.rss.deleteBody':
-    'Relay يتوقف عن التحقق من هذه الخلاصة. تظل المسودات والمشاركات التي تم إنشاؤها بالفعل كما هي تمامًا.',
+    'Post Array يتوقف عن التحقق من هذه الخلاصة. تظل المسودات والمشاركات التي تم إنشاؤها بالفعل كما هي تمامًا.',
   'automation.rss.errorTitle': 'لا يمكن قراءة هذه الخلاصة',
   'automation.rss.errorBody':
-    'Relay يستمر في التحقق من الجدول الزمني العادي. لم يتم نشر أي شيء من الرد الجزئي.',
+    'Post Array يستمر في التحقق من الجدول الزمني العادي. لم يتم نشر أي شيء من الرد الجزئي.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'غير متوفر في أي قاعدة',
   'automation.refuse.body':

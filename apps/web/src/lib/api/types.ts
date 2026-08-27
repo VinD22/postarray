@@ -174,7 +174,7 @@ export interface ConnectionView {
   /**
    * The scopes the provider actually granted, as it named them.
    *
-   * `null` means Relay has no record of the grant, which is a different fact
+   * `null` means Post Array has no record of the grant, which is a different fact
    * from "the provider granted nothing". The UI must render the first as
    * unknown and never as denied.
    */

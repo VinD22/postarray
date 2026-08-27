@@ -1,6 +1,6 @@
 /** Korean beta catalog. */
 export const onboardingMessages = {
-  'onboarding.title': 'Relay 설정',
+  'onboarding.title': 'Post Array 설정',
   'onboarding.progress': '단계{current}~의{total}',
   'onboarding.skipForNow': '지금은 건너뛰세요',
   'onboarding.goal': '10분 이내에 확인된 예약 게시물입니다.',

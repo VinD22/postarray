@@ -16,7 +16,7 @@ import { PublishingService } from './publishing.service';
 /**
  * Immediate publishing, job status and publication receipts.
  *
- * The receipt is the product's answer to "did Relay post something I never
+ * The receipt is the product's answer to "did Post Array post something I never
  * approved". It records the surface, the actor, the approval decision, the
  * exact content version hash and the permalink, which is precisely the set of
  * facts that question needs.

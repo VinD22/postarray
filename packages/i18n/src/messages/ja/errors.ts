@@ -6,7 +6,7 @@ export const errorMessages = {
   'error.internal.message': 'これは私たち側の問題であり、コンテンツの問題ではありません。',
   'error.internal.action':
     '作業内容が保存されます。警告を受けています。数分後にもう一度試してください。',
-  'error.not_implemented.message': 'Relay はこれをまだ構築していません。',
+  'error.not_implemented.message': 'Post Array はこれをまだ構築していません。',
   'error.not_implemented.action': '出荷時については変更ログに従ってください。',
   'error.offline.message': 'あなたはオフラインです。',
   'error.offline.action':
@@ -56,6 +56,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Polar ポータルで支払い方法を更新します。',
   'error.trial_expired.message': '裁判は次の日に終了しました{date}。',
   'error.trial_expired.action': '公開を続けるには購読を開始してください。',
+  'error.post_credits_exhausted.message':
+    'このワークスペースは無料の投稿をすべて使い切りました。ほかの機能はこれまでどおり使えます。',
+  'error.post_credits_exhausted.action':
+    '公開を続けるにはプランを選んでください。アカウントの接続は維持され、下書きと予約もそのまま残ります。',
   'error.entitlement_missing.message': 'このワークスペースはその機能にアクセスできません。',
   'error.entitlement_missing.action': '課金設定を確認するか、サポートにお問い合わせください。',
   'error.channel_limit_reached.message':
@@ -83,7 +87,7 @@ export const errorMessages = {
     '投稿は審査に合格するまで非公開で公開されます。このページに変更があった場合は更新します。',
   'error.capability_unsupported.message': '{provider}はこれを公式 API を通じて提供していません。',
   'error.capability_unsupported.action': 'このアカウントがサポートする形式を使用してください。',
-  'error.capability_not_implemented.message': 'Relay はこれをビルドしていません{provider}まだ。',
+  'error.capability_not_implemented.message': 'Post Array はこれをビルドしていません{provider}まだ。',
   'error.capability_not_implemented.action':
     '機能ページには、各コネクタが現在実行できる機能がリストされています。',
   'error.capability_requires_review.message':

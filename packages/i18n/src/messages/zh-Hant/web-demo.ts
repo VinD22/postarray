@@ -23,7 +23,7 @@ export const webDemoMessages = {
   /* Metadata and navigation                                                 */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': '了解 Relay 如何運作',
+  'web.meta.demo.title': '了解 Post Array 如何運作',
   'web.meta.demo.description':
     '一段引導式導覽，展示從新專案到收據的發布工作流程，以真實介面搭配範例內容呈現。目前尚未發布任何內容，此導覽會說明界線在哪裡。',
 
@@ -46,6 +46,10 @@ export const webDemoMessages = {
   /* The home page hero demonstration                                        */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': '觀看示範',
+  'web.demo.hero.projectsLine':
+    '一個帳號經營多個業務。每個專案都是獨立的業務，有自己連結的帳號、自己的行事曆和自己的核准流程；你在同一個選單中切換它們，就像在搜尋主控台中切換資源一樣。',
+  'web.demo.hero.projectsChip': '{count, plural, other {# 個帳號}}',
   'web.demo.hero.caption':
     '一份草稿變成每個平台各一個版本，取得一個時間，並出現在這一週中。這是範例內容，並非真實帳號。',
   'web.demo.hero.more': '走過完整的工作流程',

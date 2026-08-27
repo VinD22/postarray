@@ -16,7 +16,7 @@ import type { ActorContextLike, PublishConfirmation } from './ports';
  *
  *  1. `publish_post` without a confirmation id mints a pending confirmation
  *     bound to the workspace, the grant, the content item and a fingerprint of
- *     the exact targets, and returns a URL on the Relay app domain.
+ *     the exact targets, and returns a URL on the Post Array app domain.
  *  2. A person opens that URL, in a session this server did not create, sees
  *     what will publish and where, and approves it.
  *  3. `publish_post` is called again with the id. The confirmation is consumed

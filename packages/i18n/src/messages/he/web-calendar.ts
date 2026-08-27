@@ -21,20 +21,20 @@ export const webCalendarMessages = withHebrewPluralForms({
   'web.connection.requirement.mastodon':
     'מסטודון מתחבר עם טוקן גישה שיצרת בשרת שלך, לא עם הסיסמה שלך.',
   'web.connection.requirement.telegram':
-    'Relay מפרסם כבוט. הוסף את הבוט לערוץ או לקבוצה שבה תרצה לפרסם.',
+    'Post Array מפרסם כבוט. הוסף את הבוט לערוץ או לקבוצה שבה תרצה לפרסם.',
   'web.connection.requirement.reddit':
     'כתיבה לרדיט דורשת אפליקציה מאושרת, וכל פוסט צריך כותרת וסובדיט.',
   'web.connection.requirement.wordpress':
-    'Relay מפרסם דרך ה-API של האתר עם סיסמת אפליקציה שיצרת בוורדפרס.',
+    'Post Array מפרסם דרך ה-API של האתר עם סיסמת אפליקציה שיצרת בוורדפרס.',
   'web.connection.requirement.medium':
-    'מידיום מתחבר דרך OAuth ו-Relay מפרסם סיפורים ציבוריים במרקדאון.',
+    'מידיום מתחבר דרך OAuth ו-Post Array מפרסם סיפורים ציבוריים במרקדאון.',
   'web.connection.requirement.devto': 'דב טו מתחבר עם מפתח API שיצרת בהגדרות דב טו.',
   'web.connection.requirement.pinterest':
     'כתיבה לפינטרסט דורשת גישת אפליקציה מאושרת, ופין צריך תמונה ולוח משלך.',
   'web.connection.requirement.discord':
-    'Relay מפרסם כבוט. הוסף את הבוט לשרתים ולערוצים שבהם תרצה לפרסם.',
+    'Post Array מפרסם כבוט. הוסף את הבוט לשרתים ולערוצים שבהם תרצה לפרסם.',
   'web.connection.requirement.slack':
-    'Relay מפרסם כאפליקציה. הוסף את האפליקציה לערוצים שבהם תרצה לפרסם.',
+    'Post Array מפרסם כאפליקציה. הוסף את האפליקציה לערוצים שבהם תרצה לפרסם.',
   'web.provider.fake': 'בדוק מחבר',
   'web.accountType.personal_profile': 'פרופיל אישי',
   'web.accountType.creator_profile': 'חשבון יוצר',
@@ -132,7 +132,7 @@ export const webCalendarMessages = withHebrewPluralForms({
   'web.calendar.reschedule.pastBody': 'בחר זמן בעתיד, או פרסם כעת במקום זאת.',
   'web.calendar.published.title': 'הפוסט הזה כבר פורסם',
   'web.calendar.published.body':
-    'קיים פוסט ב-{provider} ב-{permalinkLabel}. העברת הערך ב-Relay לא מזיזה את הפוסט על הרציף. בחר מה אתה רוצה שיקרה.',
+    'קיים פוסט ב-{provider} ב-{permalinkLabel}. העברת הערך ב-Post Array לא מזיזה את הפוסט על הרציף. בחר מה אתה רוצה שיקרה.',
   'web.calendar.published.optionLocal': 'עדכן את הרשומה המקומית בלבד',
   'web.calendar.published.optionLocalHint':
     'הקבלה שומרת על זמן הפרסום האמיתי. רק ערך התכנון זז, אז היומן שלך תואם את התוכנית שלך.',
@@ -220,14 +220,14 @@ export const webCalendarMessages = withHebrewPluralForms({
   'web.receipt.cost.notMetered': '{provider} אינו גובה תשלום לכל פעולה עבור סוג פוסט זה.',
   'web.receipt.analytics.never': 'Analytics עדיין לא הסתנכרן עבור הפוסט הזה.',
   'web.receipt.analytics.explain':
-    'ספקים מצטברים על לוחות הזמנים שלהם. הזמן שלמטה הוא כאשר Relay קרא אותם לאחרונה, לא כאשר המספרים היו נכונים.',
+    'ספקים מצטברים על לוחות הזמנים שלהם. הזמן שלמטה הוא כאשר Post Array קרא אותם לאחרונה, לא כאשר המספרים היו נכונים.',
   'web.receipt.export.download': 'הורד את הקבלה',
   'web.receipt.export.copyReference': 'העתק את אסמכתא הקבלה',
   'web.receipt.export.denied': 'שיתוף קבלה צריך את תפקיד הבעלים, המנהל או המאשר. אתה {role}.',
   'web.receipt.partial.retryFailedOnly': 'נסה שוב רק את המטרות שנכשלו',
   'web.receipt.partial.retryHint': 'ניסיון חוזר לעולם לא נוגע במטרה שכבר הוציאה פוסט חיצוני.',
   'web.receipt.remediation.user_action_required':
-    'זה דורש שינוי ב-Relay או ב-{provider} לפני שהוא יוכל לפעול שוב.',
+    'זה דורש שינוי ב-Post Array או ב-{provider} לפני שהוא יוכל לפעול שוב.',
   'web.receipt.remediation.content_invalid':
     'ערוך את התוכן כך שיעבור אימות {provider}, ואז תזמן אותו שוב.',
   'web.receipt.remediation.transient_provider':
@@ -321,18 +321,18 @@ export const webCalendarMessages = withHebrewPluralForms({
     'Bluesky מתחבר לסיסמת אפליקציה שנוצרה בהגדרות Bluesky שלך, לא לסיסמת החשבון שלך.',
   'web.connection.requirement.generic':
     'אתה צריך הרשאה לפרסם בחשבון זה מהפלטפורמה עצמה. ממסר לא יכול להעניק את זה.',
-  'web.connection.purpose.publish': 'פרסום הפוסטים שאתה מתזמן ב-Relay.',
+  'web.connection.purpose.publish': 'פרסום הפוסטים שאתה מתזמן ב-Post Array.',
   'web.connection.purpose.readPosts':
     'קריאה לאחור של פוסט שפורסם בממסר, כדי שהקבלה תוכל להוכיח שהוא פעיל.',
   'web.connection.purpose.identity':
-    'הצגת שם החשבון המדויק ב-Relay, כך שלעולם לא תפרסם את השם הלא נכון.',
+    'הצגת שם החשבון המדויק ב-Post Array, כך שלעולם לא תפרסם את השם הלא נכון.',
   'web.connection.purpose.analytics': 'קריאת המדדים שפלטפורמה זו מדווחת עבור הפוסטים שלך.',
   'web.connection.purpose.refresh': 'שמירה על גישה חיה כדי שפוסט מתוזמן לא ייכשל בן לילה.',
   'web.connection.purpose.chooseDestination': 'פירוט הדפים והערוצים שאתה יכול לבחור כיעד פרסום.',
   'web.connection.permissions.title': 'הרשאות ב-{account}',
   'web.connection.permissions.scopeColumn': 'רשות',
   'web.connection.permissions.stateColumn': 'מדינה',
-  'web.connection.permissions.purposeColumn': 'למה Relay משתמש בו',
+  'web.connection.permissions.purposeColumn': 'למה Post Array משתמש בו',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# חסרה הרשאה} other {# הרשאות חסרות}}. התחבר מחדש וקבל אותו כדי לשחזר את התכונות למטה.',
   'web.connection.permissions.snapshot': 'קרא מתוך {provider} {relativeTime}',

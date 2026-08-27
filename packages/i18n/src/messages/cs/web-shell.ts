@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Ukázková data',
   'shell.demo.title': 'Prohlížíte si ukázková data',
   'shell.demo.body':
-    'Rozhraní Relay API není z tohoto prohlížeče dostupné, takže obrazovky jsou vyplněny nasazeným příkladem pracovního prostoru. Nic zde není spojeno se skutečným účtem a nic nelze publikovat.',
+    'Rozhraní Post Array API není z tohoto prohlížeče dostupné, takže obrazovky jsou vyplněny nasazeným příkladem pracovního prostoru. Nic zde není spojeno se skutečným účtem a nic nelze publikovat.',
   'shell.demo.howToConnect':
     'Nastavte NEXT_PUBLIC_RELAY_API_URL a restartujte aplikaci, abyste mohli používat živá data.',
 
@@ -144,7 +144,7 @@ export const webShellMessages = {
   'home.trial.manage': 'Spravovat nebo zrušit',
   'home.error.title': 'Domov se nepodařilo načíst',
   'home.error.body':
-    'Váš pracovní prostor je nedotčen. Toto je problém při dosahování rozhraní Relay API.',
+    'Váš pracovní prostor je nedotčen. Toto je problém při dosahování rozhraní Post Array API.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title':
@@ -157,9 +157,9 @@ export const webShellMessages = {
     'Stejný pracovní postup z webové aplikace, REST API, MCP, CLI a webhooků.',
   'auth.provider.title': 'Než budete pokračovat',
   'auth.provider.google.access':
-    'Google sdílí vaše jméno, e-mailovou adresu a profilový obrázek se službou Relay. Relay nemůže číst váš Gmail, Disk nebo Kalendář.',
+    'Google sdílí vaše jméno, e-mailovou adresu a profilový obrázek se službou Post Array. Post Array nemůže číst váš Gmail, Disk nebo Kalendář.',
   'auth.provider.facebook.access':
-    'Facebook sdílí vaše jméno, e-mailovou adresu a profilový obrázek se službou Relay. Připojení stránky k publikování je samostatný krok, který schvalujete později.',
+    'Facebook sdílí vaše jméno, e-mailovou adresu a profilový obrázek se službou Post Array. Připojení stránky k publikování je samostatný krok, který schvalujete později.',
   'auth.provider.note': 'Tím se přihlásíte. Nepřipojuje se k účtu pro publikování.',
   'auth.continueWithEmail': 'Pokračovat e-mailem',
   'auth.method.password': 'Heslo',
@@ -180,8 +180,6 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak': 'Pro vaši bezpečnost neříkáme, zda je adresa registrována.',
   'auth.failure.provider': 'Přihlášení pomocí {provider} nebylo dokončeno. Nic se nezměnilo.',
   'auth.failure.network': 'Nedosáhli jsme relé. Zkontrolujte připojení a zkuste to znovu.',
-  'auth.signUp.trialNote':
-    'Sedm plných zkušebních dnů. Je vyžadována platební metoda. 0 $ splatných dnes.',
   'auth.signUp.emailInUseNote':
     'Pokud tato adresa již má účet, zašleme e-mailem odkaz pro přihlášení namísto vytvoření druhého.',
   'auth.legal.readTerms': 'Přečtěte si podmínky',
@@ -214,7 +212,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Zjištěno z tohoto zařízení: {timeZone}',
   'onboarding.connect.permissionsTitle': 'Co {provider} bude požádáno o',
   'onboarding.connect.permissionsFooter':
-    'Relay nikdy nepožaduje povolení, které nepoužívá, a můžete se kdykoli odpojit.',
+    'Post Array nikdy nepožaduje povolení, které nepoužívá, a můžete se kdykoli odpojit.',
   'onboarding.connect.chooseProvider': 'Vyberte platformu',
   'onboarding.connect.opensProvider': 'Pokračování otevření {provider} na této kartě.',
   'onboarding.compose.help':

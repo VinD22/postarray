@@ -153,7 +153,7 @@ function database(): Db {
           projectId: 'project_1',
           provider: 'linkedin',
           accountType: 'organization',
-          displayName: 'Relay',
+          displayName: 'Post Array',
           handle: '@relay',
           avatarUrl: null,
           profileUrl: null,

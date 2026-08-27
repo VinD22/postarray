@@ -55,7 +55,7 @@ export const localeNegotiationIsMeaningful = ACTIVE_LOCALE_CODES.length > 1;
 export async function getRequestIntl(workspaceTimeZone?: string): Promise<RequestIntl> {
   const [cookieStore, headerList] = await Promise.all([cookies(), headers()]);
 
-  const pathLocale = headerList.get('x-relay-locale');
+  const pathLocale = headerList.get('x-postarray-locale');
   const { locale, direction } =
     pathLocale !== null && isWebLocale(pathLocale)
       ? { locale: pathLocale, direction: getWebLocaleDirection(pathLocale) }

@@ -59,7 +59,7 @@ export const validationMessages = {
     'Một bài đăng lặp lại cần có ngày kết thúc hoặc số lần lặp lại.',
   'validation.schedule_in_past.message': 'Thời gian đó đã trôi qua trong {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Điều này còn tiến xa hơn so với cái nhìn trước của {limit} dành cho chứng chỉ này.',
+    'Bài đăng có thể được lên lịch trước tối đa {limit}, cũng là thời gian tệp phương tiện tải lên được lưu giữ.',
   'validation.schedule_outside_quiet_hours.message':
     'Điều này rơi vào khoảng thời gian yên tĩnh được đặt cho {project}.',
   'validation.duplicate_within_window.message':

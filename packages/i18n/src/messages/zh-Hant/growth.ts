@@ -63,7 +63,7 @@ export const growthMessages = {
   'growth.ugc.review': '審查標準',
   'growth.ugc.reuse': '再利用計畫',
   'growth.ugc.boundary':
-    '這是你與真人執行的活動規劃。Relay 不尋找創作者、不聯絡他們，也不撰寫推薦文。',
+    '這是你與真人執行的活動規劃。Post Array 不尋找創作者、不聯絡他們，也不撰寫推薦文。',
   'growth.opportunities.title': '推廣機會',
   'growth.opportunities.help':
     '來自目錄、經審查並按適配度排序的清單。準備優質投稿才是工作。沒有大量提交。',
@@ -83,7 +83,7 @@ export const growthMessages = {
   'growth.opportunities.dismissReason': '為何要關閉此項？',
   'growth.opportunities.noGuarantee': '相符只是建議，不是保證的連結、刊登位置或排名。',
   'growth.opportunities.boundary':
-    'Relay 不會提交表單、建立帳號、寄送聯絡信、發文至社群或購買連結。',
+    'Post Array 不會提交表單、建立帳號、寄送聯絡信、發文至社群或購買連結。',
   'growth.opportunities.empty': '尚無已驗證機會符合此檔案。空清單比捏造的清單好。',
   'growth.tools.title': '工具雷達',
   'growth.tools.help': '針對你目前工作流程，最多提供五個經審查工具，並說明它們不能做什麼。',
@@ -91,7 +91,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': '為何適合',
   'growth.tools.limitations': '限制',
   'growth.tools.requiredSkills': '需要的技能',
-  'growth.tools.handoff': '輸出如何回到 Relay',
+  'growth.tools.handoff': '輸出如何回到 Post Array',
   'growth.tools.rights': '權利與隱私權說明',
   'growth.tools.priceChecked': '價格上次檢查於 {date}',
   'growth.tools.affiliateDisclosure': '我們可能從此連結獲得佣金。這不會改變排名。',

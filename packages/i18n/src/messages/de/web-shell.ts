@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Demodaten',
   'shell.demo.title': 'Sie sehen sich Demodaten an',
   'shell.demo.body':
-    'Die Relay-API ist über diesen Browser nicht erreichbar, daher werden die Bildschirme mit einem vordefinierten Beispielarbeitsbereich gefüllt. Hier ist nichts mit einem echten Konto verbunden und nichts kann veröffentlicht werden.',
+    'Die Post Array-API ist über diesen Browser nicht erreichbar, daher werden die Bildschirme mit einem vordefinierten Beispielarbeitsbereich gefüllt. Hier ist nichts mit einem echten Konto verbunden und nichts kann veröffentlicht werden.',
   'shell.demo.howToConnect':
     'Legen Sie NEXT_PUBLIC_RELAY_API_URL fest und starten Sie die App neu, um Live-Daten zu verwenden.',
 
@@ -146,7 +146,7 @@ export const webShellMessages = {
   'home.trial.manage': 'Verwalten oder stornieren',
   'home.error.title': 'Startseite konnte nicht geladen werden',
   'home.error.body':
-    'Ihr Arbeitsbereich ist intakt. Dies ist ein Problem beim Erreichen der Relay-API.',
+    'Ihr Arbeitsbereich ist intakt. Dies ist ein Problem beim Erreichen der Post Array-API.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title':
@@ -159,9 +159,9 @@ export const webShellMessages = {
     'Derselbe Workflow von der Web-App, der REST-API, MCP, der CLI und Webhooks.',
   'auth.provider.title': 'Bevor Sie fortfahren',
   'auth.provider.google.access':
-    'Google gibt Ihren Namen, Ihre E-Mail-Adresse und Ihr Profilbild an Relay weiter. Relay kann Ihr Gmail, Laufwerk oder Kalender nicht lesen.',
+    'Google gibt Ihren Namen, Ihre E-Mail-Adresse und Ihr Profilbild an Post Array weiter. Post Array kann Ihr Gmail, Laufwerk oder Kalender nicht lesen.',
   'auth.provider.facebook.access':
-    'Facebook teilt Ihren Namen, Ihre E-Mail-Adresse und Ihr Profilbild mit Relay. Das Verbinden einer Seite zum Veröffentlichen ist ein separater Schritt, den Sie später genehmigen.',
+    'Facebook teilt Ihren Namen, Ihre E-Mail-Adresse und Ihr Profilbild mit Post Array. Das Verbinden einer Seite zum Veröffentlichen ist ein separater Schritt, den Sie später genehmigen.',
   'auth.provider.note':
     'Dadurch werden Sie angemeldet. Es wird kein Konto zum Veröffentlichen verknüpft.',
   'auth.continueWithEmail': 'Weiter mit E-Mail',
@@ -185,9 +185,7 @@ export const webShellMessages = {
   'auth.failure.provider':
     'Die Anmeldung mit {provider} wurde nicht abgeschlossen. Es wurde nichts geändert.',
   'auth.failure.network':
-    'Wir konnten Relay nicht erreichen. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
-  'auth.signUp.trialNote':
-    'Sieben volle Probetage. Eine Zahlungsmethode ist erforderlich. 0 $ heute fällig.',
+    'Wir konnten Post Array nicht erreichen. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.',
   'auth.signUp.emailInUseNote':
     'Wenn für diese Adresse bereits ein Konto vorhanden ist, senden wir einen Anmeldelink per E-Mail, anstatt einen zweiten zu erstellen.',
   'auth.legal.readTerms': 'Lesen Sie die Bedingungen',
@@ -221,7 +219,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Von diesem Gerät erkannt: {timeZone}',
   'onboarding.connect.permissionsTitle': 'Wonach {provider} gefragt wird',
   'onboarding.connect.permissionsFooter':
-    'Relay fragt niemals nach einer Erlaubnis, die es nicht nutzt, und Sie können die Verbindung jederzeit trennen.',
+    'Post Array fragt niemals nach einer Erlaubnis, die es nicht nutzt, und Sie können die Verbindung jederzeit trennen.',
   'onboarding.connect.chooseProvider': 'Wählen Sie eine Plattform',
   'onboarding.connect.opensProvider':
     'Wenn Sie fortfahren, wird {provider} in dieser Registerkarte geöffnet.',

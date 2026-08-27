@@ -71,7 +71,7 @@ describe('connect panel, credential shown once', () => {
     render(mount(<ConnectPanel {...BASE} credential={null} lastUsedAt={null} />));
 
     expect(
-      screen.getByText(/Relay keeps only a hash of it, so this screen cannot show it to you again/),
+      screen.getByText(/Post Array keeps only a hash of it, so this screen cannot show it to you again/),
     ).toBeInTheDocument();
     expect(screen.getByText(/rotate the credential/)).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Show credential' })).not.toBeInTheDocument();

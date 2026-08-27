@@ -75,7 +75,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Granska kriterier',
   'growth.ugc.reuse': 'Återanvändningsplan',
   'growth.ugc.boundary':
-    'Detta planerar en kampanj du kör med riktiga människor. Relay hittar inte kreatörer, kontaktar dem eller skriver vittnesmål.',
+    'Detta planerar en kampanj du kör med riktiga människor. Post Array hittar inte kreatörer, kontaktar dem eller skriver vittnesmål.',
 
   'growth.opportunities.title': 'Marknadsföringsmöjligheter',
   'growth.opportunities.help':
@@ -97,7 +97,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'En match är ett förslag. Det är inte en utlovad länk, en placering eller en ranking.',
   'growth.opportunities.boundary':
-    'Relay skickar inte in formulär, skapar inte konton, skickar inte e-post till kontakter, gör inlägg i grupper eller köper länkar.',
+    'Post Array skickar inte in formulär, skapar inte konton, skickar inte e-post till kontakter, gör inlägg i grupper eller köper länkar.',
   'growth.opportunities.empty':
     'Inga verifierade möjligheter matchar den här profilen ännu. En tom lista är bättre än en påhittad.',
 

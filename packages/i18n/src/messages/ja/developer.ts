@@ -75,7 +75,7 @@ export const developerMessages = {
     'リクエストおよびレスポンスの本文は、シークレットが削除された状態で保存されます。',
   'developer.apps.title': '開発者向けアプリ',
   'developer.apps.subtitle':
-    'ユーザーが付与したアクセス許可を使用して、別の製品が Relay を通じて動作できるようにします。',
+    'ユーザーが付与したアクセス許可を使用して、別の製品が Post Array を通じて動作できるようにします。',
   'developer.apps.create': 'アプリを登録する',
   'developer.apps.name': 'アプリ名',
   'developer.apps.type.label': 'クライアントの種類',

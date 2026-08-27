@@ -38,6 +38,7 @@ export const navMessages = {
   'settings.nav.notifications': 'Předvolby oznámení',
 
   'nav.public.product': 'Produkt',
+  'nav.public.demo': 'Demo',
   'nav.public.integrations': 'Integrace',
   'nav.public.forCreators': 'Pro tvůrce',
   'nav.public.forAgencies': 'Pro agentury',
@@ -45,7 +46,7 @@ export const navMessages = {
   'nav.public.pricing': 'Cena',
   'nav.public.resources': 'Zdroje',
   'nav.public.signIn': 'Přihlásit se',
-  'nav.public.startTrial': 'Začátek zdarma',
+  'nav.public.startTrial': 'Začít zdarma',
   'nav.public.docs': 'Dokumentace',
   'nav.public.changelog': 'Changelog',
   'nav.public.status': 'Stav',

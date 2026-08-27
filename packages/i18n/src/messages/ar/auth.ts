@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'تسجيل الدخول',
   'auth.signIn.subtitle': 'قم بالنشر والموافقة وانظر بالضبط ما حدث.',
   'auth.signUp.title': 'أنشئ حسابك',
-  'auth.signUp.subtitle': 'سبعة أيام مع كل ميزة. 0 دولار مستحقة اليوم.',
   'auth.continueWithGoogle': 'تواصل مع جوجل',
   'auth.continueWithFacebook': 'تواصل مع الفيسبوك',
   'auth.orUseEmail': 'أو استخدم بريدك الإلكتروني',

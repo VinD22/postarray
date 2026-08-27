@@ -38,6 +38,7 @@ export const navMessages = {
   'settings.nav.notifications': 'Meldingsvoorkeuren',
 
   'nav.public.product': 'Product',
+  'nav.public.demo': 'Demo',
   'nav.public.integrations': 'Integraties',
   'nav.public.forCreators': 'Voor makers',
   'nav.public.forAgencies': 'Voor agentschappen',

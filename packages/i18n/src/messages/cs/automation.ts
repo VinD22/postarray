@@ -96,7 +96,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Toto pravidlo nelze vytvořit',
   'automation.notPermitted.body':
-    'Relay neautomatizuje lajky, sledování, nevyžádané odpovědi nebo zprávy, duplicitní hromadné odesílání ani nic, co závisí na automatizaci prohlížeče. {provider} to zakazuje a my také.',
+    'Post Array neautomatizuje lajky, sledování, nevyžádané odpovědi nebo zprávy, duplicitní hromadné odesílání ani nic, co závisí na automatizaci prohlížeče. {provider} to zakazuje a my také.',
   'automation.notPermitted.providerCapability':
     '{provider} nenabízí {action} prostřednictvím svého oficiálního API, takže tuto akci pro něj nelze vybrat.',
 

@@ -12,7 +12,7 @@ import type { DataDeletionWorkflowInput, DataDeletionWorkflowOutput } from '../i
  * 1. Wait out the grace period, during which a `cancel` signal aborts cleanly.
  * 2. Cancel every scheduled publish job, so nothing publishes into a workspace
  *    that is being erased.
- * 3. Revoke every Relay credential. A provider-side revoke is only reported
+ * 3. Revoke every Post Array credential. A provider-side revoke is only reported
  *    complete when the verified connector adapter implements that operation.
  * 4. Delete stored objects, page by page, resumable through a cursor.
  * 5. Tombstone analytics. Rows are replaced with a tombstone rather than

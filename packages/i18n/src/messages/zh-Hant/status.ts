@@ -71,6 +71,6 @@ export const statusMessages = {
   'confirm.cancelScheduled.body': '它不會發布。草稿會保留在這裡，讓你可以再次排程。',
   'confirm.publishNow.title': '立即發布？',
   'confirm.publishNow.body':
-    '{count, plural, other {這會立即發布至 # 個帳號}}。無法從 Relay 撤回。',
+    '{count, plural, other {這會立即發布至 # 個帳號}}。無法從 Post Array 撤回。',
   'confirm.typeToConfirm': '輸入 {word} 以確認。',
 } as const;

@@ -23,7 +23,7 @@ export const webDemoMessages = {
   /* Metadata and navigation                                                 */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': 'Bekijk hoe Relay werkt',
+  'web.meta.demo.title': 'Bekijk hoe Post Array werkt',
   'web.meta.demo.description':
     'Een geleide rondleiding door de publicatieworkflow, van een nieuw project tot de ontvangstbevestiging, getoond in de echte interface met voorbeeldinhoud. Er wordt nog niets gepubliceerd, en de rondleiding laat zien waar die grens ligt.',
 
@@ -47,6 +47,10 @@ export const webDemoMessages = {
   /* The home page hero demonstration                                        */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Bekijk de demo',
+  'web.demo.hero.projectsLine':
+    'Eén account beheert meerdere bedrijven. Elk project is een eigen bedrijf, met eigen gekoppelde accounts, een eigen kalender en eigen goedkeuringen, en je wisselt ertussen via één menu, zoals je in een search console van property wisselt.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# account} other {# accounts}}',
   'web.demo.hero.caption':
     'Eén concept wordt een versie per platform, krijgt een tijdstip, en landt op de week. Voorbeeldinhoud, geen live account.',
   'web.demo.hero.more': 'Doorloop de hele workflow',

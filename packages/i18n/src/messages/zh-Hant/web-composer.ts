@@ -120,7 +120,7 @@ export const webComposerMessages = {
     '{count, plural, =0 {沒有提及} one {#提到} other {#提及}},{resolved}與真實帳號匹配',
   'composerWeb.entity.lookupUnsupported': '{provider}不提供此帳號類型的實體查找。',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay 尚未建置實體查找{provider}然而。在此期間沒有任何猜測。',
+    'Post Array 尚未建置實體查找{provider}然而。在此期間沒有任何猜測。',
   'composerWeb.entity.searchHint': '至少鍵入兩個字符，然後選擇一個結果。',
   'composerWeb.entity.resultCount': '{count, plural, =0 {沒有匹配項} one {#匹配} other {#比賽}}',
   'composerWeb.links.heading': '連結',
@@ -135,7 +135,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': '學期',
   'composerWeb.links.utmContent': '內容',
   'composerWeb.links.domainVerified': '{domain}，已針對此Workspace進行驗證',
-  'composerWeb.links.domainDefault': 'Relay 預設域',
+  'composerWeb.links.domainDefault': 'Post Array 預設域',
   'composerWeb.links.domainNone': '尚未驗證任何Brand域名。',
   'composerWeb.links.notAllowedHere': '{account}此處不允許連結。',
   'composerWeb.sequence.kindComment': '評論',
@@ -190,7 +190,7 @@ export const webComposerMessages = {
   'composerWeb.assist.claimUnverified': '沒有找到此說法的來源。發布前檢查一下。',
   'composerWeb.assist.failed': '協助請求未完成。您的文字沒有改變。',
   'composerWeb.assist.noMediaGeneration':
-    'Relay 不會建立影像或影片。將完成的文件帶入庫並在此處發布。',
+    'Post Array 不會建立影像或影片。將完成的文件帶入庫並在此處發布。',
   'composerWeb.autosave.pinned': '這是核准的版本。編輯它會建立一個新版本並清除核准。',
   'composerWeb.autosave.pinnedAcknowledge': '編輯並清除核准',
   'composerWeb.autosave.conflictTitle': '該草案有兩個版本',
@@ -231,7 +231,7 @@ export const webComposerMessages = {
     '什麼都沒有丟失。再試一次，如果仍然失敗，下面的參考可以幫助支援人員找到請求。',
   'composerWeb.page.noConnectionsTitle': '撰寫前連結帳號',
   'composerWeb.page.noConnectionsBody':
-    '草稿需要至少一個已連接的帳號，以便 Relay 知道限制、預覽和要顯示的設定。',
+    '草稿需要至少一個已連接的帳號，以便 Post Array 知道限制、預覽和要顯示的設定。',
   'composerWeb.page.noConnectionsExample':
     '範例：連接 X 和 LinkedIn 後，一份草稿將變成兩個具有各自計數器的本機版本。',
   'composerWeb.page.permissionTitle': '您無法在此Workspace中建立貼文',
@@ -257,7 +257,7 @@ export const webComposerMessages = {
   'mediaLib.openDetail': '打開{name}',
   'mediaLib.empty.title': '還沒有媒體',
   'mediaLib.empty.body':
-    '上傳您已有的圖像和影片，或從 URL 匯入文件。 Relay 檢查您發佈到的每個帳號的類型和大小。',
+    '上傳您已有的圖像和影片，或從 URL 匯入文件。 Post Array 檢查您發佈到的每個帳號的類型和大小。',
   'mediaLib.empty.example': '範例：launch_hero.jpg，1600 x 900，替代文字集，在 2 個貼文中使用。',
   'mediaLib.error.title': '無法載入庫',
   'mediaLib.error.body': '您的文件是安全的。這次失敗並沒有改變什麼。',
@@ -296,7 +296,7 @@ export const webComposerMessages = {
   'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
   'mediaLib.import.importing': '匯入媒體中',
   'mediaLib.import.succeeded': '檔案已在您的媒體庫中',
-  'mediaLib.import.scanPending': 'Relay 已記錄其來源。發布需等到安全檢查完成後才能進行。',
+  'mediaLib.import.scanPending': 'Post Array 已記錄其來源。發布需等到安全檢查完成後才能進行。',
   'mediaLib.import.failed': '無法匯入此檔案',
   'mediaLib.import.failedHelp': '請確認連結是公開的，且直接指向受支援的媒體檔案，然後再試一次。',
   'mediaLib.import.readOnly': '請連接 API 以在此環境中匯入檔案。',
@@ -306,7 +306,7 @@ export const webComposerMessages = {
   'mediaLib.import.issue.credentials': '請使用不含使用者名稱或密碼的連結。',
   'mediaLib.retention.title': '儲存的檔案會在貼文建立後保留 30 天',
   'mediaLib.retention.body':
-    '檔案附加到貼文後，我們會在該貼文建立 30 天後，將其從 Relay 儲存空間中永久刪除。尚未附加的檔案則以上傳日期作為清除的備援依據。貼文文字、發布收據與稽核紀錄會保留更長的時間。已在社群平台上發布的貼文，不會因儲存檔案到期而被移除。',
+    '檔案附加到貼文後，我們會在該貼文建立 30 天後，將其從 Post Array 儲存空間中永久刪除。尚未附加的檔案則以上傳日期作為清除的備援依據。貼文文字、發布收據與稽核紀錄會保留更長的時間。已在社群平台上發布的貼文，不會因儲存檔案到期而被移除。',
   'mediaLib.retention.limits':
     '圖片、音訊與 PDF 檔案最大可達 {imageSize}。影片最大可達 {videoSize}。',
   'mediaLib.retention.expiresLabel': '檔案刪除日期',
@@ -398,7 +398,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     '該文件不包含嵌入的內容憑證。這是很常見的現象，並不代表有什麼問題。',
   'mediaLib.provenance.unverified':
-    '這些詳細資訊來自來源，而不是來自 Relay。在依賴它們之前先檢查一下它們。',
+    '這些詳細資訊來自來源，而不是來自 Post Array。在依賴它們之前先檢查一下它們。',
   'mediaLib.picker.title': '選擇媒體',
   'mediaLib.picker.description': '文件將根據本草稿中選擇的帳號進行檢查。',
   'mediaLib.picker.confirm': '{count, plural, =0 {選擇文件} one {添加#文件} other {添加#文件}}',

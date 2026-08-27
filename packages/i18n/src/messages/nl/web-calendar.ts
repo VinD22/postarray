@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon verbindt met een toegangstoken die je op je eigen instance maakt, niet met je wachtwoord.',
   'web.connection.requirement.telegram':
-    'Relay plaatst als bot. Voeg de bot toe aan het kanaal of de groep waar je wilt publiceren.',
+    'Post Array plaatst als bot. Voeg de bot toe aan het kanaal of de groep waar je wilt publiceren.',
   'web.connection.requirement.reddit':
     'Schrijven op Reddit vereist een goedgekeurde app en elke post heeft een titel en een subreddit nodig.',
   'web.connection.requirement.wordpress':
-    'Relay publiceert via de REST API van de site met een app-wachtwoord dat je in WordPress maakt.',
+    'Post Array publiceert via de REST API van de site met een app-wachtwoord dat je in WordPress maakt.',
   'web.connection.requirement.medium':
-    'Medium verbindt via OAuth en Relay publiceert openbare verhalen in Markdown.',
+    'Medium verbindt via OAuth en Post Array publiceert openbare verhalen in Markdown.',
   'web.connection.requirement.devto':
     'Dev.to verbindt met een API-sleutel uit je Dev.to-instellingen.',
   'web.connection.requirement.pinterest':
     'Schrijven op Pinterest vereist goedgekeurde app-toegang en een pin heeft een afbeelding en een eigen bord nodig.',
   'web.connection.requirement.discord':
-    'Relay plaatst als bot. Voeg de bot toe aan de servers en kanalen waar je wilt publiceren.',
+    'Post Array plaatst als bot. Voeg de bot toe aan de servers en kanalen waar je wilt publiceren.',
   'web.connection.requirement.slack':
-    'Relay plaatst als app. Voeg de app toe aan de kanalen waar je wilt publiceren.',
+    'Post Array plaatst als app. Voeg de app toe aan de kanalen waar je wilt publiceren.',
   'web.provider.fake': 'Testconnector',
 
   'web.accountType.personal_profile': 'Persoonlijk profiel',
@@ -165,7 +165,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'Dit bericht is al gepubliceerd',
   'web.calendar.published.body':
-    'Er bestaat een bericht op {provider} op {permalinkLabel}. Het verplaatsen van de ingang in Relay verplaatst de post op het perron niet. Kies wat je wilt dat er gebeurt.',
+    'Er bestaat een bericht op {provider} op {permalinkLabel}. Het verplaatsen van de ingang in Post Array verplaatst de post op het perron niet. Kies wat je wilt dat er gebeurt.',
   'web.calendar.published.optionLocal': 'Werk alleen het lokale record bij',
   'web.calendar.published.optionLocalHint':
     'Op het ontvangstbewijs wordt de werkelijke publicatietijd vermeld. Alleen de planningspost beweegt, zodat uw agenda aansluit bij uw plan.',
@@ -271,7 +271,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Analytics is nog niet gesynchroniseerd voor dit bericht.',
   'web.receipt.analytics.explain':
-    "Aanbieders verzamelen hun eigen schema's. Het onderstaande tijdstip is het moment waarop Relay ze voor het laatst heeft gelezen, niet het moment waarop de cijfers waar waren.",
+    "Aanbieders verzamelen hun eigen schema's. Het onderstaande tijdstip is het moment waarop Post Array ze voor het laatst heeft gelezen, niet het moment waarop de cijfers waar waren.",
 
   'web.receipt.export.download': 'Download de bon',
   'web.receipt.export.copyReference': 'Kopieer de ontvangstreferentie',
@@ -283,11 +283,11 @@ export const webCalendarMessages = {
     'Een nieuwe poging raakt nooit een doelwit dat al een externe post heeft opgeleverd.',
 
   'web.receipt.remediation.user_action_required':
-    'Hiervoor is een wijziging in Relay of {provider} nodig voordat deze weer kan worden uitgevoerd.',
+    'Hiervoor is een wijziging in Post Array of {provider} nodig voordat deze weer kan worden uitgevoerd.',
   'web.receipt.remediation.content_invalid':
     'Bewerk de inhoud zodat deze de {provider}-validatie doorstaat en plan deze vervolgens opnieuw.',
   'web.receipt.remediation.transient_provider':
-    '{provider} heeft een tijdelijke fout geretourneerd. Relay probeerde het opnieuw volgens zijn eigen schema.',
+    '{provider} heeft een tijdelijke fout geretourneerd. Post Array probeerde het opnieuw volgens zijn eigen schema.',
   'web.receipt.remediation.permanent_provider':
     '{provider} weigerde dit definitief. Als u dezelfde inhoud opnieuw probeert, verandert het antwoord niet.',
   'web.receipt.remediation.internal':
@@ -350,17 +350,17 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# geplande post} other {# geplande posts}} voor dit account wordt niet gepubliceerd.',
   'web.connection.disconnect.consequence.published':
-    'Reeds gepubliceerde berichten blijven op {provider}. Relay verwijdert ze niet.',
+    'Reeds gepubliceerde berichten blijven op {provider}. Post Array verwijdert ze niet.',
   'web.connection.disconnect.consequence.analytics':
     'Reeds verzamelde statistieken blijven in deze werkruimte en worden niet meer bijgewerkt.',
 
   'web.connection.connect.title': 'Koppel een account',
   'web.connection.connect.chooseProvider': 'Welk platform',
-  'web.connection.connect.permissionHeading': 'Waar Relay {provider} om zal vragen',
+  'web.connection.connect.permissionHeading': 'Waar Post Array {provider} om zal vragen',
   'web.connection.connect.requirementHeading': 'Voordat u verdergaat',
   'web.connection.connect.continue': 'Ga verder naar {provider}',
   'web.connection.connect.handoffNote':
-    'Het volgende scherm is {provider}, niet Relay. Relay ziet nooit uw wachtwoord.',
+    'Het volgende scherm is {provider}, niet Post Array. Post Array ziet nooit uw wachtwoord.',
   'web.connection.connect.noWriteWithoutApproval':
     'Als u een account koppelt, wordt er niets gepubliceerd. Elk bericht volgt nog steeds dit goedkeuringsbeleid voor werkruimten.',
   'web.connection.projectScope.title': 'Kanalen voor {project}',
@@ -373,13 +373,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Voor publiceren op Instagram is een professioneel account nodig, dat wil zeggen een bedrijfs- of makersaccount dat aan een Facebook-pagina is gekoppeld.',
   'web.connection.requirement.facebook':
-    'Relay publiceert naar Facebook Pages. Een persoonlijk profiel kan geen publicatiedoel zijn.',
+    'Post Array publiceert naar Facebook Pages. Een persoonlijk profiel kan geen publicatiedoel zijn.',
   'web.connection.requirement.linkedin':
     'Om voor een organisatie te publiceren heeft u een contentbeheerderrol op die LinkedIn-pagina nodig.',
   'web.connection.requirement.youtube':
     'Totdat Google de app-audit voltooit, worden uploads van dit project als privé gepubliceerd. Je kunt achteraf de zichtbaarheid op YouTube wijzigen.',
   'web.connection.requirement.tiktok':
-    'TikTok vereist dat je voor elke post zelf het publiek kiest. Relay kan er geen voor u selecteren.',
+    'TikTok vereist dat je voor elke post zelf het publiek kiest. Post Array kan er geen voor u selecteren.',
   'web.connection.requirement.x':
     'X kosten per operatie. Een bericht met een URL kost meer dan een bericht met platte tekst, en de schatting wordt weergegeven voordat u plant.',
   'web.connection.requirement.threads':
@@ -387,13 +387,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky maakt verbinding met een app-wachtwoord dat is aangemaakt in uw Bluesky-instellingen, niet met uw accountwachtwoord.',
   'web.connection.requirement.generic':
-    'Je hebt toestemming nodig om vanaf het platform zelf op dit account te posten. Relay kan deze niet toekennen.',
+    'Je hebt toestemming nodig om vanaf het platform zelf op dit account te posten. Post Array kan deze niet toekennen.',
 
-  'web.connection.purpose.publish': 'Publiceer de berichten die u plant in Relay.',
+  'web.connection.purpose.publish': 'Publiceer de berichten die u plant in Post Array.',
   'web.connection.purpose.readPosts':
-    'Een bericht teruglezen dat Relay heeft gepubliceerd, zodat het ontvangstbewijs kan bewijzen dat het live is.',
+    'Een bericht teruglezen dat Post Array heeft gepubliceerd, zodat het ontvangstbewijs kan bewijzen dat het live is.',
   'web.connection.purpose.identity':
-    'Toont de exacte accountnaam in Relay, zodat u nooit naar de verkeerde publiceert.',
+    'Toont de exacte accountnaam in Post Array, zodat u nooit naar de verkeerde publiceert.',
   'web.connection.purpose.analytics':
     'De statistieken lezen die dit platform rapporteert voor uw eigen berichten.',
   'web.connection.purpose.refresh':
@@ -404,7 +404,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Machtigingen op {account}',
   'web.connection.permissions.scopeColumn': 'Toestemming',
   'web.connection.permissions.stateColumn': 'Staat',
-  'web.connection.permissions.purposeColumn': 'Waar Relay het voor gebruikt',
+  'web.connection.permissions.purposeColumn': 'Waar Post Array het voor gebruikt',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# toestemming ontbreekt} other {# toestemming ontbreekt}}. Maak opnieuw verbinding en accepteer het om de onderstaande functies te herstellen.',
   'web.connection.permissions.snapshot': 'Lees van {provider} {relativeTime}',
@@ -416,9 +416,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'Vermogen',
   'web.connection.capability.legendTitle': 'Hoe dit te lezen',
   'web.connection.capability.legend.supported':
-    'Relay kan dit vandaag nog doen voor een aangesloten account van het juiste type.',
+    'Post Array kan dit vandaag nog doen voor een aangesloten account van het juiste type.',
   'web.connection.capability.legend.not_implemented':
-    'Het platform biedt dit en Relay heeft het nog niet gebouwd. Het staat op de connectorroadmap.',
+    'Het platform biedt dit en Post Array heeft het nog niet gebouwd. Het staat op de connectorroadmap.',
   'web.connection.capability.legend.unsupported':
     'Het platform biedt dit niet aan via de officiële API, dus geen enkele tool kan dit veilig doen.',
   'web.connection.capability.legend.requires_review':

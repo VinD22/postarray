@@ -91,6 +91,6 @@ export const statusMessages = {
     'No se publicará. El borrador permanece aquí para que puedas programarlo nuevamente.',
   'confirm.publishNow.title': '¿Publicar ahora?',
   'confirm.publishNow.body':
-    '{count, plural, one {Esto se publica en # cuenta inmediatamente} many {Esto se publica en # cuentas inmediatamente} other {Esto se publica en # cuentas inmediatamente}}. No se puede recuperar desde Relay.',
+    '{count, plural, one {Esto se publica en # cuenta inmediatamente} many {Esto se publica en # cuentas inmediatamente} other {Esto se publica en # cuentas inmediatamente}}. No se puede recuperar desde Post Array.',
   'confirm.typeToConfirm': 'Type {word} para confirmar.',
 } as const;

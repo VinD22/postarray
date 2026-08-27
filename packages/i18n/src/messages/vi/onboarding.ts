@@ -1,6 +1,6 @@
 /** vi beta catalog namespace. */
 export const onboardingMessages = {
-  'onboarding.title': 'Thiết lập Relay',
+  'onboarding.title': 'Thiết lập Post Array',
   'onboarding.progress': 'Bước {current} của {total}',
   'onboarding.skipForNow': 'Bỏ qua bây giờ',
   'onboarding.goal': 'Một bài đăng được lên lịch đã được xác minh trong vòng chưa đầy mười phút.',

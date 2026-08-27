@@ -38,7 +38,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Accordé',
   'connection.permissions.missing': 'Non accordé',
   'connection.permissions.explainBeforeOAuth':
-    'Relay demandera {provider} pour ces autorisations. Vous pouvez vous déconnecter à tout moment.',
+    'Post Array demandera {provider} pour ces autorisations. Vous pouvez vous déconnecter à tout moment.',
   'connection.permissions.whyNeeded': "Pourquoi c'est nécessaire",
 
   'connection.reconnect.title': 'Reconnecter {account}',
@@ -92,11 +92,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Nécessite une révision de la plateforme',
   'capability.level.beta': 'Bêta',
   'capability.level.unknown': 'Indisponible',
-  'capability.explain.supported': "Relay peut le faire pour ce compte aujourd'hui.",
+  'capability.explain.supported': "Post Array peut le faire pour ce compte aujourd'hui.",
   'capability.explain.unsupported':
     '{provider} ne propose pas cela via son API officielle, donc aucun outil ne peut le faire en toute sécurité.',
   'capability.explain.not_implemented':
-    "{provider} le propose, mais Relay ne l'a pas encore construit. C'est sur la feuille de route du connecteur.",
+    "{provider} le propose, mais Post Array ne l'a pas encore construit. C'est sur la feuille de route du connecteur.",
   'capability.explain.requires_review':
     "{provider} ne l'accorde qu'après avoir examiné l'application ou le compte. Il reste indisponible jusqu'à ce que cet examen soit terminé.",
   'capability.explain.beta':

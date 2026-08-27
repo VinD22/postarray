@@ -35,6 +35,7 @@ export const navMessages = {
   'settings.nav.profile': '你的個人資料',
   'settings.nav.notifications': '通知偏好設定',
   'nav.public.product': '產品',
+  'nav.public.demo': '示範',
   'nav.public.integrations': '整合',
   'nav.public.forCreators': '創作者專用',
   'nav.public.forAgencies': '代理商專用',

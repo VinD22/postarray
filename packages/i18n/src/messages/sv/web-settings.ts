@@ -267,7 +267,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Beviljade behörigheter',
   'settings.ui.security.socialPermissionsTitle': 'Behörigheter för sociala konton',
   'settings.ui.security.socialPermissionsBody':
-    'Vad varje anslutet konto har tillåtit Relay att göra, från kapacitetsögonblicksbilden som togs vid anslutningstillfället.',
+    'Vad varje anslutet konto har tillåtit Post Array att göra, från kapacitetsögonblicksbilden som togs vid anslutningstillfället.',
   'settings.ui.security.viewInSection': 'Hantera i {section}',
   'settings.ui.security.emptySessions': 'Endast denna session är inloggad.',
   'settings.ui.security.emptyGrants':
@@ -306,7 +306,7 @@ export const webSettingsMessages = {
     'Choose the smallest thing that solves your problem. Each option below says what survives.',
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
-    'Removes Relay access to that account. The workspace, its content and its receipts stay.',
+    'Removes Post Array access to that account. The workspace, its content and its receipts stay.',
   'settings.ui.data.deleteProject': 'Arkivera ett projekt',
   'settings.ui.data.deleteProjectHelp':
     'Tar bort projektet, dess regler och dess ordlista. Innehåll publicerat under det behåller sina kvitton.',
@@ -479,7 +479,7 @@ export const webSettingsMessages = {
     'Registrera en applikation så att andra kan ge den åtkomst till sin arbetsyta. Varje app har sin egen identitet, sin egen godkännandelista för omdirigering och sin egen revisionsspår.',
   'developer.ui.apps.emptyTitle': 'Inga appar registrerade',
   'developer.ui.apps.emptyBody':
-    'Registrera en app när en annan produkt behöver agera på uppdrag av en Relay-användare. För din egen automatisering, använd istället ett tjänstekonto.',
+    'Registrera en app när en annan produkt behöver agera på uppdrag av en Post Array-användare. För din egen automatisering, använd istället ett tjänstekonto.',
   'developer.ui.apps.emptyExample':
     'Exempel: "Acme Publisher", konfidentiell klient, omdirigering https://acme.example/oauth/callback, scopes accounts:read och drafts:write.',
   'developer.ui.apps.typeHelp':
@@ -502,7 +502,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroup.consequential': 'Följdbehörigheter',
   'developer.ui.apps.scopeGroupHelp.read': 'Dessa låter appen titta på data. Ingenting förändras.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Dessa låter appen skapa eller redigera saker i Relay. Ingenting når en plattform.',
+    'Dessa låter appen skapa eller redigera saker i Post Array. Ingenting når en plattform.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Dessa kan orsaka ett inlägg på ett riktigt konto, eller ändra vem som kan nå dina konton. De listas alltid separat och paketeras aldrig.',
   'developer.ui.apps.noBundling':
@@ -664,7 +664,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X and some other providers charge per operation. Those charges are passed through at cost and are not part of the plan price.',
   'billing.ui.allowanceNoMedia':
-    'Image generation and video generation are not included and are not sold. Relay does not generate media.',
+    'Image generation and video generation are not included and are not sold. Post Array does not generate media.',
   'billing.ui.readFairUse': 'Read the fair use policy',
   'billing.ui.readMeteredPolicy': 'Read how metered usage is billed',
   'billing.ui.usageCaption': 'Metered provider usage this period, billed at cost',
@@ -724,8 +724,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'This subscription is canceled.',
   'billing.ui.resume': 'Start the subscription again',
   'billing.ui.noSubscriptionTitle': 'No subscription on this workspace',
-  'billing.ui.noSubscriptionBody':
-    'Start the seven day trial to publish. Polar collects a payment method and charges nothing today.',
   'billing.ui.noSubscriptionExample':
     'Monthly is $29. Annual is $300, which is $25/month billed annually. Save $48/year.',
   'billing.ui.overChannelLimitAction': 'Review connected channels',
@@ -843,7 +841,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'En ersättning måste anges i varje inlägg som blir resultatet, av både dig och deltagaren.',
   'growth.ui.ugc.honesty':
-    'Detta planerar en kampanj som du driver med riktiga personer. Relay hittar inte skapare, kontaktar dem inte, skriver inte omdömen och skapar inte kundinnehåll.',
+    'Detta planerar en kampanj som du driver med riktiga personer. Post Array hittar inte skapare, kontaktar dem inte, skriver inte omdömen och skapar inte kundinnehåll.',
 
   'growth.ui.opportunities.caption':
     'Verifierade möjligheter från katalogen, rangordnade efter passform med din profil',
@@ -866,7 +864,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Deras regler, citerade',
   'growth.ui.opportunities.prepareChecklist': 'Vad ska man ha klart',
   'growth.ui.opportunities.prepareManual':
-    'Du skickar in detta själv på deras sida. Relay fyller inte i formulär, skapar konton eller mailar någon.',
+    'Du skickar in detta själv på deras sida. Post Array fyller inte i formulär, skapar konton eller mailar någon.',
   'growth.ui.opportunities.pitchTitle': 'Pitch utkast',
   'growth.ui.opportunities.pitchHelp':
     'Redigera den innan du skickar den. Den använder bara de fakta du bekräftat.',
@@ -884,7 +882,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Varje inlägg behöver ett kontrollerat pris, kontrollerade rättighetsvillkor och en namngiven begränsning innan den visas här.',
   'growth.ui.tools.emptyExample':
-    'En post säger vad den är bäst för, varför den passar din plan, vad den inte kan göra, de kunskaper den behöver, hur utmatningen kommer tillbaka till Relay och när priset senast kontrollerades.',
+    'En post säger vad den är bäst för, varför den passar din plan, vad den inte kan göra, de kunskaper den behöver, hur utmatningen kommer tillbaka till Post Array och när priset senast kontrollerades.',
   'growth.ui.tools.openSite': 'Öppna den officiella webbplatsen för {name}',
   'growth.ui.tools.stale': 'Efter granskningsdatumet. Utesluten från genererade planer.',
 

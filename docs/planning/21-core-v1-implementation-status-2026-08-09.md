@@ -2,7 +2,7 @@
 
 Status date: 9 August 2026
 
-This is the current product and engineering handoff for Relay. It records what
+This is the current product and engineering handoff for Post Array. It records what
 is implemented in the repository, what has been verified locally, what still
 needs production infrastructure or third-party approval, and what is
 deliberately deferred. It should be read with the operational release gates in

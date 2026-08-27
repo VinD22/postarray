@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'पोस्ट को इसके अनुसार रैंक करें',
   'analytics.rankMetric.help':
-    'Relay में कोई संयुक्त स्कोर नहीं है। एक मीट्रिक चुनें जिसकी परिभाषा पर आप भरोसा करते हैं और तालिका अकेले उस मीट्रिक द्वारा क्रमबद्ध की जाती है।',
+    'Post Array में कोई संयुक्त स्कोर नहीं है। एक मीट्रिक चुनें जिसकी परिभाषा पर आप भरोसा करते हैं और तालिका अकेले उस मीट्रिक द्वारा क्रमबद्ध की जाती है।',
   'analytics.rankMetric.chosen': 'Ranked by {metric}, as reported by each account provider.',
 
   /* ----------------------------------------------------------------------
@@ -105,7 +105,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'The follower count on {account} changed by {percent} during this period.',
   'analytics.evidence.confounder.paid':
-    'Relay यह नहीं बता सकता कि इनमें से किसी पोस्ट को भुगतान वितरण प्राप्त हुआ या नहीं।',
+    'Post Array यह नहीं बता सकता कि इनमें से किसी पोस्ट को भुगतान वितरण प्राप्त हुआ या नहीं।',
   'analytics.evidence.confounder.provider':
     '{provider} changed how it reports {metric} inside this period.',
 
@@ -142,7 +142,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'घटनाओं की गिनती',
   'analytics.unit.seconds': 'सेकंड',
   'analytics.unit.percent': 'एक प्रतिशत की गणना प्रदाता पहले ही कर चुका है',
-  'analytics.unit.ratio': 'दो प्रदाता क्षेत्रों से एक अनुपात Relay की गणना की गई',
+  'analytics.unit.ratio': 'दो प्रदाता क्षेत्रों से एक अनुपात Post Array की गणना की गई',
   'analytics.unit.currency_minor': 'छोटी इकाइयों में धन की राशि',
 
   'analytics.denominator.none': 'यह गिनती है, दर नहीं. इसका कोई हर नहीं है.',
@@ -162,7 +162,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'धागा',
 
   'analytics.value.unavailableReason.notImplemented':
-    'Relay has not built the mapping for this metric on {provider} yet.',
+    'Post Array has not built the mapping for this metric on {provider} yet.',
   'analytics.value.estimated': 'अनुमानित',
   'analytics.value.estimatedMethod': 'Method: {method}.',
 
@@ -290,7 +290,7 @@ export const webAnalyticsMessages = {
     'एनालिटिक्स को विश्लेषक या उससे अधिक की भूमिका की आवश्यकता होती है। इस कार्यक्षेत्र का कोई स्वामी या व्यवस्थापक इसे अनुदान दे सकता है.',
   'analytics.state.rateLimitTitle': '{provider} is rate limiting analytics requests',
   'analytics.state.rateLimitCause':
-    'खाते ने इस विंडो के लिए प्रदाता कोटा के अपने हिस्से का उपयोग किया है। Relay अधिक पुनः प्रयास नहीं करता है, क्योंकि इससे प्रकाशन में देरी होगी।',
+    'खाते ने इस विंडो के लिए प्रदाता कोटा के अपने हिस्से का उपयोग किया है। Post Array अधिक पुनः प्रयास नहीं करता है, क्योंकि इससे प्रकाशन में देरी होगी।',
   'analytics.state.rateLimitAlternative':
     'दिनांक सीमा या खाता फ़िल्टर को सीमित करें, जो प्रदाता से कम मांगता है।',
   'analytics.state.rateLimitReset': 'अनुरोध फिर से शुरू करें',
@@ -302,7 +302,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'एक ट्रैक किया गया लिंक बनाएं',
   'analytics.links.empty': 'अभी तक कोई ट्रैक नहीं किया गया लिंक',
   'analytics.links.emptyBody':
-    'ट्रैक किया गया लिंक एक छोटा URL Relay रीडायरेक्ट होता है, जिससे आप तब भी क्लिक देख सकते हैं जब कोई प्लेटफ़ॉर्म रिपोर्ट नहीं करता है। ऑडिट प्रविष्टि के बिना मूल गंतव्य कभी नहीं बदला जाता है।',
+    'ट्रैक किया गया लिंक एक छोटा URL Post Array रीडायरेक्ट होता है, जिससे आप तब भी क्लिक देख सकते हैं जब कोई प्लेटफ़ॉर्म रिपोर्ट नहीं करता है। ऑडिट प्रविष्टि के बिना मूल गंतव्य कभी नहीं बदला जाता है।',
   'analytics.links.emptyExample':
     'उदाहरण: रिले.to/a7Kq2 अभियान q3-लॉन्च के साथ acme.com/blog/launch पर रीडायरेक्ट करता है।',
   'analytics.links.table.caption':
@@ -334,7 +334,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, active from {start} to {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, active since {start}',
   'analytics.links.domainLabel': 'लघु डोमेन',
-  'analytics.links.domainDefault': 'Relay डिफ़ॉल्ट डोमेन',
+  'analytics.links.domainDefault': 'Post Array डिफ़ॉल्ट डोमेन',
   'analytics.links.domainVerified': 'Verified by DNS on {date}',
   'analytics.links.domainPending': 'DNS रिकॉर्ड की प्रतीक्षा की जा रही है',
   'analytics.links.domainPendingHelp':
@@ -357,7 +357,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'इस लिंक की रिपोर्ट करें',
   'analytics.links.measurementLabel': 'प्रथम पक्ष पुनर्निर्देशन माप',
   'analytics.links.measurementExplained':
-    'जब इस URL के लिए रीडायरेक्ट सेवा मांगी जाती है तो Relay एक अनुरोध की गणना करता है। एक डुप्लिकेट क्लिक एक छोटी विंडो के अंदर एक ही विज़िटर से दोहराए गए अनुरोधों को हटा देता है, और ज्ञात क्रॉलर पैटर्न से मेल खाने वाले अनुरोधों को हटाने के बजाय बाहर रखा जाता है।',
+    'जब इस URL के लिए रीडायरेक्ट सेवा मांगी जाती है तो Post Array एक अनुरोध की गणना करता है। एक डुप्लिकेट क्लिक एक छोटी विंडो के अंदर एक ही विज़िटर से दोहराए गए अनुरोधों को हटा देता है, और ज्ञात क्रॉलर पैटर्न से मेल खाने वाले अनुरोधों को हटाने के बजाय बाहर रखा जाता है।',
   'analytics.links.botsNote':
     '{count, plural, one {# request} other {# requests}} were classified as automated and are excluded from the deduplicated count.',
   'analytics.links.series.title': 'समय के साथ अनुरोध और डुप्लिकेट किए गए क्लिक',
@@ -380,7 +380,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'इस लिंक के निर्माण के बाद से इसका अनुरोध नहीं किया गया है। यह एक वास्तविक शून्य है, जिसे हमारी अपनी रीडायरेक्ट सेवा द्वारा मापा जाता है।',
   'analytics.links.compareWarning':
-    '{provider} reports {providerValue} link clicks for this post. Relay recorded {relayValue} deduplicated clicks. The two count different events and neither replaces the other.',
+    '{provider} reports {providerValue} link clicks for this post. Post Array recorded {relayValue} deduplicated clicks. The two count different events and neither replaces the other.',
   'analytics.links.errorTitle': 'लिंक आँकड़े लोड नहीं किए जा सके',
   'analytics.links.errorBody':
     'रीडायरेक्ट सेवा अभी भी काम कर रही है, इसलिए लिंक आगंतुकों को उनके गंतव्य तक भेजता रहता है। केवल रिपोर्टिंग प्रभावित होती है.',
@@ -390,7 +390,7 @@ export const webAnalyticsMessages = {
   'analytics.links.createCampaign': 'अभियान का नाम',
   'analytics.links.createSlug': 'कस्टम अंत',
   'analytics.links.createSlugHelp':
-    'इसे खाली छोड़ दें और Relay एक संक्षिप्त यादृच्छिक अंत उत्पन्न करता है।',
+    'इसे खाली छोड़ दें और Post Array एक संक्षिप्त यादृच्छिक अंत उत्पन्न करता है।',
   'analytics.links.createUtm': 'यूटीएम पैरामीटर',
   'analytics.links.blockedScheme': 'केवल https गंतव्य स्वीकार किए जाते हैं।',
   'analytics.links.blockedPrivate':
@@ -536,7 +536,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# action is} other {# actions are}} not listed because the selected accounts cannot perform them.',
   'automation.picker.hiddenDetail': '{action} is not available for {provider}. {reason}',
   'automation.picker.consequential': 'एक मंच पर कुछ बनाता है',
-  'automation.picker.internalOnly': 'Relay के अंदर रहता है',
+  'automation.picker.internalOnly': 'Post Array के अंदर रहता है',
 
   'automation.accounts.label': 'जिन खातों पर यह नियम लागू हो सकता है',
   'automation.accounts.help':
@@ -637,7 +637,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} did not pass, so the rule stopped here',
   'automation.test.actionSimulated': '{action} would run',
   'automation.test.actionSkipped': '{action} would be skipped: {reason}',
-  'automation.test.noExternalEffect': 'इस परीक्षण के दौरान कुछ भी नहीं बचा Relay।',
+  'automation.test.noExternalEffect': 'इस परीक्षण के दौरान कुछ भी नहीं बचा Post Array।',
   'automation.test.failed': 'The test could not complete: {reason}',
 
   'automation.runs.table.caption': 'इस नियम के हालिया रन.',
@@ -698,7 +698,7 @@ export const webAnalyticsMessages = {
     'किसी फ़ीड को ड्राफ्ट या शेड्यूल किए गए पोस्ट में बदलें, उसी सत्यापन और अनुमोदन के साथ जो आप स्वयं लिखते हैं।',
   'automation.rss.empty': 'अभी तक कोई फ़ीड नहीं',
   'automation.rss.emptyBody':
-    'एक फ़ीड जोड़ें और Relay इसे एक शेड्यूल पर जांचता है। प्रत्येक नया आइटम एक ड्राफ्ट, एक निर्धारित पोस्ट या एक अनुमोदन अनुरोध बन जाता है, जो भी आप चुनते हैं।',
+    'एक फ़ीड जोड़ें और Post Array इसे एक शेड्यूल पर जांचता है। प्रत्येक नया आइटम एक ड्राफ्ट, एक निर्धारित पोस्ट या एक अनुमोदन अनुरोध बन जाता है, जो भी आप चुनते हैं।',
   'automation.rss.emptyExample':
     'उदाहरण: एक्मे ब्लॉग फ़ीड हर बार एक लेख प्रकाशित होने पर X और LinkedIn के लिए एक ड्राफ्ट बनाता है, और एक अनुमोदनकर्ता की प्रतीक्षा करता है।',
   'automation.rss.table.caption': 'इस कार्यक्षेत्र पोल को फ़ीड करता है.',
@@ -715,7 +715,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Step {current} of {total}',
 
   'automation.rss.urlHelp':
-    'Relay आपके ब्राउज़र से नहीं, बल्कि हमारे सर्वर से फ़ीड लाता है। निजी नेटवर्क पते अस्वीकार कर दिए गए हैं.',
+    'Post Array आपके ब्राउज़र से नहीं, बल्कि हमारे सर्वर से फ़ीड लाता है। निजी नेटवर्क पते अस्वीकार कर दिए गए हैं.',
   'automation.rss.validateAction': 'इस फ़ीड की जाँच करें',
   'automation.rss.validateFailed': 'उस पते पर पठनीय फ़ीड नहीं लौटाई गई',
   'automation.rss.validateFailedReason': 'What we got back: {reason}',
@@ -728,7 +728,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'इस आइटम में कोई छवि नहीं',
   'automation.rss.previewImageAlt': 'Image from the feed item {title}',
   'automation.rss.previewNoDate':
-    'इस आइटम पर कोई टाइमस्टैम्प नहीं है, इसलिए Relay उस समय का उपयोग करता है जब उसने इसे पहली बार देखा था।',
+    'इस आइटम पर कोई टाइमस्टैम्प नहीं है, इसलिए Post Array उस समय का उपयोग करता है जब उसने इसे पहली बार देखा था।',
   'automation.rss.previewFieldsTitle': 'फ़ील्ड यह फ़ीड प्रदान करता है',
   'automation.rss.previewFieldMissing': 'इस फ़ीड में मौजूद नहीं है',
 
@@ -755,7 +755,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'नवीनतम आइटम के साथ पूर्वावलोकन करें',
   'automation.rss.adaptWithAi': 'प्रत्येक लक्ष्य के लिए पाठ को अनुकूलित करें',
   'automation.rss.adaptHelp':
-    'शब्दों को प्रत्येक प्लेटफ़ॉर्म पर फिट करने के लिए फिर से लिखा जाता है और आपके द्वारा स्वीकार या अस्वीकार किए जाने वाले अंतर के रूप में दिखाया जाता है। मीडिया फ़ीड आइटम से आता है. Relay छवियां उत्पन्न नहीं करता है।',
+    'शब्दों को प्रत्येक प्लेटफ़ॉर्म पर फिट करने के लिए फिर से लिखा जाता है और आपके द्वारा स्वीकार या अस्वीकार किए जाने वाले अंतर के रूप में दिखाया जाता है। मीडिया फ़ीड आइटम से आता है. Post Array छवियां उत्पन्न नहीं करता है।',
   'automation.rss.noImageGeneration':
     'यदि किसी फ़ीड आइटम में कोई छवि नहीं है, तो पोस्ट बिना किसी छवि के बाहर चला जाता है।',
   'automation.rss.imageFromFeed': 'जब फ़ीड आइटम में कोई छवि हो तो उसका उपयोग करें',
@@ -792,13 +792,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'इस फ़ीड को फिर से शुरू करें',
   'automation.rss.deleteTitle': 'Remove {title}?',
   'automation.rss.deleteBody':
-    'Relay इस फ़ीड की जाँच करना बंद कर देता है। इसके द्वारा पहले से बनाए गए ड्राफ्ट और पोस्ट बिल्कुल वैसे ही बने रहते हैं जैसे वे हैं।',
+    'Post Array इस फ़ीड की जाँच करना बंद कर देता है। इसके द्वारा पहले से बनाए गए ड्राफ्ट और पोस्ट बिल्कुल वैसे ही बने रहते हैं जैसे वे हैं।',
   'automation.rss.errorTitle': 'इस फ़ीड को पढ़ा नहीं जा सका',
   'automation.rss.errorBody':
-    'Relay सामान्य शेड्यूल पर जाँच करता रहता है। आंशिक प्रतिक्रिया से कुछ भी प्रकाशित नहीं हुआ।',
+    'Post Array सामान्य शेड्यूल पर जाँच करता रहता है। आंशिक प्रतिक्रिया से कुछ भी प्रकाशित नहीं हुआ।',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'किसी भी नियम में उपलब्ध नहीं है',
   'automation.refuse.body':

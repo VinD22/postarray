@@ -1,6 +1,6 @@
 /** First run: checkout, workspace, role, first connection, first post. */
 export const onboardingMessages = {
-  'onboarding.title': 'Configura Relay',
+  'onboarding.title': 'Configura Post Array',
   'onboarding.progress': 'Passaggio {current} di {total}',
   'onboarding.skipForNow': 'Salta per ora',
   'onboarding.goal': 'Un post programmato verificato in meno di dieci minuti.',

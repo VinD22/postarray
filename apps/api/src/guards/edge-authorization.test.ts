@@ -138,7 +138,7 @@ describe('authentication', () => {
       .set('authorization', `Bearer ${token.token}`);
 
     // Audience verification is the confused-deputy defence: a token for another
-    // Relay resource must not work here.
+    // Post Array resource must not work here.
     expect(response.status).toBe(401);
   });
 

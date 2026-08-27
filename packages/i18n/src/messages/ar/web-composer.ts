@@ -154,7 +154,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} لا يقدم بحثًا عن الكيانات لهذا النوع من الحساب.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay لم ينشئ بحثًا عن الكيان لـ {provider} حتى الآن. لا شيء يخمن في هذه الأثناء.',
+    'Post Array لم ينشئ بحثًا عن الكيان لـ {provider} حتى الآن. لا شيء يخمن في هذه الأثناء.',
   'composerWeb.entity.searchHint': 'اكتب حرفين على الأقل، ثم اختر نتيجة.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {لا توجد مباريات} one {#مباراة} zero {# مباريات} two {# مباريات} few {# مباريات} many {# مباريات} other {# مباريات}}',
@@ -172,7 +172,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'مصطلح',
   'composerWeb.links.utmContent': 'المحتوى',
   'composerWeb.links.domainVerified': '{domain}، تم التحقق منه لمساحة العمل هذه',
-  'composerWeb.links.domainDefault': 'Relay المجال الافتراضي',
+  'composerWeb.links.domainDefault': 'Post Array المجال الافتراضي',
   'composerWeb.links.domainNone': 'لم يتم التحقق من نطاق العلامة التجارية حتى الآن.',
   'composerWeb.links.notAllowedHere': '{account} لا يسمح بالارتباط هنا.',
 
@@ -239,7 +239,7 @@ export const webComposerMessages = {
     'لم يتم العثور على مصدر لهذا الادعاء. التحقق من ذلك قبل النشر.',
   'composerWeb.assist.failed': 'لم يكتمل طلب المساعدة. النص الخاص بك لم يتغير.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay لا يقوم بإنشاء صور أو مقاطع فيديو. أحضر الملفات النهائية إلى المكتبة وانشرها هنا.',
+    'Post Array لا يقوم بإنشاء صور أو مقاطع فيديو. أحضر الملفات النهائية إلى المكتبة وانشرها هنا.',
 
   // ------------------------------------------------------------- autosave
   'composerWeb.autosave.pinned':
@@ -288,7 +288,7 @@ export const webComposerMessages = {
     'لم يضيع شيء. حاول مرة أخرى، وإذا استمر الفشل، فإن المرجع أدناه يساعد فريق الدعم في العثور على الطلب.',
   'composerWeb.page.noConnectionsTitle': 'قم بتوصيل حساب قبل التأليف',
   'composerWeb.page.noConnectionsBody':
-    'تحتاج المسودة إلى حساب متصل واحد على الأقل حتى يعرف Relay الحدود والمعاينة والإعدادات المراد عرضها.',
+    'تحتاج المسودة إلى حساب متصل واحد على الأقل حتى يعرف Post Array الحدود والمعاينة والإعدادات المراد عرضها.',
   'composerWeb.page.noConnectionsExample':
     'مثال: مع اتصال X وLinkedIn، تصبح المسودة الواحدة نسختين أصليتين مع عدادات خاصة بهما.',
   'composerWeb.page.permissionTitle': 'لا يمكنك إنشاء مشاركات في مساحة العمل هذه',
@@ -319,7 +319,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'لا توجد وسائل الإعلام بعد',
   'mediaLib.empty.body':
-    'قم بتحميل الصور ومقاطع الفيديو الموجودة لديك بالفعل، أو قم باستيراد ملف من عنوان URL. Relay يتحقق من النوع والحجم مقابل كل حساب تنشره.',
+    'قم بتحميل الصور ومقاطع الفيديو الموجودة لديك بالفعل، أو قم باستيراد ملف من عنوان URL. Post Array يتحقق من النوع والحجم مقابل كل حساب تنشره.',
   'mediaLib.empty.example':
     'مثال: Launch_hero.jpg، 1600 × 900، مجموعة نص بديل، مستخدمة في منشورين.',
   'mediaLib.error.title': 'لا يمكن تحميل المكتبة',
@@ -444,7 +444,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'لا يحمل هذا الملف أي بيانات اعتماد محتوى مضمنة. وهذا أمر شائع ولا يعني أن هناك أي خطأ.',
   'mediaLib.provenance.unverified':
-    'هذه التفاصيل من المصدر وليس من Relay. تأكد منها قبل أن تعتمد عليها.',
+    'هذه التفاصيل من المصدر وليس من Post Array. تأكد منها قبل أن تعتمد عليها.',
 
   'mediaLib.picker.title': 'اختر الوسائط',
   'mediaLib.picker.description': 'يتم فحص الملفات مقابل الحسابات المحددة في هذه المسودة.',

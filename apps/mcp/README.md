@@ -8,7 +8,7 @@ contains no publishing logic and no second authorization system.
 
 - Transport is Streamable HTTP over TLS. There are **no unauthenticated tools**,
   not even read tools.
-- OAuth against Relay's own issuer in `apps/api`. We publish
+- OAuth against Post Array's own issuer in `apps/api`. We publish
   `/.well-known/oauth-protected-resource` and return `WWW-Authenticate` with the
   metadata URL on a 401, so a compliant client can discover and recover.
 - **Audience binding is mandatory.** A token is accepted only after its audience
@@ -64,12 +64,12 @@ confirm. A test asserts this.
 - **Immediate publish requires a human.** `publish_post` without a
   `confirmation_id` mints a pending confirmation bound to the workspace, the
   grant, the content item and a fingerprint of the exact target accounts, and
-  returns a link on the Relay app domain. It publishes nothing. A person opens
+  returns a link on the Post Array app domain. It publishes nothing. A person opens
   that link, in a session this server did not create, sees what will publish and
   where, and approves. The second call consumes the confirmation once. Changing
   the content afterwards changes the fingerprint, which invalidates it: that is
   the "content changed after approval" rule, enforced rather than described.
-- **Account ids are resolved server side.** A tool argument is a Relay
+- **Account ids are resolved server side.** A tool argument is a Post Array
   connection id the grant already permits. A raw provider handle is never
   accepted and never looked up with ambient authority.
 - **Results are compact.** Bounded pages plus `relay://` resource links. A tool

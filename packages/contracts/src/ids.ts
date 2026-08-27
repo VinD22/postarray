@@ -88,6 +88,7 @@ export const ID_PREFIXES = {
   rememberedTargets: 'remtgt',
   onboardingState: 'onboarding',
   seoKeywordTarget: 'kwtarget',
+  postCreditLedgerEntry: 'credit',
 } as const;
 
 export type IdEntity = keyof typeof ID_PREFIXES;

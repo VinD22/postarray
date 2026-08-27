@@ -94,6 +94,6 @@ export const statusMessages = {
     'Não será publicado. O rascunho fica aqui para que você possa agendá-lo novamente.',
   'confirm.publishNow.title': 'Publicar agora?',
   'confirm.publishNow.body':
-    '{count, plural, one {Isto publica na conta # imediatamente} other {Isto publica nas contas # imediatamente} many {Isto publica nas contas # imediatamente}}. Não pode ser recuperado de Relay.',
+    '{count, plural, one {Isto publica na conta # imediatamente} other {Isto publica nas contas # imediatamente} many {Isto publica nas contas # imediatamente}}. Não pode ser recuperado de Post Array.',
   'confirm.typeToConfirm': 'Digite {word} para confirmar.',
 } as const;

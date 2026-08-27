@@ -30,7 +30,7 @@ const OUTCOME_KEY: Readonly<Record<RuleRunOutcome, string>> = {
  *
  * The promise made in the first paragraph is the reason this exists: a test
  * evaluates the whole sentence and shows what it would do, and nothing leaves
- * Relay while it happens. That sentence is repeated in the result, because a
+ * Post Array while it happens. That sentence is repeated in the result, because a
  * user who has just watched a list of actions scroll past needs to be told
  * again that none of them happened.
  */

@@ -27,6 +27,10 @@ export const webDemoMessages = {
   /* Die Demonstration auf der Startseite                                   */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Demo ansehen',
+  'web.demo.hero.projectsLine':
+    'Ein Konto führt mehrere Unternehmen. Jedes Projekt ist ein eigenes Unternehmen mit eigenen verbundenen Konten, eigenem Kalender und eigenen Freigaben, und Sie wechseln über ein einziges Menü zwischen ihnen, so wie man in einer Search Console die Property wechselt.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# Konto} other {# Konten}}',
   'web.demo.hero.caption':
     'Ein Entwurf wird zu einer Version pro Plattform, bekommt eine Uhrzeit und landet in der Woche. Beispielinhalt, kein echtes Konto.',
   'web.demo.hero.more': 'Den ganzen Ablauf durchgehen',

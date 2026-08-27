@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Mag-sign in',
   'auth.signIn.subtitle': 'I-publish, aprubahan at tingnan kung ano mismo ang nangyari.',
   'auth.signUp.title': 'Lumikha ng iyong account',
-  'auth.signUp.subtitle': 'Pitong araw sa bawat tampok. $0 na dapat bayaran ngayon.',
   'auth.continueWithGoogle': 'Magpatuloy sa Google',
   'auth.continueWithFacebook': 'Magpatuloy sa Facebook',
   'auth.orUseEmail': 'O gamitin ang iyong email',

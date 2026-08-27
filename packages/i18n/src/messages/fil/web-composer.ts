@@ -160,7 +160,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} ay hindi nag-aalok ng paghahanap ng entity para sa uri ng account na ito.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay ay hindi nakagawa ng entity lookup para sa {provider} pa. Walang nahuhulaan sa ngayon.',
+    'Post Array ay hindi nakagawa ng entity lookup para sa {provider} pa. Walang nahuhulaan sa ngayon.',
   'composerWeb.entity.searchHint':
     'Mag-type ng hindi bababa sa dalawang character, pagkatapos ay pumili ng resulta.',
   'composerWeb.entity.resultCount':
@@ -179,7 +179,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'Termino',
   'composerWeb.links.utmContent': 'Nilalaman',
   'composerWeb.links.domainVerified': '{domain}, na-verify para sa workspace na ito',
-  'composerWeb.links.domainDefault': 'Relay default na domain',
+  'composerWeb.links.domainDefault': 'Post Array default na domain',
   'composerWeb.links.domainNone': 'Wala pang branded na domain ang na-verify.',
   'composerWeb.links.notAllowedHere': '{account} hindi pinapayagan ang isang link dito.',
 
@@ -248,7 +248,7 @@ export const webComposerMessages = {
   'composerWeb.assist.failed':
     'Hindi nakumpleto ang kahilingan sa tulong. Ang iyong text ay hindi nagbabago.',
   'composerWeb.assist.noMediaGeneration':
-    'Ang Relay ay hindi gumagawa ng mga larawan o video. Dalhin ang mga natapos na file sa library at i-publish ang mga ito dito.',
+    'Ang Post Array ay hindi gumagawa ng mga larawan o video. Dalhin ang mga natapos na file sa library at i-publish ang mga ito dito.',
 
   // ------------------------------------------------------------- autosave
   'composerWeb.autosave.pinned':
@@ -304,7 +304,7 @@ export const webComposerMessages = {
     'Walang nawala. Subukang muli, at kung patuloy itong nabigo, ang sanggunian sa ibaba ay tumutulong sa suporta na mahanap ang kahilingan.',
   'composerWeb.page.noConnectionsTitle': 'Ikonekta ang isang account bago gumawa',
   'composerWeb.page.noConnectionsBody':
-    'Ang isang draft ay nangangailangan ng hindi bababa sa isang konektadong account upang malaman ng Relay ang mga limitasyon, preview at mga setting na ipapakita.',
+    'Ang isang draft ay nangangailangan ng hindi bababa sa isang konektadong account upang malaman ng Post Array ang mga limitasyon, preview at mga setting na ipapakita.',
   'composerWeb.page.noConnectionsExample':
     'Halimbawa: kapag konektado ang X at LinkedIn, ang isang draft ay nagiging dalawang katutubong bersyon na may sariling mga counter.',
   'composerWeb.page.permissionTitle': 'Hindi ka makakagawa ng mga post sa workspace na ito',
@@ -335,7 +335,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'Wala pang media',
   'mediaLib.empty.body':
-    'Mag-upload ng mga larawan at video na mayroon ka na, o mag-import ng file mula sa isang URL. Sinusuri ng Relay ang uri at laki laban sa bawat account kung saan ka mag-publish.',
+    'Mag-upload ng mga larawan at video na mayroon ka na, o mag-import ng file mula sa isang URL. Sinusuri ng Post Array ang uri at laki laban sa bawat account kung saan ka mag-publish.',
   'mediaLib.empty.example':
     'Halimbawa: launch_hero.jpg, 1600 by 900, alt text set, ginamit sa 2 post.',
   'mediaLib.error.title': 'Hindi ma-load ang library',
@@ -386,7 +386,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Ini-import ang media',
   'mediaLib.import.succeeded': 'Nasa library mo na ang file',
   'mediaLib.import.scanPending':
-    'Naitala na ng Relay ang pinagmulan nito. Maghihintay ang pag-publish hanggang matapos ang safety check.',
+    'Naitala na ng Post Array ang pinagmulan nito. Maghihintay ang pag-publish hanggang matapos ang safety check.',
   'mediaLib.import.failed': 'Hindi na-import ang file',
   'mediaLib.import.failedHelp':
     'Tiyaking pampubliko ang link at direktang tumuturo sa isang suportadong media file, saka subukan ulit.',
@@ -398,7 +398,7 @@ export const webComposerMessages = {
   'mediaLib.retention.title':
     'Ang mga naka-store na file ay itinatago nang 30 araw pagkatapos gawin ang post',
   'mediaLib.retention.body':
-    'Kapag na-attach na ang isang file sa isang post, tuluyan naming baburahin ito mula sa Relay storage 30 araw pagkatapos gawin ang post na iyon. Ang mga file na naghihintay pang ma-attach ay gumagamit ng petsa ng upload bilang fallback para sa cleanup. Mananatiling available nang mas matagal ang teksto ng post, mga publication receipt, at audit history. Ang isang post na na-publish sa isang social platform ay hindi tinatanggal kapag nag-expire ang naka-store nitong file.',
+    'Kapag na-attach na ang isang file sa isang post, tuluyan naming baburahin ito mula sa Post Array storage 30 araw pagkatapos gawin ang post na iyon. Ang mga file na naghihintay pang ma-attach ay gumagamit ng petsa ng upload bilang fallback para sa cleanup. Mananatiling available nang mas matagal ang teksto ng post, mga publication receipt, at audit history. Ang isang post na na-publish sa isang social platform ay hindi tinatanggal kapag nag-expire ang naka-store nitong file.',
   'mediaLib.retention.limits':
     'Ang mga larawan, audio, at PDF file ay maaaring hanggang {imageSize}. Ang mga video ay maaaring hanggang {videoSize}.',
   'mediaLib.retention.expiresLabel': 'Petsa ng pagbura ng file',
@@ -508,7 +508,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Ang file na ito ay walang mga naka-embed na kredensyal ng nilalaman. Iyon ay karaniwan at hindi nangangahulugang may mali.',
   'mediaLib.provenance.unverified':
-    'Ang mga detalyeng ito ay nagmula sa pinagmulan, hindi mula sa Relay. Suriin ang mga ito bago ka umasa sa kanila.',
+    'Ang mga detalyeng ito ay nagmula sa pinagmulan, hindi mula sa Post Array. Suriin ang mga ito bago ka umasa sa kanila.',
 
   'mediaLib.picker.title': 'Pumili ng media',
   'mediaLib.picker.description':

@@ -31,13 +31,13 @@ const connection = (channelId = 'channel-1') =>
 const meRoute = {
   method: 'GET' as const,
   match: '/users/@me',
-  body: { id: 'bot-1', username: 'relay_bot', global_name: 'Relay Bot' },
+  body: { id: 'bot-1', username: 'relay_bot', global_name: 'Post Array Bot' },
 };
 
 const guildsRoute = {
   method: 'GET' as const,
   match: '/users/@me/guilds',
-  body: [{ id: 'guild-1', name: 'Relay HQ' }],
+  body: [{ id: 'guild-1', name: 'Post Array HQ' }],
 };
 
 const channelsRoute = {

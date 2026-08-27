@@ -1,7 +1,7 @@
 /** vi beta catalog namespace. */
 export const webShellMessages = {
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'Một bàn xuất bản cho người dân và các đại lý.',
   'shell.menu.open': 'Mở thực đơn',
   'shell.menu.title': 'Thực đơn',
@@ -20,7 +20,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Dữ liệu demo',
   'shell.demo.title': 'Bạn đang xem dữ liệu demo',
   'shell.demo.body':
-    'Không thể truy cập API Relay từ trình duyệt này, vì vậy các màn hình chứa đầy không gian làm việc mẫu được tạo hạt giống. Không có gì ở đây được kết nối với tài khoản thật và không có gì có thể xuất bản.',
+    'Không thể truy cập API Post Array từ trình duyệt này, vì vậy các màn hình chứa đầy không gian làm việc mẫu được tạo hạt giống. Không có gì ở đây được kết nối với tài khoản thật và không có gì có thể xuất bản.',
   'shell.demo.howToConnect':
     'Đặt NEXT_PUBLIC_RELAY_API_URL và khởi động lại ứng dụng để sử dụng dữ liệu trực tiếp.',
   'shell.offline.title': 'Bạn đang ngoại tuyến',
@@ -128,7 +128,7 @@ export const webShellMessages = {
   'home.trial.manage': 'Quản lý hoặc hủy',
   'home.error.title': 'Trang chủ không thể tải',
   'home.error.body':
-    'Không gian làm việc của bạn vẫn còn nguyên vẹn. Đây là sự cố khi truy cập API Relay.',
+    'Không gian làm việc của bạn vẫn còn nguyên vẹn. Đây là sự cố khi truy cập API Post Array.',
   'auth.aside.title': 'Xuất bản thông qua API chính thức và xem chính xác điều gì đã xảy ra.',
   'auth.aside.point.receipts':
     'Mỗi ấn phẩm đều tạo ra một biên nhận: ai đã phê duyệt nó, khi nào nó được gửi đi, nền tảng đã trả lại những gì.',
@@ -138,9 +138,9 @@ export const webShellMessages = {
     'Quy trình làm việc tương tự từ ứng dụng web, API REST, MCP, CLI và webhook.',
   'auth.provider.title': 'Trước khi bạn tiếp tục',
   'auth.provider.google.access':
-    'Google chia sẻ tên, địa chỉ email và ảnh hồ sơ của bạn với Relay. Relay không thể đọc Gmail, Drive hoặc Lịch của bạn.',
+    'Google chia sẻ tên, địa chỉ email và ảnh hồ sơ của bạn với Post Array. Post Array không thể đọc Gmail, Drive hoặc Lịch của bạn.',
   'auth.provider.facebook.access':
-    'Facebook chia sẻ tên, địa chỉ email và ảnh hồ sơ của bạn với Relay. Kết nối Trang để đăng là một bước riêng biệt mà bạn phê duyệt sau này.',
+    'Facebook chia sẻ tên, địa chỉ email và ảnh hồ sơ của bạn với Post Array. Kết nối Trang để đăng là một bước riêng biệt mà bạn phê duyệt sau này.',
   'auth.provider.note':
     'Thao tác này sẽ giúp bạn đăng nhập. Nó không kết nối tài khoản để xuất bản.',
   'auth.continueWithEmail': 'Tiếp tục với email',
@@ -163,9 +163,7 @@ export const webShellMessages = {
     'Vì sự an toàn của bạn, chúng tôi không cho biết địa chỉ đó có được đăng ký hay không.',
   'auth.failure.provider': 'Đăng nhập bằng {provider} chưa hoàn tất. Không có gì được thay đổi.',
   'auth.failure.network':
-    'Chúng tôi không thể truy cập Relay. Hãy kiểm tra kết nối của bạn và thử lại.',
-  'auth.signUp.trialNote':
-    'Bảy ngày dùng thử đầy đủ. Một phương thức thanh toán là bắt buộc. $0 đến hạn hôm nay.',
+    'Chúng tôi không thể truy cập Post Array. Hãy kiểm tra kết nối của bạn và thử lại.',
   'auth.signUp.emailInUseNote':
     'Nếu địa chỉ này đã có tài khoản, chúng tôi sẽ gửi liên kết đăng nhập qua email thay vì tạo liên kết thứ hai.',
   'auth.legal.readTerms': 'Đọc các điều khoản',
@@ -196,7 +194,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Được phát hiện từ thiết bị này: {timeZone}',
   'onboarding.connect.permissionsTitle': '{provider} sẽ được yêu cầu những gì',
   'onboarding.connect.permissionsFooter':
-    'Relay không bao giờ yêu cầu quyền mà nó không sử dụng và bạn có thể ngắt kết nối bất cứ lúc nào.',
+    'Post Array không bao giờ yêu cầu quyền mà nó không sử dụng và bạn có thể ngắt kết nối bất cứ lúc nào.',
   'onboarding.connect.chooseProvider': 'Chọn một nền tảng',
   'onboarding.connect.opensProvider': 'Tiếp tục sẽ mở {provider} trong tab này.',
   'onboarding.compose.help':

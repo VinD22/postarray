@@ -55,7 +55,7 @@ export interface ToolDefinition<Input extends z.ZodType = z.ZodType> {
   readonly risk: ToolRisk;
   /** One sentence. What it does, in the imperative. */
   readonly summary: string;
-  /** What changes outside Relay. `none` for a read tool, and it must be true. */
+  /** What changes outside Post Array. `none` for a read tool, and it must be true. */
   readonly sideEffects: string;
   readonly scopes: readonly Scope[];
   readonly approvalLevel: ApprovalLevel;
@@ -80,7 +80,7 @@ export function defineTool<Input extends z.ZodType>(
 const RISK_SENTENCE: Readonly<Record<ToolRisk, string>> = {
   read: 'Risk: read. It changes nothing.',
   reversible:
-    'Risk: reversible. It creates or changes something inside Relay and publishes nothing.',
+    'Risk: reversible. It creates or changes something inside Post Array and publishes nothing.',
   consequential:
     'Risk: consequential. It can cause something to appear on, or disappear from, a real platform.',
 };
@@ -91,7 +91,7 @@ const APPROVAL_SENTENCE: Readonly<Record<ApprovalLevel, string>> = {
   level_2_scheduled:
     'Approval: available at approval level 2 and above, and only inside the accounts, hours, cadence, languages, domains and look ahead the grant preauthorized.',
   level_3_confirm:
-    'Approval: requires approval level 3 and an explicit confirmation from a person, obtained in Relay rather than in the agent host.',
+    'Approval: requires approval level 3 and an explicit confirmation from a person, obtained in Post Array rather than in the agent host.',
 };
 
 /**
@@ -116,7 +116,7 @@ export function describeTool(tool: ToolDefinition): string {
   }
   if (tool.requiresHumanConfirmation) {
     parts.push(
-      'The first call returns a confirmation link and performs nothing. Call it again with confirmation_id once a person has approved it in Relay.',
+      'The first call returns a confirmation link and performs nothing. Call it again with confirmation_id once a person has approved it in Post Array.',
     );
   }
   parts.push('Results are compact and link to resources rather than dumping them.');

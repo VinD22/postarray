@@ -23,7 +23,7 @@ export const PROVIDER_LABEL: Readonly<Record<ProviderId, string>> = {
   tiktok: 'TikTok',
   threads: 'Threads',
   bluesky: 'Bluesky',
-  fake: 'Relay sandbox',
+  fake: 'Post Array sandbox',
   mastodon: 'Mastodon',
   telegram: 'Telegram',
   reddit: 'Reddit',

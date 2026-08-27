@@ -157,7 +157,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} erbjuder inte entitetssökning för den här kontotypen.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay har inte byggt entity lookup för {provider} ännu. Inget gissas under tiden.',
+    'Post Array har inte byggt entity lookup för {provider} ännu. Inget gissas under tiden.',
   'composerWeb.entity.searchHint': 'Skriv minst två tecken och välj sedan ett resultat.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {Inga matchningar} one {# matchning} other {# matchningar}}',
@@ -242,7 +242,7 @@ export const webComposerMessages = {
     'Ingen källa hittades för detta påstående. Kontrollera det innan du publicerar.',
   'composerWeb.assist.failed': 'Biståndsbegäran slutfördes inte. Din text är oförändrad.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay skapar inte bilder eller video. Ta med färdiga filer till biblioteket och publicera dem här.',
+    'Post Array skapar inte bilder eller video. Ta med färdiga filer till biblioteket och publicera dem här.',
 
   // ------------------------------------------------------------- autosave
   'composerWeb.autosave.pinned':
@@ -292,7 +292,7 @@ export const webComposerMessages = {
     'Ingenting gick förlorat. Försök igen, och om det fortsätter att misslyckas hjälper referensen nedan supporten att hitta begäran.',
   'composerWeb.page.noConnectionsTitle': 'Anslut ett konto innan du skriver',
   'composerWeb.page.noConnectionsBody':
-    'Ett utkast behöver minst ett anslutet konto så att Relay känner till gränserna, förhandsgranskningen och inställningarna som ska visas.',
+    'Ett utkast behöver minst ett anslutet konto så att Post Array känner till gränserna, förhandsgranskningen och inställningarna som ska visas.',
   'composerWeb.page.noConnectionsExample':
     'Exempel: med X och LinkedIn anslutna blir ett utkast till två inbyggda versioner med sina egna räknare.',
   'composerWeb.page.permissionTitle': 'Du kan inte skapa inlägg i den här arbetsytan',
@@ -323,7 +323,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'Ingen media än',
   'mediaLib.empty.body':
-    'Ladda upp bilder och video du redan har, eller importera en fil från en URL. Relay kontrollerar typ och storlek mot varje konto du publicerar till.',
+    'Ladda upp bilder och video du redan har, eller importera en fil från en URL. Post Array kontrollerar typ och storlek mot varje konto du publicerar till.',
   'mediaLib.empty.example':
     'Exempel: launch_hero.jpg, 1600 x 900, alternativ textuppsättning, används i 2 inlägg.',
   'mediaLib.error.title': 'Biblioteket kunde inte laddas',
@@ -373,7 +373,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Importerar media',
   'mediaLib.import.succeeded': 'Filen finns i ditt bibliotek',
   'mediaLib.import.scanPending':
-    'Relay registrerade dess källa. Publicering väntar tills säkerhetskontrollen är klar.',
+    'Post Array registrerade dess källa. Publicering väntar tills säkerhetskontrollen är klar.',
   'mediaLib.import.failed': 'Filen kunde inte importeras',
   'mediaLib.import.failedHelp':
     'Kontrollera att länken är offentlig och pekar direkt på en filtyp som stöds, och försök sedan igen.',
@@ -384,7 +384,7 @@ export const webComposerMessages = {
   'mediaLib.import.issue.credentials': 'Använd en länk utan användarnamn eller lösenord.',
   'mediaLib.retention.title': 'Lagrade filer sparas i 30 dagar efter att inlägget skapats',
   'mediaLib.retention.body':
-    'När en fil har bifogats ett inlägg raderar vi den permanent från Relay-lagringen 30 dagar efter att det inlägget skapades. Filer som väntar på att bifogas använder uppladdningsdatumet som reservdatum för borttagning. Inläggstext, publiceringskvitton och granskningshistorik förblir tillgängliga längre. Ett publicerat inlägg på en social plattform tas inte bort när dess lagrade fil upphör.',
+    'När en fil har bifogats ett inlägg raderar vi den permanent från Post Array-lagringen 30 dagar efter att det inlägget skapades. Filer som väntar på att bifogas använder uppladdningsdatumet som reservdatum för borttagning. Inläggstext, publiceringskvitton och granskningshistorik förblir tillgängliga längre. Ett publicerat inlägg på en social plattform tas inte bort när dess lagrade fil upphör.',
   'mediaLib.retention.limits':
     'Bilder, ljud och PDF-filer kan vara upp till {imageSize}. Videor kan vara upp till {videoSize}.',
   'mediaLib.retention.expiresLabel': 'Datum för filradering',
@@ -494,7 +494,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Den här filen innehåller inga autentiseringsuppgifter för inbäddat innehåll. Det är vanligt och betyder inte att något är fel.',
   'mediaLib.provenance.unverified':
-    'Dessa detaljer kommer från källan, inte från Relay. Kontrollera dem innan du litar på dem.',
+    'Dessa detaljer kommer från källan, inte från Post Array. Kontrollera dem innan du litar på dem.',
 
   'mediaLib.picker.title': 'Välj media',
   'mediaLib.picker.description': 'Filer kontrolleras mot de konton som valts i detta utkast.',

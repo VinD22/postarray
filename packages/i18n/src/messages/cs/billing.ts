@@ -34,7 +34,6 @@ export const billingMessages = {
   'billing.plan.fairUse':
     'Spravedlivé použití znamená kontrolu proti spamu, sazbě a nákladům poskytovatele, které chrání vaše účty. Fungují stejně pro každého předplatitele.',
 
-  'billing.trial.length': 'Sedmidenní zkušební verze se všemi funkcemi',
   'billing.trial.dueToday': '0 $ splatných dnes',
   'billing.trial.paymentMethodRequired':
     'Polar nyní vybírá platební metodu a dnes si nic neúčtuje.',
@@ -92,7 +91,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'Tato akce se odhaduje na {amount}.',
   'billing.usage.periodTotal': '{amount} používané od {date}',
   'billing.usage.noMediaCredits':
-    'Neexistují žádné titulky pro generování obrázků nebo videa, protože Relay negeneruje média.',
+    'Neexistují žádné titulky pro generování obrázků nebo videa, protože Post Array negeneruje média.',
 
   'billing.downgrade.overLimit':
     'Tento pracovní prostor má {count, plural, one {# kanál} other {# kanály} few {# kanály} many {# kanály}} nad limit. Nové akce na těchto kanálech jsou blokovány. Nic pro vás není odpojeno.',

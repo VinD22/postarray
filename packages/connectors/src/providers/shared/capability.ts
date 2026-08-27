@@ -60,7 +60,7 @@ export const UNSUPPORTED_SEQUENCE = Object.freeze({
   minDelaySeconds: 0,
 });
 
-/** We never use provider side scheduling. Relay schedules through Temporal. */
+/** We never use provider side scheduling. Post Array schedules through Temporal. */
 export const RELAY_SIDE_SCHEDULING = Object.freeze({
   providerNative: 'not_implemented' as CapabilitySupport,
   maxLookAheadDays: 365,

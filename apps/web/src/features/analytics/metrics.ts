@@ -86,7 +86,7 @@ export function outcomeGroupHelpKey(group: OutcomeGroup): string {
  *
  * The two lists differ on purpose. `unavailable_provider` means the provider
  * has no such field, which the design system calls `unsupported`, and
- * `unavailable_not_implemented` means Relay has not written the mapping, which
+ * `unavailable_not_implemented` means Post Array has not written the mapping, which
  * it calls `not_implemented`. Merging them would tell a user that a platform
  * cannot do something when in fact we have not built it, which is the exact
  * confusion `AGENTS.md` rule 7 exists to prevent.

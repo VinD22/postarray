@@ -56,7 +56,7 @@ export const validationMessages = withHebrewPluralForms({
   'validation.repeat_end_required.message': 'פוסט חוזר צריך תאריך סיום או מספר חזרות.',
   'validation.schedule_in_past.message': 'הזמן הזה חלף ב-{timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'זה רחוק יותר מהמבט קדימה של {limit} שהוגדר עבור אישור זה.',
+    'אפשר לתזמן פוסטים עד {limit} מראש, וזה גם משך הזמן שבו נשמרת מדיה שהועלתה.',
   'validation.schedule_outside_quiet_hours.message': 'זה נופל בשעות השקט שנקבעו עבור {project}.',
   'validation.duplicate_within_window.message':
     'תוכן דומה מאוד כבר מתוזמן או פורסם עבור {account} בתוך {window}.',

@@ -20,21 +20,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon terhubung dengan token akses yang Anda buat di instance Anda sendiri, bukan dengan kata sandi Anda.',
   'web.connection.requirement.telegram':
-    'Relay memposting sebagai bot. Tambahkan bot ke saluran atau grup tempat Anda ingin memposting.',
+    'Post Array memposting sebagai bot. Tambahkan bot ke saluran atau grup tempat Anda ingin memposting.',
   'web.connection.requirement.reddit':
     'Menulis ke Reddit memerlukan aplikasi yang disetujui, dan setiap postingan memerlukan judul dan subreddit.',
   'web.connection.requirement.wordpress':
-    'Relay mempublikasikan melalui REST API situs dengan kata sandi aplikasi yang Anda buat di WordPress.',
+    'Post Array mempublikasikan melalui REST API situs dengan kata sandi aplikasi yang Anda buat di WordPress.',
   'web.connection.requirement.medium':
-    'Medium terhubung melalui OAuth dan Relay mempublikasikan cerita publik dalam Markdown.',
+    'Medium terhubung melalui OAuth dan Post Array mempublikasikan cerita publik dalam Markdown.',
   'web.connection.requirement.devto':
     'Dev.to terhubung dengan kunci API yang dibuat di pengaturan Dev.to Anda.',
   'web.connection.requirement.pinterest':
     'Menulis ke Pinterest memerlukan akses aplikasi yang disetujui, dan pin memerlukan gambar dan papan milik Anda.',
   'web.connection.requirement.discord':
-    'Relay memposting sebagai bot. Tambahkan bot ke server dan saluran tempat Anda ingin memposting.',
+    'Post Array memposting sebagai bot. Tambahkan bot ke server dan saluran tempat Anda ingin memposting.',
   'web.connection.requirement.slack':
-    'Relay memposting sebagai aplikasi. Tambahkan aplikasi ke saluran tempat Anda ingin memposting.',
+    'Post Array memposting sebagai aplikasi. Tambahkan aplikasi ke saluran tempat Anda ingin memposting.',
   'web.provider.fake': 'Konektor uji',
   'web.accountType.personal_profile': 'Profil pribadi',
   'web.accountType.creator_profile': 'Akun pencipta',
@@ -134,7 +134,7 @@ export const webCalendarMessages = {
   'web.calendar.reschedule.pastBody': 'Pilih waktu di masa depan, atau publikasikan sekarang.',
   'web.calendar.published.title': 'Postingan ini sudah dipublikasikan',
   'web.calendar.published.body':
-    'Ada postingan di {provider} di {permalinkLabel}. Memindahkan entri di Relay tidak memindahkan postingan di platform. Pilih apa yang Anda inginkan terjadi.',
+    'Ada postingan di {provider} di {permalinkLabel}. Memindahkan entri di Post Array tidak memindahkan postingan di platform. Pilih apa yang Anda inginkan terjadi.',
   'web.calendar.published.optionLocal': 'Perbarui catatan lokal saja',
   'web.calendar.published.optionLocalHint':
     'Tanda terima menyimpan waktu publikasi sebenarnya. Hanya entri perencanaan yang dipindahkan, sehingga kalender Anda sesuai dengan rencana Anda.',
@@ -227,7 +227,7 @@ export const webCalendarMessages = {
     '{provider} tidak mengenakan biaya per operasi untuk jenis posting ini.',
   'web.receipt.analytics.never': 'Analytics belum menyinkronkan postingan ini.',
   'web.receipt.analytics.explain':
-    'Penyedia mengumpulkan jadwal mereka sendiri. Waktu di bawah adalah saat Relay terakhir kali membacanya, bukan saat angkanya benar.',
+    'Penyedia mengumpulkan jadwal mereka sendiri. Waktu di bawah adalah saat Post Array terakhir kali membacanya, bukan saat angkanya benar.',
   'web.receipt.export.download': 'Unduh tanda terima',
   'web.receipt.export.copyReference': 'Salin referensi tanda terima',
   'web.receipt.export.denied':
@@ -236,11 +236,11 @@ export const webCalendarMessages = {
   'web.receipt.partial.retryHint':
     'Percobaan ulang tidak pernah menyentuh target yang sudah menghasilkan postingan eksternal.',
   'web.receipt.remediation.user_action_required':
-    'Ini memerlukan perubahan pada Relay atau {provider} sebelum dapat dijalankan kembali.',
+    'Ini memerlukan perubahan pada Post Array atau {provider} sebelum dapat dijalankan kembali.',
   'web.receipt.remediation.content_invalid':
     'Edit konten agar lolos validasi {provider}, lalu jadwalkan lagi.',
   'web.receipt.remediation.transient_provider':
-    '{provider} mengembalikan kesalahan sementara. Relay mencoba lagi sesuai jadwalnya sendiri.',
+    '{provider} mengembalikan kesalahan sementara. Post Array mencoba lagi sesuai jadwalnya sendiri.',
   'web.receipt.remediation.permanent_provider':
     '{provider} menolak ini secara permanen. Mencoba kembali konten yang sama tidak akan mengubah jawabannya.',
   'web.receipt.remediation.internal':
@@ -295,28 +295,28 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# scheduled post} other {# scheduled posts}} for this account will not publish.',
   'web.connection.disconnect.consequence.published':
-    'Postingan yang sudah diterbitkan tetap di {provider}. Relay tidak menghapusnya.',
+    'Postingan yang sudah diterbitkan tetap di {provider}. Post Array tidak menghapusnya.',
   'web.connection.disconnect.consequence.analytics':
     'Metrik yang sudah dikumpulkan akan tetap berada di ruang kerja ini dan berhenti diperbarui.',
   'web.connection.connect.title': 'Hubungkan akun',
   'web.connection.connect.chooseProvider': 'Platform yang mana',
-  'web.connection.connect.permissionHeading': 'Apa yang Relay akan tanyakan pada {provider}',
+  'web.connection.connect.permissionHeading': 'Apa yang Post Array akan tanyakan pada {provider}',
   'web.connection.connect.requirementHeading': 'Sebelum Anda melanjutkan',
   'web.connection.connect.continue': 'Lanjutkan ke {provider}',
   'web.connection.connect.handoffNote':
-    'Layar selanjutnya adalah {provider}, bukan Relay. Relay tidak pernah melihat kata sandi Anda.',
+    'Layar selanjutnya adalah {provider}, bukan Post Array. Post Array tidak pernah melihat kata sandi Anda.',
   'web.connection.connect.noWriteWithoutApproval':
     'Menghubungkan akun tidak mempublikasikan apa pun. Setiap postingan masih mengikuti kebijakan persetujuan ruang kerja ini.',
   'web.connection.requirement.instagram':
     'Penerbitan Instagram memerlukan akun profesional, yang berarti akun bisnis atau kreator yang ditautkan ke Halaman Facebook.',
   'web.connection.requirement.facebook':
-    'Relay menerbitkan ke Facebook Pages. Profil pribadi tidak dapat menjadi target penerbitan.',
+    'Post Array menerbitkan ke Facebook Pages. Profil pribadi tidak dapat menjadi target penerbitan.',
   'web.connection.requirement.linkedin':
     'Untuk menerbitkan organisasi, Anda memerlukan peran admin konten di Halaman LinkedIn tersebut.',
   'web.connection.requirement.youtube':
     'Hingga Google menyelesaikan audit aplikasi, upload dari proyek ini dipublikasikan sebagai pribadi. Anda dapat mengubah visibilitas di YouTube setelahnya.',
   'web.connection.requirement.tiktok':
-    'TikTok mengharuskan Anda memilih sendiri audiens untuk setiap postingan. Relay tidak dapat memilih satu pun untuk Anda.',
+    'TikTok mengharuskan Anda memilih sendiri audiens untuk setiap postingan. Post Array tidak dapat memilih satu pun untuk Anda.',
   'web.connection.requirement.x':
     'X dikenakan biaya per operasi. Postingan yang berisi URL harganya lebih mahal daripada postingan teks biasa, dan perkiraannya ditampilkan sebelum Anda menjadwalkannya.',
   'web.connection.requirement.threads':
@@ -324,12 +324,12 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky terhubung dengan kata sandi aplikasi yang dibuat di pengaturan Bluesky Anda, bukan kata sandi akun Anda.',
   'web.connection.requirement.generic':
-    'Anda memerlukan izin untuk memposting di akun ini dari platform itu sendiri. Relay tidak dapat mengabulkannya.',
-  'web.connection.purpose.publish': 'Publikasikan postingan yang Anda jadwalkan di Relay.',
+    'Anda memerlukan izin untuk memposting di akun ini dari platform itu sendiri. Post Array tidak dapat mengabulkannya.',
+  'web.connection.purpose.publish': 'Publikasikan postingan yang Anda jadwalkan di Post Array.',
   'web.connection.purpose.readPosts':
-    'Membaca kembali postingan Relay yang diterbitkan, sehingga tanda terima dapat membuktikan bahwa postingan tersebut aktif.',
+    'Membaca kembali postingan Post Array yang diterbitkan, sehingga tanda terima dapat membuktikan bahwa postingan tersebut aktif.',
   'web.connection.purpose.identity':
-    'Menampilkan nama akun yang tepat di Relay, sehingga Anda tidak pernah mempublikasikan ke nama yang salah.',
+    'Menampilkan nama akun yang tepat di Post Array, sehingga Anda tidak pernah mempublikasikan ke nama yang salah.',
   'web.connection.purpose.analytics':
     'Membaca metrik yang dilaporkan platform ini untuk postingan Anda sendiri.',
   'web.connection.purpose.refresh':
@@ -339,7 +339,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Izin pada {account}',
   'web.connection.permissions.scopeColumn': 'Izin',
   'web.connection.permissions.stateColumn': 'Negara',
-  'web.connection.permissions.purposeColumn': 'Untuk apa Relay menggunakannya',
+  'web.connection.permissions.purposeColumn': 'Untuk apa Post Array menggunakannya',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# permission is missing} other {# permissions are missing}}. Reconnect and accept it to restore the features below.',
   'web.connection.permissions.snapshot': 'Baca dari {provider} {relativeTime}',
@@ -350,9 +350,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'Kemampuan',
   'web.connection.capability.legendTitle': 'Cara membaca ini',
   'web.connection.capability.legend.supported':
-    'Relay dapat melakukan ini hari ini untuk jenis akun terhubung yang tepat.',
+    'Post Array dapat melakukan ini hari ini untuk jenis akun terhubung yang tepat.',
   'web.connection.capability.legend.not_implemented':
-    'Platform menawarkan ini dan Relay belum membangunnya. Itu ada di peta jalan konektor.',
+    'Platform menawarkan ini dan Post Array belum membangunnya. Itu ada di peta jalan konektor.',
   'web.connection.capability.legend.unsupported':
     'Platform tidak menawarkan ini melalui API resminya, jadi tidak ada alat yang dapat melakukannya dengan aman.',
   'web.connection.capability.legend.requires_review':

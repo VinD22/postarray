@@ -59,7 +59,7 @@ Nevo David publicly described moving from a Redis queue to Temporal as one of th
 
 ## License and clean-room warning
 
-Postiz is AGPL-3.0. Relay must not inspect, copy, adapt, translate, or otherwise derive implementation details from its source. Product behavior may be studied only through public product surfaces, user-supplied observations, official Postiz documentation, and official social-provider documentation. Relay's architecture, data model, interface contracts, and code must remain independently designed. Have counsel review any proposal to incorporate AGPL components.
+Postiz is AGPL-3.0. Post Array must not inspect, copy, adapt, translate, or otherwise derive implementation details from its source. Product behavior may be studied only through public product surfaces, user-supplied observations, official Postiz documentation, and official social-provider documentation. Post Array's architecture, data model, interface contracts, and code must remain independently designed. Have counsel review any proposal to incorporate AGPL components.
 
 ## Business model
 

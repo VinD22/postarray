@@ -659,7 +659,7 @@ export const deleteRequestSchema = z
   .object({
     connection: connectionRefSchema,
     externalPostId: z.string().min(1),
-    /** Deleting in Relay never implies deleting externally. */
+    /** Deleting in Post Array never implies deleting externally. */
     confirmedByActorId: z.string().min(1),
   })
   .strict();

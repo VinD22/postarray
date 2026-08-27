@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'Classifica i post in base a',
   'analytics.rankMetric.help':
-    'Non esiste un punteggio combinato in Relay. Scegli una metrica di cui ti fidi della definizione e la tabella verrà ordinata solo in base a quella metrica.',
+    'Non esiste un punteggio combinato in Post Array. Scegli una metrica di cui ti fidi della definizione e la tabella verrà ordinata solo in base a quella metrica.',
   'analytics.rankMetric.chosen':
     'Classificato in base a {metric}, come riportato da ciascun fornitore di account.',
 
@@ -108,7 +108,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Il conteggio dei follower su {account} è cambiato da {percent} durante questo periodo.',
   'analytics.evidence.confounder.paid':
-    'Relay non è in grado di stabilire se qualcuno di questi post ha ricevuto una distribuzione a pagamento.',
+    'Post Array non è in grado di stabilire se qualcuno di questi post ha ricevuto una distribuzione a pagamento.',
   'analytics.evidence.confounder.provider':
     "{provider} ha cambiato il modo in cui segnala {metric} all'interno di questo periodo.",
 
@@ -146,7 +146,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Un conteggio di eventi',
   'analytics.unit.seconds': 'Secondi',
   'analytics.unit.percent': 'Una percentuale già calcolata dal fornitore',
-  'analytics.unit.ratio': 'Un rapporto Relay calcolato da due campi del provider',
+  'analytics.unit.ratio': 'Un rapporto Post Array calcolato da due campi del provider',
   'analytics.unit.currency_minor': 'Una somma di denaro in unità minori',
 
   'analytics.denominator.none': 'Questo è un conteggio, non un tasso. Non ha denominatore.',
@@ -167,7 +167,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'Filo',
 
   'analytics.value.unavailableReason.notImplemented':
-    'Relay non ha ancora creato la mappatura per questa metrica su {provider}.',
+    'Post Array non ha ancora creato la mappatura per questa metrica su {provider}.',
   'analytics.value.estimated': 'Stima',
   'analytics.value.estimatedMethod': 'Metodo: {method}.',
 
@@ -296,7 +296,7 @@ export const webAnalyticsMessages = {
     "Per l'analisi è necessario il ruolo di analista o superiore. Un proprietario o un amministratore di questa area di lavoro può concederlo.",
   'analytics.state.rateLimitTitle': '{provider} limita la velocità delle richieste di analisi',
   'analytics.state.rateLimitCause':
-    "L'account ha utilizzato la sua quota della quota del provider per questa finestra. Relay non riprova più duramente perché ciò ritarderebbe la pubblicazione.",
+    "L'account ha utilizzato la sua quota della quota del provider per questa finestra. Post Array non riprova più duramente perché ciò ritarderebbe la pubblicazione.",
   'analytics.state.rateLimitAlternative':
     "Restringi l'intervallo di date o il filtro dell'account, che richiede meno al fornitore.",
   'analytics.state.rateLimitReset': 'Le richieste riprendono',
@@ -308,7 +308,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Crea un collegamento tracciato',
   'analytics.links.empty': 'Nessun collegamento ancora tracciato',
   'analytics.links.emptyBody':
-    'Un collegamento tracciato è un URL breve attraverso il quale Relay reindirizza, quindi puoi vedere i clic anche quando una piattaforma non ne segnala nessuno. La destinazione originale non viene mai modificata senza una voce di controllo.',
+    'Un collegamento tracciato è un URL breve attraverso il quale Post Array reindirizza, quindi puoi vedere i clic anche quando una piattaforma non ne segnala nessuno. La destinazione originale non viene mai modificata senza una voce di controllo.',
   'analytics.links.emptyExample':
     'Esempio: relè.to/a7Kq2 reindirizza a acme.com/blog/launch con la campagna q3-launch.',
   'analytics.links.table.caption':
@@ -340,7 +340,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, attivo da {start} a {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, attivo da {start}',
   'analytics.links.domainLabel': 'Dominio corto',
-  'analytics.links.domainDefault': 'Dominio predefinito Relay',
+  'analytics.links.domainDefault': 'Dominio predefinito Post Array',
   'analytics.links.domainVerified': 'Verificato dal DNS su {date}',
   'analytics.links.domainPending': 'In attesa del record DNS',
   'analytics.links.domainPendingHelp':
@@ -363,7 +363,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Segnala questo collegamento',
   'analytics.links.measurementLabel': 'Misurazione del reindirizzamento di prima parte',
   'analytics.links.measurementExplained':
-    "Relay conta una richiesta quando al servizio di reindirizzamento viene richiesto questo URL. Un clic deduplicato rimuove le richieste ripetute dallo stesso visitatore all'interno di una breve finestra e le richieste che corrispondono a modelli noti del crawler vengono escluse anziché eliminate.",
+    "Post Array conta una richiesta quando al servizio di reindirizzamento viene richiesto questo URL. Un clic deduplicato rimuove le richieste ripetute dallo stesso visitatore all'interno di una breve finestra e le richieste che corrispondono a modelli noti del crawler vengono escluse anziché eliminate.",
   'analytics.links.botsNote':
     '{count, plural, one {# richiesta} many {# richieste} other {# richieste}} sono state classificate come automatizzate e sono escluse dal conteggio deduplicato.',
   'analytics.links.series.title': 'Richieste e clic deduplicati nel tempo',
@@ -386,7 +386,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'Questo collegamento non è stato richiesto da quando è stato creato. Questo è un vero zero, misurato dal nostro servizio di reindirizzamento.',
   'analytics.links.compareWarning':
-    "{provider} segnala i clic sui link {providerValue} per questo post. Relay ha registrato {relayValue} clic deduplicati. I due contano eventi diversi e nessuno dei due sostituisce l'altro.",
+    "{provider} segnala i clic sui link {providerValue} per questo post. Post Array ha registrato {relayValue} clic deduplicati. I due contano eventi diversi e nessuno dei due sostituisce l'altro.",
   'analytics.links.errorTitle': 'Impossibile caricare le statistiche dei collegamenti',
   'analytics.links.errorBody':
     'Il servizio di reindirizzamento funziona ancora, quindi il collegamento continua a inviare i visitatori a destinazione. Ne è interessata solo la rendicontazione.',
@@ -395,7 +395,7 @@ export const webAnalyticsMessages = {
     'Deve essere un indirizzo https pubblico. Gli indirizzi di rete privata e le catene di reindirizzamento vengono rifiutati dal servizio di reindirizzamento.',
   'analytics.links.createCampaign': 'Nome della campagna',
   'analytics.links.createSlug': 'Finale personalizzato',
-  'analytics.links.createSlugHelp': 'Lascialo vuoto e Relay genererà un breve finale casuale.',
+  'analytics.links.createSlugHelp': 'Lascialo vuoto e Post Array genererà un breve finale casuale.',
   'analytics.links.createUtm': 'Parametri UTM',
   'analytics.links.blockedScheme': 'Sono accettate solo destinazioni https.',
   'analytics.links.blockedPrivate':
@@ -545,7 +545,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# azione è} many {# azioni sono} other {# azioni sono}} non elencato perché gli account selezionati non possono eseguirle.',
   'automation.picker.hiddenDetail': '{action} non è disponibile per {provider}. {reason}',
   'automation.picker.consequential': 'Crea qualcosa su una piattaforma',
-  'automation.picker.internalOnly': "Rimane all'interno di Relay",
+  'automation.picker.internalOnly': "Rimane all'interno di Post Array",
 
   'automation.accounts.label': 'Account su cui questa regola può agire',
   'automation.accounts.help':
@@ -648,7 +648,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} non è passato, quindi la regola si è fermata qui',
   'automation.test.actionSimulated': '{action} verrebbe eseguito',
   'automation.test.actionSkipped': '{action} verrebbe saltato: {reason}',
-  'automation.test.noExternalEffect': 'Niente è rimasto sul Relay durante questo test.',
+  'automation.test.noExternalEffect': 'Niente è rimasto sul Post Array durante questo test.',
   'automation.test.failed': 'Impossibile completare il test: {reason}',
 
   'automation.runs.table.caption': 'Esecuzioni recenti di questa regola.',
@@ -710,7 +710,7 @@ export const webAnalyticsMessages = {
     'Trasforma un feed in bozze o post programmati, con la stessa convalida e approvazione di qualsiasi cosa scrivi tu stesso.',
   'automation.rss.empty': 'Nessun feed ancora',
   'automation.rss.emptyBody':
-    'Aggiungi un feed e Relay lo controlla in base a una pianificazione. Ogni nuovo elemento diventa una bozza, un post programmato o una richiesta di approvazione, a seconda di quale scegli.',
+    'Aggiungi un feed e Post Array lo controlla in base a una pianificazione. Ogni nuovo elemento diventa una bozza, un post programmato o una richiesta di approvazione, a seconda di quale scegli.',
   'automation.rss.emptyExample':
     'Esempio: il feed del blog Acme crea una bozza per X e LinkedIn ogni volta che viene pubblicato un articolo e attende un approvatore.',
   'automation.rss.table.caption': 'Fornisce sondaggi a questo spazio di lavoro.',
@@ -727,7 +727,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Passaggio {current} di {total}',
 
   'automation.rss.urlHelp':
-    'Relay recupera il feed dai nostri server, non dal tuo browser. Gli indirizzi di rete privata vengono rifiutati.',
+    'Post Array recupera il feed dai nostri server, non dal tuo browser. Gli indirizzi di rete privata vengono rifiutati.',
   'automation.rss.validateAction': 'Controlla questo feed',
   'automation.rss.validateFailed': "Quell'indirizzo non ha restituito un feed leggibile",
   'automation.rss.validateFailedReason': 'Cosa abbiamo ottenuto: {reason}',
@@ -740,7 +740,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Nessuna immagine in questo articolo',
   'automation.rss.previewImageAlt': "Immagine dall'elemento feed {title}",
   'automation.rss.previewNoDate':
-    "Questo elemento non ha un timestamp, quindi Relay utilizza l'ora in cui lo ha visto per la prima volta.",
+    "Questo elemento non ha un timestamp, quindi Post Array utilizza l'ora in cui lo ha visto per la prima volta.",
   'automation.rss.previewFieldsTitle': 'Campi forniti da questo feed',
   'automation.rss.previewFieldMissing': 'Non presente in questo feed',
 
@@ -768,7 +768,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': "Anteprima con l'elemento più recente",
   'automation.rss.adaptWithAi': 'Adattare il testo per ciascun target',
   'automation.rss.adaptHelp':
-    "Il testo viene riscritto per adattarsi a ciascuna piattaforma e mostrato come una differenza che accetti o rifiuti. I contenuti multimediali provengono dall'elemento del feed. Relay non genera immagini.",
+    "Il testo viene riscritto per adattarsi a ciascuna piattaforma e mostrato come una differenza che accetti o rifiuti. I contenuti multimediali provengono dall'elemento del feed. Post Array non genera immagini.",
   'automation.rss.noImageGeneration':
     "Se un elemento del feed non ha un'immagine, il post esce senza.",
   'automation.rss.imageFromFeed': "Utilizza l'immagine dell'elemento del feed quando ne ha una",
@@ -806,13 +806,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Riprendi questo feed',
   'automation.rss.deleteTitle': 'Rimuovere {title}?',
   'automation.rss.deleteBody':
-    'Relay interrompe il controllo di questo feed. Le bozze e i post già creati rimangono esattamente come sono.',
+    'Post Array interrompe il controllo di questo feed. Le bozze e i post già creati rimangono esattamente come sono.',
   'automation.rss.errorTitle': 'Impossibile leggere questo feed',
   'automation.rss.errorBody':
-    'Relay continua a controllare il programma normale. Non è stato pubblicato nulla da una risposta parziale.',
+    'Post Array continua a controllare il programma normale. Non è stato pubblicato nulla da una risposta parziale.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Non disponibile in nessuna regola',
   'automation.refuse.body':

@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Kumokonekta ang Mastodon gamit ang access token na ginawa mo sa iyong sariling instance, hindi ang iyong password.',
   'web.connection.requirement.telegram':
-    'Nagpo-post ang Relay bilang bot. Idagdag ang bot sa channel o grupo kung saan mo gustong mag-post.',
+    'Nagpo-post ang Post Array bilang bot. Idagdag ang bot sa channel o grupo kung saan mo gustong mag-post.',
   'web.connection.requirement.reddit':
     'Ang pagsulat sa Reddit ay nangangailangan ng aprubadong app, at bawat post ay nangangailangan ng titulo at subreddit.',
   'web.connection.requirement.wordpress':
-    'Nagpapublish ang Relay sa pamamagitan ng REST API ng site gamit ang app password na ginawa mo sa WordPress.',
+    'Nagpapublish ang Post Array sa pamamagitan ng REST API ng site gamit ang app password na ginawa mo sa WordPress.',
   'web.connection.requirement.medium':
-    'Kumokonekta ang Medium sa pamamagitan ng OAuth at nagpapublish ang Relay ng pampublikong kwento sa Markdown.',
+    'Kumokonekta ang Medium sa pamamagitan ng OAuth at nagpapublish ang Post Array ng pampublikong kwento sa Markdown.',
   'web.connection.requirement.devto':
     'Kumokonekta ang Dev.to gamit ang API key na ginawa sa iyong mga setting ng Dev.to.',
   'web.connection.requirement.pinterest':
     'Ang pagsulat sa Pinterest ay nangangailangan ng aprubadong access ng app, at ang pin ay nangangailangan ng larawan at sariling board.',
   'web.connection.requirement.discord':
-    'Nagpo-post ang Relay bilang bot. Idagdag ang bot sa mga server at channel kung saan mo gustong mag-post.',
+    'Nagpo-post ang Post Array bilang bot. Idagdag ang bot sa mga server at channel kung saan mo gustong mag-post.',
   'web.connection.requirement.slack':
-    'Nagpo-post ang Relay bilang app. Idagdag ang app sa mga channel kung saan mo gustong mag-post.',
+    'Nagpo-post ang Post Array bilang app. Idagdag ang app sa mga channel kung saan mo gustong mag-post.',
   'web.provider.fake': 'Subukan ang connector',
 
   'web.accountType.personal_profile': 'Personal na profile',
@@ -167,7 +167,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'Na-publish na ang post na ito',
   'web.calendar.published.body':
-    'May post sa {provider} sa {permalinkLabel}. Ang paglipat ng entry sa Relay ay hindi gumagalaw sa post sa platform. Piliin mo ang gusto mong mangyari.',
+    'May post sa {provider} sa {permalinkLabel}. Ang paglipat ng entry sa Post Array ay hindi gumagalaw sa post sa platform. Piliin mo ang gusto mong mangyari.',
   'web.calendar.published.optionLocal': 'I-update lamang ang lokal na tala',
   'web.calendar.published.optionLocalHint':
     'Pinapanatili ng resibo ang totoong oras ng pag-publish. Ang planning entry lang ang gumagalaw, kaya tumugma ang iyong kalendaryo sa iyong plano.',
@@ -273,7 +273,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Hindi pa nagsi-sync ang Analytics para sa post na ito.',
   'web.receipt.analytics.explain':
-    'Pinagsasama-sama ng mga provider sa sarili nilang mga iskedyul. Ang oras sa ibaba ay kung kailan huling binasa ni Relay ang mga ito, hindi noong totoo ang mga numero.',
+    'Pinagsasama-sama ng mga provider sa sarili nilang mga iskedyul. Ang oras sa ibaba ay kung kailan huling binasa ni Post Array ang mga ito, hindi noong totoo ang mga numero.',
 
   'web.receipt.export.download': 'I-download ang resibo',
   'web.receipt.export.copyReference': 'Kopyahin ang sanggunian ng resibo',
@@ -285,11 +285,11 @@ export const webCalendarMessages = {
     'Ang isang muling pagsubok ay hindi kailanman makakaapekto sa isang target na nakagawa na ng isang panlabas na post.',
 
   'web.receipt.remediation.user_action_required':
-    'Kailangan nito ng pagbabago sa Relay o sa {provider} bago ito muling tumakbo.',
+    'Kailangan nito ng pagbabago sa Post Array o sa {provider} bago ito muling tumakbo.',
   'web.receipt.remediation.content_invalid':
     'I-edit ang nilalaman para pumasa ito {provider} pagpapatunay, pagkatapos ay iiskedyul itong muli.',
   'web.receipt.remediation.transient_provider':
-    '{provider} nagbalik ng pansamantalang error. Relay muling sinubukan sa sarili nitong iskedyul.',
+    '{provider} nagbalik ng pansamantalang error. Post Array muling sinubukan sa sarili nitong iskedyul.',
   'web.receipt.remediation.permanent_provider':
     '{provider} tumanggi ito nang tuluyan. Ang muling pagsubok sa parehong nilalaman ay hindi magbabago sa sagot.',
   'web.receipt.remediation.internal':
@@ -352,17 +352,17 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# naka-iskedyul na post} other {# naka-iskedyul na mga post}} para sa account na ito ay hindi mag-publish.',
   'web.connection.disconnect.consequence.published':
-    'Ang mga post na nai-publish ay nananatili sa {provider}. Hindi tinatanggal ng Relay ang mga ito.',
+    'Ang mga post na nai-publish ay nananatili sa {provider}. Hindi tinatanggal ng Post Array ang mga ito.',
   'web.connection.disconnect.consequence.analytics':
     'Ang mga sukatan na nakolekta na ay nananatili sa workspace na ito at huminto sa pag-update.',
 
   'web.connection.connect.title': 'Ikonekta ang isang account',
   'web.connection.connect.chooseProvider': 'Aling plataporma',
-  'web.connection.connect.permissionHeading': 'Ano ang itatanong ni Relay {provider} para sa',
+  'web.connection.connect.permissionHeading': 'Ano ang itatanong ni Post Array {provider} para sa',
   'web.connection.connect.requirementHeading': 'Bago ka magpatuloy',
   'web.connection.connect.continue': 'Magpatuloy sa {provider}',
   'web.connection.connect.handoffNote':
-    'Ang susunod na screen ay {provider}, hindi Relay. Hindi kailanman nakikita ng Relay ang iyong password.',
+    'Ang susunod na screen ay {provider}, hindi Post Array. Hindi kailanman nakikita ng Post Array ang iyong password.',
   'web.connection.connect.noWriteWithoutApproval':
     'Ang pagkonekta ng isang account ay hindi naglalathala ng anuman. Sinusunod pa rin ng bawat post ang patakaran sa pag-apruba ng workspace na ito.',
   'web.connection.projectScope.title': 'Ipinapakita ang mga channel para sa {project}',
@@ -375,13 +375,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Ang Instagram publishing ay nangangailangan ng isang propesyonal na account, na nangangahulugang isang negosyo o creator account na naka-link sa isang Facebook Page.',
   'web.connection.requirement.facebook':
-    'Nag-publish ang Relay sa Facebook Pages. Ang isang personal na profile ay hindi maaaring maging target sa pag-publish.',
+    'Nag-publish ang Post Array sa Facebook Pages. Ang isang personal na profile ay hindi maaaring maging target sa pag-publish.',
   'web.connection.requirement.linkedin':
     'Upang mag-publish para sa isang organisasyon kailangan mo ng tungkulin ng admin ng nilalaman sa LinkedIn Page na iyon.',
   'web.connection.requirement.youtube':
     'Hanggang sa makumpleto ng Google ang pag-audit ng app, ang mga pag-upload mula sa proyektong ito ay ipa-publish bilang pribado. Maaari mong baguhin ang visibility sa YouTube pagkatapos.',
   'web.connection.requirement.tiktok':
-    'Hinihiling sa iyo ng TikTok na ikaw mismo ang pumili ng audience para sa bawat post. Hindi maaaring piliin ng Relay ang isa para sa iyo.',
+    'Hinihiling sa iyo ng TikTok na ikaw mismo ang pumili ng audience para sa bawat post. Hindi maaaring piliin ng Post Array ang isa para sa iyo.',
   'web.connection.requirement.x':
     'X na singil sa bawat operasyon. Ang isang post na naglalaman ng isang URL ay nagkakahalaga ng higit sa isang plain text na post, at ang pagtatantya ay ipinapakita bago ka mag-iskedyul.',
   'web.connection.requirement.threads':
@@ -389,13 +389,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Kumokonekta ang Bluesky sa isang password ng app na ginawa sa iyong mga setting ng Bluesky, hindi sa password ng iyong account.',
   'web.connection.requirement.generic':
-    'Kailangan mo ng pahintulot na mag-post sa account na ito mula sa platform mismo. Hindi ito maibibigay ng Relay.',
+    'Kailangan mo ng pahintulot na mag-post sa account na ito mula sa platform mismo. Hindi ito maibibigay ng Post Array.',
 
-  'web.connection.purpose.publish': 'Pag-publish ng mga post na iniiskedyul mo sa Relay.',
+  'web.connection.purpose.publish': 'Pag-publish ng mga post na iniiskedyul mo sa Post Array.',
   'web.connection.purpose.readPosts':
-    'Binabasa muli ang isang post na Relay na na-publish, para mapatunayan ng resibo na live ito.',
+    'Binabasa muli ang isang post na Post Array na na-publish, para mapatunayan ng resibo na live ito.',
   'web.connection.purpose.identity':
-    'Ipinapakita ang eksaktong pangalan ng account sa Relay, kaya hindi ka mag-publish sa mali.',
+    'Ipinapakita ang eksaktong pangalan ng account sa Post Array, kaya hindi ka mag-publish sa mali.',
   'web.connection.purpose.analytics':
     'Ang pagbabasa ng mga sukatan na iniuulat ng platform na ito para sa sarili mong mga post.',
   'web.connection.purpose.refresh':
@@ -406,7 +406,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Mga pahintulot sa {account}',
   'web.connection.permissions.scopeColumn': 'Pahintulot',
   'web.connection.permissions.stateColumn': 'Estado',
-  'web.connection.permissions.purposeColumn': 'Para saan ito ginagamit ng Relay',
+  'web.connection.permissions.purposeColumn': 'Para saan ito ginagamit ng Post Array',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# nawawala ang pahintulot} other {# nawawala ang mga pahintulot}}. Muling kumonekta at tanggapin ito upang maibalik ang mga feature sa ibaba.',
   'web.connection.permissions.snapshot': 'Basahin mula sa {provider} {relativeTime}',
@@ -418,9 +418,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'Kakayahan',
   'web.connection.capability.legendTitle': 'Paano basahin ito',
   'web.connection.capability.legend.supported':
-    'Magagawa ito ng Relay ngayon para sa isang konektadong account na may tamang uri.',
+    'Magagawa ito ng Post Array ngayon para sa isang konektadong account na may tamang uri.',
   'web.connection.capability.legend.not_implemented':
-    'Iniaalok ito ng platform at hindi pa ito binuo ng Relay. Ito ay nasa roadmap ng connector.',
+    'Iniaalok ito ng platform at hindi pa ito binuo ng Post Array. Ito ay nasa roadmap ng connector.',
   'web.connection.capability.legend.unsupported':
     'Hindi ito inaalok ng platform sa pamamagitan ng opisyal nitong API, kaya walang tool ang makakagawa nito nang ligtas.',
   'web.connection.capability.legend.requires_review':

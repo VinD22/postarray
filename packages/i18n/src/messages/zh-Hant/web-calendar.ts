@@ -20,19 +20,19 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon 使用您在您自己的實例上建立的存取權杖連線，而不是您的密碼。',
   'web.connection.requirement.telegram':
-    'Relay 以機器人身分發布。將機器人新增到您要發布到的頻道或群組。',
+    'Post Array 以機器人身分發布。將機器人新增到您要發布到的頻道或群組。',
   'web.connection.requirement.reddit':
     '寫入 Reddit 需要經批准的應用程式，而且每則貼文都需要標題和 subreddit。',
   'web.connection.requirement.wordpress':
-    'Relay 使用您在 WordPress 中建立的應用程式密碼，透過網站 REST API 發布。',
-  'web.connection.requirement.medium': 'Medium 透過 OAuth 連線，Relay 以 Markdown 發布公開文章。',
+    'Post Array 使用您在 WordPress 中建立的應用程式密碼，透過網站 REST API 發布。',
+  'web.connection.requirement.medium': 'Medium 透過 OAuth 連線，Post Array 以 Markdown 發布公開文章。',
   'web.connection.requirement.devto': 'Dev.to 使用您在 Dev.to 設定中建立的 API 金鑰連線。',
   'web.connection.requirement.pinterest':
     '寫入 Pinterest 需要經批准的應用程式存取權限，圖釘需要圖片和您自己的畫板。',
   'web.connection.requirement.discord':
-    'Relay 以機器人身分發布。將機器人新增到您要發布到的伺服器和頻道。',
+    'Post Array 以機器人身分發布。將機器人新增到您要發布到的伺服器和頻道。',
   'web.connection.requirement.slack':
-    'Relay 以應用程式身分發布。將應用程式新增到您要發布到的頻道。',
+    'Post Array 以應用程式身分發布。將應用程式新增到您要發布到的頻道。',
   'web.provider.fake': '測試連接器',
   'web.accountType.personal_profile': '個人簡介',
   'web.accountType.creator_profile': '創作者帳號',
@@ -129,7 +129,7 @@ export const webCalendarMessages = {
   'web.calendar.reschedule.pastBody': '選擇未來的時間，或現在發布。',
   'web.calendar.published.title': '這篇文章已經發布了',
   'web.calendar.published.body':
-    '貼文存在於{provider}在{permalinkLabel}。移動 Relay 中的條目不會移動平台上的貼文。選擇您想要發生的事情。',
+    '貼文存在於{provider}在{permalinkLabel}。移動 Post Array 中的條目不會移動平台上的貼文。選擇您想要發生的事情。',
   'web.calendar.published.optionLocal': '只更新本地記錄',
   'web.calendar.published.optionLocalHint':
     '收據保留了真實的發佈時間。只有計劃條目會移動，因此您的日曆符合您的計劃。',
@@ -212,17 +212,17 @@ export const webCalendarMessages = {
   'web.receipt.cost.notMetered': '{provider}此貼文類型的每次操作不收費。',
   'web.receipt.analytics.never': '這篇文章的分析尚未同步。',
   'web.receipt.analytics.explain':
-    '提供者按照自己的時間表進行匯總。下面的時間是 Relay 最後一次讀取它們的時間，而不是數字為真的時間。',
+    '提供者按照自己的時間表進行匯總。下面的時間是 Post Array 最後一次讀取它們的時間，而不是數字為真的時間。',
   'web.receipt.export.download': '下載收據',
   'web.receipt.export.copyReference': '複製收據參考',
   'web.receipt.export.denied': '共享收據需要所有者、管理員或審核者角色。你是{role}。',
   'web.receipt.partial.retryFailedOnly': '僅重試失敗的目標',
   'web.receipt.partial.retryHint': '重試永遠不會觸及已經產生外部貼文的目標。',
   'web.receipt.remediation.user_action_required':
-    '這需要在 Relay 或上進行更改{provider}在它可以再次運行之前。',
+    '這需要在 Post Array 或上進行更改{provider}在它可以再次運行之前。',
   'web.receipt.remediation.content_invalid': '編輯內容使其通過{provider}驗證，然後重新安排。',
   'web.receipt.remediation.transient_provider':
-    '{provider}傳回一個臨時錯誤。 Relay 按自己的时间表重试。',
+    '{provider}傳回一個臨時錯誤。 Post Array 按自己的时间表重试。',
   'web.receipt.remediation.permanent_provider':
     '{provider}永久拒絕這一點。重試相同的內容不會改變答案。',
   'web.receipt.remediation.internal': '這是我們這邊的錯誤。現記錄如下，供參考。',
@@ -273,15 +273,15 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {#預定的貼文} other {#預定貼文}}此帳號不會發布。',
   'web.connection.disconnect.consequence.published':
-    '已發布的貼文保留在{provider}。 Relay 不會刪除它們。',
+    '已發布的貼文保留在{provider}。 Post Array 不會刪除它們。',
   'web.connection.disconnect.consequence.analytics': '已收集的指標保留在此Workspace並停止更新。',
   'web.connection.connect.title': '連接帳號',
   'web.connection.connect.chooseProvider': '哪個平台',
-  'web.connection.connect.permissionHeading': 'Relay 會問什麼{provider}為了',
+  'web.connection.connect.permissionHeading': 'Post Array 會問什麼{provider}為了',
   'web.connection.connect.requirementHeading': '在繼續之前',
   'web.connection.connect.continue': '繼續{provider}',
   'web.connection.connect.handoffNote':
-    '下一個畫面是{provider}，不是 Relay。 Relay 永遠不會看到您的密碼。',
+    '下一個畫面是{provider}，不是 Post Array。 Post Array 永遠不會看到您的密碼。',
   'web.connection.connect.noWriteWithoutApproval':
     '連接帳號不會發布任何內容。每個貼文仍然遵循此Workspace核准政策。',
   'web.connection.projectScope.title': '正在顯示 {project} 的頻道',
@@ -290,30 +290,30 @@ export const webCalendarMessages = {
   'web.connection.projectMissing.body': '專案能讓不同產品或客戶的頻道、媒體、草稿與排程彼此分開。',
   'web.connection.requirement.instagram':
     'Instagram 發布需要專業帳號，這意味著連結到 Facebook 頁面的企業或創建者帳號。',
-  'web.connection.requirement.facebook': 'Relay 發佈到 Facebook Pages。個人資料不能作為發布目標。',
+  'web.connection.requirement.facebook': 'Post Array 發佈到 Facebook Pages。個人資料不能作為發布目標。',
   'web.connection.requirement.linkedin': '要為組織發布，您需要該 LinkedIn 頁面上的內容管理員角色。',
   'web.connection.requirement.youtube':
     '在 Google 完成應用程式審核之前，從此項目上傳的內容將作為私人發布。之後您可以更改 YouTube 上的可見度。',
   'web.connection.requirement.tiktok':
-    'TikTok 要求您自己選擇每個貼文的受眾。 Relay 無法為您預先選擇一個。',
+    'TikTok 要求您自己選擇每個貼文的受眾。 Post Array 無法為您預先選擇一個。',
   'web.connection.requirement.x':
     '每次操作收取 X 筆費用。包含 URL 的貼文比純文字貼文的成本更高，並且在您安排之前會顯示估算值。',
   'web.connection.requirement.threads': 'Threads 發佈使用連結到您的 Instagram 專業帳號的帳號。',
   'web.connection.requirement.bluesky':
     'Bluesky 使用在您的 Bluesky 設定中建立的應用程式密碼（而不是您的帳號密碼）進行連線。',
   'web.connection.requirement.generic':
-    '您需要獲得平臺本身的許可才能在此帳號上發佈。 Relay 無法授予它。',
-  'web.connection.purpose.publish': '發佈您在 Relay 中安排的貼文。',
-  'web.connection.purpose.readPosts': '回讀 Relay 發布的貼文，因此收據可以證明它是即時的。',
+    '您需要獲得平臺本身的許可才能在此帳號上發佈。 Post Array 無法授予它。',
+  'web.connection.purpose.publish': '發佈您在 Post Array 中安排的貼文。',
+  'web.connection.purpose.readPosts': '回讀 Post Array 發布的貼文，因此收據可以證明它是即時的。',
   'web.connection.purpose.identity':
-    '在 Relay 中顯示準確的帳號名稱，因此您永遠不會發佈到錯誤的帳號。',
+    '在 Post Array 中顯示準確的帳號名稱，因此您永遠不會發佈到錯誤的帳號。',
   'web.connection.purpose.analytics': '閱讀該平台為您自己的貼文報告的指標。',
   'web.connection.purpose.refresh': '保持訪問活動，這樣預定的貼文就不會在一夜之間失敗。',
   'web.connection.purpose.chooseDestination': '列出您可以選擇作為發布目標的頁面和頻道。',
   'web.connection.permissions.title': '權限{account}',
   'web.connection.permissions.scopeColumn': '允許',
   'web.connection.permissions.stateColumn': '狀態',
-  'web.connection.permissions.purposeColumn': 'Relay 的用途是什麼',
+  'web.connection.permissions.purposeColumn': 'Post Array 的用途是什麼',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {#缺少權限} other {#權限缺失}}。重新連接並接受它以恢復以下功能。',
   'web.connection.permissions.snapshot': '讀自{provider} {relativeTime}',
@@ -323,9 +323,9 @@ export const webCalendarMessages = {
   'web.connection.capability.tableLabel': '按平台劃分的功能',
   'web.connection.capability.featureColumn': '能力',
   'web.connection.capability.legendTitle': '如何閱讀此內容',
-  'web.connection.capability.legend.supported': 'Relay 現在可以為正確類型的連線帳號執行此操作。',
+  'web.connection.capability.legend.supported': 'Post Array 現在可以為正確類型的連線帳號執行此操作。',
   'web.connection.capability.legend.not_implemented':
-    '該平台提供了此功能，但 Relay 尚未建置它。它位於連接器路線圖上。',
+    '該平台提供了此功能，但 Post Array 尚未建置它。它位於連接器路線圖上。',
   'web.connection.capability.legend.unsupported':
     '該平台不透過其官方 API 提供此服務，因此沒有工具可以安全地做到這一點。',
   'web.connection.capability.legend.requires_review':

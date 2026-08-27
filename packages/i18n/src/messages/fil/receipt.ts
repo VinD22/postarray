@@ -25,7 +25,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'Account ng serbisyo {name}',
   'receipt.actor.oauthApp': '{app} kumikilos para sa {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
 
   'receipt.timeline.title': 'Timeline',
   'receipt.timeline.created': 'Draft na ginawa ni {actor}',

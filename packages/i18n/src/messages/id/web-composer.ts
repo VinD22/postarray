@@ -135,7 +135,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} tidak menawarkan pencarian entitas untuk jenis akun ini.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay belum membuat pencarian entitas untuk {provider}. Sementara itu, tidak ada yang bisa ditebak.',
+    'Post Array belum membuat pencarian entitas untuk {provider}. Sementara itu, tidak ada yang bisa ditebak.',
   'composerWeb.entity.searchHint': 'Ketik setidaknya dua karakter, lalu pilih hasilnya.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {No matches} one {# match} other {# matches}}',
@@ -151,7 +151,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'Istilah',
   'composerWeb.links.utmContent': 'Konten',
   'composerWeb.links.domainVerified': '{domain}, terverifikasi untuk ruang kerja ini',
-  'composerWeb.links.domainDefault': 'Relay domain bawaan',
+  'composerWeb.links.domainDefault': 'Post Array domain bawaan',
   'composerWeb.links.domainNone': 'Belum ada domain bermerek yang diverifikasi.',
   'composerWeb.links.notAllowedHere': '{account} tidak mengizinkan tautan di sini.',
   'composerWeb.sequence.kindComment': 'Komentar',
@@ -210,7 +210,7 @@ export const webComposerMessages = {
     'Tidak ada sumber yang ditemukan untuk klaim ini. Periksa sebelum dipublikasikan.',
   'composerWeb.assist.failed': 'Permintaan bantuan tidak selesai. Teks Anda tidak berubah.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay tidak membuat gambar atau video. Bawa file yang sudah jadi ke perpustakaan dan publikasikan di sini.',
+    'Post Array tidak membuat gambar atau video. Bawa file yang sudah jadi ke perpustakaan dan publikasikan di sini.',
   'composerWeb.autosave.pinned':
     'Ini adalah versi yang disetujui. Mengeditnya akan membuat versi baru dan menghapus persetujuan.',
   'composerWeb.autosave.pinnedAcknowledge': 'Edit dan hapus persetujuan',
@@ -255,7 +255,7 @@ export const webComposerMessages = {
     'Tidak ada yang hilang. Coba lagi, dan jika terus gagal, referensi di bawah ini membantu dukungan menemukan permintaan tersebut.',
   'composerWeb.page.noConnectionsTitle': 'Hubungkan akun sebelum menulis',
   'composerWeb.page.noConnectionsBody':
-    'Draf memerlukan setidaknya satu akun yang terhubung sehingga Relay mengetahui batasan, pratinjau, dan pengaturan yang akan ditampilkan.',
+    'Draf memerlukan setidaknya satu akun yang terhubung sehingga Post Array mengetahui batasan, pratinjau, dan pengaturan yang akan ditampilkan.',
   'composerWeb.page.noConnectionsExample':
     'Contoh: dengan X dan LinkedIn terhubung, satu draf menjadi dua versi asli dengan penghitungnya masing-masing.',
   'composerWeb.page.permissionTitle': 'Anda tidak dapat membuat postingan di ruang kerja ini',
@@ -283,7 +283,7 @@ export const webComposerMessages = {
   'mediaLib.openDetail': 'Buka {name}',
   'mediaLib.empty.title': 'Belum ada media',
   'mediaLib.empty.body':
-    'Unggah gambar dan video yang sudah Anda miliki, atau impor file dari URL. Relay memeriksa jenis dan ukuran pada setiap akun tempat Anda menerbitkan.',
+    'Unggah gambar dan video yang sudah Anda miliki, atau impor file dari URL. Post Array memeriksa jenis dan ukuran pada setiap akun tempat Anda menerbitkan.',
   'mediaLib.empty.example':
     'Contoh: launch_hero.jpg, 1600 x 900, kumpulan teks alt, digunakan dalam 2 postingan.',
   'mediaLib.error.title': 'Perpustakaan tidak dapat dimuat',
@@ -404,7 +404,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'File ini tidak membawa kredensial konten yang tertanam. Itu adalah hal yang lumrah dan bukan berarti ada yang salah.',
   'mediaLib.provenance.unverified':
-    'Detail ini berasal dari sumbernya, bukan dari Relay. Periksalah sebelum Anda mengandalkannya.',
+    'Detail ini berasal dari sumbernya, bukan dari Post Array. Periksalah sebelum Anda mengandalkannya.',
   'mediaLib.picker.title': 'Pilih media',
   'mediaLib.picker.description': 'File diperiksa berdasarkan akun yang dipilih dalam draf ini.',
   'mediaLib.picker.confirm':

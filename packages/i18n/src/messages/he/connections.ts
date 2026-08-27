@@ -81,7 +81,7 @@ export const connectionMessages = withHebrewPluralForms({
   'capability.explain.unsupported':
     '{provider} אינו מציע זאת דרך ה-API הרשמי שלו, כך שאף כלי לא יכול לעשות זאת בבטחה.',
   'capability.explain.not_implemented':
-    '{provider} מציע את זה, אבל Relay לא בנה את זה עדיין. זה נמצא במפת הדרכים של המחברים.',
+    '{provider} מציע את זה, אבל Post Array לא בנה את זה עדיין. זה נמצא במפת הדרכים של המחברים.',
   'capability.explain.requires_review':
     '{provider} מעניק זאת רק לאחר שהוא סוקר את האפליקציה או החשבון. זה נשאר לא זמין עד שהסקירה הזו תעבור.',
   'capability.explain.beta':

@@ -6,7 +6,7 @@
  * Crop, resize, rotate, flip, canvas, format conversion, compression and video
  * thumbnail. Every one of those changes pixels that are already in the file.
  * There is no prompt field, no model choice and no generate action, here or
- * anywhere else in Relay.
+ * anywhere else in Post Array.
  *
  * The crop box is set with number fields rather than a drag handle, because no
  * operation in this product may be drag only. Saving writes a new version and

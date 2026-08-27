@@ -1,7 +1,7 @@
 /** Japanese beta catalog. */
 export const webShellMessages = {
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page}· Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page}· Post Array',
   'shell.tagline': '人々とエージェントのための出版デスク。',
   'shell.menu.open': 'メニューを開く',
   'shell.menu.title': 'メニュー',
@@ -20,7 +20,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'デモデータ',
   'shell.demo.title': 'デモデータを見ています',
   'shell.demo.body':
-    'このブラウザから Relay API にアクセスできないため、画面にはシードされたサンプル ワークスペースが表示されます。ここには実際のアカウントに接続されているものはなく、公開できるものはありません。',
+    'このブラウザから Post Array API にアクセスできないため、画面にはシードされたサンプル ワークスペースが表示されます。ここには実際のアカウントに接続されているものはなく、公開できるものはありません。',
   'shell.demo.howToConnect':
     'NEXT_PUBLIC_RELAY_API_URL を設定し、アプリを再起動してライブ データを使用します。',
   'shell.offline.title': 'あなたはオフラインです',
@@ -122,7 +122,7 @@ export const webShellMessages = {
   'home.trial.banner': 'トライアル、{days, plural, other {残り # 日}}。改宗者{date}に{amount}。',
   'home.trial.manage': '管理またはキャンセル',
   'home.error.title': 'ホームを読み込めませんでした',
-  'home.error.body': 'ワークスペースはそのままです。これは、Relay API に到達する際の問題です。',
+  'home.error.body': 'ワークスペースはそのままです。これは、Post Array API に到達する際の問題です。',
   'auth.aside.title': '公式 API を通じて公開すると、何が起こったのかを正確に確認できます。',
   'auth.aside.point.receipts':
     'すべての出版物には、誰が承認したか、いつ発送したか、プラットフォームが何を返したかなどの領収書が作成されます。',
@@ -131,9 +131,9 @@ export const webShellMessages = {
   'auth.aside.point.surfaces': 'Web アプリ、REST API、MCP、CLI、Webhook からの同じワークフロー。',
   'auth.provider.title': '続行する前に',
   'auth.provider.google.access':
-    'Google はあなたの名前、メール アドレス、プロフィール写真を Relay と共有します。 Relay は、Gmail、ドライブ、またはカレンダーを読み取ることができません。',
+    'Google はあなたの名前、メール アドレス、プロフィール写真を Post Array と共有します。 Post Array は、Gmail、ドライブ、またはカレンダーを読み取ることができません。',
   'auth.provider.facebook.access':
-    'Facebook はあなたの名前、電子メール アドレス、プロフィール写真を Relay と共有します。公開先のページを接続することは、後で承認する別の手順です。',
+    'Facebook はあなたの名前、電子メール アドレス、プロフィール写真を Post Array と共有します。公開先のページを接続することは、後で承認する別の手順です。',
   'auth.provider.note': 'これによりサインインします。公開先のアカウントは接続されません。',
   'auth.continueWithEmail': 'メールで続行',
   'auth.method.password': 'パスワード',
@@ -153,8 +153,7 @@ export const webShellMessages = {
     'そのユーザー名とパスワードはアカウントと一致しません。両方にチェックを入れて再試行してください。',
   'auth.failure.noAccountLeak': '安全のため、住所が登録されているかどうかは明らかにしません。',
   'auth.failure.provider': 'でサインイン{provider}完了しませんでした。何も変わりませんでした。',
-  'auth.failure.network': 'Relay に到達できませんでした。接続を確認して、もう一度試してください。',
-  'auth.signUp.trialNote': '丸々 7 日間の試用期間。支払い方法が必要です。今日の期限は $0 です。',
+  'auth.failure.network': 'Post Array に到達できませんでした。接続を確認して、もう一度試してください。',
   'auth.signUp.emailInUseNote':
     'このアドレスにすでにアカウントがある場合は、2 つ目のアカウントを作成する代わりに、サインイン リンクを電子メールで送信します。',
   'auth.legal.readTerms': '規約を読む',
@@ -185,7 +184,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'このデバイスから検出されました:{timeZone}',
   'onboarding.connect.permissionsTitle': '何{provider}求められるだろう',
   'onboarding.connect.permissionsFooter':
-    'Relay は、使用しない許可を要求することはなく、いつでも切断できます。',
+    'Post Array は、使用しない許可を要求することはなく、いつでも切断できます。',
   'onboarding.connect.chooseProvider': 'プラットフォームを選択してください',
   'onboarding.connect.opensProvider': '継続して開きます{provider}このタブで。',
   'onboarding.compose.help': '投稿を作成し、時間を選択する前にプレビューと検証を確認します。',

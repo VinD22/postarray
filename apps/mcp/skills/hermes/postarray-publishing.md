@@ -1,15 +1,15 @@
-# Relay publishing
+# Post Array publishing
 
-Connect the Relay MCP server over HTTP, then follow this workflow.
+Connect the Post Array MCP server over HTTP, then follow this workflow.
 
-Relay is authoritative for approvals. A Hermes scheduled task cannot pre-approve
+Post Array is authoritative for approvals. A Hermes scheduled task cannot pre-approve
 a publication on the user's behalf: `publish_post` still returns a confirmation
-link that a person has to open in Relay. Schedule the drafting and the
+link that a person has to open in Post Array. Schedule the drafting and the
 validation if you like; do not schedule the confirmation.
 
 ## Configuration
 
-Add Relay as an HTTP MCP server with OAuth. Hermes performs the flow. This file
+Add Post Array as an HTTP MCP server with OAuth. Hermes performs the flow. This file
 contains no token and no secret.
 
 ## The workflow
@@ -20,9 +20,9 @@ read.
 1. `list_accounts` to see which accounts exist and whether they are healthy.
 2. `get_capabilities` for each account you intend to use. Character limits,
    media rules and cost differ per account, and `unsupported` (the platform does
-   not offer it) is not the same as `not_implemented` (Relay has not built it).
+   not offer it) is not the same as `not_implemented` (Post Array has not built it).
    Never treat them as the same.
-3. `draft_post` with one master body and one entry per target account. Use Relay
+3. `draft_post` with one master body and one entry per target account. Use Post Array
    connection ids. A raw platform handle is never accepted.
 4. `validate_post`. Fix every `error` before going further. A `warning` is a
    judgement call; explain it to the person rather than silently ignoring it.

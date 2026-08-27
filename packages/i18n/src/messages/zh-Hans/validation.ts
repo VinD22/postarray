@@ -44,7 +44,8 @@ export const validationMessages = {
   'validation.thread_unsupported.message': '{provider} 不支持此帐户的线程。',
   'validation.repeat_end_required.message': '重复帖子需要结束日期或重复次数。',
   'validation.schedule_in_past.message': '那段时间已经在 {timeZone} 中过去了。',
-  'validation.schedule_too_far_ahead.message': '这比为此凭证设置的 {limit} 前瞻更进一步。',
+  'validation.schedule_too_far_ahead.message':
+    '帖子最多可提前 {limit} 排期，上传的媒体文件也保留同样长的时间。',
   'validation.schedule_outside_quiet_hours.message': '这属于为 {project} 设置的安静时段。',
   'validation.duplicate_within_window.message':
     '已在 {window} 内为 {account} 安排或发布了非常相似的内容。',

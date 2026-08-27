@@ -158,7 +158,7 @@ export class FakeIdentityProvider implements IdentityProvider {
   enrollTotp(): Promise<TotpEnrollment> {
     return Promise.resolve({
       factorId: 'factor_test',
-      provisioningUri: 'otpauth://totp/Relay:test?secret=TESTSECRET&issuer=Relay',
+      provisioningUri: 'otpauth://totp/Post Array:test?secret=TESTSECRET&issuer=Post Array',
     });
   }
 

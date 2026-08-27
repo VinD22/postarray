@@ -76,7 +76,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Kritéria kontroly',
   'growth.ugc.reuse': 'Plán opětovného použití',
   'growth.ugc.boundary':
-    'Toto plánuje kampaň, kterou spustíte se skutečnými lidmi. Relay nenajde tvůrce, nekontaktuje je ani nepíše posudky.',
+    'Toto plánuje kampaň, kterou spustíte se skutečnými lidmi. Post Array nenajde tvůrce, nekontaktuje je ani nepíše posudky.',
 
   'growth.opportunities.title': 'Příležitosti propagace',
   'growth.opportunities.help':
@@ -98,7 +98,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'Shoda je návrh. Není to slíbený odkaz, umístění nebo hodnocení.',
   'growth.opportunities.boundary':
-    'Relay neodesílá formuláře, nevytváří účty, e-mailové kontakty, nepřispívá do komunit ani nekupuje odkazy.',
+    'Post Array neodesílá formuláře, nevytváří účty, e-mailové kontakty, nepřispívá do komunit ani nekupuje odkazy.',
   'growth.opportunities.empty':
     'Tomuto profilu zatím neodpovídají žádné ověřené příležitosti. Prázdný seznam je lepší než vymyšlený.',
 

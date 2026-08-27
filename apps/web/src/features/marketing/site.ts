@@ -211,6 +211,9 @@ export const MARKETING_ROUTES = [
 /** The seven navigation items, in the order the IA specifies. */
 export const PRIMARY_NAV: readonly SiteLink[] = [
   { href: ROUTES.product, labelKey: 'nav.public.product' },
+  // The walkthrough, one click from anywhere: the demonstration is the
+  // fastest honest answer to "what is this", so it does not hide in a footer.
+  { href: ROUTES.demo, labelKey: 'nav.public.demo' },
   { href: ROUTES.integrations, labelKey: 'nav.public.integrations' },
   { href: ROUTES.creators, labelKey: 'nav.public.forCreators' },
   { href: ROUTES.agencies, labelKey: 'nav.public.forAgencies' },

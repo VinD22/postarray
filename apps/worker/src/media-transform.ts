@@ -8,7 +8,7 @@ import sharp from 'sharp';
 import type { OutputInfo, Sharp } from 'sharp';
 
 /**
- * The pixel step, and the only place in Relay that decodes an image.
+ * The pixel step, and the only place in Post Array that decodes an image.
  *
  * `sharp` is a dependency of this app and of nothing else. It must never reach
  * `apps/web` or `apps/api`: both run in processes where a native codec on a

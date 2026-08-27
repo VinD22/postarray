@@ -62,6 +62,15 @@ export interface TierFeature {
   readonly text: string;
   /** Rendered at full weight: the line a reader is scanning this column for. */
   readonly strong: boolean;
+  /**
+   * The line that is actually different from the column beside it.
+   *
+   * Every tier carries every feature, so exactly one line per column earns
+   * this: the project allowance. The compact teaser drops the checklist but
+   * keeps this, because a reader looking at $25, $50 and $100 with three
+   * adjectives under them cannot tell what the extra money buys.
+   */
+  readonly distinguishing?: boolean;
 }
 
 /** One interval's face of a column: what it charges and the one line under it. */
@@ -103,6 +112,13 @@ export interface TierGridProps {
   /** Heading above the checklist. Required by `full`, unused by `compact`. */
   readonly featuresLabel?: string;
   /**
+   * The one line the compact teaser states about what is shared, under the
+   * capacity that is not. Already translated; omit it and the teaser says
+   * nothing about parity. Unused by `full`, whose checklist shows the shared
+   * lines in full.
+   */
+  readonly parityNote?: string;
+  /**
    * What pressing the action actually does, under the action. It belongs to
    * the button and not to the page, because a trial term stated three sections
    * away from the button is a term nobody read.
@@ -139,6 +155,7 @@ export function TierGrid({
   annualBadge,
   startHereLabel,
   featuresLabel,
+  parityNote,
   actionNote,
   variant = 'full',
   className,
@@ -192,6 +209,7 @@ export function TierGrid({
             solo={solo}
             startHereLabel={startHereLabel}
             featuresLabel={featuresLabel}
+            parityNote={parityNote}
             actionNote={actionNote}
             showAnchor={tiers.length > 1}
           />
@@ -210,6 +228,7 @@ function TierCard({
   solo,
   startHereLabel,
   featuresLabel,
+  parityNote,
   actionNote,
   showAnchor,
 }: {
@@ -221,6 +240,7 @@ function TierCard({
   readonly solo: boolean;
   readonly startHereLabel: string;
   readonly featuresLabel?: string;
+  readonly parityNote?: string;
   readonly actionNote?: string;
   /** An anchor only means something against something else. */
   readonly showAnchor: boolean;
@@ -264,6 +284,36 @@ function TierCard({
           <p className="text-body-md text-text-secondary max-w-[36ch] leading-[1.6]">
             {face.support}
           </p>
+
+          {/*
+            What the extra money buys, in the teaser that has no checklist.
+
+            Without this the compact card was a name, an adjective and a
+            figure: "Growth — more active projects in one workspace — $50",
+            which asks a reader to infer the one number the ladder is actually
+            sold on. The lines come from the column's own features, so they are
+            the same integers the pricing page prints, and the parity note
+            underneath is what stops the capacity reading as a feature gate.
+          */}
+          {compact ? (
+            <div className="border-border-subtle space-y-2 border-t pt-4">
+              {tier.features
+                .filter((feature) => feature.distinguishing === true)
+                .map((feature) => (
+                  <p
+                    key={feature.id}
+                    className="text-title-sm text-text-primary max-w-[36ch] leading-[1.4]"
+                  >
+                    {feature.text}
+                  </p>
+                ))}
+              {parityNote === undefined ? null : (
+                <p className="text-body-sm text-text-tertiary max-w-[36ch] leading-[1.55]">
+                  {parityNote}
+                </p>
+              )}
+            </div>
+          ) : null}
 
           {compact || tier.delta === undefined ? null : (
             <p className="text-body-md text-text-primary max-w-[36ch] leading-[1.6]">

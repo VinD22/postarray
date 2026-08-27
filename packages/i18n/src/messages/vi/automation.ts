@@ -91,7 +91,7 @@ export const automationMessages = {
   'automation.rules.versionHistory': 'Lịch sử phiên bản',
   'automation.notPermitted.title': 'Không thể tạo quy tắc này',
   'automation.notPermitted.body':
-    'Relay không tự động hóa lượt thích, theo dõi, trả lời hoặc tin nhắn không được yêu cầu, đăng bài hàng loạt hoặc bất cứ điều gì phụ thuộc vào tự động hóa trình duyệt. {provider} cấm điều đó và chúng tôi cũng vậy.',
+    'Post Array không tự động hóa lượt thích, theo dõi, trả lời hoặc tin nhắn không được yêu cầu, đăng bài hàng loạt hoặc bất cứ điều gì phụ thuộc vào tự động hóa trình duyệt. {provider} cấm điều đó và chúng tôi cũng vậy.',
   'automation.notPermitted.providerCapability':
     '{provider} không cung cấp {action} thông qua API chính thức của nó, vì vậy hành động này không thể chọn được cho nó.',
   'automation.rss.title': 'RSS tự động đăng',
@@ -103,7 +103,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Xuất bản lên',
   'automation.rss.template': 'Mẫu văn bản',
   'automation.rss.templateHelp':
-    'Sử dụng các trường nguồn cấp dữ liệu mà bạn đã ánh xạ. Relay không tạo hình ảnh cho các mục nguồn cấp dữ liệu.',
+    'Sử dụng các trường nguồn cấp dữ liệu mà bạn đã ánh xạ. Post Array không tạo hình ảnh cho các mục nguồn cấp dữ liệu.',
   'automation.rss.policy.draft': 'Tạo bản nháp',
   'automation.rss.policy.approval': 'Tạo bản nháp và yêu cầu phê duyệt',
   'automation.rss.policy.nextSlot': 'Lên lịch trong khe miễn phí tiếp theo',

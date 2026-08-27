@@ -233,7 +233,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Permisos concedidos',
   'settings.ui.security.socialPermissionsTitle': 'Permisos de cuentas sociales',
   'settings.ui.security.socialPermissionsBody':
-    'Lo que cada cuenta conectada ha permitido hacer a Relay, a partir de la instantánea de capacidad tomada en el momento de la conexión.',
+    'Lo que cada cuenta conectada ha permitido hacer a Post Array, a partir de la instantánea de capacidad tomada en el momento de la conexión.',
   'settings.ui.security.viewInSection': 'Gestionar en {section}',
   'settings.ui.security.emptySessions': 'Sólo esta sesión está iniciada.',
   'settings.ui.security.emptyGrants':
@@ -270,7 +270,7 @@ export const webSettingsMessages = {
     'Elige lo más pequeño que resuelva tu problema. Cada opción a continuación dice lo que sobrevive.',
   'settings.ui.data.deleteConnection': 'Revocar una conexión social',
   'settings.ui.data.deleteConnectionHelp':
-    'Elimina el acceso Relay a esa cuenta. El espacio de trabajo, su contenido y sus recibos permanecen.',
+    'Elimina el acceso Post Array a esa cuenta. El espacio de trabajo, su contenido y sus recibos permanecen.',
   'settings.ui.data.deleteProject': 'Eliminar una marca',
   'settings.ui.data.deleteProjectHelp':
     'Elimina la marca, sus reglas y su glosario. El contenido publicado en él conserva sus recibos.',
@@ -299,7 +299,7 @@ export const webSettingsMessages = {
     'Las publicaciones que ya están publicadas en una plataforma no se eliminan. Retire los que están en la plataforma.',
   'settings.ui.data.exportFirst': 'Exporta tus datos antes de eliminarlos.',
   'settings.ui.referral.description':
-    'Comparta Relay con un enlace divulgado. La comisión nunca está condicionada a una revisión positiva.',
+    'Comparta Post Array con un enlace divulgado. La comisión nunca está condicionada a una revisión positiva.',
   'settings.ui.referral.linkLabel': 'Tu enlace de referencia',
   'settings.ui.referral.tableCaption': 'Registros atribuidos y su estado de comisión.',
   'settings.ui.referral.column.signup': 'Regístrate',
@@ -435,7 +435,7 @@ export const webSettingsMessages = {
     'Registre una aplicación para que otras personas puedan otorgarle acceso a su espacio de trabajo. Cada aplicación tiene su propia identidad, su propia lista de redirecciones permitidas y su propia pista de auditoría.',
   'developer.ui.apps.emptyTitle': 'No hay aplicaciones registradas',
   'developer.ui.apps.emptyBody':
-    'Registre una aplicación cuando otro producto necesite actuar en nombre de un usuario Relay. Para su propia automatización, utilice una cuenta de servicio.',
+    'Registre una aplicación cuando otro producto necesite actuar en nombre de un usuario Post Array. Para su propia automatización, utilice una cuenta de servicio.',
   'developer.ui.apps.emptyExample':
     'Ejemplo: "Acme Publisher", cliente confidencial, redireccionamiento https://acme.example/oauth/callback, alcances cuentas: lectura y borradores: escritura.',
   'developer.ui.apps.typeHelp':
@@ -459,7 +459,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Estos permiten que la aplicación mire los datos. Nada cambia.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Estos permiten que la aplicación cree o edite cosas dentro de Relay. Nada llega a una plataforma.',
+    'Estos permiten que la aplicación cree o edite cosas dentro de Post Array. Nada llega a una plataforma.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Estos pueden provocar una publicación en una cuenta real o cambiar quién puede acceder a sus cuentas. Siempre se enumeran por separado y nunca se agrupan.',
   'developer.ui.apps.noBundling':
@@ -692,7 +692,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Un incentivo debe ser divulgado en cada publicación que resulte del mismo, por usted y por el participante.',
   'growth.ui.ugc.honesty':
-    'Esto planifica una campaña que ejecuta con personas reales. Relay no busca creadores, no los contacta, no escribe testimonios ni crea contenido para clientes.',
+    'Esto planifica una campaña que ejecuta con personas reales. Post Array no busca creadores, no los contacta, no escribe testimonios ni crea contenido para clientes.',
   'growth.ui.opportunities.caption':
     'Oportunidades verificadas del catálogo, clasificadas según su perfil',
   'growth.ui.opportunities.column.opportunity': 'Oportunidad',
@@ -714,7 +714,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Sus reglas, citadas',
   'growth.ui.opportunities.prepareChecklist': 'que tener listo',
   'growth.ui.opportunities.prepareManual':
-    'Envíe esto usted mismo en su sitio. Relay no completa formularios, no crea cuentas ni envía correos electrónicos a nadie.',
+    'Envíe esto usted mismo en su sitio. Post Array no completa formularios, no crea cuentas ni envía correos electrónicos a nadie.',
   'growth.ui.opportunities.pitchTitle': 'Borrador de tono',
   'growth.ui.opportunities.pitchHelp':
     'Edítalo antes de enviarlo. Utiliza sólo los hechos que usted confirmó.',
@@ -732,7 +732,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Cada entrada necesita un precio verificado, términos de derechos verificados y una limitación nombrada antes de aparecer aquí.',
   'growth.ui.tools.emptyExample':
-    'Una entrada dice para qué es mejor, por qué se ajusta a su plan, qué no puede hacer, las habilidades que necesita, cómo regresa la producción a Relay y cuándo se verificó el precio por última vez.',
+    'Una entrada dice para qué es mejor, por qué se ajusta a su plan, qué no puede hacer, las habilidades que necesita, cómo regresa la producción a Post Array y cuándo se verificó el precio por última vez.',
   'growth.ui.tools.openSite': 'Abra el sitio oficial para {name}',
   'growth.ui.tools.stale': 'Pasada su fecha de revisión. Excluido de los planes generados.',
   'growth.ui.item.explainTitle': '¿Por qué se sugirió esto?',

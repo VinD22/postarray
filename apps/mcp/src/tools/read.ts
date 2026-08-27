@@ -111,7 +111,7 @@ export const getCapabilitiesTool = defineTool({
         max_video_duration_seconds: summary.maxVideoDurationSeconds,
         alt_text: summary.altText,
         // `unsupported` means the platform does not offer it. `not_implemented`
-        // means Relay has not built it. They are never merged.
+        // means Post Array has not built it. They are never merged.
         supported_content_kinds: summary.supportedContentKinds,
         unsupported_content_kinds: summary.unsupportedContentKinds,
         not_implemented_content_kinds: summary.notImplementedContentKinds,

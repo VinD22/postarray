@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon se connecte avec un jeton d’accès créé sur votre propre instance, pas votre mot de passe.',
   'web.connection.requirement.telegram':
-    'Relay publie en tant que bot. Ajoutez le bot au canal ou groupe où vous voulez publier.',
+    'Post Array publie en tant que bot. Ajoutez le bot au canal ou groupe où vous voulez publier.',
   'web.connection.requirement.reddit':
     'Écrire sur Reddit exige une application approuvée, et chaque post a besoin d’un titre et d’un subreddit.',
   'web.connection.requirement.wordpress':
-    'Relay publie via l’API REST du site avec un mot de passe d’application créé dans WordPress.',
+    'Post Array publie via l’API REST du site avec un mot de passe d’application créé dans WordPress.',
   'web.connection.requirement.medium':
-    'Medium se connecte via OAuth et Relay publie des histoires publiques en Markdown.',
+    'Medium se connecte via OAuth et Post Array publie des histoires publiques en Markdown.',
   'web.connection.requirement.devto':
     'Dev.to se connecte avec une clé API créée dans vos paramètres Dev.to.',
   'web.connection.requirement.pinterest':
     'Écrire sur Pinterest exige un accès d’application approuvé, et un pin exige une image et un tableau qui vous appartient.',
   'web.connection.requirement.discord':
-    'Relay publie en tant que bot. Ajoutez le bot aux serveurs et canaux où vous voulez publier.',
+    'Post Array publie en tant que bot. Ajoutez le bot aux serveurs et canaux où vous voulez publier.',
   'web.connection.requirement.slack':
-    'Relay publie en tant qu’app. Ajoutez l’app aux canaux où vous voulez publier.',
+    'Post Array publie en tant qu’app. Ajoutez l’app aux canaux où vous voulez publier.',
   'web.provider.fake': 'Connecteur de test',
 
   'web.accountType.personal_profile': 'Profil personnel',
@@ -165,7 +165,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'Cet article est déjà publié',
   'web.calendar.published.body':
-    "Un message existe sur {provider} à {permalinkLabel}. Le déplacement de l'entrée dans Relay ne déplace pas la publication sur la plateforme. Choisissez ce que vous voulez qu'il se passe.",
+    "Un message existe sur {provider} à {permalinkLabel}. Le déplacement de l'entrée dans Post Array ne déplace pas la publication sur la plateforme. Choisissez ce que vous voulez qu'il se passe.",
   'web.calendar.published.optionLocal': "Mettre à jour l'enregistrement local uniquement",
   'web.calendar.published.optionLocalHint':
     "Le reçu conserve l'heure réelle de publication. Seule l'entrée de planification bouge, votre calendrier correspond donc à votre plan.",
@@ -271,7 +271,7 @@ export const webCalendarMessages = {
   'web.receipt.analytics.never':
     "Les analyses n'ont pas encore été synchronisées pour cette publication.",
   'web.receipt.analytics.explain':
-    "Les fournisseurs se regroupent selon leurs propres horaires. L'heure ci-dessous correspond à la dernière fois que Relay les a lus, et non à l'heure à laquelle les chiffres étaient vrais.",
+    "Les fournisseurs se regroupent selon leurs propres horaires. L'heure ci-dessous correspond à la dernière fois que Post Array les a lus, et non à l'heure à laquelle les chiffres étaient vrais.",
 
   'web.receipt.export.download': 'Téléchargez le reçu',
   'web.receipt.export.copyReference': 'Copiez la référence du reçu',
@@ -283,11 +283,11 @@ export const webCalendarMessages = {
     'Une nouvelle tentative ne touche jamais une cible qui a déjà produit une publication externe.',
 
   'web.receipt.remediation.user_action_required':
-    'Cela nécessite un changement dans Relay ou sur {provider} avant de pouvoir fonctionner à nouveau.',
+    'Cela nécessite un changement dans Post Array ou sur {provider} avant de pouvoir fonctionner à nouveau.',
   'web.receipt.remediation.content_invalid':
     "Modifiez le contenu pour qu'il passe {provider} validation, puis planifiez-la à nouveau.",
   'web.receipt.remediation.transient_provider':
-    '{provider} a renvoyé une erreur temporaire. Relay a réessayé selon son propre calendrier.',
+    '{provider} a renvoyé une erreur temporaire. Post Array a réessayé selon son propre calendrier.',
   'web.receipt.remediation.permanent_provider':
     "{provider} l'a refusé définitivement. Réessayer le même contenu ne changera pas la réponse.",
   'web.receipt.remediation.internal':
@@ -351,30 +351,30 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# publication programmée} many {# posts programmés} other {# posts programmés}} car ce compte ne publiera pas.',
   'web.connection.disconnect.consequence.published':
-    'Les articles déjà publiés restent en ligne {provider}. Relay ne les supprime pas.',
+    'Les articles déjà publiés restent en ligne {provider}. Post Array ne les supprime pas.',
   'web.connection.disconnect.consequence.analytics':
     'Les métriques déjà collectées restent dans cet espace de travail et cessent de se mettre à jour.',
 
   'web.connection.connect.title': 'Connecter un compte',
   'web.connection.connect.chooseProvider': 'Quelle plateforme',
-  'web.connection.connect.permissionHeading': 'Ce que Relay demandera {provider} pour',
+  'web.connection.connect.permissionHeading': 'Ce que Post Array demandera {provider} pour',
   'web.connection.connect.requirementHeading': 'Avant de continuer',
   'web.connection.connect.continue': 'Continuez à {provider}',
   'web.connection.connect.handoffNote':
-    "L'écran suivant est {provider}, et non Relay. Relay ne voit jamais votre mot de passe.",
+    "L'écran suivant est {provider}, et non Post Array. Post Array ne voit jamais votre mot de passe.",
   'web.connection.connect.noWriteWithoutApproval':
     "Connecter un compte ne publie rien. Chaque publication suit toujours cette politique d'approbation de l'espace de travail.",
 
   'web.connection.requirement.instagram':
     "La publication Instagram nécessite un compte professionnel, c'est-à-dire un compte professionnel ou créateur lié à une Page Facebook.",
   'web.connection.requirement.facebook':
-    'Relay publie sur Facebook Pages. Un profil personnel ne peut pas être une cible de publication.',
+    'Post Array publie sur Facebook Pages. Un profil personnel ne peut pas être une cible de publication.',
   'web.connection.requirement.linkedin':
     "Pour publier pour une organisation, vous avez besoin d'un rôle d'administrateur de contenu sur cette page LinkedIn.",
   'web.connection.requirement.youtube':
     "Jusqu'à ce que Google ait terminé l'audit de l'application, les téléchargements de ce projet sont publiés comme privés. Vous pourrez ensuite modifier la visibilité sur YouTube.",
   'web.connection.requirement.tiktok':
-    'TikTok vous oblige à choisir vous-même l’audience de chaque publication. Relay ne peut pas en présélectionner un pour vous.',
+    'TikTok vous oblige à choisir vous-même l’audience de chaque publication. Post Array ne peut pas en présélectionner un pour vous.',
   'web.connection.requirement.x':
     'X facture par opération. Une publication contenant une URL coûte plus cher qu’une publication en texte brut, et l’estimation est affichée avant la planification.',
   'web.connection.requirement.threads':
@@ -382,13 +382,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     "Bluesky se connecte avec un mot de passe d'application créé dans vos paramètres Bluesky, et non avec le mot de passe de votre compte.",
   'web.connection.requirement.generic':
-    "Vous avez besoin d'une autorisation pour publier sur ce compte depuis la plateforme elle-même. Relay ne peut pas l'accorder.",
+    "Vous avez besoin d'une autorisation pour publier sur ce compte depuis la plateforme elle-même. Post Array ne peut pas l'accorder.",
 
-  'web.connection.purpose.publish': 'Publication des publications que vous planifiez dans Relay.',
+  'web.connection.purpose.publish': 'Publication des publications que vous planifiez dans Post Array.',
   'web.connection.purpose.readPosts':
-    "Relisant un message publié par Relay, afin que le reçu puisse prouver qu'il est en ligne.",
+    "Relisant un message publié par Post Array, afin que le reçu puisse prouver qu'il est en ligne.",
   'web.connection.purpose.identity':
-    'Affichage du nom exact du compte dans Relay, afin de ne jamais publier sur le mauvais compte.',
+    'Affichage du nom exact du compte dans Post Array, afin de ne jamais publier sur le mauvais compte.',
   'web.connection.purpose.analytics':
     'Lire les métriques rapportées par cette plateforme pour vos propres publications.',
   'web.connection.purpose.refresh':
@@ -399,7 +399,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Autorisations sur {account}',
   'web.connection.permissions.scopeColumn': 'Autorisation',
   'web.connection.permissions.stateColumn': 'État',
-  'web.connection.permissions.purposeColumn': "Pourquoi Relay l'utilise-t-il ?",
+  'web.connection.permissions.purposeColumn': "Pourquoi Post Array l'utilise-t-il ?",
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# autorisation est manquante} many {# autorisations sont manquantes} other {# autorisations sont manquantes}}. Reconnectez-vous et acceptez-le pour restaurer les fonctionnalités ci-dessous.',
   'web.connection.permissions.snapshot': 'Lire depuis {provider} {relativeTime}',
@@ -411,9 +411,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'Capacité',
   'web.connection.capability.legendTitle': 'Comment lire ceci',
   'web.connection.capability.legend.supported':
-    "Relay peut le faire aujourd'hui pour un compte connecté du bon type.",
+    "Post Array peut le faire aujourd'hui pour un compte connecté du bon type.",
   'web.connection.capability.legend.not_implemented':
-    "La plateforme propose cela et Relay ne l'a pas encore construit. C'est sur la feuille de route du connecteur.",
+    "La plateforme propose cela et Post Array ne l'a pas encore construit. C'est sur la feuille de route du connecteur.",
   'web.connection.capability.legend.unsupported':
     'La plateforme ne propose pas cela via son API officielle, aucun outil ne peut donc le faire en toute sécurité.',
   'web.connection.capability.legend.requires_review':

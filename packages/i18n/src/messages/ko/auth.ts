@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': '로그인',
   'auth.signIn.subtitle': '게시하고 승인하고 정확히 무슨 일이 일어났는지 확인하세요.',
   'auth.signUp.title': '계정 만들기',
-  'auth.signUp.subtitle': '7일 동안 모든 기능을 사용할 수 있습니다. 오늘 결제 금액은 0달러입니다.',
   'auth.continueWithGoogle': 'Google로 계속하기',
   'auth.continueWithFacebook': '페이스북으로 계속하기',
   'auth.orUseEmail': '아니면 이메일을 사용하세요',

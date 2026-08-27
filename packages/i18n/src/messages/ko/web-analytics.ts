@@ -21,7 +21,7 @@ export const webAnalyticsMessages = {
     '{count, plural, other {# 필터}}적용된.{results, plural, other {#개의 게시물이 일치합니다.}}.',
   'analytics.rankMetric.label': '게시물 순위 기준',
   'analytics.rankMetric.help':
-    'Relay에는 통합 점수가 없습니다. 신뢰하는 정의가 있는 하나의 측정항목을 선택하면 해당 측정항목만으로 테이블이 정렬됩니다.',
+    'Post Array에는 통합 점수가 없습니다. 신뢰하는 정의가 있는 하나의 측정항목을 선택하면 해당 측정항목만으로 테이블이 정렬됩니다.',
   'analytics.rankMetric.chosen': '순위:{metric}, 각 계정 제공업체에서 보고한 대로입니다.',
   'analytics.outcome.awareness': '의식',
   'analytics.outcome.awarenessHelp':
@@ -75,7 +75,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     '추종자는 의지한다{account}에 의해 변경됨{percent}이 기간 동안.',
   'analytics.evidence.confounder.paid':
-    'Relay에서는 이러한 게시물이 유료 배포를 받았는지 여부를 알 수 없습니다.',
+    'Post Array에서는 이러한 게시물이 유료 배포를 받았는지 여부를 알 수 없습니다.',
   'analytics.evidence.confounder.provider':
     '{provider}보고 방식이 변경되었습니다.{metric}이 기간 안에.',
   'analytics.definition.open': '무엇{metric}수단',
@@ -106,7 +106,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': '이벤트 수',
   'analytics.unit.seconds': '초',
   'analytics.unit.percent': '공급자가 이미 계산한 백분율',
-  'analytics.unit.ratio': '두 공급자 필드에서 계산된 비율 Relay',
+  'analytics.unit.ratio': '두 공급자 필드에서 계산된 비율 Post Array',
   'analytics.unit.currency_minor': '소액 단위의 금액',
   'analytics.denominator.none': '이것은 비율이 아니라 개수입니다. 분모가 없습니다.',
   'analytics.denominator.impressions': '노출수로 구분',
@@ -123,7 +123,7 @@ export const webAnalyticsMessages = {
   'analytics.format.document': '문서',
   'analytics.format.thread': '실',
   'analytics.value.unavailableReason.notImplemented':
-    'Relay은(는) 이 측정항목에 대한 매핑을 작성하지 않았습니다.{provider}아직.',
+    'Post Array은(는) 이 측정항목에 대한 매핑을 작성하지 않았습니다.{provider}아직.',
   'analytics.value.estimated': '추정된',
   'analytics.value.estimatedMethod': '방법:{method}.',
   'analytics.freshness.title': '이 숫자는 어디서 왔는가',
@@ -228,7 +228,7 @@ export const webAnalyticsMessages = {
     '분석에는 분석가 이상의 역할이 필요합니다. 이 작업공간의 소유자 또는 관리자가 권한을 부여할 수 있습니다.',
   'analytics.state.rateLimitTitle': '{provider}분석 요청의 속도가 제한됩니다.',
   'analytics.state.rateLimitCause':
-    '계정은 이 창에 대한 공급자 할당량의 공유를 사용했습니다. Relay은 게시가 지연될 수 있으므로 더 세게 재시도하지 않습니다.',
+    '계정은 이 창에 대한 공급자 할당량의 공유를 사용했습니다. Post Array은 게시가 지연될 수 있으므로 더 세게 재시도하지 않습니다.',
   'analytics.state.rateLimitAlternative':
     '공급자에게 더 적은 금액을 요구하는 날짜 범위 또는 계정 필터를 좁힙니다.',
   'analytics.state.rateLimitReset': '이력서 요청',
@@ -236,9 +236,9 @@ export const webAnalyticsMessages = {
   'analytics.links.new': '추적된 링크 만들기',
   'analytics.links.empty': '아직 추적된 링크가 없습니다.',
   'analytics.links.emptyBody':
-    '추적된 링크는 Relay이 리디렉션하는 짧은 URL이므로 플랫폼에서 보고된 클릭수가 없는 경우에도 클릭수를 볼 수 있습니다. 원래 대상은 감사 항목 없이는 변경되지 않습니다.',
+    '추적된 링크는 Post Array이 리디렉션하는 짧은 URL이므로 플랫폼에서 보고된 클릭수가 없는 경우에도 클릭수를 볼 수 있습니다. 원래 대상은 감사 항목 없이는 변경되지 않습니다.',
   'analytics.links.emptyExample':
-    '예: Relay.to/a7Kq2는 q3-launch 캠페인을 통해 acme.com/blog/launch로 리디렉션됩니다.',
+    '예: Post Array.to/a7Kq2는 q3-launch 캠페인을 통해 acme.com/blog/launch로 리디렉션됩니다.',
   'analytics.links.table.caption': '이 작업공간에서 추적된 링크와 자사 클릭수입니다.',
   'analytics.links.campaign': '운동',
   'analytics.links.created': '생성됨',
@@ -266,7 +266,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, 활성 상태:{start}에게{end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, 이후 활성{start}',
   'analytics.links.domainLabel': '짧은 도메인',
-  'analytics.links.domainDefault': 'Relay 기본 도메인',
+  'analytics.links.domainDefault': 'Post Array 기본 도메인',
   'analytics.links.domainVerified': '의 DNS에서 확인됨{date}',
   'analytics.links.domainPending': 'DNS 레코드를 기다리는 중',
   'analytics.links.domainPendingHelp':
@@ -289,7 +289,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': '이 링크 신고',
   'analytics.links.measurementLabel': '자사 리디렉션 측정',
   'analytics.links.measurementExplained':
-    'Relay은 리디렉션 서비스가 이 URL을 요청할 때 요청을 계산합니다. 중복 제거된 클릭은 짧은 창 내에서 동일한 방문자의 반복 요청을 제거하고, 알려진 크롤러 패턴과 일치하는 요청은 삭제되지 않고 제외됩니다.',
+    'Post Array은 리디렉션 서비스가 이 URL을 요청할 때 요청을 계산합니다. 중복 제거된 클릭은 짧은 창 내에서 동일한 방문자의 반복 요청을 제거하고, 알려진 크롤러 패턴과 일치하는 요청은 삭제되지 않고 제외됩니다.',
   'analytics.links.botsNote':
     '{count, plural, other {# 요청}}자동화된 것으로 분류되어 중복 제거 횟수에서 제외됩니다.',
   'analytics.links.series.title': '시간 경과에 따른 요청 및 중복 제거된 클릭수',
@@ -312,7 +312,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     '이 링크는 생성된 이후 요청되지 않았습니다. 이는 당사의 리디렉션 서비스로 측정한 실제 0입니다.',
   'analytics.links.compareWarning':
-    '{provider}보고서{providerValue}이 게시물에 대한 링크를 클릭합니다. Relay 녹음됨{relayValue}중복 제거된 클릭. 두 개는 서로 다른 이벤트를 계산하며 어느 것도 다른 이벤트를 대체하지 않습니다.',
+    '{provider}보고서{providerValue}이 게시물에 대한 링크를 클릭합니다. Post Array 녹음됨{relayValue}중복 제거된 클릭. 두 개는 서로 다른 이벤트를 계산하며 어느 것도 다른 이벤트를 대체하지 않습니다.',
   'analytics.links.errorTitle': '링크 통계를 로드할 수 없습니다.',
   'analytics.links.errorBody':
     '리디렉션 서비스가 계속 작동 중이므로 링크가 방문자를 목적지로 계속 보냅니다. 보고만 영향을 받습니다.',
@@ -321,7 +321,7 @@ export const webAnalyticsMessages = {
     '공개 https 주소여야 합니다. 개인 네트워크 주소와 리디렉션 체인은 리디렉션 서비스에 의해 거부됩니다.',
   'analytics.links.createCampaign': '캠페인 이름',
   'analytics.links.createSlug': '커스텀 엔딩',
-  'analytics.links.createSlugHelp': '이것을 비워두면 Relay은 짧은 무작위 결말을 생성합니다.',
+  'analytics.links.createSlugHelp': '이것을 비워두면 Post Array은 짧은 무작위 결말을 생성합니다.',
   'analytics.links.createUtm': 'UTM 매개변수',
   'analytics.links.blockedScheme': 'https 대상만 허용됩니다.',
   'analytics.links.blockedPrivate':
@@ -444,7 +444,7 @@ export const webAnalyticsMessages = {
     '{count, plural, other {# 작업은}}선택한 계정에서는 해당 작업을 수행할 수 없기 때문에 나열되지 않습니다.',
   'automation.picker.hiddenDetail': '{action}에는 사용할 수 없습니다{provider}.{reason}',
   'automation.picker.consequential': '플랫폼에서 무언가를 만듭니다.',
-  'automation.picker.internalOnly': 'Relay 내부에 유지됩니다.',
+  'automation.picker.internalOnly': 'Post Array 내부에 유지됩니다.',
   'automation.accounts.label': '이 규칙이 적용될 수 있는 계정',
   'automation.accounts.help':
     '규칙은 조건에 관계없이 여기에 나열되지 않은 계정을 건드릴 수 없습니다.',
@@ -526,7 +526,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition}통과하지 못했으므로 규칙은 여기서 멈췄습니다.',
   'automation.test.actionSimulated': '{action}달릴 것이다',
   'automation.test.actionSkipped': '{action}건너뛰게 됩니다:{reason}',
-  'automation.test.noExternalEffect': '이 테스트 동안 Relay은 아무것도 남지 않았습니다.',
+  'automation.test.noExternalEffect': '이 테스트 동안 Post Array은 아무것도 남지 않았습니다.',
   'automation.test.failed': '테스트를 완료할 수 없습니다.{reason}',
   'automation.runs.table.caption': '이 규칙의 최근 실행입니다.',
   'automation.runs.startedAt': '시작됨',
@@ -576,7 +576,7 @@ export const webAnalyticsMessages = {
     '직접 작성하는 것과 동일한 검증 및 승인을 통해 피드를 초안 또는 예약 게시물로 전환하세요.',
   'automation.rss.empty': '아직 피드가 없습니다.',
   'automation.rss.emptyBody':
-    '피드를 추가하면 Relay이 일정에 따라 이를 확인합니다. 각각의 새 항목은 초안, 예정된 게시물 또는 승인 요청 중 원하는 항목이 됩니다.',
+    '피드를 추가하면 Post Array이 일정에 따라 이를 확인합니다. 각각의 새 항목은 초안, 예정된 게시물 또는 승인 요청 중 원하는 항목이 됩니다.',
   'automation.rss.emptyExample':
     '예: Acme 블로그 피드는 기사가 게시될 때마다 X 및 LinkedIn에 대한 초안을 생성하고 승인자를 기다립니다.',
   'automation.rss.table.caption': '이 작업공간 설문조사를 피드합니다.',
@@ -591,7 +591,7 @@ export const webAnalyticsMessages = {
   'automation.rss.step.policy': '출판 방법',
   'automation.rss.stepOf': '단계{current}~의{total}',
   'automation.rss.urlHelp':
-    'Relay은 브라우저가 아닌 당사 서버에서 피드를 가져옵니다. 개인 네트워크 주소는 거부됩니다.',
+    'Post Array은 브라우저가 아닌 당사 서버에서 피드를 가져옵니다. 개인 네트워크 주소는 거부됩니다.',
   'automation.rss.validateAction': '이 피드를 확인하세요',
   'automation.rss.validateFailed': '해당 주소는 읽을 수 있는 피드를 반환하지 않았습니다.',
   'automation.rss.validateFailedReason': '우리가 돌려받은 것:{reason}',
@@ -602,7 +602,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': '이 항목에 이미지가 없습니다',
   'automation.rss.previewImageAlt': '피드 항목의 이미지{title}',
   'automation.rss.previewNoDate':
-    '이 항목에는 타임스탬프가 없으므로 Relay은 해당 항목을 처음 본 시간을 사용합니다.',
+    '이 항목에는 타임스탬프가 없으므로 Post Array은 해당 항목을 처음 본 시간을 사용합니다.',
   'automation.rss.previewFieldsTitle': '이 피드가 제공하는 필드',
   'automation.rss.previewFieldMissing': '이 피드에 없습니다.',
   'automation.rss.seenTitle': '이미 본 것으로 간주되는 것',
@@ -626,7 +626,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': '최신 항목으로 미리보기',
   'automation.rss.adaptWithAi': '각 대상에 맞게 텍스트를 조정하세요.',
   'automation.rss.adaptHelp':
-    '문구는 각 플랫폼에 맞게 다시 작성되었으며 수락하거나 거부하는 차이점으로 표시됩니다. 미디어는 피드 항목에서 나옵니다. Relay은 이미지를 생성하지 않습니다.',
+    '문구는 각 플랫폼에 맞게 다시 작성되었으며 수락하거나 거부하는 차이점으로 표시됩니다. 미디어는 피드 항목에서 나옵니다. Post Array은 이미지를 생성하지 않습니다.',
   'automation.rss.noImageGeneration': '피드 항목에 이미지가 없으면 게시물은 이미지 없이 나옵니다.',
   'automation.rss.imageFromFeed': '피드 항목에 이미지가 있는 경우 해당 이미지를 사용하세요.',
   'automation.rss.policyHelp':
@@ -658,10 +658,10 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': '이 피드 재개',
   'automation.rss.deleteTitle': '제거하다{title}?',
   'automation.rss.deleteBody':
-    'Relay이 피드 확인을 중지합니다. 이미 생성된 임시 보관함과 게시물은 그대로 유지됩니다.',
+    'Post Array이 피드 확인을 중지합니다. 이미 생성된 임시 보관함과 게시물은 그대로 유지됩니다.',
   'automation.rss.errorTitle': '이 피드를 읽을 수 없습니다.',
   'automation.rss.errorBody':
-    'Relay은 정상적인 일정을 계속 확인하고 있습니다. 부분 응답에서는 아무것도 게시되지 않았습니다.',
+    'Post Array은 정상적인 일정을 계속 확인하고 있습니다. 부분 응답에서는 아무것도 게시되지 않았습니다.',
   'automation.refuse.title': '어떤 규칙에서도 사용할 수 없음',
   'automation.refuse.body':
     '자동 좋아요 및 팔로우, 참여 그룹, 원치 않는 답장 및 메시지, 인기 있는 것처럼 보이도록 여러 계정에서 동일한 콘텐츠를 게시하는 것은 여기서 옵션이 아닙니다. 플랫폼은 이를 금지하고 이를 사용하는 계정을 손상시킵니다.',

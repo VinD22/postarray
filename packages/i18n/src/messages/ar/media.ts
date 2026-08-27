@@ -53,7 +53,7 @@ export const mediaMessages = {
     'لا يمكن تحرير الفيديو أو الصوت أو المستندات هنا. جهّز الملف قبل رفعه. رفعك الأصلي لا يتغيّر في كلتا الحالتين.',
 
   'mediaLib.derivative.nonGenerative':
-    'Relay لا يولّد صورًا أو فيديو. هذا المحرر يقص ويدير ويغيّر الحجم ويحوّل ويضغط فقط ما رفعته.',
+    'Post Array لا يولّد صورًا أو فيديو. هذا المحرر يقص ويدير ويغيّر الحجم ويحوّل ويضغط فقط ما رفعته.',
 
   'error.media_derivative_no_operations.message': 'اختر تغييرًا واحدًا على الأقل قبل حفظ نسخة.',
   'error.media_derivative_duplicate_operation.message':

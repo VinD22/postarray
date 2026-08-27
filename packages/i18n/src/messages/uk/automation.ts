@@ -96,7 +96,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Це правило неможливо створити',
   'automation.notPermitted.body':
-    'Relay не автоматизує лайки, підписки, небажані відповіді чи повідомлення, дублюючі масові публікації чи будь-що, що залежить від автоматизації браузера. {provider} забороняє, і ми теж.',
+    'Post Array не автоматизує лайки, підписки, небажані відповіді чи повідомлення, дублюючі масові публікації чи будь-що, що залежить від автоматизації браузера. {provider} забороняє, і ми теж.',
   'automation.notPermitted.providerCapability':
     '{provider} не пропонує {action} через його офіційний API, тому цю дію для нього вибрати не можна.',
 
@@ -109,7 +109,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Опублікувати в',
   'automation.rss.template': 'Текстовий шаблон',
   'automation.rss.templateHelp':
-    'Використовуйте нанесені вами поля каналу. Relay не створює зображень для елементів каналу.',
+    'Використовуйте нанесені вами поля каналу. Post Array не створює зображень для елементів каналу.',
   'automation.rss.policy.draft': 'Створіть чернетку',
   'automation.rss.policy.approval': 'Створіть чернетку та подайте запит на схвалення',
   'automation.rss.policy.nextSlot': 'Розклад на наступний вільний слот',

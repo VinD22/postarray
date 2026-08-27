@@ -241,7 +241,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Autorisations accordées',
   'settings.ui.security.socialPermissionsTitle': 'Autorisations des comptes sociaux',
   'settings.ui.security.socialPermissionsBody':
-    "Ce que chaque compte connecté a autorisé Relay à faire, à partir de l'instantané de fonctionnalité pris au moment de la connexion.",
+    "Ce que chaque compte connecté a autorisé Post Array à faire, à partir de l'instantané de fonctionnalité pris au moment de la connexion.",
   'settings.ui.security.viewInSection': 'Gérer dans {section}',
   'settings.ui.security.emptySessions': 'Seule cette session est connectée.',
   'settings.ui.security.emptyGrants':
@@ -280,7 +280,7 @@ export const webSettingsMessages = {
     'Choose the smallest thing that solves your problem. Each option below says what survives.',
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
-    'Removes Relay access to that account. The workspace, its content and its receipts stay.',
+    'Removes Post Array access to that account. The workspace, its content and its receipts stay.',
   'settings.ui.data.deleteProject': 'Delete a project',
   'settings.ui.data.deleteProjectHelp':
     'Removes the project, its rules and its glossary. Content published under it keeps its receipts.',
@@ -310,7 +310,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'Partagez Relay avec un lien divulgué. La Commission n’est jamais conditionnée à un avis positif.',
+    'Partagez Post Array avec un lien divulgué. La Commission n’est jamais conditionnée à un avis positif.',
   'settings.ui.referral.linkLabel': 'Votre lien de parrainage',
   'settings.ui.referral.tableCaption': 'Inscriptions attribuées et état de leur commission',
   'settings.ui.referral.column.signup': "S'inscrire",
@@ -459,7 +459,7 @@ export const webSettingsMessages = {
     "Enregistrez une application afin que d'autres personnes puissent lui accorder l'accès à leur espace de travail. Chaque application possède sa propre identité, sa propre liste autorisée de redirection et sa propre piste d'audit.",
   'developer.ui.apps.emptyTitle': 'Aucune application enregistrée',
   'developer.ui.apps.emptyBody':
-    "Enregistrez une application lorsqu'un autre produit doit agir au nom d'un utilisateur Relay. Pour votre propre automatisation, utilisez plutôt un compte de service.",
+    "Enregistrez une application lorsqu'un autre produit doit agir au nom d'un utilisateur Post Array. Pour votre propre automatisation, utilisez plutôt un compte de service.",
   'developer.ui.apps.emptyExample':
     'Exemple : "Acme Publisher", client confidentiel, redirection https://acme.example/oauth/callback, scopes comptes : lecture et brouillons : écriture.',
   'developer.ui.apps.typeHelp':
@@ -483,7 +483,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     "Ceux-ci permettent à l'application d'examiner les données. Rien ne change.",
   'developer.ui.apps.scopeGroupHelp.reversible':
-    "Ceux-ci permettent à l'application de créer ou de modifier des éléments dans Relay. Rien n'atteint une plate-forme.",
+    "Ceux-ci permettent à l'application de créer ou de modifier des éléments dans Post Array. Rien n'atteint une plate-forme.",
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Ceux-ci peuvent provoquer une publication sur un compte réel ou modifier les personnes pouvant accéder à vos comptes. Ils sont toujours répertoriés séparément et ne sont jamais regroupés.',
   'developer.ui.apps.noBundling':
@@ -648,7 +648,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X and some other providers charge per operation. Those charges are passed through at cost and are not part of the plan price.',
   'billing.ui.allowanceNoMedia':
-    'Image generation and video generation are not included and are not sold. Relay does not generate media.',
+    'Image generation and video generation are not included and are not sold. Post Array does not generate media.',
   'billing.ui.readFairUse': 'Read the fair use policy',
   'billing.ui.readMeteredPolicy': 'Read how metered usage is billed',
   'billing.ui.usageCaption': 'Metered provider usage this period, billed at cost',
@@ -708,8 +708,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'This subscription is canceled.',
   'billing.ui.resume': 'Start the subscription again',
   'billing.ui.noSubscriptionTitle': 'No subscription on this workspace',
-  'billing.ui.noSubscriptionBody':
-    'Start the seven day trial to publish. Polar collects a payment method and charges nothing today.',
   'billing.ui.noSubscriptionExample':
     'Monthly is $29. Annual is $300, which is $25/month billed annually. Save $48/year.',
   'billing.ui.overChannelLimitAction': 'Review connected channels',
@@ -829,7 +827,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'An incentive must be disclosed on every post that results from it, by you and by the participant.',
   'growth.ui.ugc.honesty':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them, write testimonials or create customer content.',
+    'This plans a campaign you run with real people. Post Array does not find creators, contact them, write testimonials or create customer content.',
 
   'growth.ui.opportunities.caption':
     'Opportunités vérifiées du catalogue, classées par adéquation avec votre profil',
@@ -852,7 +850,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Leurs règles, citées',
   'growth.ui.opportunities.prepareChecklist': 'Que faut-il préparer',
   'growth.ui.opportunities.prepareManual':
-    "Vous le soumettez vous-même sur leur site. Relay ne remplit pas de formulaires, ne crée pas de comptes et n'envoie pas d'e-mails à qui que ce soit.",
+    "Vous le soumettez vous-même sur leur site. Post Array ne remplit pas de formulaires, ne crée pas de comptes et n'envoie pas d'e-mails à qui que ce soit.",
   'growth.ui.opportunities.pitchTitle': 'Projet de pitch',
   'growth.ui.opportunities.pitchHelp':
     "Modifiez-le avant de l'envoyer. Il utilise uniquement les faits que vous avez confirmés.",
@@ -870,7 +868,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     "Chaque entrée nécessite un prix vérifié, des conditions de droits vérifiées et une limitation nommée avant d'apparaître ici.",
   'growth.ui.tools.emptyExample':
-    "Une entrée indique à quoi il sert le mieux, pourquoi il correspond à votre plan, ce qu'il ne peut pas faire, les compétences dont il a besoin, comment le résultat revient dans Relay et quand le prix a été vérifié pour la dernière fois.",
+    "Une entrée indique à quoi il sert le mieux, pourquoi il correspond à votre plan, ce qu'il ne peut pas faire, les compétences dont il a besoin, comment le résultat revient dans Post Array et quand le prix a été vérifié pour la dernière fois.",
   'growth.ui.tools.openSite': 'Ouvrez le site officiel pour {name}',
   'growth.ui.tools.stale': 'Passé sa date de révision. Exclus des plans générés.',
 

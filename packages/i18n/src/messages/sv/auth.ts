@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Logga in',
   'auth.signIn.subtitle': 'Publicera, godkänn och se exakt vad som hände.',
   'auth.signUp.title': 'Skapa ditt konto',
-  'auth.signUp.subtitle': 'Sju dagar med varje funktion. $0 förfaller idag.',
   'auth.continueWithGoogle': 'Fortsätt med Google',
   'auth.continueWithFacebook': 'Fortsätt med Facebook',
   'auth.orUseEmail': 'Eller använd din e-post',

@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Se connecter',
   'auth.signIn.subtitle': 'Publiez, approuvez et voyez exactement ce qui s’est passé.',
   'auth.signUp.title': 'Créez votre compte',
-  'auth.signUp.subtitle': "Sept jours avec toutes les fonctionnalités. 0 $ à payer aujourd'hui.",
   'auth.continueWithGoogle': 'Continuer avec Google',
   'auth.continueWithFacebook': 'Continuer avec Facebook',
   'auth.orUseEmail': 'Ou utilisez votre email',

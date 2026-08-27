@@ -1,10 +1,10 @@
-# Relay product gap audit after Postiz public-docs review
+# Post Array product gap audit after Postiz public-docs review
 
 Status date: 9 August 2026
 
 This is the execution bridge between the clean-room public-product research in
 [`docs/research/08-postiz-public-docs-clean-room-comparison.md`](../research/08-postiz-public-docs-clean-room-comparison.md)
-and Relay's release authority in
+and Post Array's release authority in
 [`docs/planning/16-launch-recovery-and-release-gates.md`](16-launch-recovery-and-release-gates.md).
 It does not use Postiz source code. The Postiz GitHub repository was deliberately
 not cloned or inspected because it is AGPL-3.0 and this repository requires a
@@ -12,7 +12,7 @@ clean-room implementation.
 
 ## Executive position
 
-Relay does not need a second feature brainstorm. The local product already has
+Post Array does not need a second feature brainstorm. The local product already has
 a broad, coherent surface: onboarding, connections, composer, calendar,
 approvals, receipts, media, analytics, action centre, settings, REST, MCP, CLI
 and signed webhooks. Its application architecture is stronger than the public
@@ -36,7 +36,7 @@ pages closes that gate.
 | Composer | Multi-target source draft, per-target variants, native fields, validation, cost, scheduling and publish confirmation exist | Live capabilities and helper lookups are not yet proven against a verified account; comment/thread depth varies by connector | Bind every control to the versioned capability snapshot. Do not add generic JSON settings or AI generation |
 | Calendar | Calendar/list views, time-zone handling, filters and rescheduling states exist | Needs isolated Temporal and DST evidence with a real provider job | Test the existing flow. A new calendar design is not a launch blocker |
 | Approvals | Immutable-version review, decisions and permission states exist | Five-surface policy parity still needs an evidence matrix | Prove REST, CLI and MCP receive the same decision as web before release |
-| Receipts | Target-level attempts, partial success and immutable publication evidence are first-class | No live provider acceptance/read-back evidence; manual external-ID reconciliation is absent | Preserve this as Relay's reliability differentiator. Add guarded external-ID reconciliation after the first verified connector |
+| Receipts | Target-level attempts, partial success and immutable publication evidence are first-class | No live provider acceptance/read-back evidence; manual external-ID reconciliation is absent | Preserve this as Post Array's reliability differentiator. Add guarded external-ID reconciliation after the first verified connector |
 | Library | Direct upload, retention, provenance, rights, alt text, provider-aware validation and URL import are locally wired | Safety scanning and non-generative editing are unavailable. URL import still buffers the response and is not exposed by CLI/MCP | Move large URL fetches to a streaming worker, wire scan processing, then add CLI/MCP import commands. Keep a full canvas editor deferred |
 | Analytics | Account/post metric models, freshness and unavailable states exist | Real sync is connector-gated; no operator flow can associate an accepted post when the provider omitted its external ID | After the first connector, add evidence-led manual reconciliation with confirmation and audit. Never infer a match silently |
 | Action centre | Provider, token, approval, rate-limit and processing issues have an operational home | Needs live failures, ownership and receipt linkage evidence | Populate from real workflow outcomes before expanding notification preferences |
@@ -45,7 +45,7 @@ pages closes that gate.
 | REST | Broad OpenAPI catalog over application services | Deployment compatibility and media-import operation semantics need release evidence | Run the OpenAPI diff and authorization/idempotency matrix against the isolated environment |
 | MCP | Compose/read/publish tools preserve human confirmation | Media ingestion and some operational recovery commands are absent | Add only the core non-generative media and receipt recovery commands, using the same services |
 | CLI | Stable JSON-oriented post workflow and capability reads exist | Media upload/import and parity evidence are incomplete | Add media commands after the worker ingestion contract is final, then freeze JSON shapes |
-| Signed webhooks | Delivery/retry surfaces exist as a Relay differentiator | Deployed signing, replay and dead-letter evidence is missing | Complete the delivery canary. Webhooks report effects and are not a command surface |
+| Signed webhooks | Delivery/retry surfaces exist as a Post Array differentiator | Deployed signing, replay and dead-letter evidence is missing | Complete the delivery canary. Webhooks report effects and are not a command surface |
 
 ## Implemented in this audit
 
@@ -70,7 +70,7 @@ Storage, safety-scan, streaming-worker or cross-surface release gates.
 
 ## Core completion order
 
-1. Provision the isolated Relay Neon branch, apply and verify migrations, then
+1. Provision the isolated Post Array Neon branch, apply and verify migrations, then
    run the complete RLS matrix.
 2. Provision private Storage, wire safety scanning, and replace buffered remote
    video import with a worker-owned streaming transfer.
@@ -89,7 +89,7 @@ Storage, safety-scan, streaming-worker or cross-surface release gates.
 
 ## Explicitly skipped
 
-- AI text, image or video generation. Relay is for content the customer brings.
+- AI text, image or video generation. Post Array is for content the customer brings.
 - Cookie extraction, session replay, scraping or unofficial posting endpoints.
 - Marketplace, engagement manipulation and automated unsolicited interaction.
 - A large visual design canvas before ingestion, validation, scanning,

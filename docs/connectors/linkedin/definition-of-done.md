@@ -243,7 +243,7 @@ Portal application, a human decision, or both.
 - [ ] Where the provider pulls media from a URL, the URL is on a verified owned domain and is
       short-lived.
       _Needs:_ asset/storage-service concern, outside `packages/connectors`.
-- [ ] No Relay watermark, logo or promotional marking is added to any published content.
+- [ ] No Post Array watermark, logo or promotional marking is added to any published content.
       _Needs:_ no test asserts this, and proving a negative across the whole media pipeline is
       broader than one file or one test can settle.
 

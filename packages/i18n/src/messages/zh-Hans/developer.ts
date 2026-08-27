@@ -67,7 +67,7 @@ export const developerMessages = {
   'developer.activity.empty': '还没有来电。',
   'developer.activity.redacted': '请求和响应主体在存储时已删除机密。',
   'developer.apps.title': '开发者应用程序',
-  'developer.apps.subtitle': '让另一个产品通过 Relay 使用用户授予的权限进行操作。',
+  'developer.apps.subtitle': '让另一个产品通过 Post Array 使用用户授予的权限进行操作。',
   'developer.apps.create': '注册一个应用程序',
   'developer.apps.name': '应用名称',
   'developer.apps.type.label': '客户类型',

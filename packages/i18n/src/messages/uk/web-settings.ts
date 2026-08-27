@@ -269,7 +269,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Надані дозволи',
   'settings.ui.security.socialPermissionsTitle': 'Дозволи соціального облікового запису',
   'settings.ui.security.socialPermissionsBody':
-    'Те, що кожен підключений обліковий запис дозволив робити Relay, на основі знімка можливостей, зробленого під час підключення.',
+    'Те, що кожен підключений обліковий запис дозволив робити Post Array, на основі знімка можливостей, зробленого під час підключення.',
   'settings.ui.security.viewInSection': 'Керувати в{section}',
   'settings.ui.security.emptySessions': 'Ви ввійшли лише в цей сеанс.',
   'settings.ui.security.emptyGrants':
@@ -309,7 +309,7 @@ export const webSettingsMessages = {
     'Виберіть найменшу річ, яка вирішить вашу проблему. Кожен варіант нижче говорить про те, що виживе.',
   'settings.ui.data.deleteConnection': 'Скасувати один соціальний зв’язок',
   'settings.ui.data.deleteConnectionHelp':
-    'Вилучає доступ Relay до цього облікового запису. Робоча область, її вміст і квитанції залишаються.',
+    'Вилучає доступ Post Array до цього облікового запису. Робоча область, її вміст і квитанції залишаються.',
   'settings.ui.data.deleteProject': 'Заархівувати проєкт',
   'settings.ui.data.deleteProjectHelp':
     'Видаляє проєкт, його правила та глосарій. Вміст, опублікований під ним, зберігає свої квитанції.',
@@ -340,7 +340,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'Поділіться Relay з розкритим посиланням. Комісія ніколи не залежить від позитивного відгуку.',
+    'Поділіться Post Array з розкритим посиланням. Комісія ніколи не залежить від позитивного відгуку.',
   'settings.ui.referral.linkLabel': 'Ваше реферальне посилання',
   'settings.ui.referral.tableCaption': 'Віднесені реєстрації та стан їх комісії',
   'settings.ui.referral.column.signup': 'Реєстрація',
@@ -487,7 +487,7 @@ export const webSettingsMessages = {
     'Зареєструйте програму, щоб інші люди могли надати їй доступ до свого робочого простору. Кожен додаток має власний ідентифікатор, власний список дозволених переадресацій і власний контрольний журнал.',
   'developer.ui.apps.emptyTitle': 'Немає зареєстрованих програм',
   'developer.ui.apps.emptyBody':
-    'Зареєструйте програму, коли інший продукт повинен діяти від імені користувача Relay. Для власної автоматизації використовуйте обліковий запис служби.',
+    'Зареєструйте програму, коли інший продукт повинен діяти від імені користувача Post Array. Для власної автоматизації використовуйте обліковий запис служби.',
   'developer.ui.apps.emptyExample':
     'Example: "Acme Publisher", confidential client, redirect https://acme.example/oauth/callback, scopes accounts:read and drafts:write.',
   'developer.ui.apps.typeHelp':
@@ -511,7 +511,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Це дозволяє програмі переглядати дані. Нічого не змінюється.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Вони дозволяють програмі створювати або редагувати речі в Relay. Ніщо не досягає платформи.',
+    'Вони дозволяють програмі створювати або редагувати речі в Post Array. Ніщо не досягає платформи.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Це може спричинити публікацію в реальному обліковому записі або змінити тих, хто може отримати доступ до ваших облікових записів. Вони завжди перераховуються окремо й ніколи не об’єднуються.',
   'developer.ui.apps.noBundling':
@@ -674,7 +674,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X та деякі інші постачальники стягують плату за операцію. Ці витрати передаються за собівартістю та не є частиною тарифу плану.',
   'billing.ui.allowanceNoMedia':
-    'Генерація зображень і відео не входить у комплект і не продається. Relay не створює медіа.',
+    'Генерація зображень і відео не входить у комплект і не продається. Post Array не створює медіа.',
   'billing.ui.readFairUse': 'Прочитайте політику справедливого використання',
   'billing.ui.readMeteredPolicy': 'Прочитайте, як виставляється плата за лічильник',
   'billing.ui.usageCaption':
@@ -737,8 +737,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'Цю підписку скасовано.',
   'billing.ui.resume': 'Почніть підписку знову',
   'billing.ui.noSubscriptionTitle': 'У цій робочій області немає підписки',
-  'billing.ui.noSubscriptionBody':
-    'Розпочніть семиденну пробну версію для публікації. Сьогодні Polar збирає спосіб оплати й нічого не стягує.',
   'billing.ui.noSubscriptionExample':
     'Щомісячно 29 доларів. Річна плата становить 300 доларів США, що становить 25 доларів США на місяць. Економте 48 доларів на рік.',
   'billing.ui.overChannelLimitAction': 'Перегляньте підключені канали',
@@ -858,7 +856,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Заохочення має бути розкрито в кожній публікації, яка є результатом цього, як вами, так і учасником.',
   'growth.ui.ugc.honesty':
-    'Це планує кампанію, яку ви проводите з реальними людьми. Relay не знаходить творців, не зв’язується з ними, не пише відгуків і не створює контент для клієнтів.',
+    'Це планує кампанію, яку ви проводите з реальними людьми. Post Array не знаходить творців, не зв’язується з ними, не пише відгуків і не створює контент для клієнтів.',
 
   'growth.ui.opportunities.caption':
     'Перевірені можливості з каталогу, упорядковані за відповідністю вашому профілю',
@@ -881,7 +879,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Їх правила, цит',
   'growth.ui.opportunities.prepareChecklist': 'Що мати напоготові',
   'growth.ui.opportunities.prepareManual':
-    'Ви надсилаєте це самостійно на їхньому сайті. Relay не заповнює форми, не створює облікових записів і не надсилає нікому листи.',
+    'Ви надсилаєте це самостійно на їхньому сайті. Post Array не заповнює форми, не створює облікових записів і не надсилає нікому листи.',
   'growth.ui.opportunities.pitchTitle': 'Осадка кроку',
   'growth.ui.opportunities.pitchHelp':
     'Відредагуйте його, перш ніж надсилати. Він використовує лише ті факти, які ви підтвердили.',
@@ -900,7 +898,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Для кожного запису потрібно перевірити ціну, перевірити умови прав і назвати обмеження, перш ніж він з’явиться тут.',
   'growth.ui.tools.emptyExample':
-    'У записі вказується, для чого він найкращий, чому він відповідає вашому плану, що він не може робити, навички, які йому потрібні, як результат повертається в Relay і коли востаннє перевірялася ціна.',
+    'У записі вказується, для чого він найкращий, чому він відповідає вашому плану, що він не може робити, навички, які йому потрібні, як результат повертається в Post Array і коли востаннє перевірялася ціна.',
   'growth.ui.tools.openSite': 'Відкрийте офіційний сайт для{name}',
   'growth.ui.tools.stale': 'Пройшла дата перевірки. Виключено зі створених планів.',
 

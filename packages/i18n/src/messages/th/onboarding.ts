@@ -1,6 +1,6 @@
 /** th beta catalog namespace. */
 export const onboardingMessages = {
-  'onboarding.title': 'ตั้งค่า Relay',
+  'onboarding.title': 'ตั้งค่า Post Array',
   'onboarding.progress': 'ขั้นตอนที่ {current} จาก {total}',
   'onboarding.skipForNow': 'ข้ามไปก่อน',
   'onboarding.goal': 'โพสต์ตามกำหนดเวลาที่ยืนยันแล้วภายในสิบนาที',

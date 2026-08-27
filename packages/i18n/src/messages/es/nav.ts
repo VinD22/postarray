@@ -38,6 +38,7 @@ export const navMessages = {
   'settings.nav.notifications': 'Preferencias de notificación',
 
   'nav.public.product': 'Producto',
+  'nav.public.demo': 'Demo',
   'nav.public.integrations': 'Integraciones',
   'nav.public.forCreators': 'Para creadores',
   'nav.public.forAgencies': 'Para agencias',
@@ -45,7 +46,7 @@ export const navMessages = {
   'nav.public.pricing': 'Precios',
   'nav.public.resources': 'Recursos',
   'nav.public.signIn': 'Iniciar sesión',
-  'nav.public.startTrial': 'Empieza gratis',
+  'nav.public.startTrial': 'Empezar gratis',
   'nav.public.docs': 'Documentación',
   'nav.public.changelog': 'Registro de cambios',
   'nav.public.status': 'Estado',

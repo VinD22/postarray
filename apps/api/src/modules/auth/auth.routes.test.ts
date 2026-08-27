@@ -109,14 +109,17 @@ describe('authentication routes', () => {
     });
   });
 
-  it('rejects retired and planned interface locales at the auth boundary', async () => {
+  it('rejects planned interface locales at the auth boundary', async () => {
     const response = await request(harness.server)
       .post('/v1/auth/signup')
       .send({
         email: 'owner@example.test',
         password: 'a long test password',
         displayName: 'Launch Owner',
-        locale: 'es-419',
+        // `nb` is planned, not active. `es-419` used to sit here and no
+        // longer belongs: it is one of the twenty-five launch locales now, so
+        // the boundary is right to accept it.
+        locale: 'nb',
         timeZone: 'Asia/Kolkata',
         termsVersionHash: 'a'.repeat(64),
         privacyVersionHash: 'b'.repeat(64),

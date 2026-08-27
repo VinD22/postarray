@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'Classer les publications par',
   'analytics.rankMetric.help':
-    'Il n’y a pas de score combiné dans Relay. Choisissez une métrique dont vous faites confiance à la définition et le tableau est trié en fonction de cette seule métrique.',
+    'Il n’y a pas de score combiné dans Post Array. Choisissez une métrique dont vous faites confiance à la définition et le tableau est trié en fonction de cette seule métrique.',
   'analytics.rankMetric.chosen':
     'Classé par {metric}, tel que rapporté par chaque fournisseur de compte.',
 
@@ -108,7 +108,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Les adeptes comptent sur {account} changé par {percent} durant cette période.',
   'analytics.evidence.confounder.paid':
-    "Relay ne peut pas dire si l'un de ces messages a reçu une distribution payante.",
+    "Post Array ne peut pas dire si l'un de ces messages a reçu une distribution payante.",
   'analytics.evidence.confounder.provider':
     "{provider} changé la façon dont il rapporte {metric} à l'intérieur de cette période.",
 
@@ -147,7 +147,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': "Un décompte d'événements",
   'analytics.unit.seconds': 'Secondes',
   'analytics.unit.percent': 'Un pourcentage que le fournisseur a déjà calculé',
-  'analytics.unit.ratio': 'Un ratio Relay calculé à partir de deux champs fournisseur',
+  'analytics.unit.ratio': 'Un ratio Post Array calculé à partir de deux champs fournisseur',
   'analytics.unit.currency_minor': "Une somme d'argent en unités mineures",
 
   'analytics.denominator.none':
@@ -168,7 +168,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'Fil',
 
   'analytics.value.unavailableReason.notImplemented':
-    "Relay n'a pas créé le mappage pour cette métrique sur {provider} encore.",
+    "Post Array n'a pas créé le mappage pour cette métrique sur {provider} encore.",
   'analytics.value.estimated': 'Estimé',
   'analytics.value.estimatedMethod': 'Méthode: {method}.',
 
@@ -299,7 +299,7 @@ export const webAnalyticsMessages = {
     "Les analyses nécessitent le rôle d'analyste ou un rôle supérieur. Un propriétaire ou un administrateur de cet espace de travail peut l'accorder.",
   'analytics.state.rateLimitTitle': "{provider} est-ce que le débit limite les demandes d'analyse",
   'analytics.state.rateLimitCause':
-    'Le compte a utilisé sa part du quota du fournisseur pour cette fenêtre. Relay ne réessaye pas plus fort, car cela retarderait la publication.',
+    'Le compte a utilisé sa part du quota du fournisseur pour cette fenêtre. Post Array ne réessaye pas plus fort, car cela retarderait la publication.',
   'analytics.state.rateLimitAlternative':
     'Affinez la plage de dates ou le filtre de compte, qui demande moins au fournisseur.',
   'analytics.state.rateLimitReset': 'Reprise des demandes',
@@ -311,7 +311,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Créer un lien suivi',
   'analytics.links.empty': "Aucun lien suivi pour l'instant",
   'analytics.links.emptyBody':
-    "Un lien suivi est une URL courte vers laquelle Relay redirige, afin que vous puissiez voir les clics même lorsqu'une plate-forme n'en signale aucun. La destination d'origine n'est jamais modifiée sans une entrée d'audit.",
+    "Un lien suivi est une URL courte vers laquelle Post Array redirige, afin que vous puissiez voir les clics même lorsqu'une plate-forme n'en signale aucun. La destination d'origine n'est jamais modifiée sans une entrée d'audit.",
   'analytics.links.emptyExample':
     'Exemple : relay.to/a7Kq2 redirige vers acme.com/blog/launch avec la campagne q3-launch.',
   'analytics.links.table.caption':
@@ -342,7 +342,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, actif depuis {start} à {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, actif depuis {start}',
   'analytics.links.domainLabel': 'Domaine court',
-  'analytics.links.domainDefault': 'Domaine par défaut Relay',
+  'analytics.links.domainDefault': 'Domaine par défaut Post Array',
   'analytics.links.domainVerified': 'Vérifié par DNS sur {date}',
   'analytics.links.domainPending': "En attente de l'enregistrement DNS",
   'analytics.links.domainPendingHelp':
@@ -365,7 +365,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Signaler ce lien',
   'analytics.links.measurementLabel': 'Mesure de redirection de première partie',
   'analytics.links.measurementExplained':
-    "Relay compte une requête lorsque le service de redirection est demandé pour cette URL. Un clic dédupliqué supprime les demandes répétées du même visiteur dans une courte fenêtre, et les demandes correspondant aux modèles de robot d'exploration connus sont exclues plutôt que supprimées.",
+    "Post Array compte une requête lorsque le service de redirection est demandé pour cette URL. Un clic dédupliqué supprime les demandes répétées du même visiteur dans une courte fenêtre, et les demandes correspondant aux modèles de robot d'exploration connus sont exclues plutôt que supprimées.",
   'analytics.links.botsNote':
     '{count, plural, one {# demande} many {# demandes} other {# demandes}} ont été classés comme automatisés et sont exclus du décompte des déduplications.',
   'analytics.links.series.title': 'Requêtes et clics dédupliqués au fil du temps',
@@ -388,7 +388,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     "Ce lien n'a pas été demandé depuis sa création. C’est un vrai zéro, mesuré par notre propre service de redirection.",
   'analytics.links.compareWarning':
-    '{provider} rapports {providerValue} clics sur le lien pour cet article. Relay enregistré {relayValue} clics dédupliqués. Les deux comptent des événements différents et aucun ne remplace l’autre.',
+    '{provider} rapports {providerValue} clics sur le lien pour cet article. Post Array enregistré {relayValue} clics dédupliqués. Les deux comptent des événements différents et aucun ne remplace l’autre.',
   'analytics.links.errorTitle': "Les statistiques de lien n'ont pas pu être chargées",
   'analytics.links.errorBody':
     "Le service de redirection fonctionne toujours, le lien continue donc d'envoyer les visiteurs vers sa destination. Seul le reporting est concerné.",
@@ -398,7 +398,7 @@ export const webAnalyticsMessages = {
   'analytics.links.createCampaign': 'Nom de la campagne',
   'analytics.links.createSlug': 'Fin personnalisée',
   'analytics.links.createSlugHelp':
-    'Laissez ce champ vide et Relay génère une courte fin aléatoire.',
+    'Laissez ce champ vide et Post Array génère une courte fin aléatoire.',
   'analytics.links.createUtm': 'Paramètres UTM',
   'analytics.links.blockedScheme': 'Seules les destinations https sont acceptées.',
   'analytics.links.blockedPrivate':
@@ -550,7 +550,7 @@ export const webAnalyticsMessages = {
     "{count, plural, one {# l'action est} many {# actions sont} other {# actions sont}} non répertorié car les comptes sélectionnés ne peuvent pas les exécuter.",
   'automation.picker.hiddenDetail': "{action} n'est pas disponible pour {provider}. {reason}",
   'automation.picker.consequential': 'Crée quelque chose sur une plateforme',
-  'automation.picker.internalOnly': "Reste à l'intérieur de Relay",
+  'automation.picker.internalOnly': "Reste à l'intérieur de Post Array",
 
   'automation.accounts.label': 'Comptes sur lesquels cette règle peut agir',
   'automation.accounts.help':
@@ -653,7 +653,7 @@ export const webAnalyticsMessages = {
     "{condition} n'a pas été adopté, donc la règle s'est arrêtée ici",
   'automation.test.actionSimulated': '{action} courrait',
   'automation.test.actionSkipped': '{action} serait ignoré : {reason}',
-  'automation.test.noExternalEffect': 'Il ne reste plus rien de Relay lors de ce test.',
+  'automation.test.noExternalEffect': 'Il ne reste plus rien de Post Array lors de ce test.',
   'automation.test.failed': "Le test n'a pas pu se terminer : {reason}",
 
   'automation.runs.table.caption': 'Exécutions récentes de cette règle.',
@@ -715,7 +715,7 @@ export const webAnalyticsMessages = {
     'Transformez un flux en brouillons ou en publications programmées, avec la même validation et approbation que tout ce que vous écrivez vous-même.',
   'automation.rss.empty': 'Pas encore de flux',
   'automation.rss.emptyBody':
-    "Ajoutez un flux et Relay le vérifie selon un calendrier. Chaque nouvel élément devient un brouillon, une publication planifiée ou une demande d'approbation, selon votre choix.",
+    "Ajoutez un flux et Post Array le vérifie selon un calendrier. Chaque nouvel élément devient un brouillon, une publication planifiée ou une demande d'approbation, selon votre choix.",
   'automation.rss.emptyExample':
     "Exemple : le flux du blog Acme crée un brouillon pour X et LinkedIn à chaque fois qu'un article est publié et attend un approbateur.",
   'automation.rss.table.caption': 'Alimente les sondages de cet espace de travail.',
@@ -732,7 +732,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Étape {current} de {total}',
 
   'automation.rss.urlHelp':
-    'Relay récupère le flux depuis nos serveurs, pas depuis votre navigateur. Les adresses de réseaux privés sont refusées.',
+    'Post Array récupère le flux depuis nos serveurs, pas depuis votre navigateur. Les adresses de réseaux privés sont refusées.',
   'automation.rss.validateAction': 'Vérifiez ce flux',
   'automation.rss.validateFailed': "Cette adresse n'a pas renvoyé de flux lisible",
   'automation.rss.validateFailedReason': 'Ce que nous avons récupéré : {reason}',
@@ -745,7 +745,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Aucune image dans cet article',
   'automation.rss.previewImageAlt': "Image de l'élément de flux {title}",
   'automation.rss.previewNoDate':
-    "Cet élément n'a pas d'horodatage, donc Relay utilise l'heure à laquelle il l'a vu pour la première fois.",
+    "Cet élément n'a pas d'horodatage, donc Post Array utilise l'heure à laquelle il l'a vu pour la première fois.",
   'automation.rss.previewFieldsTitle': 'Champs fournis par ce flux',
   'automation.rss.previewFieldMissing': 'Non présent dans ce flux',
 
@@ -773,7 +773,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': "Aperçu avec l'élément le plus récent",
   'automation.rss.adaptWithAi': 'Adapter le texte pour chaque cible',
   'automation.rss.adaptHelp':
-    "Le libellé est réécrit pour s'adapter à chaque plate-forme et affiché sous la forme d'une différence que vous acceptez ou rejetez. Le média provient de l'élément de flux. Relay ne génère pas d'images.",
+    "Le libellé est réécrit pour s'adapter à chaque plate-forme et affiché sous la forme d'une différence que vous acceptez ou rejetez. Le média provient de l'élément de flux. Post Array ne génère pas d'images.",
   'automation.rss.noImageGeneration':
     'Si un élément de fil n’a pas d’image, la publication est publiée sans image.',
   'automation.rss.imageFromFeed': "Utiliser l'image de l'élément de flux lorsqu'il en a une",
@@ -811,13 +811,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Reprendre ce flux',
   'automation.rss.deleteTitle': 'Retirer {title}?',
   'automation.rss.deleteBody':
-    'Relay arrête de vérifier ce flux. Les brouillons et les publications déjà créés restent exactement tels qu’ils sont.',
+    'Post Array arrête de vérifier ce flux. Les brouillons et les publications déjà créés restent exactement tels qu’ils sont.',
   'automation.rss.errorTitle': "Ce flux n'a pas pu être lu",
   'automation.rss.errorBody':
-    'Relay continue de vérifier le calendrier normal. Rien n’a été publié à partir d’une réponse partielle.',
+    'Post Array continue de vérifier le calendrier normal. Rien n’a été publié à partir d’une réponse partielle.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Non disponible dans aucune règle',
   'automation.refuse.body':

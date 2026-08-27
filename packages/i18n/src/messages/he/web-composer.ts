@@ -242,7 +242,7 @@ export const webComposerMessages = withHebrewPluralForms({
     'שום דבר לא אבד. נסה שוב, ואם זה ממשיך להיכשל, ההפניה למטה עוזרת לתמיכה למצוא את הבקשה.',
   'composerWeb.page.noConnectionsTitle': 'חבר חשבון לפני חיבור',
   'composerWeb.page.noConnectionsBody':
-    'לטיוטה צריך לפחות חשבון אחד מחובר כדי ש-Relay יידע את המגבלות, התצוגה המקדימה וההגדרות שיש להציג.',
+    'לטיוטה צריך לפחות חשבון אחד מחובר כדי ש-Post Array יידע את המגבלות, התצוגה המקדימה וההגדרות שיש להציג.',
   'composerWeb.page.noConnectionsExample':
     'דוגמה: כאשר X ולינקדאין מחוברים, טיוטה אחת הופכת לשתי גרסאות מקוריות עם מונים משלהן.',
   'composerWeb.page.permissionTitle': 'לא ניתן ליצור פוסטים בסביבת העבודה הזו',
@@ -314,7 +314,7 @@ export const webComposerMessages = withHebrewPluralForms({
   'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
   'mediaLib.import.importing': 'מייבא מדיה',
   'mediaLib.import.succeeded': 'הקובץ נמצא בספרייה שלך',
-  'mediaLib.import.scanPending': 'Relay רשם את המקור שלו. הפרסום ממתין עד שבדיקת הבטיחות תסתיים.',
+  'mediaLib.import.scanPending': 'Post Array רשם את המקור שלו. הפרסום ממתין עד שבדיקת הבטיחות תסתיים.',
   'mediaLib.import.failed': 'לא ניתן היה לייבא את הקובץ',
   'mediaLib.import.failedHelp': 'ודא שהקישור ציבורי ומצביע ישירות על קובץ מדיה נתמך, ואז נסה שוב.',
   'mediaLib.import.readOnly': 'התחבר ל-API כדי לייבא קבצים בסביבה הזו.',
@@ -324,7 +324,7 @@ export const webComposerMessages = withHebrewPluralForms({
   'mediaLib.import.issue.credentials': 'השתמש בקישור בלי שם משתמש או סיסמה.',
   'mediaLib.retention.title': 'קבצים שמורים נשמרים 30 יום אחרי יצירת הפוסט',
   'mediaLib.retention.body':
-    'ברגע שקובץ מצורף לפוסט, אנחנו מוחקים אותו לצמיתות מאחסון Relay כעבור 30 יום מיצירת הפוסט הזה. קבצים שממתינים לצירוף משתמשים בתאריך ההעלאה כגיבוי לניקוי. טקסט הפוסט, קבלות הפרסום והיסטוריית הביקורת נשארים זמינים לזמן ארוך יותר. פוסט שפורסם בפלטפורמה חברתית לא מוסר כאשר הקובץ השמור שלו פג תוקף.',
+    'ברגע שקובץ מצורף לפוסט, אנחנו מוחקים אותו לצמיתות מאחסון Post Array כעבור 30 יום מיצירת הפוסט הזה. קבצים שממתינים לצירוף משתמשים בתאריך ההעלאה כגיבוי לניקוי. טקסט הפוסט, קבלות הפרסום והיסטוריית הביקורת נשארים זמינים לזמן ארוך יותר. פוסט שפורסם בפלטפורמה חברתית לא מוסר כאשר הקובץ השמור שלו פג תוקף.',
   'mediaLib.retention.limits':
     'תמונות, אודיו וקבצי PDF יכולים להיות עד {imageSize}. סרטונים יכולים להיות עד {videoSize}.',
   'mediaLib.retention.expiresLabel': 'תאריך מחיקת הקובץ',
@@ -423,7 +423,7 @@ export const webComposerMessages = withHebrewPluralForms({
   'mediaLib.provenance.contentCredentialsNone':
     'קובץ זה אינו נושא אישורי תוכן מוטבע. זה נפוץ ולא אומר שמשהו לא בסדר.',
   'mediaLib.provenance.unverified':
-    'הפרטים האלה מגיעים מהמקור, לא מ-Relay. בדוק אותם לפני שאתה מסתמך עליהם.',
+    'הפרטים האלה מגיעים מהמקור, לא מ-Post Array. בדוק אותם לפני שאתה מסתמך עליהם.',
   'mediaLib.picker.title': 'בחר מדיה',
   'mediaLib.picker.description': 'קבצים נבדקים מול החשבונות שנבחרו בטיוטה זו.',
   'mediaLib.picker.confirm':

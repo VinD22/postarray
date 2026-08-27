@@ -75,7 +75,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Kriterleri inceleyin',
   'growth.ugc.reuse': 'Planı yeniden kullanma',
   'growth.ugc.boundary':
-    'Bu, gerçek kişilerle yürüttüğünüz bir kampanyayı planlar. Relay yaratıcıları bulmaz, onlarla iletişim kurmaz veya referans yazmaz.',
+    'Bu, gerçek kişilerle yürüttüğünüz bir kampanyayı planlar. Post Array yaratıcıları bulmaz, onlarla iletişim kurmaz veya referans yazmaz.',
 
   'growth.opportunities.title': 'Promosyon fırsatları',
   'growth.opportunities.help':
@@ -97,7 +97,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'Bir maç bir öneridir. Bu vaat edilen bir bağlantı, bir yerleşim veya bir sıralama değildir.',
   'growth.opportunities.boundary':
-    'Relay form göndermez, hesap oluşturmaz, kişilere e-posta göndermez, topluluklara paylaşımda bulunmaz veya bağlantı satın almaz.',
+    'Post Array form göndermez, hesap oluşturmaz, kişilere e-posta göndermez, topluluklara paylaşımda bulunmaz veya bağlantı satın almaz.',
   'growth.opportunities.empty':
     'Henüz bu profille eşleşen doğrulanmış bir fırsat yok. Boş bir liste icat edilmiş bir listeden daha iyidir.',
 
@@ -108,7 +108,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'Neden uyuyor',
   'growth.tools.limitations': 'Sınırlamalar',
   'growth.tools.requiredSkills': 'İhtiyacınız olan beceriler',
-  'growth.tools.handoff': "Çıktı Relay'e nasıl geri geliyor?",
+  'growth.tools.handoff': "Çıktı Post Array'e nasıl geri geliyor?",
   'growth.tools.rights': 'Haklar ve gizlilik notları',
   'growth.tools.priceChecked': 'Fiyat son kontrol edildi: {date}',
   'growth.tools.affiliateDisclosure':

@@ -769,6 +769,18 @@ export interface BillingGateway {
     readonly quantity: number;
     readonly idempotencyKey: string;
   }): Promise<void>;
+  /**
+   * Spends one free-plan publishing credit, atomically, at the moment a
+   * publication receipt is written. The gateway decides for itself whether the
+   * workspace is on the free plan at all: a verified paid entitlement makes
+   * this a no-op. Returns the remaining balance, or `null` when a free
+   * workspace had nothing left (the receipt still stands; a published post is
+   * never retracted over a credit).
+   */
+  spendPostCredit(input: {
+    readonly workspaceId: string;
+    readonly contentItemId: string | null;
+  }): Promise<number | null>;
   getEntitlements(workspaceId: string): Promise<EntitlementStateView>;
   getUsage(
     workspaceId: string,
@@ -2514,8 +2526,8 @@ export interface IdentityService {
   }): Promise<void>;
   setUsernameAlias(ctx: IdentityContext, alias: string): Promise<{ alias: string }>;
   /**
-   * Bind a Neon Auth subject to a durable Relay user on sign-in.
-   * Returns the Relay user id, or null when no row can be linked safely.
+   * Bind a Neon Auth subject to a durable Post Array user on sign-in.
+   * Returns the Post Array user id, or null when no row can be linked safely.
    */
   linkProviderIdentity(input: {
     readonly identitySubjectId: string;

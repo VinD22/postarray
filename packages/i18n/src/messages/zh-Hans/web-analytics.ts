@@ -21,7 +21,7 @@ export const webAnalyticsMessages = {
     '已应用 {count, plural, =0 {No filters} one {# filter} other {# filters}}。 {results, plural, =0 {No posts match} one {# post matches} other {# posts match}}。',
   'analytics.rankMetric.label': '对帖子进行排名',
   'analytics.rankMetric.help':
-    'Relay。接力赛没有综合得分。选择您信任其定义的一个指标，该表将仅按该指标排序。',
+    'Post Array。接力赛没有综合得分。选择您信任其定义的一个指标，该表将仅按该指标排序。',
   'analytics.rankMetric.chosen': '根据每个帐户提供商的报告，按 {metric} 排名。',
   'analytics.outcome.awareness': '意识',
   'analytics.outcome.awarenessHelp':
@@ -72,7 +72,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.format': '图片帖子和视频帖子在这里不能直接比较。',
   'analytics.evidence.confounder.followers':
     '在此期间，{account} 上的关注者计数已更改为 {percent}。',
-  'analytics.evidence.confounder.paid': 'Relay 无法判断这些帖子是否收到了付费分发。',
+  'analytics.evidence.confounder.paid': 'Post Array 无法判断这些帖子是否收到了付费分发。',
   'analytics.evidence.confounder.provider': '{provider} 更改了在此期间报告 {metric} 的方式。',
   'analytics.definition.open': '{metric} 是什么意思',
   'analytics.definition.inlineHeading': '定义',
@@ -101,7 +101,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': '事件计数',
   'analytics.unit.seconds': '秒数',
   'analytics.unit.percent': '提供商已计算的百分比',
-  'analytics.unit.ratio': 'Relay。根据两个提供商字段计算出的比率中继',
+  'analytics.unit.ratio': 'Post Array。根据两个提供商字段计算出的比率中继',
   'analytics.unit.currency_minor': '以小单位表示的金额',
   'analytics.denominator.none': '这是计数，而不是比率。它没有分母。',
   'analytics.denominator.impressions': '按展示次数划分',
@@ -118,7 +118,7 @@ export const webAnalyticsMessages = {
   'analytics.format.document': '文档',
   'analytics.format.thread': '线',
   'analytics.value.unavailableReason.notImplemented':
-    'Relay 尚未在 {provider} 上构建此指标的映射。',
+    'Post Array 尚未在 {provider} 上构建此指标的映射。',
   'analytics.value.estimated': '估计的',
   'analytics.value.estimatedMethod': '方法：{method}。',
   'analytics.freshness.title': '这些数字从何而来',
@@ -213,14 +213,14 @@ export const webAnalyticsMessages = {
     '分析需要分析师或更高级别的角色。此工作区的所有者或管理员可以授予它。',
   'analytics.state.rateLimitTitle': '{provider} 是限制分析请求的速率',
   'analytics.state.rateLimitCause':
-    '该帐户已使用该窗口的提供商配额份额。 Relay 不会更加努力地重试，因为这会延迟发布。',
+    '该帐户已使用该窗口的提供商配额份额。 Post Array 不会更加努力地重试，因为这会延迟发布。',
   'analytics.state.rateLimitAlternative': '缩小日期范围或帐户过滤器，这会减少对提供商的要求。',
   'analytics.state.rateLimitReset': '请求简历',
   'analytics.state.reference': '诊断参考',
   'analytics.links.new': '创建跟踪链接',
   'analytics.links.empty': '还没有跟踪链接',
   'analytics.links.emptyBody':
-    'Relay。跟踪链接是一个短 URL 中继重定向的链接，因此即使平台报告没有点击，您也可以看到点击。如果没有审核条目，原始目的地永远不会更改。',
+    'Post Array。跟踪链接是一个短 URL 中继重定向的链接，因此即使平台报告没有点击，您也可以看到点击。如果没有审核条目，原始目的地永远不会更改。',
   'analytics.links.emptyExample':
     '示例：relay.to/a7Kq2 通过营销活动 q3-launch 重定向到 acme.com/blog/launch。',
   'analytics.links.table.caption': '此工作区中跟踪的链接及其第一方点击计数。',
@@ -249,7 +249,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}，从 {start} 到 {end} 处于活动状态',
   'analytics.links.destinationHistoryCurrent': '{destination}，自 {start} 起处于活动状态',
   'analytics.links.domainLabel': '短域',
-  'analytics.links.domainDefault': 'Relay。中继默认域',
+  'analytics.links.domainDefault': 'Post Array。中继默认域',
   'analytics.links.domainVerified': '由 {date} 上的 DNS 验证',
   'analytics.links.domainPending': '等待 DNS 记录',
   'analytics.links.domainPendingHelp':
@@ -272,7 +272,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': '举报此链接',
   'analytics.links.measurementLabel': '第一方重定向测量',
   'analytics.links.measurementExplained':
-    'Relay。当重定向服务请求此 URL 时，中继会对请求进行计数。重复数据删除点击可在短窗口内删除来自同一访问者的重复请求，并且排除而不是删除与已知爬虫模式匹配的请求。',
+    'Post Array。当重定向服务请求此 URL 时，中继会对请求进行计数。重复数据删除点击可在短窗口内删除来自同一访问者的重复请求，并且排除而不是删除与已知爬虫模式匹配的请求。',
   'analytics.links.botsNote':
     '{count, plural, one {# request} other {# requests}} 被分类为自动，并且被排除在重复数据删除计数之外。',
   'analytics.links.series.title': '随着时间的推移，请求和重复数据删除点击次数',
@@ -295,7 +295,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     '该链接自创建以来尚未被请求。这是一个真正的零，由我们自己的重定向服务测量。',
   'analytics.links.compareWarning':
-    'Relay。{provider} 报告 {providerValue} 链接点击此帖子。中继记录了 {relayValue} 去重点击次数。两者计算的是不同的事件，并且两者都不能替代对方。',
+    'Post Array。{provider} 报告 {providerValue} 链接点击此帖子。中继记录了 {relayValue} 去重点击次数。两者计算的是不同的事件，并且两者都不能替代对方。',
   'analytics.links.errorTitle': '无法加载链接统计信息',
   'analytics.links.errorBody':
     '重定向服务仍在运行，因此该链接会继续将访问者发送到其目的地。仅报告受到影响。',
@@ -304,7 +304,7 @@ export const webAnalyticsMessages = {
     '必须是公共 https 地址。私有网络地址和重定向链被重定向服务拒绝。',
   'analytics.links.createCampaign': '活动名称',
   'analytics.links.createSlug': '自定义结局',
-  'analytics.links.createSlugHelp': '将其留空，Relay 会生成一个简短的随机结局。',
+  'analytics.links.createSlugHelp': '将其留空，Post Array 会生成一个简短的随机结局。',
   'analytics.links.createUtm': 'UTM参数',
   'analytics.links.blockedScheme': '仅接受 https 目的地。',
   'analytics.links.blockedPrivate': '该地址位于专用网络上，因此重定向服务不会接受它。',
@@ -426,7 +426,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# action is} other {# actions are}} 未列出，因为所选帐户无法执行它们。',
   'automation.picker.hiddenDetail': '{action} 不适用于 {provider}。 {reason}',
   'automation.picker.consequential': '在平台上创建一些东西',
-  'automation.picker.internalOnly': 'Relay。留在继电器内部',
+  'automation.picker.internalOnly': 'Post Array。留在继电器内部',
   'automation.accounts.label': '此规则可能作用的账户',
   'automation.accounts.help': '无论其条件如何，规则永远不会触及此处未列出的帐户。',
   'automation.accounts.none': '尚未选择帐户',
@@ -501,7 +501,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} 没有通过，所以规则到这里就停止了',
   'automation.test.actionSimulated': '{action} 将运行',
   'automation.test.actionSkipped': '{action} 将被跳过：{reason}',
-  'automation.test.noExternalEffect': '在这次测试中，Relay 没有留下任何东西。',
+  'automation.test.noExternalEffect': '在这次测试中，Post Array 没有留下任何东西。',
   'automation.test.failed': '测试无法完成：{reason}',
   'automation.runs.table.caption': '该规则的最近运行。',
   'automation.runs.startedAt': '开始',
@@ -550,7 +550,7 @@ export const webAnalyticsMessages = {
     '将提要转换为草稿或预定帖子，并与您自己编写的任何内容一样进行验证和批准。',
   'automation.rss.empty': '还没有动态',
   'automation.rss.emptyBody':
-    '添加提要并让 Relay 按计划检查它。每个新项目都会成为草稿、计划发布或批准请求，无论您选择哪一个。',
+    '添加提要并让 Post Array 按计划检查它。每个新项目都会成为草稿、计划发布或批准请求，无论您选择哪一个。',
   'automation.rss.emptyExample':
     '示例：每次发布文章时，Acme 博客提要都会为 X 和 LinkedIn 创建草稿，并等待审批者。',
   'automation.rss.table.caption': '提供此工作区民意调查。',
@@ -564,7 +564,7 @@ export const webAnalyticsMessages = {
   'automation.rss.step.template': '帖子说了什么',
   'automation.rss.step.policy': '如何发布',
   'automation.rss.stepOf': '{total} 的步骤 {current}',
-  'automation.rss.urlHelp': 'Relay 从我们的服务器而不是您的浏览器获取源。专用网络地址被拒绝。',
+  'automation.rss.urlHelp': 'Post Array 从我们的服务器而不是您的浏览器获取源。专用网络地址被拒绝。',
   'automation.rss.validateAction': '检查此提要',
   'automation.rss.validateFailed': '该地址没有返回可读的提要',
   'automation.rss.validateFailedReason': '我们得到了什么：{reason}',
@@ -575,7 +575,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewItemPublished': '已发布 {dateTime}',
   'automation.rss.previewNoImage': '该商品中没有图片',
   'automation.rss.previewImageAlt': '图片来自 feed 项目 {title}',
-  'automation.rss.previewNoDate': '该项目没有时间戳，因此 Relay 使用它第一次看到它的时间。',
+  'automation.rss.previewNoDate': '该项目没有时间戳，因此 Post Array 使用它第一次看到它的时间。',
   'automation.rss.previewFieldsTitle': '此 Feed 提供的字段',
   'automation.rss.previewFieldMissing': '不存在于该 Feed 中',
   'automation.rss.seenTitle': '什么算已经看过',
@@ -597,7 +597,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': '预览最新项目',
   'automation.rss.adaptWithAi': '针对每个目标调整文本',
   'automation.rss.adaptHelp':
-    '措辞会被重写以适应每个平台，并显示为您接受或拒绝的差异。媒体来自提要项目。 Relay 不生成图像。',
+    '措辞会被重写以适应每个平台，并显示为您接受或拒绝的差异。媒体来自提要项目。 Post Array 不生成图像。',
   'automation.rss.noImageGeneration': '如果提要项目没有图像，则该帖子将在没有图像的情况下消失。',
   'automation.rss.imageFromFeed': '当 Feed 项目有图像时，使用该图像',
   'automation.rss.policyHelp': '饲料项目并不特殊。它遵循与您自己撰写的帖子相同的批准政策。',
@@ -629,9 +629,9 @@ export const webAnalyticsMessages = {
   'automation.rss.pauseFeed': '暂停此供稿',
   'automation.rss.resumeFeed': '恢复此提要',
   'automation.rss.deleteTitle': '删除 {title}？',
-  'automation.rss.deleteBody': 'Relay。中继停止检查此馈送。它已经创建的草稿和帖子保持原样。',
+  'automation.rss.deleteBody': 'Post Array。中继停止检查此馈送。它已经创建的草稿和帖子保持原样。',
   'automation.rss.errorTitle': '无法读取此提要',
-  'automation.rss.errorBody': 'Relay 会持续检查正常的时间表。部分回应并未发表任何内容。',
+  'automation.rss.errorBody': 'Post Array 会持续检查正常的时间表。部分回应并未发表任何内容。',
   'automation.refuse.title': '不适用于任何规则',
   'automation.refuse.body':
     '自动点赞和关注、参与群组、主动回复和消息，以及从多个帐户发布相同内容以使其看起来很受欢迎，这些都不是这里的选择。平台禁止它们，并且它们会损害使用它们的帐户。',

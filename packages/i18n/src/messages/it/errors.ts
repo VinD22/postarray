@@ -11,7 +11,7 @@ export const errorMessages = {
   'error.internal.message': 'Questo è un problema da parte nostra, non con i tuoi contenuti.',
   'error.internal.action':
     'Il tuo lavoro è salvato. Siamo stati avvisati. Riprova tra qualche minuto.',
-  'error.not_implemented.message': "Relay non l'ha ancora creato.",
+  'error.not_implemented.message': "Post Array non l'ha ancora creato.",
   'error.not_implemented.action': 'Segui il registro delle modifiche per quando verrà spedito.',
   'error.offline.message': 'Sei offline.',
   'error.offline.action':
@@ -60,6 +60,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Aggiorna il metodo di pagamento nel portale Polar.',
   'error.trial_expired.message': 'La prova si è conclusa il {date}.',
   'error.trial_expired.action': "Inizia l'abbonamento per continuare a pubblicare.",
+  'error.post_credits_exhausted.message':
+    'Quest\'area di lavoro ha usato tutti i suoi post gratuiti. Tutto il resto continua a funzionare.',
+  'error.post_credits_exhausted.action':
+    'Scegli un piano per continuare a pubblicare. I tuoi account restano collegati e le tue bozze e programmazioni vengono conservate.',
   'error.entitlement_missing.message': "Quest'area di lavoro non ha accesso a tale funzionalità.",
   'error.entitlement_missing.action':
     "Controlla le impostazioni di fatturazione o contatta l'assistenza.",
@@ -102,7 +106,7 @@ export const errorMessages = {
     'I post vengono pubblicati in privato fino al superamento della revisione. Aggiorniamo questa pagina quando cambia.',
   'error.capability_unsupported.message': '{provider} non lo offre tramite la sua API ufficiale.',
   'error.capability_unsupported.action': 'Utilizza un formato supportato da questo account.',
-  'error.capability_not_implemented.message': 'Relay non lo ha ancora creato per {provider}.',
+  'error.capability_not_implemented.message': 'Post Array non lo ha ancora creato per {provider}.',
   'error.capability_not_implemented.action':
     'La pagina delle funzionalità elenca ciò che ogni connettore può fare oggi.',
   'error.capability_requires_review.message':

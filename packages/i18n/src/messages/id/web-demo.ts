@@ -3,7 +3,7 @@ export const webDemoMessages = {
   /* Metadata dan navigasi                                                   */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': 'Lihat cara kerja Relay',
+  'web.meta.demo.title': 'Lihat cara kerja Post Array',
   'web.meta.demo.description':
     'Tur berpandu alur kerja penerbitan, dari proyek baru sampai tanda terima, ditampilkan di antarmuka nyata dengan konten contoh. Belum ada yang terbit, dan turnya mengatakan di mana batas itu.',
 
@@ -27,6 +27,10 @@ export const webDemoMessages = {
   /* Demonstrasi hero di halaman beranda                                     */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Lihat demo',
+  'web.demo.hero.projectsLine':
+    'Satu akun menjalankan banyak bisnis. Setiap proyek adalah bisnis tersendiri, dengan akun terhubung, kalender, dan persetujuannya sendiri, dan Anda berpindah di antaranya dari satu menu, seperti berganti properti di konsol pencarian.',
+  'web.demo.hero.projectsChip': '{count, plural, other {# akun}}',
   'web.demo.hero.caption':
     'Satu draf menjadi versi per platform, mendapat waktu, dan mendarat di minggu itu. Konten contoh, bukan akun aktif.',
   'web.demo.hero.more': 'Jelajahi seluruh alur kerja',

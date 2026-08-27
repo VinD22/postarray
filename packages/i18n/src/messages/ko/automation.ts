@@ -88,7 +88,7 @@ export const automationMessages = {
   'automation.rules.versionHistory': '버전 기록',
   'automation.notPermitted.title': '이 규칙을 만들 수 없습니다.',
   'automation.notPermitted.body':
-    'Relay은 좋아요, 팔로우, 원치 않는 답글이나 메시지, 중복된 대량 게시 또는 브라우저 자동화에 의존하는 모든 것을 자동화하지 않습니다.{provider}그것을 금지하고 있으며 우리도 마찬가지입니다.',
+    'Post Array은 좋아요, 팔로우, 원치 않는 답글이나 메시지, 중복된 대량 게시 또는 브라우저 자동화에 의존하는 모든 것을 자동화하지 않습니다.{provider}그것을 금지하고 있으며 우리도 마찬가지입니다.',
   'automation.notPermitted.providerCapability':
     '{provider}제공하지 않습니다{action}공식 API를 통해 수행되므로 이 작업을 선택할 수 없습니다.',
   'automation.rss.title': 'RSS 자동 게시',
@@ -100,7 +100,7 @@ export const automationMessages = {
   'automation.rss.targets': '게시 대상',
   'automation.rss.template': '텍스트 템플릿',
   'automation.rss.templateHelp':
-    '매핑한 피드 필드를 사용하세요. Relay은 피드 항목에 대한 이미지를 생성하지 않습니다.',
+    '매핑한 피드 필드를 사용하세요. Post Array은 피드 항목에 대한 이미지를 생성하지 않습니다.',
   'automation.rss.policy.draft': '초안 만들기',
   'automation.rss.policy.approval': '초안 작성 및 승인 요청',
   'automation.rss.policy.nextSlot': '다음 무료 슬롯 예약',

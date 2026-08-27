@@ -25,7 +25,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'Compte de service {name}',
   'receipt.actor.oauthApp': '{app} agissant pour {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
 
   'receipt.timeline.title': 'Chronologie',
   'receipt.timeline.created': 'Brouillon créé par {actor}',

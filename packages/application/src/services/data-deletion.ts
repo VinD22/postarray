@@ -76,7 +76,7 @@ function completedAt(value: string): Date {
  * mutation comes back through this service, which applies the workspace RLS
  * context and makes retries idempotent. Remote provider revocation is kept
  * explicitly separate: until a verified connector exposes that operation we
- * revoke Relay's credential and show the connection as revoked without
+ * revoke Post Array's credential and show the connection as revoked without
  * claiming the provider accepted a revoke request.
  */
 export function createDataDeletionService(deps: ServiceDeps): DataDeletionService {

@@ -83,7 +83,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'डेवलपर ऐप्स',
   'developer.apps.subtitle':
-    'किसी अन्य उत्पाद को उपयोगकर्ता द्वारा दी गई अनुमतियों के साथ Relay के माध्यम से कार्य करने दें।',
+    'किसी अन्य उत्पाद को उपयोगकर्ता द्वारा दी गई अनुमतियों के साथ Post Array के माध्यम से कार्य करने दें।',
   'developer.apps.create': 'एक ऐप पंजीकृत करें',
   'developer.apps.name': 'ऐप का नाम',
   'developer.apps.type.label': 'ग्राहक प्रकार',

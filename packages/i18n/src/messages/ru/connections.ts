@@ -39,7 +39,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Предоставлено',
   'connection.permissions.missing': 'Не предоставлено',
   'connection.permissions.explainBeforeOAuth':
-    'Relay запросит эти разрешения у {provider}. Вы можете отключиться в любой момент.',
+    'Post Array запросит эти разрешения у {provider}. Вы можете отключиться в любой момент.',
   'connection.permissions.whyNeeded': 'Зачем это нужно',
 
   'connection.reconnect.title': 'Переподключить {account}',
@@ -93,11 +93,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Требуется проверка платформы',
   'capability.level.beta': 'Бета',
   'capability.level.unknown': 'Недоступно',
-  'capability.explain.supported': 'Relay может сделать это для этой учетной записи сегодня.',
+  'capability.explain.supported': 'Post Array может сделать это для этой учетной записи сегодня.',
   'capability.explain.unsupported':
     '{provider} не предлагает этого через свой официальный API, поэтому ни один инструмент не может сделать это безопасно.',
   'capability.explain.not_implemented':
-    '{provider} предлагает это, но Relay еще не создал его. Это указано в дорожной карте разъема.',
+    '{provider} предлагает это, но Post Array еще не создал его. Это указано в дорожной карте разъема.',
   'capability.explain.requires_review':
     '{provider} предоставляет это только после проверки приложения или учетной записи. Он останется недоступным до тех пор, пока не пройдет проверка.',
   'capability.explain.beta':

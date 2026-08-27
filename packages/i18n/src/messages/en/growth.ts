@@ -75,7 +75,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Review criteria',
   'growth.ugc.reuse': 'Reuse plan',
   'growth.ugc.boundary':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them or write testimonials.',
+    'This plans a campaign you run with real people. Post Array does not find creators, contact them or write testimonials.',
 
   'growth.opportunities.title': 'Promotion opportunities',
   'growth.opportunities.help':
@@ -97,7 +97,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'A match is a suggestion. It is not a promised link, a placement or a ranking.',
   'growth.opportunities.boundary':
-    'Relay does not submit forms, create accounts, email contacts, post into communities or buy links.',
+    'Post Array does not submit forms, create accounts, email contacts, post into communities or buy links.',
   'growth.opportunities.empty':
     'No verified opportunities match this profile yet. An empty list is better than an invented one.',
 
@@ -108,7 +108,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'Why it fits',
   'growth.tools.limitations': 'Limitations',
   'growth.tools.requiredSkills': 'Skills you need',
-  'growth.tools.handoff': 'How the output comes back into Relay',
+  'growth.tools.handoff': 'How the output comes back into Post Array',
   'growth.tools.rights': 'Rights and privacy notes',
   'growth.tools.priceChecked': 'Price last checked {date}',
   'growth.tools.affiliateDisclosure':

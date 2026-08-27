@@ -10,10 +10,10 @@
  * marketing page both read it, which is what stops the two from documenting
  * different configuration for the same client. `audience` is the only thing
  * that differs between them: the connect screen offers the clients a person
- * actually points at Relay, the marketing page shows everything.
+ * actually points at Post Array, the marketing page shows everything.
  */
 
-export const CREDENTIAL_ENV_VAR = 'RELAY_SERVICE_TOKEN';
+export const CREDENTIAL_ENV_VAR = 'POSTARRAY_SERVICE_TOKEN';
 
 export interface SetupClient {
   readonly id: string;
@@ -107,7 +107,7 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
       return [
         '{',
         '  "mcpServers": {',
-        '    "relay": {',
+        '    "postarray": {',
         '      "type": "http",',
         `      "url": "${mcpEndpoint}",`,
         '      "headers": {',
@@ -122,7 +122,7 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
       return [
         '{',
         '  "mcpServers": {',
-        '    "relay": {',
+        '    "postarray": {',
         '      "command": "npx",',
         '      "args": ["-y", "mcp-remote", "' + mcpEndpoint + '"],',
         '      "env": {',
@@ -137,7 +137,7 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
       return [
         '{',
         '  "mcpServers": {',
-        '    "relay": {',
+        '    "postarray": {',
         '      "url": "' + mcpEndpoint + '",',
         '      "headers": {',
         '        "Authorization": "Bearer ' + token + '"',
@@ -199,7 +199,7 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
     default:
       return [
         '{',
-        '  "name": "relay",',
+        '  "name": "postarray",',
         '  "transport": "streamable-http",',
         `  "url": "${mcpEndpoint}",`,
         '  "headers": {',

@@ -59,9 +59,9 @@ describe('locale review gate', () => {
     }
   });
 
-  it('names twenty promise locales that are all real and all switched on', () => {
-    expect(REVIEW_PROMISE_LOCALE_CODES).toHaveLength(20);
-    expect(new Set(REVIEW_PROMISE_LOCALE_CODES).size).toBe(20);
+  it('names twenty-five promise locales that are all real and all switched on', () => {
+    expect(REVIEW_PROMISE_LOCALE_CODES).toHaveLength(25);
+    expect(new Set(REVIEW_PROMISE_LOCALE_CODES).size).toBe(25);
     for (const code of REVIEW_PROMISE_LOCALE_CODES) {
       expect(ACTIVE_LOCALE_CODES, code).toContain(code);
     }
@@ -274,7 +274,7 @@ describe('review gate rules', () => {
 });
 
 /**
- * The honest state of the twenty, recorded as a test rather than as prose in
+ * The honest state of the twenty-five, recorded as a test rather than as prose in
  * a pull request, so the gap is visible every time the suite runs.
  *
  * It asserts the two facts that are true today and would have to change before

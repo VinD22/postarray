@@ -61,7 +61,7 @@ export const validationMessages = {
     'Una publicación repetida necesita una fecha de finalización o varias repeticiones.',
   'validation.schedule_in_past.message': 'Ese tiempo ha pasado {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Esto está más adelantado que el {limit}Mire hacia adelante establecido para esta credencial.',
+    'Las publicaciones se pueden programar con hasta {limit} de anticipación, que es también el tiempo que se conservan los archivos subidos.',
   'validation.schedule_outside_quiet_hours.message':
     'Esto cae dentro de las horas de silencio establecidas para {project}.',
   'validation.duplicate_within_window.message':

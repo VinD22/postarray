@@ -26,7 +26,7 @@ export const beginOAuthSchema = z
 
 /**
  * The provider callback. `code` and `state` arrive in the query string because
- * that is what the authorization code flow specifies. Neither is a Relay
+ * that is what the authorization code flow specifies. Neither is a Post Array
  * credential, and neither is trusted until `state` matches both the stored
  * transaction and the cookie set on this browser.
  */

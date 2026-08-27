@@ -55,7 +55,7 @@ export const validationMessages = {
   'validation.repeat_end_required.message': 'โพสต์ที่ซ้ำต้องมีวันที่สิ้นสุดหรือจำนวนการโพสต์ซ้ำ',
   'validation.schedule_in_past.message': 'เวลานั้นผ่านไปแล้วใน {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'สิ่งนี้อยู่ข้างหน้ามากกว่า {limit} look ข้างหน้าที่ตั้งไว้สำหรับข้อมูลรับรองนี้',
+    'สามารถตั้งเวลาโพสต์ล่วงหน้าได้สูงสุด {limit} ซึ่งเป็นระยะเวลาเดียวกับที่เก็บไฟล์สื่อที่อัปโหลด',
   'validation.schedule_outside_quiet_hours.message':
     'ซึ่งอยู่ภายในชั่วโมงเงียบที่กำหนดไว้สำหรับ {project}',
   'validation.duplicate_within_window.message':

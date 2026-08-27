@@ -88,7 +88,7 @@ export const growthMessages = withHebrewPluralForms({
   'growth.opportunities.dismissReason': 'למה אתה מבטל את זה?',
   'growth.opportunities.noGuarantee': 'התאמה היא הצעה. זה לא קישור מובטח, מיקום או דירוג.',
   'growth.opportunities.boundary':
-    'Relay אינו שולח טפסים, יוצר חשבונות, דוא"ל לאנשי קשר, מפרסם בקהילות או קונה קישורים.',
+    'Post Array אינו שולח טפסים, יוצר חשבונות, דוא"ל לאנשי קשר, מפרסם בקהילות או קונה קישורים.',
   'growth.opportunities.empty':
     'אין הזדמנויות מאומתות עדיין תואמות לפרופיל זה. רשימה ריקה עדיפה על רשימה מומצאת.',
   'growth.tools.title': 'מכ"ם כלי עבודה',

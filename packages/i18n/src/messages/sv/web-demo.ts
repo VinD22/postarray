@@ -23,7 +23,7 @@ export const webDemoMessages = {
   /* Metadata and navigation                                                 */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': 'Se hur Relay fungerar',
+  'web.meta.demo.title': 'Se hur Post Array fungerar',
   'web.meta.demo.description':
     'En guidad rundtur genom publiceringsarbetsflödet, från ett nytt projekt till kvittot, visad i det verkliga gränssnittet med exempelinnehåll. Inget publiceras än, och rundturen visar var den gränsen går.',
 
@@ -47,6 +47,10 @@ export const webDemoMessages = {
   /* The home page hero demonstration                                        */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Se demon',
+  'web.demo.hero.projectsLine':
+    'Ett konto driver flera verksamheter. Varje projekt är en egen verksamhet med egna anslutna konton, egen kalender och egna godkännanden, och du växlar mellan dem i en enda meny, som man byter egendom i en sökkonsol.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# konto} other {# konton}}',
   'web.demo.hero.caption':
     'Ett utkast blir en version per plattform, får en tid och landar på veckan. Exempelinnehåll, inte ett riktigt konto.',
   'web.demo.hero.more': 'Gå igenom hela arbetsflödet',

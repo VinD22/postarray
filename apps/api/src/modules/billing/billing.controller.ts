@@ -40,8 +40,8 @@ const WEBHOOK_DEDUPE_TTL_SECONDS = 7 * 24 * 60 * 60;
 /**
  * Billing: entitlement state, usage, hosted checkout and the customer portal.
  *
- * Relay never sees a card number. Polar is the merchant of record and hosts the
- * checkout, so there is no card data in any Relay database, log or backup, and
+ * Post Array never sees a card number. Polar is the merchant of record and hosts the
+ * checkout, so there is no card data in any Post Array database, log or backup, and
  * that is a property of the architecture rather than of a policy document.
  */
 @Controller('v1/billing')

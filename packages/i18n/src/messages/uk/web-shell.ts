@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page}· Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page}· Post Array',
   'shell.tagline': 'Видавничий стіл для людей і агентів.',
   'shell.menu.open': 'Відкрийте меню',
   'shell.menu.title': 'Меню',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Демо дані',
   'shell.demo.title': 'Ви переглядаєте демонстраційні дані',
   'shell.demo.body':
-    'Relay API недоступний із цього браузера, тому екрани заповнені робочою областю із заповненим прикладом. Тут нічого не пов’язано з реальним обліковим записом і нічого не можна публікувати.',
+    'Post Array API недоступний із цього браузера, тому екрани заповнені робочою областю із заповненим прикладом. Тут нічого не пов’язано з реальним обліковим записом і нічого не можна публікувати.',
   'shell.demo.howToConnect':
     'Установіть NEXT_PUBLIC_RELAY_API_URL і перезапустіть програму, щоб використовувати живі дані.',
 
@@ -144,7 +144,7 @@ export const webShellMessages = {
     'суд, {days, plural, =0 {закінчується сьогодні} one {# залишився день} few {# залишилося днів} many {# залишилося днів} other {# залишилося днів}}. Навертає {date} до {amount}.',
   'home.trial.manage': 'Керувати або скасувати',
   'home.error.title': 'Не вдалося завантажити домашню сторінку',
-  'home.error.body': 'Ваше робоче місце неушкоджене. Це проблема з доступом до Relay API.',
+  'home.error.body': 'Ваше робоче місце неушкоджене. Це проблема з доступом до Post Array API.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': 'Опублікуйте через офіційні API і подивіться, що саме сталося.',
@@ -156,9 +156,9 @@ export const webShellMessages = {
     'Той самий робочий процес із веб-програми, REST API, MCP, CLI і веб-хуків.',
   'auth.provider.title': 'Перш ніж продовжити',
   'auth.provider.google.access':
-    'Google надає ваше ім’я, адресу електронної пошти та зображення профілю компанії Relay. Relay не може читати вашу пошту Gmail, Диск або Календар.',
+    'Google надає ваше ім’я, адресу електронної пошти та зображення профілю компанії Post Array. Post Array не може читати вашу пошту Gmail, Диск або Календар.',
   'auth.provider.facebook.access':
-    'Facebook надає ваше ім’я, адресу електронної пошти та зображення профілю компанії Relay. Підключення сторінки для публікації є окремим кроком, який ви підтверджуєте пізніше.',
+    'Facebook надає ваше ім’я, адресу електронної пошти та зображення профілю компанії Post Array. Підключення сторінки для публікації є окремим кроком, який ви підтверджуєте пізніше.',
   'auth.provider.note': 'Ви ввійдете в систему. Це не пов’язує обліковий запис для публікації.',
   'auth.continueWithEmail': 'Продовжте з електронною поштою',
   'auth.method.password': 'Пароль',
@@ -179,9 +179,7 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak': 'Для вашої безпеки ми не повідомляємо, чи зареєстрована адреса.',
   'auth.failure.provider': 'Знак в с {provider} не завершили. Нічого не змінилося.',
   'auth.failure.network':
-    'Нам не вдалося зв’язатися з Relay. Перевірте підключення та повторіть спробу.',
-  'auth.signUp.trialNote':
-    'Сім повних днів випробування. Потрібно вказати спосіб оплати. 0 доларів США до сплати сьогодні',
+    'Нам не вдалося зв’язатися з Post Array. Перевірте підключення та повторіть спробу.',
   'auth.signUp.emailInUseNote':
     'Якщо на цю адресу вже є обліковий запис, ми надішлемо електронною поштою посилання для входу замість створення другого.',
   'auth.legal.readTerms': 'Прочитайте Умови',
@@ -214,7 +212,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Виявлено з цього пристрою:{timeZone}',
   'onboarding.connect.permissionsTitle': 'Що {provider} запитувати',
   'onboarding.connect.permissionsFooter':
-    'Relay ніколи не запитує дозвіл, який він не використовує, і ви можете будь-коли відключитися.',
+    'Post Array ніколи не запитує дозвіл, який він не використовує, і ви можете будь-коли відключитися.',
   'onboarding.connect.chooseProvider': 'Виберіть платформу',
   'onboarding.connect.opensProvider': 'Відкривається продовження {provider} на цій вкладці.',
   'onboarding.compose.help':

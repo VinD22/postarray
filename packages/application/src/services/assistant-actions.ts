@@ -14,7 +14,7 @@ import type { AssistantDelegates } from './assistant-types';
  *
  * The shape is two calls. The first names the subject, creates the durable
  * confirmation row and writes nothing at all. A person then approves it in
- * Relay, on the `/confirm/:id` screen. The second call carries the confirmation
+ * Post Array, on the `/confirm/:id` screen. The second call carries the confirmation
  * id, `consume` re-fingerprints the content and refuses if anything changed,
  * and only after that does the existing application service get called.
  *

@@ -9,7 +9,7 @@
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
   'shell.appName': 'ZZZप्रोटेक्टेड12ZZZ',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'लोगों और एजेंटों के लिए एक प्रकाशन डेस्क।',
   'shell.menu.open': 'मेनू खोलें',
   'shell.menu.title': 'मेनू',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'डेमो डेटा',
   'shell.demo.title': 'आप डेमो डेटा देख रहे हैं',
   'shell.demo.body':
-    'Relay API इस ब्राउज़र से उपलब्ध नहीं है, इसलिए स्क्रीन एक सीडेड उदाहरण कार्यक्षेत्र से भरी हुई हैं। यहां कुछ भी वास्तविक खाते से जुड़ा नहीं है और कुछ भी प्रकाशित नहीं किया जा सकता है।',
+    'Post Array API इस ब्राउज़र से उपलब्ध नहीं है, इसलिए स्क्रीन एक सीडेड उदाहरण कार्यक्षेत्र से भरी हुई हैं। यहां कुछ भी वास्तविक खाते से जुड़ा नहीं है और कुछ भी प्रकाशित नहीं किया जा सकता है।',
   'shell.demo.howToConnect':
     'NEXT_PUBLIC_RELAY_API_URL सेट करें और लाइव डेटा का उपयोग करने के लिए ऐप को पुनरारंभ करें।',
 
@@ -143,7 +143,7 @@ export const webShellMessages = {
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'प्रबंधित करें या रद्द करें',
   'home.error.title': 'होम लोड नहीं हो सका',
-  'home.error.body': 'आपका कार्यक्षेत्र बरकरार है. यह Relay API तक पहुंचने में एक समस्या है।',
+  'home.error.body': 'आपका कार्यक्षेत्र बरकरार है. यह Post Array API तक पहुंचने में एक समस्या है।',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': 'आधिकारिक APIs के माध्यम से प्रकाशित करें और देखें कि वास्तव में क्या हुआ।',
@@ -154,9 +154,9 @@ export const webShellMessages = {
   'auth.aside.point.surfaces': 'वेब ऐप, REST API, MCP, CLI और वेबहुक से समान वर्कफ़्लो।',
   'auth.provider.title': 'इससे पहले कि आप जारी रखें',
   'auth.provider.google.access':
-    'Google आपका नाम, ईमेल पता और प्रोफ़ाइल चित्र Relay के साथ साझा करता है। Relay आपका जीमेल, ड्राइव या कैलेंडर नहीं पढ़ सकता।',
+    'Google आपका नाम, ईमेल पता और प्रोफ़ाइल चित्र Post Array के साथ साझा करता है। Post Array आपका जीमेल, ड्राइव या कैलेंडर नहीं पढ़ सकता।',
   'auth.provider.facebook.access':
-    'फेसबुक आपका नाम, ईमेल पता और प्रोफ़ाइल चित्र Relay के साथ साझा करता है। प्रकाशित करने के लिए किसी पेज को कनेक्ट करना एक अलग कदम है जिसे आप बाद में स्वीकार करेंगे।',
+    'फेसबुक आपका नाम, ईमेल पता और प्रोफ़ाइल चित्र Post Array के साथ साझा करता है। प्रकाशित करने के लिए किसी पेज को कनेक्ट करना एक अलग कदम है जिसे आप बाद में स्वीकार करेंगे।',
   'auth.provider.note':
     'यह आपको साइन इन करता है। यह प्रकाशित करने के लिए किसी खाते से कनेक्ट नहीं होता है।',
   'auth.continueWithEmail': 'ईमेल जारी रखें',
@@ -178,8 +178,7 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak':
     'आपकी सुरक्षा के लिए हम यह नहीं कहते कि कोई पता पंजीकृत है या नहीं।',
   'auth.failure.provider': 'The sign in with {provider} did not complete. Nothing was changed.',
-  'auth.failure.network': 'हम Relay तक नहीं पहुंच सके। अपना कनेक्शन जांचें और पुनः प्रयास करें।',
-  'auth.signUp.trialNote': 'सात पूर्ण परीक्षण दिवस। एक भुगतान विधि आवश्यक है. $0 आज देय है.',
+  'auth.failure.network': 'हम Post Array तक नहीं पहुंच सके। अपना कनेक्शन जांचें और पुनः प्रयास करें।',
   'auth.signUp.emailInUseNote':
     'यदि इस पते पर पहले से ही एक खाता है, तो हम दूसरा खाता बनाने के बजाय एक साइन इन लिंक ईमेल करते हैं।',
   'auth.legal.readTerms': 'शर्तें पढ़ें',
@@ -212,7 +211,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Detected from this device: {timeZone}',
   'onboarding.connect.permissionsTitle': 'What {provider} will be asked for',
   'onboarding.connect.permissionsFooter':
-    'Relay कभी भी ऐसी अनुमति नहीं मांगता है जिसका वह उपयोग नहीं करता है, और आप किसी भी समय डिस्कनेक्ट कर सकते हैं।',
+    'Post Array कभी भी ऐसी अनुमति नहीं मांगता है जिसका वह उपयोग नहीं करता है, और आप किसी भी समय डिस्कनेक्ट कर सकते हैं।',
   'onboarding.connect.chooseProvider': 'एक मंच चुनें',
   'onboarding.connect.opensProvider': 'Continuing opens {provider} in this tab.',
   'onboarding.compose.help':

@@ -59,7 +59,7 @@ type UnavailableActivity = (input: unknown) => Promise<never>;
 /**
  * Build an explicit, complete activity surface for a prelaunch deployment.
  *
- * Relay does not enable a connector until its definition of done is satisfied.
+ * Post Array does not enable a connector until its definition of done is satisfied.
  * While no connector is verified, accepting a workflow and fabricating a
  * successful side effect would be worse than rejecting it. Each activity
  * therefore fails through the shared error taxonomy and Temporal records an

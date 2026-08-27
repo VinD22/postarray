@@ -22,7 +22,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': '服务帐户 {name}',
   'receipt.actor.oauthApp': '{app} 代表 {name}',
-  'receipt.actor.system': 'Relay。中继',
+  'receipt.actor.system': 'Post Array。中继',
   'receipt.timeline.title': '时间轴',
   'receipt.timeline.created': '由 {actor} 创建的草稿',
   'receipt.timeline.approvalRequested': '请求 {approver} 批准',

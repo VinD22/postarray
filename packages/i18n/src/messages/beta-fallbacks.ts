@@ -265,7 +265,7 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // A9: the non-generative media editor. Every sentence in these two
   // namespaces makes a capability claim: that an edit never replaces the
   // original, that this product does not enlarge a picture because the extra
-  // pixels would be invented, and that Relay generates no imagery at all. A
+  // pixels would be invented, and that Post Array generates no imagery at all. A
   // machine translation that softened any of those would be a false claim in
   // that language. Beta locales keep the reviewed English source until a person
   // translates them.
@@ -378,6 +378,40 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'mediaLib.editor.unavailable.body',
   'web.agencies.job.roles.body',
   'web.agencies.limits.body',
+  // The trial was replaced by the free plan (a small grant of published
+  // posts, no card, no countdown). Every sentence that promised a seven day
+  // trial was rewritten in English and its stale translations removed, so
+  // beta locales fall back to the reviewed English story rather than keep
+  // promising a trial that no longer exists.
+  'web.cta.trialFootnote',
+  'web.home.summaryLine',
+  'web.home.v2.sticker.trial',
+  'web.legal.refunds.cancel.body',
+  'web.legal.subprocessors.email.purpose',
+  'web.marketing.v2.closing.body',
+  'web.meta.pricing.description',
+  'web.pricing.beside.cancel',
+  'web.pricing.beside.conversion',
+  'web.pricing.beside.trial',
+  'web.pricing.faq.trialAbuse.a',
+  'web.pricing.faq.trialAbuse.q',
+  'web.pricing.lede',
+  'web.pricing.plan.trialNote',
+  'web.pricing.v2.closing.body',
+  'auth.signUp.subtitle',
+  'auth.signUp.trialNote',
+  'billing.ui.noSubscriptionBody',
+  'error.post_credits_exhausted.message',
+  'error.post_credits_exhausted.action',
+  'billing.credits.label',
+  'billing.credits.remaining',
+  'billing.credits.lastFreePost',
+  'billing.credits.exhausted.title',
+  'billing.credits.exhausted.body',
+  'billing.credits.included',
+  'billing.credits.noCard',
+  'billing.credits.earn',
+  'billing.credits.granted',
   // Public launch-truth copy. Beta locales must not retain older claims about
   // media editing, service accounts or workspace-wide controls.
   'web.home.example.instagram.variant',

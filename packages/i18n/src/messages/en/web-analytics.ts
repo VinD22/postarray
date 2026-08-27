@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'Rank posts by',
   'analytics.rankMetric.help':
-    'There is no combined score in Relay. Choose one metric whose definition you trust and the table is ordered by that metric alone.',
+    'There is no combined score in Post Array. Choose one metric whose definition you trust and the table is ordered by that metric alone.',
   'analytics.rankMetric.chosen': 'Ranked by {metric}, as reported by each account provider.',
 
   /* ----------------------------------------------------------------------
@@ -105,7 +105,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'The follower count on {account} changed by {percent} during this period.',
   'analytics.evidence.confounder.paid':
-    'Relay cannot tell whether any of these posts received paid distribution.',
+    'Post Array cannot tell whether any of these posts received paid distribution.',
   'analytics.evidence.confounder.provider':
     '{provider} changed how it reports {metric} inside this period.',
 
@@ -143,7 +143,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'A count of events',
   'analytics.unit.seconds': 'Seconds',
   'analytics.unit.percent': 'A percentage the provider already calculated',
-  'analytics.unit.ratio': 'A ratio Relay calculated from two provider fields',
+  'analytics.unit.ratio': 'A ratio Post Array calculated from two provider fields',
   'analytics.unit.currency_minor': 'An amount of money in minor units',
 
   'analytics.denominator.none': 'This is a count, not a rate. It has no denominator.',
@@ -163,7 +163,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'Thread',
 
   'analytics.value.unavailableReason.notImplemented':
-    'Relay has not built the mapping for this metric on {provider} yet.',
+    'Post Array has not built the mapping for this metric on {provider} yet.',
   'analytics.value.estimated': 'Estimated',
   'analytics.value.estimatedMethod': 'Method: {method}.',
 
@@ -291,7 +291,7 @@ export const webAnalyticsMessages = {
     'Analytics need the analyst role or higher. An owner or admin of this workspace can grant it.',
   'analytics.state.rateLimitTitle': '{provider} is rate limiting analytics requests',
   'analytics.state.rateLimitCause':
-    'The account has used its share of the provider quota for this window. Relay does not retry harder, because that would delay publishing.',
+    'The account has used its share of the provider quota for this window. Post Array does not retry harder, because that would delay publishing.',
   'analytics.state.rateLimitAlternative':
     'Narrow the date range or the account filter, which asks the provider for less.',
   'analytics.state.rateLimitReset': 'Requests resume',
@@ -303,7 +303,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Create a tracked link',
   'analytics.links.empty': 'No tracked links yet',
   'analytics.links.emptyBody':
-    'A tracked link is a short URL Relay redirects through, so you can see clicks even when a platform reports none. The original destination is never changed without an audit entry.',
+    'A tracked link is a short URL Post Array redirects through, so you can see clicks even when a platform reports none. The original destination is never changed without an audit entry.',
   'analytics.links.emptyExample':
     'Example: relay.to/a7Kq2 redirects to acme.com/blog/launch with campaign q3-launch.',
   'analytics.links.table.caption':
@@ -334,7 +334,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, active from {start} to {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, active since {start}',
   'analytics.links.domainLabel': 'Short domain',
-  'analytics.links.domainDefault': 'Relay default domain',
+  'analytics.links.domainDefault': 'Post Array default domain',
   'analytics.links.domainVerified': 'Verified by DNS on {date}',
   'analytics.links.domainPending': 'Waiting for the DNS record',
   'analytics.links.domainPendingHelp':
@@ -357,7 +357,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Report this link',
   'analytics.links.measurementLabel': 'First party redirect measurement',
   'analytics.links.measurementExplained':
-    'Relay counts a request when the redirect service is asked for this URL. A deduplicated click removes repeat requests from the same visitor inside a short window, and requests matching known crawler patterns are excluded rather than deleted.',
+    'Post Array counts a request when the redirect service is asked for this URL. A deduplicated click removes repeat requests from the same visitor inside a short window, and requests matching known crawler patterns are excluded rather than deleted.',
   'analytics.links.botsNote':
     '{count, plural, one {# request} other {# requests}} were classified as automated and are excluded from the deduplicated count.',
   'analytics.links.series.title': 'Requests over time',
@@ -380,7 +380,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'This link has not been requested since it was created. That is a real zero, measured by our own redirect service.',
   'analytics.links.compareWarning':
-    '{provider} reports {providerValue} link clicks for this post. Relay recorded {relayValue} deduplicated clicks. The two count different events and neither replaces the other.',
+    '{provider} reports {providerValue} link clicks for this post. Post Array recorded {relayValue} deduplicated clicks. The two count different events and neither replaces the other.',
   'analytics.links.errorTitle': 'Link statistics could not be loaded',
   'analytics.links.errorBody':
     'The redirect service is still working, so the link keeps sending visitors to its destination. Only the reporting is affected.',
@@ -389,7 +389,7 @@ export const webAnalyticsMessages = {
     'Must be a public https address. Private network addresses and redirect chains are rejected by the redirect service.',
   'analytics.links.createCampaign': 'Campaign name',
   'analytics.links.createSlug': 'Custom ending',
-  'analytics.links.createSlugHelp': 'Leave this empty and Relay generates a short random ending.',
+  'analytics.links.createSlugHelp': 'Leave this empty and Post Array generates a short random ending.',
   'analytics.links.createUtm': 'UTM parameters',
   'analytics.links.blockedScheme': 'Only https destinations are accepted.',
   'analytics.links.blockedPrivate':
@@ -535,7 +535,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# action is} other {# actions are}} not listed because the selected accounts cannot perform them.',
   'automation.picker.hiddenDetail': '{action} is not available for {provider}. {reason}',
   'automation.picker.consequential': 'Creates something on a platform',
-  'automation.picker.internalOnly': 'Stays inside Relay',
+  'automation.picker.internalOnly': 'Stays inside Post Array',
 
   'automation.accounts.label': 'Accounts this rule may act on',
   'automation.accounts.help':
@@ -636,7 +636,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} did not pass, so the rule stopped here',
   'automation.test.actionSimulated': '{action} would run',
   'automation.test.actionSkipped': '{action} would be skipped: {reason}',
-  'automation.test.noExternalEffect': 'Nothing left Relay during this test.',
+  'automation.test.noExternalEffect': 'Nothing left Post Array during this test.',
   'automation.test.failed': 'The test could not complete: {reason}',
 
   'automation.runs.table.caption': 'Recent runs of this rule.',
@@ -698,7 +698,7 @@ export const webAnalyticsMessages = {
     'Turn a feed into drafts or scheduled posts, with the same validation and approval as anything you write yourself.',
   'automation.rss.empty': 'No feeds yet',
   'automation.rss.emptyBody':
-    'Add a feed and Relay checks it on a schedule. Each new item becomes a draft, a scheduled post or an approval request, whichever you choose.',
+    'Add a feed and Post Array checks it on a schedule. Each new item becomes a draft, a scheduled post or an approval request, whichever you choose.',
   'automation.rss.emptyExample':
     'Example: the Acme blog feed creates a draft for X and LinkedIn each time an article is published, and waits for an approver.',
   'automation.rss.table.caption': 'Feeds this workspace polls.',
@@ -715,7 +715,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Step {current} of {total}',
 
   'automation.rss.urlHelp':
-    'Relay fetches the feed from our servers, not from your browser. Private network addresses are refused.',
+    'Post Array fetches the feed from our servers, not from your browser. Private network addresses are refused.',
   'automation.rss.validateAction': 'Check this feed',
   'automation.rss.validateFailed': 'That address did not return a readable feed',
   'automation.rss.validateFailedReason': 'What we got back: {reason}',
@@ -728,7 +728,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'No image in this item',
   'automation.rss.previewImageAlt': 'Image from the feed item {title}',
   'automation.rss.previewNoDate':
-    'This item has no timestamp, so Relay uses the time it first saw it.',
+    'This item has no timestamp, so Post Array uses the time it first saw it.',
   'automation.rss.previewFieldsTitle': 'Fields this feed provides',
   'automation.rss.previewFieldMissing': 'Not present in this feed',
 
@@ -755,7 +755,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'Preview with the newest item',
   'automation.rss.adaptWithAi': 'Adapt the text for each target',
   'automation.rss.adaptHelp':
-    'The wording is rewritten to fit each platform and shown as a diff you accept or reject. Media comes from the feed item. Relay does not generate images.',
+    'The wording is rewritten to fit each platform and shown as a diff you accept or reject. Media comes from the feed item. Post Array does not generate images.',
   'automation.rss.noImageGeneration': 'If a feed item has no image, the post goes out without one.',
   'automation.rss.imageFromFeed': 'Use the image from the feed item when it has one',
 
@@ -791,13 +791,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Resume this feed',
   'automation.rss.deleteTitle': 'Remove {title}?',
   'automation.rss.deleteBody':
-    'Relay stops checking this feed. Drafts and posts it already created stay exactly as they are.',
+    'Post Array stops checking this feed. Drafts and posts it already created stay exactly as they are.',
   'automation.rss.errorTitle': 'This feed could not be read',
   'automation.rss.errorBody':
-    'Relay keeps checking on the normal schedule. Nothing was published from a partial response.',
+    'Post Array keeps checking on the normal schedule. Nothing was published from a partial response.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Not available in any rule',
   'automation.refuse.body':

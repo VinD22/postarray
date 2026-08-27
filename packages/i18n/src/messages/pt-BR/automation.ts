@@ -97,7 +97,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Esta regra não pode ser criada',
   'automation.notPermitted.body':
-    'Relay não automatiza curtidas, seguidores, respostas ou mensagens não solicitadas, publicações duplicadas em massa ou qualquer coisa que dependa da automação do navegador. {provider} proíbe e nós também.',
+    'Post Array não automatiza curtidas, seguidores, respostas ou mensagens não solicitadas, publicações duplicadas em massa ou qualquer coisa que dependa da automação do navegador. {provider} proíbe e nós também.',
   'automation.notPermitted.providerCapability':
     '{provider} não oferece {action} através de sua API oficial, portanto esta ação não é selecionável para ele.',
 
@@ -110,7 +110,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Publicar em',
   'automation.rss.template': 'Modelo de texto',
   'automation.rss.templateHelp':
-    'Use os campos de feed que você mapeou. Relay não gera imagens para itens de feed.',
+    'Use os campos de feed que você mapeou. Post Array não gera imagens para itens de feed.',
   'automation.rss.policy.draft': 'Criar um rascunho',
   'automation.rss.policy.approval': 'Crie um rascunho e solicite aprovação',
   'automation.rss.policy.nextSlot': 'Agende na próxima vaga grátis',

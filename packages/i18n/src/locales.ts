@@ -1,5 +1,5 @@
 /**
- * The registry of every locale Relay plans to ship.
+ * The registry of every locale Post Array plans to ship.
  *
  * `status` says whether a locale is switched on in the product. A `planned`
  * entry still carries real metadata, which already drives layout direction,
@@ -102,7 +102,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'retired',
+    status: 'active',
   },
   {
     bcp47: 'pt-BR',
@@ -198,7 +198,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd. M. y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'retired',
+    status: 'active',
   },
   {
     bcp47: 'sv',
@@ -210,7 +210,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'retired',
+    status: 'active',
   },
   {
     bcp47: 'nb',
@@ -402,7 +402,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'MMM d, y',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'retired',
+    status: 'active',
   },
   {
     bcp47: 'zh-Hans',
@@ -426,7 +426,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'y/M/d',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'retired',
+    status: 'active',
   },
   {
     bcp47: 'ja',
@@ -484,24 +484,29 @@ export type LocaleCode = (typeof LOCALE_LIST)[number]['bcp47'];
 export const PUBLIC_LOCALE_CODES = [
   'en',
   'es',
+  'es-419',
   'pt-BR',
   'fr',
   'de',
   'it',
   'nl',
   'pl',
+  'cs',
+  'sv',
   'tr',
-  'id',
-  'ar',
-  'hi',
-  'ja',
-  'ko',
-  'zh-Hans',
   'ru',
   'uk',
+  'ar',
   'he',
+  'hi',
+  'id',
   'vi',
   'th',
+  'fil',
+  'zh-Hans',
+  'zh-Hant',
+  'ja',
+  'ko',
 ] as const;
 
 export type PublicLocaleCode = (typeof PUBLIC_LOCALE_CODES)[number];
@@ -529,7 +534,7 @@ export const PLANNED_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST.filter(
  * longer offered as interface locales. Hosts should redirect their old URLs
  * to the default locale and resolve saved preferences to English. */
 export const RETIRED_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST.filter(
-  (locale) => locale.status === 'retired',
+  (locale) => (locale.status as LocaleStatus) === 'retired',
 );
 
 /**

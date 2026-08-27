@@ -106,7 +106,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Počet sledujících na {account} změněno uživatelem {percent} během tohoto období.',
   'analytics.evidence.confounder.paid':
-    'Relay nedokáže zjistit, zda některý z těchto příspěvků obdržel placenou distribuci.',
+    'Post Array nedokáže zjistit, zda některý z těchto příspěvků obdržel placenou distribuci.',
   'analytics.evidence.confounder.provider':
     '{provider} změnil způsob hlášení {metric} v tomto období.',
 
@@ -288,7 +288,7 @@ export const webAnalyticsMessages = {
     'Analytics potřebuje roli analytika nebo vyšší. Vlastník nebo správce tohoto pracovního prostoru to může udělit.',
   'analytics.state.rateLimitTitle': '{provider} je rychlost omezující analytické požadavky',
   'analytics.state.rateLimitCause':
-    'Účet využil svůj podíl kvóty poskytovatele pro toto okno. Relay se nesnaží opakovat, protože by to zdrželo publikování.',
+    'Účet využil svůj podíl kvóty poskytovatele pro toto okno. Post Array se nesnaží opakovat, protože by to zdrželo publikování.',
   'analytics.state.rateLimitAlternative':
     'Upřesněte časové období nebo filtr účtu, který od poskytovatele požaduje méně.',
   'analytics.state.rateLimitReset': 'Požaduje životopis',
@@ -716,7 +716,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Krok {current} z {total}',
 
   'automation.rss.urlHelp':
-    'Relay načítá zdroj z našich serverů, nikoli z vašeho prohlížeče. Adresy privátních sítí jsou odmítnuty.',
+    'Post Array načítá zdroj z našich serverů, nikoli z vašeho prohlížeče. Adresy privátních sítí jsou odmítnuty.',
   'automation.rss.validateAction': 'Zkontrolujte tento zdroj',
   'automation.rss.validateFailed': 'Tato adresa nevrátila čitelný zdroj',
   'automation.rss.validateFailedReason': 'Co jsme dostali zpět: {reason}',
@@ -728,7 +728,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'V této položce není žádný obrázek',
   'automation.rss.previewImageAlt': 'Obrázek z položky zdroje {title}',
   'automation.rss.previewNoDate':
-    'Tato položka nemá žádné časové razítko, takže Relay použije čas, kdy ji poprvé viděl.',
+    'Tato položka nemá žádné časové razítko, takže Post Array použije čas, kdy ji poprvé viděl.',
   'automation.rss.previewFieldsTitle': 'Pole, která tento zdroj poskytuje',
   'automation.rss.previewFieldMissing': 'V tomto zdroji není přítomno',
 
@@ -800,7 +800,7 @@ export const webAnalyticsMessages = {
     'Relé pokračuje v kontrole podle normálního plánu. Z částečné odpovědi nebylo nic zveřejněno.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Není k dispozici v žádném pravidle',
   'automation.refuse.body':

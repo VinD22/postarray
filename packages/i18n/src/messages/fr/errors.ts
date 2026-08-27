@@ -12,7 +12,7 @@ export const errorMessages = {
   'error.internal.message': "Il s'agit d'un problème de notre côté, et non de votre contenu.",
   'error.internal.action':
     'Votre travail est enregistré. Nous avons été alertés. Réessayez dans quelques minutes.',
-  'error.not_implemented.message': "Relay ne l'a pas encore construit.",
+  'error.not_implemented.message': "Post Array ne l'a pas encore construit.",
   'error.not_implemented.action':
     'Suivez le journal des modifications pour savoir quand il sera expédié.',
   'error.offline.message': 'Vous êtes hors ligne.',
@@ -65,6 +65,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Mettez à jour le mode de paiement sur le portail Polar.',
   'error.trial_expired.message': "Le procès s'est terminé le {date}.",
   'error.trial_expired.action': "Démarrez l'abonnement pour continuer la publication.",
+  'error.post_credits_exhausted.message':
+    'Cet espace de travail a utilisé toutes ses publications gratuites. Tout le reste fonctionne toujours.',
+  'error.post_credits_exhausted.action':
+    'Choisissez une formule pour continuer à publier. Vos comptes restent connectés et vos brouillons et programmations sont conservés.',
   'error.entitlement_missing.message':
     "Cet espace de travail n'a pas accès à cette fonctionnalité.",
   'error.entitlement_missing.action':
@@ -97,7 +101,7 @@ export const errorMessages = {
   'error.capability_unsupported.message': '{provider} ne propose pas cela via son API officielle.',
   'error.capability_unsupported.action': 'Utilisez un format pris en charge par ce compte.',
   'error.capability_not_implemented.message':
-    "Relay n'a pas construit ceci pour {provider} encore.",
+    "Post Array n'a pas construit ceci pour {provider} encore.",
   'error.capability_not_implemented.action':
     "La page des capacités répertorie ce que chaque connecteur peut faire aujourd'hui.",
   'error.capability_requires_review.message':

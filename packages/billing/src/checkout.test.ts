@@ -6,6 +6,7 @@ import type { PolarConfig } from '@relay/config';
 import {
   DISCLOSURE_VERSION,
   REQUIRED_DISCLOSURE_LINE_IDS,
+  REQUIRED_IMMEDIATE_DISCLOSURE_LINE_IDS,
   buildCheckoutDisclosure,
   buildConsentRecord,
   checkoutReturnState,
@@ -41,24 +42,52 @@ function makeDeps() {
 }
 
 describe('the checkout disclosure', () => {
+  // The default checkout has no trial, because the products carry none. A
+  // trial disclosure is still buildable and still tested below, so a
+  // deployment that runs a promotion gets the deferred-charge terms right.
   const disclosure = buildCheckoutDisclosure({ interval: 'month', startedAt: CONFIRMED_AT });
+  const trialDisclosure = buildCheckoutDisclosure({
+    interval: 'month',
+    startedAt: CONFIRMED_AT,
+    trialDays: 7,
+  });
 
   it('contains every line the customer must see before confirming', () => {
-    expect(disclosure.lines.map((line) => line.id)).toEqual([...REQUIRED_DISCLOSURE_LINE_IDS]);
+    expect(disclosure.lines.map((line) => line.id)).toEqual([
+      ...REQUIRED_IMMEDIATE_DISCLOSURE_LINE_IDS,
+    ]);
+    expect(trialDisclosure.lines.map((line) => line.id)).toEqual([
+      ...REQUIRED_DISCLOSURE_LINE_IDS,
+    ]);
   });
 
-  it('states $0 due today', () => {
-    expect(disclosure.dueTodayMinor).toBe(0);
-    expect(disclosure.dueTodayText).toBe('$0 due today');
+  it('states the real charge due today, not the $0 a trial would show', () => {
+    // The defect this pins: the products have no trial, so a block reading
+    // "$0 due today" beside the pay button would be describing terms the
+    // customer is not being given, on the one screen where that matters most.
+    expect(disclosure.trialDays).toBe(0);
+    expect(disclosure.dueTodayMinor).toBe(2_500);
+    expect(disclosure.dueTodayText).toBe('$25.00');
+    expect(disclosure.lines.map((line) => line.id)).not.toContain('trial_end');
+    expect(disclosure.lines.map((line) => line.id)).not.toContain('first_charge');
   });
 
-  it('states the exact trial end and the exact first charge', () => {
-    expect(disclosure.trialEndsAt).toBe('2026-08-11T14:00:00.000Z');
-    expect(disclosure.trialEndsOnDate).toBe('2026-08-11');
+  it('offers no trial end or conversion date when nothing is deferred', () => {
+    expect(disclosure.trialEndsAt).toBe('');
+    expect(disclosure.trialEndsOnDate).toBe('');
     expect(disclosure.firstChargeText).toBe('$25.00');
-    expect(disclosure.firstChargeOnDate).toBe('2026-08-11');
     expect(disclosure.renewalText).toBe('$25.00');
     expect(disclosure.interval).toBe('month');
+  });
+
+  it('states the exact trial end and the exact first charge, when there is a trial', () => {
+    expect(trialDisclosure.dueTodayMinor).toBe(0);
+    expect(trialDisclosure.dueTodayText).toBe('$0 due today');
+    expect(trialDisclosure.trialEndsAt).toBe('2026-08-11T14:00:00.000Z');
+    expect(trialDisclosure.trialEndsOnDate).toBe('2026-08-11');
+    expect(trialDisclosure.firstChargeText).toBe('$25.00');
+    expect(trialDisclosure.firstChargeOnDate).toBe('2026-08-11');
+    expect(trialDisclosure.renewalText).toBe('$25.00');
   });
 
   it('frames the annual price in money saved, not as a percentage', () => {
@@ -89,9 +118,16 @@ describe('the checkout disclosure', () => {
     expect(disclosure.activeChannelAllowance).toBe(10);
   });
 
-  it('carries a cancellation path', () => {
-    const cancellation = disclosure.lines.find((line) => line.id === 'cancellation_path');
-    expect(cancellation?.messageKey).toBe('billing.trial.cancelBefore');
+  it('carries a cancellation path suited to what was actually agreed', () => {
+    // A trial's cancellation line is a deadline ("cancel before this date");
+    // a paid checkout's is a standing right ("cancel any time, you keep the
+    // period you paid for"). Showing a deadline to somebody who was charged
+    // today would invent a term that does not exist.
+    const immediate = disclosure.lines.find((line) => line.id === 'cancellation_path');
+    expect(immediate?.messageKey).toBe('billing.charge.cancelAnyTime');
+
+    const deferred = trialDisclosure.lines.find((line) => line.id === 'cancellation_path');
+    expect(deferred?.messageKey).toBe('billing.trial.cancelBefore');
   });
 
   it('is versioned and checksummed so we can prove what was shown', async () => {

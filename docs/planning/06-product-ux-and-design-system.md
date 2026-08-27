@@ -32,7 +32,7 @@ implement a screen without asking what a state should do.
 
 ## 1. Experience principle
 
-Relay is a publishing desk, not an AI console. At every step the user must be able to answer, without
+Post Array is a publishing desk, not an AI console. At every step the user must be able to answer, without
 clicking anything:
 
 1. What exactly will be posted.
@@ -187,7 +187,7 @@ Every wireframe shows the desktop 1280px layout unless stated.
 ### 5.1 Home
 
 ```
-┌ Relay  [Acme ▾][Brand: Acme EU ▾]      ⌕ Search        [+ Compose]   🔔 3   ? ▾   AV ▾ ┐
+┌ Post Array  [Acme ▾][Brand: Acme EU ▾]      ⌕ Search        [+ Compose]   🔔 3   ? ▾   AV ▾ ┐
 ├───────────────────────────────────────────────────────────────────────────────────────┤
 │ Home  Calendar  Automation  Analytics  Library  Connections                           │
 ├───────────────────────────────────────────────────────────────────────────────────────┤
@@ -261,7 +261,7 @@ Target rail states, one 4px dot plus a word, never colour alone:
 | Issue | warning | `issue` | Validation warning, still schedulable |
 | Error | destructive | `blocked` | Deterministic validation failure, cannot schedule |
 | Approval | accent outline | `needs approval` | Policy requires a decision |
-| Not built | neutral outline | `not built yet` | Relay has not implemented this capability |
+| Not built | neutral outline | `not built yet` | Post Array has not implemented this capability |
 | Unsupported | neutral outline | `provider does not support` | The provider has no such API |
 
 The last two rows are different sentences and must never be merged into "unavailable".
@@ -582,7 +582,7 @@ behaviour, not a bug.
 │ Why it fits   Your plan needs 2 short videos per week and you have webinar audio.  │
 │ Limitations   English captions only. No brand-kit import.                           │
 │ Skills needed Basic video editing. About 30 minutes per clip.                       │
-│ Handoff       Export MP4 1080x1920, import to Relay Library, alt text added here.   │
+│ Handoff       Export MP4 1080x1920, import to Post Array Library, alt text added here.   │
 │ Rights        Check their commercial-use terms before client work.                   │
 │ Price checked 21 Jul 2026. [Open official site]                                      │
 │ Disclosure    We may earn a commission if you subscribe through this link. This does │
@@ -597,7 +597,7 @@ past its review date renders a `Stale` label and is excluded from AI-generated p
 
 ```
 ┌ Settings · Billing                                                                  ┐
-│ Plan: Relay, all features. 30 active channels. Unlimited team members.               │
+│ Plan: Post Array, all features. 30 active channels. Unlimited team members.               │
 │ Status: Trial. 4 days remaining.                                                     │
 │ Converts on 11 August 2026 to $29.00 per month.                                      │
 │ Payment method is held by Polar and charged $0.00 today.                              │
@@ -888,7 +888,7 @@ A screen is not done until all applicable states exist in code and in the visual
 | Permission denied | Name the required role or scope and who in this workspace can grant it |
 | Rate or cost limited | Show current usage, the cause, the reset time, and a lower-cost alternative |
 | Provider outage | Isolate the affected connector, link to the status page, do not gray out unrelated connectors |
-| Not built yet | "Relay has not built this yet" plus the roadmap link |
+| Not built yet | "Post Array has not built this yet" plus the roadmap link |
 | Provider does not support | "X does not offer this through its API" plus the source link and verification date |
 | Translation incomplete | Fall back to English for that string. Never a raw key, never a broken interpolation, never mixed placeholders |
 

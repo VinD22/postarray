@@ -20,7 +20,7 @@ function lastCall(): RequestInit | undefined {
 }
 
 describe('upload ticket origin', () => {
-  it('recognises Relay storage by origin, not by path', () => {
+  it('recognises Post Array storage by origin, not by path', () => {
     expect(isRelayUploadUrl(RELAY_TICKET)).toBe(true);
     expect(isRelayUploadUrl('https://api.relay.test/anything/else')).toBe(true);
   });
@@ -44,7 +44,7 @@ describe('sendUpload', () => {
     vi.unstubAllGlobals();
   });
 
-  it('sends credentials, the CSRF token and the workspace to Relay storage', async () => {
+  it('sends credentials, the CSRF token and the workspace to Post Array storage', async () => {
     await sendUpload(RELAY_TICKET, new Blob(['bytes']), {
       ticketHeaders: { 'content-type': 'image/png' },
     });
@@ -59,7 +59,7 @@ describe('sendUpload', () => {
     expect(headers.get('content-type')).toBe('image/png');
   });
 
-  it('never sends cookies or Relay headers to a presigned third party URL', async () => {
+  it('never sends cookies or Post Array headers to a presigned third party URL', async () => {
     await sendUpload(PRESIGNED_TICKET, new Blob(['bytes']), {
       ticketHeaders: { 'content-type': 'image/png' },
     });

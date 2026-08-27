@@ -75,7 +75,7 @@ export const developerMessages = {
     'Nội dung yêu cầu và phản hồi được lưu trữ với các bí mật đã được xóa.',
   'developer.apps.title': 'Ứng dụng dành cho nhà phát triển',
   'developer.apps.subtitle':
-    'Hãy để một sản phẩm khác hoạt động thông qua Relay với quyền mà người dùng cấp cho nó.',
+    'Hãy để một sản phẩm khác hoạt động thông qua Post Array với quyền mà người dùng cấp cho nó.',
   'developer.apps.create': 'Đăng ký một ứng dụng',
   'developer.apps.name': 'Tên ứng dụng',
   'developer.apps.type.label': 'Loại khách hàng',

@@ -21,7 +21,7 @@ export const webAnalyticsMessages = {
     '{count, plural, =0 {No filters} one {# filter} other {# filters}} applied. {results, plural, =0 {No posts match} one {# post matches} other {# posts match}}.',
   'analytics.rankMetric.label': 'Beri peringkat postingan berdasarkan',
   'analytics.rankMetric.help':
-    'Tidak ada skor gabungan di Relay. Pilih satu metrik yang definisinya Anda percayai dan tabel akan diurutkan berdasarkan metrik tersebut saja.',
+    'Tidak ada skor gabungan di Post Array. Pilih satu metrik yang definisinya Anda percayai dan tabel akan diurutkan berdasarkan metrik tersebut saja.',
   'analytics.rankMetric.chosen':
     'Diurutkan berdasarkan {metric}, seperti yang dilaporkan oleh masing-masing penyedia akun.',
   'analytics.outcome.awareness': 'Kesadaran',
@@ -79,7 +79,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Jumlah pengikut di {account} diubah oleh {percent} selama periode ini.',
   'analytics.evidence.confounder.paid':
-    'Relay tidak dapat memastikan apakah postingan ini menerima distribusi berbayar.',
+    'Post Array tidak dapat memastikan apakah postingan ini menerima distribusi berbayar.',
   'analytics.evidence.confounder.provider':
     '{provider} mengubah cara melaporkan {metric} dalam periode ini.',
   'analytics.definition.open': 'Apa yang dimaksud dengan {metric}',
@@ -110,7 +110,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Hitungan peristiwa',
   'analytics.unit.seconds': 'Detik',
   'analytics.unit.percent': 'Persentase yang sudah dihitung oleh penyedia',
-  'analytics.unit.ratio': 'Rasio Relay dihitung dari dua bidang penyedia',
+  'analytics.unit.ratio': 'Rasio Post Array dihitung dari dua bidang penyedia',
   'analytics.unit.currency_minor': 'Sejumlah uang dalam satuan kecil',
   'analytics.denominator.none': 'Ini adalah hitungan, bukan tarif. Ia tidak memiliki penyebut.',
   'analytics.denominator.impressions': 'Dibagi berdasarkan tayangan',
@@ -127,7 +127,7 @@ export const webAnalyticsMessages = {
   'analytics.format.document': 'Dokumen',
   'analytics.format.thread': 'Benang',
   'analytics.value.unavailableReason.notImplemented':
-    'Relay belum membuat pemetaan untuk metrik ini di {provider}.',
+    'Post Array belum membuat pemetaan untuk metrik ini di {provider}.',
   'analytics.value.estimated': 'Diperkirakan',
   'analytics.value.estimatedMethod': 'Metode: {method}.',
   'analytics.freshness.title': 'Dari mana angka-angka ini berasal',
@@ -234,7 +234,7 @@ export const webAnalyticsMessages = {
     'Analytics memerlukan peran analis atau lebih tinggi. Pemilik atau admin ruang kerja ini dapat memberikannya.',
   'analytics.state.rateLimitTitle': '{provider} adalah permintaan analitik yang membatasi laju',
   'analytics.state.rateLimitCause':
-    'Akun telah menggunakan bagiannya dari kuota penyedia untuk jendela ini. Relay tidak mencoba lagi lebih keras, karena hal itu akan menunda penerbitan.',
+    'Akun telah menggunakan bagiannya dari kuota penyedia untuk jendela ini. Post Array tidak mencoba lagi lebih keras, karena hal itu akan menunda penerbitan.',
   'analytics.state.rateLimitAlternative':
     'Persempit rentang tanggal atau filter akun, yang meminta lebih sedikit kepada penyedia.',
   'analytics.state.rateLimitReset': 'Permintaan dilanjutkan',
@@ -242,7 +242,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Buat tautan terlacak',
   'analytics.links.empty': 'Belum ada tautan terlacak',
   'analytics.links.emptyBody':
-    'Tautan terlacak adalah URL pendek yang dialihkan Relay, sehingga Anda dapat melihat klik bahkan ketika platform tidak melaporkan apa pun. Tujuan awal tidak pernah berubah tanpa entri audit.',
+    'Tautan terlacak adalah URL pendek yang dialihkan Post Array, sehingga Anda dapat melihat klik bahkan ketika platform tidak melaporkan apa pun. Tujuan awal tidak pernah berubah tanpa entri audit.',
   'analytics.links.emptyExample':
     'Contoh: relay.to/a7Kq2 dialihkan ke acme.com/blog/launch dengan kampanye q3-launch.',
   'analytics.links.table.caption':
@@ -274,7 +274,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, aktif dari {start} hingga {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, aktif sejak {start}',
   'analytics.links.domainLabel': 'Domain pendek',
-  'analytics.links.domainDefault': 'Relay domain bawaan',
+  'analytics.links.domainDefault': 'Post Array domain bawaan',
   'analytics.links.domainVerified': 'Diverifikasi oleh DNS di {date}',
   'analytics.links.domainPending': 'Menunggu catatan DNS',
   'analytics.links.domainPendingHelp':
@@ -297,7 +297,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Laporkan tautan ini',
   'analytics.links.measurementLabel': 'Pengukuran pengalihan pihak pertama',
   'analytics.links.measurementExplained':
-    'Relay menghitung permintaan ketika layanan pengalihan diminta untuk URL ini. Klik yang dihapus duplikatnya akan menghapus permintaan berulang dari pengunjung yang sama di dalam jendela pendek, dan permintaan yang cocok dengan pola perayap yang diketahui akan dikecualikan, bukan dihapus.',
+    'Post Array menghitung permintaan ketika layanan pengalihan diminta untuk URL ini. Klik yang dihapus duplikatnya akan menghapus permintaan berulang dari pengunjung yang sama di dalam jendela pendek, dan permintaan yang cocok dengan pola perayap yang diketahui akan dikecualikan, bukan dihapus.',
   'analytics.links.botsNote':
     '{count, plural, one {# request} other {# requests}} were classified as automated and are excluded from the deduplicated count.',
   'analytics.links.series.title': 'Permintaan dan penghapusan duplikat dari waktu ke waktu',
@@ -320,7 +320,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'Tautan ini belum diminta sejak dibuat. Itu benar-benar nol, diukur dengan layanan pengalihan kami sendiri.',
   'analytics.links.compareWarning':
-    '{provider} melaporkan klik tautan {providerValue} untuk posting ini. Relay mencatat klik yang dihapus duplikatnya {relayValue}. Keduanya menghitung peristiwa yang berbeda dan tidak ada yang menggantikan yang lain.',
+    '{provider} melaporkan klik tautan {providerValue} untuk posting ini. Post Array mencatat klik yang dihapus duplikatnya {relayValue}. Keduanya menghitung peristiwa yang berbeda dan tidak ada yang menggantikan yang lain.',
   'analytics.links.errorTitle': 'Statistik tautan tidak dapat dimuat',
   'analytics.links.errorBody':
     'Layanan redirect masih berfungsi sehingga link tetap mengarahkan pengunjung ke tujuannya. Hanya pelaporan yang terpengaruh.',
@@ -329,7 +329,7 @@ export const webAnalyticsMessages = {
     'Harus berupa alamat https publik. Alamat jaringan pribadi dan rantai pengalihan ditolak oleh layanan pengalihan.',
   'analytics.links.createCampaign': 'Nama kampanye',
   'analytics.links.createSlug': 'Akhiran khusus',
-  'analytics.links.createSlugHelp': 'Biarkan ini kosong dan Relay menghasilkan akhir acak pendek.',
+  'analytics.links.createSlugHelp': 'Biarkan ini kosong dan Post Array menghasilkan akhir acak pendek.',
   'analytics.links.createUtm': 'Parameter UTM',
   'analytics.links.blockedScheme': 'Hanya tujuan https yang diterima.',
   'analytics.links.blockedPrivate':
@@ -459,7 +459,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# action is} other {# actions are}} not listed because the selected accounts cannot perform them.',
   'automation.picker.hiddenDetail': '{action} tidak tersedia untuk {provider}. {reason}',
   'automation.picker.consequential': 'Menciptakan sesuatu pada platform',
-  'automation.picker.internalOnly': 'Tetap di dalam Relay',
+  'automation.picker.internalOnly': 'Tetap di dalam Post Array',
   'automation.accounts.label': 'Akun yang dapat ditindaklanjuti oleh aturan ini',
   'automation.accounts.help':
     'Sebuah aturan tidak akan pernah bisa menyentuh akun yang tidak tercantum di sini, apa pun ketentuannya.',
@@ -545,7 +545,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} tidak lolos, jadi aturan berhenti di sini',
   'automation.test.actionSimulated': '{action} akan berjalan',
   'automation.test.actionSkipped': '{action} akan dilewati: {reason}',
-  'automation.test.noExternalEffect': 'Tidak ada yang tersisa Relay selama pengujian ini.',
+  'automation.test.noExternalEffect': 'Tidak ada yang tersisa Post Array selama pengujian ini.',
   'automation.test.failed': 'Tes tidak dapat diselesaikan: {reason}',
   'automation.runs.table.caption': 'Aturan ini baru saja dijalankan.',
   'automation.runs.startedAt': 'Dimulai',
@@ -596,7 +596,7 @@ export const webAnalyticsMessages = {
     'Ubah feed menjadi draf atau postingan terjadwal, dengan validasi dan persetujuan yang sama seperti apa pun yang Anda tulis sendiri.',
   'automation.rss.empty': 'Belum ada feed',
   'automation.rss.emptyBody':
-    'Tambahkan feed dan Relay memeriksanya sesuai jadwal. Setiap item baru menjadi draf, postingan terjadwal, atau permintaan persetujuan, mana pun yang Anda pilih.',
+    'Tambahkan feed dan Post Array memeriksanya sesuai jadwal. Setiap item baru menjadi draf, postingan terjadwal, atau permintaan persetujuan, mana pun yang Anda pilih.',
   'automation.rss.emptyExample':
     'Contoh: feed blog Acme membuat draf untuk X dan LinkedIn setiap kali artikel diterbitkan, dan menunggu pemberi persetujuan.',
   'automation.rss.table.caption': 'Memberi makan jajak pendapat ruang kerja ini.',
@@ -611,7 +611,7 @@ export const webAnalyticsMessages = {
   'automation.rss.step.policy': 'Bagaimana hal itu dipublikasikan',
   'automation.rss.stepOf': 'Langkah {current} dari {total}',
   'automation.rss.urlHelp':
-    'Relay mengambil feed dari server kami, bukan dari browser Anda. Alamat jaringan pribadi ditolak.',
+    'Post Array mengambil feed dari server kami, bukan dari browser Anda. Alamat jaringan pribadi ditolak.',
   'automation.rss.validateAction': 'Periksa umpan ini',
   'automation.rss.validateFailed': 'Alamat tersebut tidak menghasilkan feed yang dapat dibaca',
   'automation.rss.validateFailedReason': 'Apa yang kami dapatkan kembali: {reason}',
@@ -624,7 +624,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Tidak ada gambar di item ini',
   'automation.rss.previewImageAlt': 'Gambar dari item umpan {title}',
   'automation.rss.previewNoDate':
-    'Item ini tidak memiliki stempel waktu, jadi Relay menggunakan waktu pertama kali melihatnya.',
+    'Item ini tidak memiliki stempel waktu, jadi Post Array menggunakan waktu pertama kali melihatnya.',
   'automation.rss.previewFieldsTitle': 'Bidang yang disediakan feed ini',
   'automation.rss.previewFieldMissing': 'Tidak ada di feed ini',
   'automation.rss.seenTitle': 'Apa yang dianggap sudah terlihat',
@@ -649,7 +649,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'Pratinjau dengan item terbaru',
   'automation.rss.adaptWithAi': 'Sesuaikan teks untuk setiap target',
   'automation.rss.adaptHelp':
-    'Kata-katanya ditulis ulang agar sesuai dengan setiap platform dan ditampilkan sebagai perbedaan yang Anda terima atau tolak. Media berasal dari item feed. Relay tidak menghasilkan gambar.',
+    'Kata-katanya ditulis ulang agar sesuai dengan setiap platform dan ditampilkan sebagai perbedaan yang Anda terima atau tolak. Media berasal dari item feed. Post Array tidak menghasilkan gambar.',
   'automation.rss.noImageGeneration':
     'Jika item feed tidak memiliki gambar, postingan akan ditampilkan tanpa gambar.',
   'automation.rss.imageFromFeed': 'Gunakan gambar dari item feed jika ada',
@@ -684,10 +684,10 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Lanjutkan umpan ini',
   'automation.rss.deleteTitle': 'Hapus {title}?',
   'automation.rss.deleteBody':
-    'Relay berhenti memeriksa feed ini. Draf dan postingan yang sudah dibuat tetap sama persis seperti aslinya.',
+    'Post Array berhenti memeriksa feed ini. Draf dan postingan yang sudah dibuat tetap sama persis seperti aslinya.',
   'automation.rss.errorTitle': 'Umpan ini tidak dapat dibaca',
   'automation.rss.errorBody':
-    'Relay terus mengecek jadwal normal. Tidak ada yang dipublikasikan dari tanggapan parsial.',
+    'Post Array terus mengecek jadwal normal. Tidak ada yang dipublikasikan dari tanggapan parsial.',
   'automation.refuse.title': 'Tidak tersedia dalam aturan apa pun',
   'automation.refuse.body':
     'Suka dan mengikuti otomatis, grup keterlibatan, balasan dan pesan yang tidak diminta, dan memposting konten yang sama dari beberapa akun agar terlihat populer bukanlah pilihan di sini. Platform melarangnya dan merusak akun yang menggunakannya.',

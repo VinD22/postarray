@@ -87,6 +87,6 @@ export const statusMessages = {
     'Nó sẽ không xuất bản. Bản nháp vẫn ở đây nên bạn có thể lên lịch lại.',
   'confirm.publishNow.title': 'Xuất bản bây giờ?',
   'confirm.publishNow.body':
-    '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}. It cannot be recalled from Relay.',
+    '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}. It cannot be recalled from Post Array.',
   'confirm.typeToConfirm': 'Nhập {word} để xác nhận.',
 } as const;

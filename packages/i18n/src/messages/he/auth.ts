@@ -4,7 +4,6 @@ export const authMessages = withHebrewPluralForms({
   'auth.signIn.title': 'היכנס',
   'auth.signIn.subtitle': 'פרסם, אשר וראה בדיוק מה קרה.',
   'auth.signUp.title': 'צור את החשבון שלך',
-  'auth.signUp.subtitle': 'שבעה ימים עם כל תכונה. 0 דולר לפירעון היום.',
   'auth.continueWithGoogle': 'המשך עם גוגל',
   'auth.continueWithFacebook': 'המשך בפייסבוק',
   'auth.orUseEmail': 'או השתמש באימייל שלך',

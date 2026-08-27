@@ -60,7 +60,7 @@ export const mediaMessages = withHebrewPluralForms({
     'וידאו, אודיו ומסמכים לא ניתן לערוך כאן. הכן את הקובץ לפני שאתה מעלה אותו. ההעלאה המקורית שלך אף פעם לא משתנה בכל מקרה.',
 
   'mediaLib.derivative.nonGenerative':
-    'Relay לא יוצר תמונות או וידאו. העורך הזה רק חותך, מסובב, משנה גודל, ממיר ודוחס את מה שהעלית.',
+    'Post Array לא יוצר תמונות או וידאו. העורך הזה רק חותך, מסובב, משנה גודל, ממיר ודוחס את מה שהעלית.',
 
   'error.media_derivative_no_operations.message': 'בחר לפחות שינוי אחד לפני שמירת גרסה.',
   'error.media_derivative_duplicate_operation.message':

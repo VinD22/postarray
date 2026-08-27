@@ -29,7 +29,7 @@ import { idempotencyRecordSchema, type StoredIdempotencyRecord } from '../securi
 /**
  * Idempotency for every create, schedule, publish and cancel.
  *
- * Every external side effect in Relay is idempotent (`AGENTS.md`, hard rule 6),
+ * Every external side effect in Post Array is idempotent (`AGENTS.md`, hard rule 6),
  * and the mechanism is the same on all five surfaces: an `Idempotency-Key`
  * header, scoped to `(workspace_id, key)`, holding the request hash and the
  * exact response for 24 hours.

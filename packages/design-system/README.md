@@ -1,6 +1,6 @@
 # @relay/design-system
 
-The visual foundation of the Relay publishing desk: tokens, accessible
+The visual foundation of the Post Array publishing desk: tokens, accessible
 primitives, product patterns and hooks.
 
 ```ts

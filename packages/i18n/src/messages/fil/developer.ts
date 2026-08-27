@@ -84,7 +84,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'Mga app ng developer',
   'developer.apps.subtitle':
-    'Hayaang kumilos ang isa pang produkto sa pamamagitan ng Relay na may mga pahintulot na ibinibigay dito ng isang user.',
+    'Hayaang kumilos ang isa pang produkto sa pamamagitan ng Post Array na may mga pahintulot na ibinibigay dito ng isang user.',
   'developer.apps.create': 'Magrehistro ng app',
   'developer.apps.name': 'Pangalan ng app',
   'developer.apps.type.label': 'Uri ng kliyente',

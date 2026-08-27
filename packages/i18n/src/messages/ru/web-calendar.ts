@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon подключается по токену доступа, созданному на вашем сервере, а не по паролю.',
   'web.connection.requirement.telegram':
-    'Relay публикует от имени бота. Добавьте бота в канал или группу, куда хотите публиковать.',
+    'Post Array публикует от имени бота. Добавьте бота в канал или группу, куда хотите публиковать.',
   'web.connection.requirement.reddit':
     'Запись в Reddit требует одобренного приложения, а каждой публикации нужны заголовок и сабреддит.',
   'web.connection.requirement.wordpress':
-    'Relay публикует через REST API сайта с паролем приложения, созданным в WordPress.',
+    'Post Array публикует через REST API сайта с паролем приложения, созданным в WordPress.',
   'web.connection.requirement.medium':
-    'Medium подключается через OAuth, и Relay публикует открытые истории в Markdown.',
+    'Medium подключается через OAuth, и Post Array публикует открытые истории в Markdown.',
   'web.connection.requirement.devto':
     'Dev.to подключается по API-ключу, созданному в настройках Dev.to.',
   'web.connection.requirement.pinterest':
     'Запись в Pinterest требует одобренного доступа приложения, а пину нужны изображение и собственная доска.',
   'web.connection.requirement.discord':
-    'Relay публикует от имени бота. Добавьте бота на серверы и в каналы, куда хотите публиковать.',
+    'Post Array публикует от имени бота. Добавьте бота на серверы и в каналы, куда хотите публиковать.',
   'web.connection.requirement.slack':
-    'Relay публикует от имени приложения. Добавьте приложение в каналы, куда хотите публиковать.',
+    'Post Array публикует от имени приложения. Добавьте приложение в каналы, куда хотите публиковать.',
   'web.provider.fake': 'Тестовый разъем',
 
   'web.accountType.personal_profile': 'Личный профиль',
@@ -165,7 +165,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'Этот пост уже опубликован',
   'web.calendar.published.body':
-    'Сообщение существует на {provider} по адресу {permalinkLabel}. Перемещение записи в Relay не перемещает публикацию на платформе. Выберите, что вы хотите, чтобы произошло.',
+    'Сообщение существует на {provider} по адресу {permalinkLabel}. Перемещение записи в Post Array не перемещает публикацию на платформе. Выберите, что вы хотите, чтобы произошло.',
   'web.calendar.published.optionLocal': 'Обновить только локальную запись',
   'web.calendar.published.optionLocalHint':
     'В квитанции сохраняется реальное время публикации. Перемещается только запись планирования, поэтому ваш календарь соответствует вашему плану.',
@@ -270,7 +270,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Аналитика для этого сообщения еще не синхронизирована.',
   'web.receipt.analytics.explain':
-    'Провайдеры агрегируют данные по своим собственным графикам. Ниже указано время, когда Relay последний раз их читал, а не время, когда числа были истинными.',
+    'Провайдеры агрегируют данные по своим собственным графикам. Ниже указано время, когда Post Array последний раз их читал, а не время, когда числа были истинными.',
 
   'web.receipt.export.download': 'Скачать квитанцию',
   'web.receipt.export.copyReference': 'Скопируйте ссылку на квитанцию',
@@ -283,11 +283,11 @@ export const webCalendarMessages = {
     'Повторная попытка никогда не затрагивает цель, которая уже создала внешнюю публикацию.',
 
   'web.receipt.remediation.user_action_required':
-    'Для этого необходимо внести изменения в Relay или {provider}, прежде чем он сможет снова запуститься.',
+    'Для этого необходимо внести изменения в Post Array или {provider}, прежде чем он сможет снова запуститься.',
   'web.receipt.remediation.content_invalid':
     'Отредактируйте содержимое, чтобы оно прошло проверку {provider}, а затем снова запланируйте его.',
   'web.receipt.remediation.transient_provider':
-    '{provider} вернул временную ошибку. Relay повторил попытку по собственному расписанию.',
+    '{provider} вернул временную ошибку. Post Array повторил попытку по собственному расписанию.',
   'web.receipt.remediation.permanent_provider':
     '{provider} отказался от этого навсегда. Повторная попытка того же контента не изменит ответ.',
   'web.receipt.remediation.internal':
@@ -352,17 +352,17 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# запланированное сообщение} few {# запланированное сообщение} many {# запланированное сообщение} other {# запланированное сообщение}} для этого аккаунта не будет опубликовано.',
   'web.connection.disconnect.consequence.published':
-    'Уже опубликованные сообщения остаются на {provider}. Relay не удаляет их.',
+    'Уже опубликованные сообщения остаются на {provider}. Post Array не удаляет их.',
   'web.connection.disconnect.consequence.analytics':
     'Уже собранные метрики остаются в этой рабочей области и перестают обновляться.',
 
   'web.connection.connect.title': 'Подключить аккаунт',
   'web.connection.connect.chooseProvider': 'Какая платформа',
-  'web.connection.connect.permissionHeading': 'Что Relay попросит у {provider}',
+  'web.connection.connect.permissionHeading': 'Что Post Array попросит у {provider}',
   'web.connection.connect.requirementHeading': 'Прежде чем продолжить',
   'web.connection.connect.continue': 'Продолжить {provider}',
   'web.connection.connect.handoffNote':
-    'Следующий экран, {provider}, а не Relay. Relay никогда не видит ваш пароль.',
+    'Следующий экран, {provider}, а не Post Array. Post Array никогда не видит ваш пароль.',
   'web.connection.connect.noWriteWithoutApproval':
     'Подключение аккаунта ничего не публикует. Каждое сообщение по-прежнему соответствует этой политике одобрения рабочей области.',
 
@@ -376,13 +376,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Для публикации Instagram требуется профессиональная учетная запись, то есть учетная запись компании или автора, связанная со страницей Facebook.',
   'web.connection.requirement.facebook':
-    'Relay публикует данные в Facebook Pages. Личный профиль не может быть целью публикации.',
+    'Post Array публикует данные в Facebook Pages. Личный профиль не может быть целью публикации.',
   'web.connection.requirement.linkedin':
     'Чтобы публиковать материалы для организации, вам нужна роль администратора контента на этой странице LinkedIn.',
   'web.connection.requirement.youtube':
     'Пока Google не завершит аудит приложения, загрузки из этого проекта публикуются как частные. Впоследствии вы можете изменить видимость на YouTube.',
   'web.connection.requirement.tiktok':
-    'TikTok требует, чтобы вы самостоятельно выбирали аудиторию для каждого поста. Relay не может заранее выбрать один из них.',
+    'TikTok требует, чтобы вы самостоятельно выбирали аудиторию для каждого поста. Post Array не может заранее выбрать один из них.',
   'web.connection.requirement.x':
     'X взимает плату за операцию. Публикация, содержащая URL-адрес, стоит дороже, чем обычная текстовая публикация, и ее оценка отображается перед планированием.',
   'web.connection.requirement.threads':
@@ -390,13 +390,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky подключается с помощью пароля приложения, созданного в настройках Bluesky, а не пароля вашей учетной записи.',
   'web.connection.requirement.generic':
-    'Вам необходимо разрешение на публикацию сообщений в этом аккаунте с самой платформы. Relay не может его предоставить.',
+    'Вам необходимо разрешение на публикацию сообщений в этом аккаунте с самой платформы. Post Array не может его предоставить.',
 
-  'web.connection.purpose.publish': 'Публикация запланированных вами публикаций в Relay.',
+  'web.connection.purpose.publish': 'Публикация запланированных вами публикаций в Post Array.',
   'web.connection.purpose.readPosts':
-    'Перечитывая опубликованное сообщение Relay, можно подтвердить, что квитанция существует.',
+    'Перечитывая опубликованное сообщение Post Array, можно подтвердить, что квитанция существует.',
   'web.connection.purpose.identity':
-    'Отображение точного имени учетной записи в Relay, чтобы вы никогда не публиковали неправильный аккаунт.',
+    'Отображение точного имени учетной записи в Post Array, чтобы вы никогда не публиковали неправильный аккаунт.',
   'web.connection.purpose.analytics':
     'Чтение показателей, которые эта платформа сообщает для ваших собственных публикаций.',
   'web.connection.purpose.refresh':
@@ -407,7 +407,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Разрешения на {account}',
   'web.connection.permissions.scopeColumn': 'Разрешение',
   'web.connection.permissions.stateColumn': 'Государство',
-  'web.connection.permissions.purposeColumn': 'Для чего Relay его использует',
+  'web.connection.permissions.purposeColumn': 'Для чего Post Array его использует',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {отсутствует # разрешения} few {отсутствует # разрешения} many {отсутствует # разрешения} other {отсутствует # разрешения}}. Повторно подключитесь и примите его, чтобы восстановить функции, указанные ниже.',
   'web.connection.permissions.snapshot': 'Чтение из {provider} {relativeTime}',
@@ -419,9 +419,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'Возможность',
   'web.connection.capability.legendTitle': 'Как это прочитать',
   'web.connection.capability.legend.supported':
-    'Relay может сделать это сегодня для подключенной учетной записи нужного типа.',
+    'Post Array может сделать это сегодня для подключенной учетной записи нужного типа.',
   'web.connection.capability.legend.not_implemented':
-    'Платформа предлагает это, но Relay еще не создала ее. Это указано в дорожной карте разъема.',
+    'Платформа предлагает это, но Post Array еще не создала ее. Это указано в дорожной карте разъема.',
   'web.connection.capability.legend.unsupported':
     'Платформа не предлагает этого через свой официальный API, поэтому ни один инструмент не может сделать это безопасно.',
   'web.connection.capability.legend.requires_review':

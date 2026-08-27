@@ -97,7 +97,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'यह नियम नहीं बनाया जा सकता',
   'automation.notPermitted.body':
-    'Relay लाइक, फॉलो, अनचाहे उत्तर या संदेश, डुप्लिकेट सामूहिक पोस्टिंग या ब्राउज़र स्वचालन पर निर्भर कुछ भी स्वचालित नहीं करता है। {provider} इसे मना करता है और हम भी ऐसा करते हैं।',
+    'Post Array लाइक, फॉलो, अनचाहे उत्तर या संदेश, डुप्लिकेट सामूहिक पोस्टिंग या ब्राउज़र स्वचालन पर निर्भर कुछ भी स्वचालित नहीं करता है। {provider} इसे मना करता है और हम भी ऐसा करते हैं।',
   'automation.notPermitted.providerCapability':
     '{provider} ऑफर नहीं करता {action} इसके आधिकारिक API के माध्यम से, इसलिए यह क्रिया इसके लिए चयन योग्य नहीं है।',
 
@@ -110,7 +110,7 @@ export const automationMessages = {
   'automation.rss.targets': 'पर प्रकाशित करें',
   'automation.rss.template': 'पाठ टेम्पलेट',
   'automation.rss.templateHelp':
-    'आपके द्वारा मैप किए गए फ़ीड फ़ील्ड का उपयोग करें। Relay फ़ीड आइटम के लिए छवियां उत्पन्न नहीं करता है।',
+    'आपके द्वारा मैप किए गए फ़ीड फ़ील्ड का उपयोग करें। Post Array फ़ीड आइटम के लिए छवियां उत्पन्न नहीं करता है।',
   'automation.rss.policy.draft': 'एक ड्राफ्ट बनाएं',
   'automation.rss.policy.approval': 'एक ड्राफ्ट बनाएं और अनुमोदन का अनुरोध करें',
   'automation.rss.policy.nextSlot': 'अगले निःशुल्क स्लॉट में शेड्यूल करें',

@@ -9,7 +9,7 @@ import { localizedHref } from '@/lib/i18n/routing';
 export type LocalizedLinkProps = ComponentProps<typeof NextLink>;
 
 /**
- * Link to an internal Relay route in the current interface locale.
+ * Link to an internal Post Array route in the current interface locale.
  *
  * External URLs, protocol-relative URLs, fragments and query-only references
  * are passed to Next unchanged. All app links should use this component rather

@@ -1,7 +1,7 @@
 /**
  * `/library`
  *
- * The media library. Upload admission uses Relay's workspace storage limits.
+ * The media library. Upload admission uses Post Array's workspace storage limits.
  * Connected-account capability rules remain available for alt text, editing
  * guidance and the later compose-time provider validation.
  */

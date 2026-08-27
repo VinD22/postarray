@@ -102,7 +102,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Diese Regel kann nicht erstellt werden',
   'automation.notPermitted.body':
-    'Relay automatisiert keine Likes, Follower, unerwünschte Antworten oder Nachrichten, doppelte Massenbeiträge oder alles, was von der Browserautomatisierung abhängt. {provider} verbietet es und wir auch.',
+    'Post Array automatisiert keine Likes, Follower, unerwünschte Antworten oder Nachrichten, doppelte Massenbeiträge oder alles, was von der Browserautomatisierung abhängt. {provider} verbietet es und wir auch.',
   'automation.notPermitted.providerCapability':
     '{provider} bietet {action} nicht über seine offizielle API an, daher ist diese Aktion dafür nicht auswählbar.',
 
@@ -115,7 +115,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Veröffentlichen auf',
   'automation.rss.template': 'Textvorlage',
   'automation.rss.templateHelp':
-    'Verwenden Sie die von Ihnen zugeordneten Feedfelder. Relay generiert keine Bilder für Feed-Elemente.',
+    'Verwenden Sie die von Ihnen zugeordneten Feedfelder. Post Array generiert keine Bilder für Feed-Elemente.',
   'automation.rss.policy.draft': 'Erstellen Sie einen Entwurf',
   'automation.rss.policy.approval':
     'Erstellen Sie einen Entwurf und fordern Sie die Genehmigung an',

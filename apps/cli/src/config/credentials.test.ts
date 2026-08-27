@@ -39,8 +39,8 @@ describe('paths', () => {
   });
 
   it('falls back to XDG_CONFIG_HOME then ~/.config', () => {
-    expect(configDir({ XDG_CONFIG_HOME: '/xdg' }, '/home/x')).toBe('/xdg/relay');
-    expect(configDir({}, '/home/x')).toBe('/home/x/.config/relay');
+    expect(configDir({ XDG_CONFIG_HOME: '/xdg' }, '/home/x')).toBe('/xdg/postarray');
+    expect(configDir({}, '/home/x')).toBe('/home/x/.config/postarray');
   });
 
   it('keeps credentials in their own file', () => {

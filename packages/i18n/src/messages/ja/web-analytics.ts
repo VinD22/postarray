@@ -21,7 +21,7 @@ export const webAnalyticsMessages = {
     '{count, plural, other {# フィルター}}適用済み。{results, plural, other {# 件の投稿が一致しました}}。',
   'analytics.rankMetric.label': '投稿のランク付け',
   'analytics.rankMetric.help':
-    'Relay には総合スコアはありません。定義が信頼できるメトリックを 1 つ選択すると、テーブルはそのメトリックのみによって並べられます。',
+    'Post Array には総合スコアはありません。定義が信頼できるメトリックを 1 つ選択すると、テーブルはそのメトリックのみによって並べられます。',
   'analytics.rankMetric.chosen':
     'ランク付け{metric}、各アカウントプロバイダーによって報告されています。',
   'analytics.outcome.awareness': '意識',
@@ -78,7 +78,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'フォロワーは頼りになる{account}によって変更されました{percent}この期間中。',
   'analytics.evidence.confounder.paid':
-    'Relay では、これらの投稿のいずれかが有料配布されたかどうかを判断できません。',
+    'Post Array では、これらの投稿のいずれかが有料配布されたかどうかを判断できません。',
   'analytics.evidence.confounder.provider':
     '{provider}レポート方法を変更しました{metric}この期間内に。',
   'analytics.definition.open': '何{metric}手段',
@@ -109,7 +109,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'イベントの数',
   'analytics.unit.seconds': '秒',
   'analytics.unit.percent': 'プロバイダーがすでに計算した割合',
-  'analytics.unit.ratio': '2 つのプロバイダー フィールドから計算された比率 Relay',
+  'analytics.unit.ratio': '2 つのプロバイダー フィールドから計算された比率 Post Array',
   'analytics.unit.currency_minor': 'マイナー単位の金額',
   'analytics.denominator.none': 'これはレートではなくカウントです。分母はありません。',
   'analytics.denominator.impressions': 'インプレッション数で分ける',
@@ -126,7 +126,7 @@ export const webAnalyticsMessages = {
   'analytics.format.document': '書類',
   'analytics.format.thread': '糸',
   'analytics.value.unavailableReason.notImplemented':
-    'Relay はこのメトリックのマッピングを構築していません{provider}まだ。',
+    'Post Array はこのメトリックのマッピングを構築していません{provider}まだ。',
   'analytics.value.estimated': '推定',
   'analytics.value.estimatedMethod': '方法：{method}。',
   'analytics.freshness.title': 'これらの数字の出所',
@@ -230,7 +230,7 @@ export const webAnalyticsMessages = {
     '分析にはアナリスト ロール以上が必要です。このワークスペースの所有者または管理者は、これを付与できます。',
   'analytics.state.rateLimitTitle': '{provider}レート制限分析リクエストです',
   'analytics.state.rateLimitCause':
-    'アカウントは、このウィンドウのプロバイダー クォータのシェアを使用しました。 Relay は、公開が遅れるため、より強力な再試行は行いません。',
+    'アカウントは、このウィンドウのプロバイダー クォータのシェアを使用しました。 Post Array は、公開が遅れるため、より強力な再試行は行いません。',
   'analytics.state.rateLimitAlternative':
     '日付範囲またはアカウント フィルターを絞り込み、プロバイダーに要求する要求を少なくします。',
   'analytics.state.rateLimitReset': 'リクエストの再開',
@@ -238,7 +238,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': '追跡リンクを作成する',
   'analytics.links.empty': '追跡されたリンクはまだありません',
   'analytics.links.emptyBody':
-    '追跡リンクは、Relay がリダイレクトする短い URL であるため、プラットフォームが何も報告しない場合でもクリックを確認できます。監査エントリがなければ、元の宛先が変更されることはありません。',
+    '追跡リンクは、Post Array がリダイレクトする短い URL であるため、プラットフォームが何も報告しない場合でもクリックを確認できます。監査エントリがなければ、元の宛先が変更されることはありません。',
   'analytics.links.emptyExample':
     '例:relay.to/a7Kq2 は、キャンペーン q3-launch を使用して acme.com/blog/launch にリダイレクトします。',
   'analytics.links.table.caption':
@@ -268,7 +268,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}から活動中{start}に{end}',
   'analytics.links.destinationHistoryCurrent': '{destination}、以来活動中{start}',
   'analytics.links.domainLabel': '短いドメイン',
-  'analytics.links.domainDefault': 'Relay デフォルト ドメイン',
+  'analytics.links.domainDefault': 'Post Array デフォルト ドメイン',
   'analytics.links.domainVerified': 'DNS で検証済み{date}',
   'analytics.links.domainPending': 'DNSレコードを待っています',
   'analytics.links.domainPendingHelp':
@@ -291,7 +291,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'このリンクを報告する',
   'analytics.links.measurementLabel': 'ファーストパーティリダイレクトの測定',
   'analytics.links.measurementExplained':
-    'Relay は、リダイレクト サービスがこの URL を要求されたときにリクエストをカウントします。重複排除されたクリックにより、短いウィンドウ内で同じ訪問者からの繰り返しリクエストが削除され、既知のクローラー パターンに一致するリクエストは削除されずに除外されます。',
+    'Post Array は、リダイレクト サービスがこの URL を要求されたときにリクエストをカウントします。重複排除されたクリックにより、短いウィンドウ内で同じ訪問者からの繰り返しリクエストが削除され、既知のクローラー パターンに一致するリクエストは削除されずに除外されます。',
   'analytics.links.botsNote':
     '{count, plural, other {# 件のリクエスト}}自動化されたものとして分類され、重複排除のカウントから除外されました。',
   'analytics.links.series.title': '時間の経過に伴うリクエストと重複排除されたクリック数',
@@ -314,7 +314,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'このリンクは作成されてからリクエストされていません。これは、当社独自のリダイレクト サービスによって測定された実際のゼロです。',
   'analytics.links.compareWarning':
-    '{provider}レポート{providerValue}この投稿のリンクのクリック数。 Relay が記録されました{relayValue}重複排除されたクリック。 2 つは異なるイベントをカウントし、どちらも他方を置き換えません。',
+    '{provider}レポート{providerValue}この投稿のリンクのクリック数。 Post Array が記録されました{relayValue}重複排除されたクリック。 2 つは異なるイベントをカウントし、どちらも他方を置き換えません。',
   'analytics.links.errorTitle': 'リンク統計をロードできませんでした',
   'analytics.links.errorBody':
     'リダイレクト サービスはまだ機能しているため、リンクは訪問者を目的地に送り続けます。レポートのみが影響を受けます。',
@@ -324,7 +324,7 @@ export const webAnalyticsMessages = {
   'analytics.links.createCampaign': 'キャンペーン名',
   'analytics.links.createSlug': 'カスタムエンディング',
   'analytics.links.createSlugHelp':
-    'これを空のままにすると、Relay によって短いランダムなエンディングが生成されます。',
+    'これを空のままにすると、Post Array によって短いランダムなエンディングが生成されます。',
   'analytics.links.createUtm': 'UTMパラメータ',
   'analytics.links.blockedScheme': 'https 宛先のみが受け入れられます。',
   'analytics.links.blockedPrivate':
@@ -450,7 +450,7 @@ export const webAnalyticsMessages = {
     '{count, plural, other {# アクションは}}選択されたアカウントでは実行できないため、リストには表示されません。',
   'automation.picker.hiddenDetail': '{action}は利用できません{provider}。{reason}',
   'automation.picker.consequential': 'プラットフォーム上で何かを作成する',
-  'automation.picker.internalOnly': 'Relay 内に留まります',
+  'automation.picker.internalOnly': 'Post Array 内に留まります',
   'automation.accounts.label': 'このルールが適用されるアカウント',
   'automation.accounts.help':
     'ルールは、その条件が何であっても、ここにリストされていないアカウントには決して触れません。',
@@ -533,7 +533,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition}通過しなかったため、ルールはここで終了しました',
   'automation.test.actionSimulated': '{action}走るだろう',
   'automation.test.actionSkipped': '{action}スキップされます:{reason}',
-  'automation.test.noExternalEffect': 'このテストでは Relay は何も残りませんでした。',
+  'automation.test.noExternalEffect': 'このテストでは Post Array は何も残りませんでした。',
   'automation.test.failed': 'テストを完了できませんでした:{reason}',
   'automation.runs.table.caption': 'このルールの最近の実行。',
   'automation.runs.startedAt': '開始しました',
@@ -583,7 +583,7 @@ export const webAnalyticsMessages = {
     '自分で書いたものと同じ検証と承認を受けて、フィードを下書きまたは予約投稿に変換します。',
   'automation.rss.empty': 'まだフィードがありません',
   'automation.rss.emptyBody':
-    'フィードを追加すると、Relay がスケジュールに従ってフィードをチェックします。新しいアイテムはそれぞれ、下書き、スケジュールされた投稿、または承認リクエストのいずれかを選択します。',
+    'フィードを追加すると、Post Array がスケジュールに従ってフィードをチェックします。新しいアイテムはそれぞれ、下書き、スケジュールされた投稿、または承認リクエストのいずれかを選択します。',
   'automation.rss.emptyExample':
     '例: Acme ブログ フィードは、記事が公開されるたびに X および LinkedIn の下書きを作成し、承認者を待ちます。',
   'automation.rss.table.caption': 'このワークスペースの投票結果をフィードします。',
@@ -598,7 +598,7 @@ export const webAnalyticsMessages = {
   'automation.rss.step.policy': '発行方法',
   'automation.rss.stepOf': 'ステップ{current}の{total}',
   'automation.rss.urlHelp':
-    'Relay は、ブラウザーからではなくサーバーからフィードを取得します。プライベート ネットワーク アドレスは拒否されます。',
+    'Post Array は、ブラウザーからではなくサーバーからフィードを取得します。プライベート ネットワーク アドレスは拒否されます。',
   'automation.rss.validateAction': 'このフィードをチェックしてください',
   'automation.rss.validateFailed': 'そのアドレスは読み取り可能なフィードを返しませんでした',
   'automation.rss.validateFailedReason': '戻ってきたもの:{reason}',
@@ -611,7 +611,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'このアイテムには画像がありません',
   'automation.rss.previewImageAlt': 'フィード項目からの画像{title}',
   'automation.rss.previewNoDate':
-    'このアイテムにはタイムスタンプがないため、Relay は最初にそれを見た時間を使用します。',
+    'このアイテムにはタイムスタンプがないため、Post Array は最初にそれを見た時間を使用します。',
   'automation.rss.previewFieldsTitle': 'このフィードが提供するフィールド',
   'automation.rss.previewFieldMissing': 'このフィードには存在しません',
   'automation.rss.seenTitle': 'すでに見たものとして重要なもの',
@@ -635,7 +635,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': '最新のアイテムをプレビューする',
   'automation.rss.adaptWithAi': 'ターゲットごとにテキストを調整する',
   'automation.rss.adaptHelp':
-    '文言は各プラットフォームに合わせて書き換えられ、承認または拒否する差分として表示されます。メディアはフィード項目から取得されます。 Relay はイメージを生成しません。',
+    '文言は各プラットフォームに合わせて書き換えられ、承認または拒否する差分として表示されます。メディアはフィード項目から取得されます。 Post Array はイメージを生成しません。',
   'automation.rss.noImageGeneration':
     'フィード項目に画像がない場合、投稿は画像なしで送信されます。',
   'automation.rss.imageFromFeed': 'フィード項目に画像がある場合は、その画像を使用します',
@@ -669,10 +669,10 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'このフィードを再開する',
   'automation.rss.deleteTitle': '取り除く{title}?',
   'automation.rss.deleteBody':
-    'Relay はこのフィードのチェックを停止します。作成済みの下書きと投稿はそのまま残ります。',
+    'Post Array はこのフィードのチェックを停止します。作成済みの下書きと投稿はそのまま残ります。',
   'automation.rss.errorTitle': 'このフィードを読み取れませんでした',
   'automation.rss.errorBody':
-    'Relay は通常のスケジュールをチェックし続けます。部分的な回答からは何も公開されませんでした。',
+    'Post Array は通常のスケジュールをチェックし続けます。部分的な回答からは何も公開されませんでした。',
   'automation.refuse.title': 'どのルールでも使用できません',
   'automation.refuse.body':
     '自動的な「いいね」やフォロー、エンゲージメント グループ、一方的な返信やメッセージ、人気があるように見せるために複数のアカウントから同じコンテンツを投稿することは、ここではオプションではありません。プラットフォームはそれらを禁止しており、それらを使用するアカウントに損害を与えます。',

@@ -13,7 +13,7 @@ import { ACTIONS, type ActionSpec } from './catalog';
  *
  * The judgement is never made from a hard coded provider table. It comes from
  * the versioned capability snapshot of each connection, which distinguishes
- * "the provider has no such API" from "Relay has not built it yet". Those two
+ * "the provider has no such API" from "Post Array has not built it yet". Those two
  * produce different sentences, because they are different facts.
  */
 

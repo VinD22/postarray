@@ -13,7 +13,7 @@ import type { ActorContextLike, ContentItemSummary, RelayServicePort } from '../
  * disappear from, a real platform. Everything about them is deliberate:
  *
  * - each requires an `idempotency_key`, rejected rather than defaulted;
- * - `publish_post` requires a confirmation a person gave inside Relay, not one
+ * - `publish_post` requires a confirmation a person gave inside Post Array, not one
  *   the agent host claims to have collected;
  * - the plan a person confirms is fingerprinted, so changing the content after
  *   the confirmation invalidates it;
@@ -118,7 +118,7 @@ export const publishPostTool = defineTool({
   risk: 'consequential',
   summary: 'Publish an existing draft to its target accounts immediately.',
   sideEffects:
-    'posts to every target account now. It cannot be recalled from Relay once a platform has accepted it',
+    'posts to every target account now. It cannot be recalled from Post Array once a platform has accepted it',
   scopes: ['posts:publish'],
   approvalLevel: 'level_3_confirm',
   requiresIdempotencyKey: true,
@@ -127,7 +127,7 @@ export const publishPostTool = defineTool({
     content_item_id: z.string().min(1),
     /**
      * Omit on the first call. The tool returns a confirmation link and does
-     * nothing. Pass the id back after a person has approved it in Relay.
+     * nothing. Pass the id back after a person has approved it in Post Array.
      */
     confirmation_id: idSchema(ID_PREFIXES.agentConfirmation).optional(),
     ...idempotencyInputShape,
@@ -145,7 +145,7 @@ export const publishPostTool = defineTool({
         summary,
       });
       // Nothing has been published. The agent must come back with the id after
-      // a person approves it in Relay, in a session this server did not create.
+      // a person approves it in Post Array, in a session this server did not create.
       return {
         data: {
           status: 'confirmation_required',

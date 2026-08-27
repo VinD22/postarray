@@ -61,7 +61,7 @@ export const validationMessages = {
     'दोहराई जाने वाली पोस्ट के लिए अंतिम तिथि या कई बार दोहराव की आवश्यकता होती है।',
   'validation.schedule_in_past.message': 'वह समय बीत चुका है {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'ये उससे भी आगे है {limit} इस क्रेडेंशियल के लिए आगे देखें।',
+    'पोस्ट अधिकतम {limit} पहले तक शेड्यूल की जा सकती हैं; अपलोड किया गया मीडिया भी इतने ही समय तक रखा जाता है।',
   'validation.schedule_outside_quiet_hours.message':
     'यह निर्धारित शांत घंटों के अंतर्गत आता है {project}.',
   'validation.duplicate_within_window.message':

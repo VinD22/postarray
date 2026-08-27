@@ -6,7 +6,7 @@ export const errorMessages = {
   'error.internal.message': 'Đây là vấn đề về phía chúng tôi, không phải với nội dung của bạn.',
   'error.internal.action':
     'Công việc của bạn đã được lưu. Chúng tôi đã được cảnh báo. Hãy thử lại sau vài phút.',
-  'error.not_implemented.message': 'Relay chưa xây dựng cái này.',
+  'error.not_implemented.message': 'Post Array chưa xây dựng cái này.',
   'error.not_implemented.action': 'Theo dõi nhật ký thay đổi khi nó được vận chuyển.',
   'error.offline.message': 'Bạn đang ngoại tuyến.',
   'error.offline.action':
@@ -52,6 +52,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Cập nhật phương thức thanh toán trong cổng Polar.',
   'error.trial_expired.message': 'Cuộc thử nghiệm đã kết thúc vào {date}.',
   'error.trial_expired.action': 'Bắt đầu đăng ký để tiếp tục xuất bản.',
+  'error.post_credits_exhausted.message':
+    'Không gian làm việc này đã dùng hết các bài đăng miễn phí. Mọi thứ khác vẫn hoạt động.',
+  'error.post_credits_exhausted.action':
+    'Chọn một gói để tiếp tục đăng bài. Các tài khoản của bạn vẫn được kết nối, bản nháp và lịch đăng vẫn được giữ.',
   'error.entitlement_missing.message':
     'Không gian làm việc này không có quyền truy cập vào tính năng đó.',
   'error.entitlement_missing.action':
@@ -95,7 +99,7 @@ export const errorMessages = {
   'error.capability_unsupported.message':
     '{provider} không cung cấp tính năng này thông qua API chính thức.',
   'error.capability_unsupported.action': 'Sử dụng định dạng mà tài khoản này hỗ trợ.',
-  'error.capability_not_implemented.message': 'Relay chưa xây dựng tính năng này cho {provider}.',
+  'error.capability_not_implemented.message': 'Post Array chưa xây dựng tính năng này cho {provider}.',
   'error.capability_not_implemented.action':
     'Trang khả năng liệt kê những gì mỗi trình kết nối có thể thực hiện hiện nay.',
   'error.capability_requires_review.message':

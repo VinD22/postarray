@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'Un bureau de publication pour les personnes et les agents.',
   'shell.menu.open': 'Ouvrir le menu',
   'shell.menu.title': 'Menu',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Données de démonstration',
   'shell.demo.title': 'Vous consultez des données de démonstration',
   'shell.demo.body':
-    "L'API Relay n'est pas accessible à partir de ce navigateur, les écrans sont donc remplis avec un exemple d'espace de travail prédéfini. Rien ici n'est connecté à un compte réel et rien ne peut publier.",
+    "L'API Post Array n'est pas accessible à partir de ce navigateur, les écrans sont donc remplis avec un exemple d'espace de travail prédéfini. Rien ici n'est connecté à un compte réel et rien ne peut publier.",
   'shell.demo.howToConnect':
     "Définissez NEXT_PUBLIC_RELAY_API_URL et redémarrez l'application pour utiliser les données en direct.",
 
@@ -147,7 +147,7 @@ export const webShellMessages = {
   'home.trial.manage': 'Gérer ou annuler',
   'home.error.title': 'Impossible de charger la maison',
   'home.error.body':
-    "Votre espace de travail est intact. Il s'agit d'un problème pour atteindre l'API Relay.",
+    "Votre espace de travail est intact. Il s'agit d'un problème pour atteindre l'API Post Array.",
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': "Publiez via les API officielles et voyez exactement ce qui s'est passé.",
@@ -159,9 +159,9 @@ export const webShellMessages = {
     "Le même workflow depuis l'application web, l'API REST, MCP, la CLI et les webhooks.",
   'auth.provider.title': 'Avant de continuer',
   'auth.provider.google.access':
-    'Google partage votre nom, votre adresse e-mail et votre photo de profil avec Relay. Relay ne peut pas lire votre compte Gmail, Drive ou Agenda.',
+    'Google partage votre nom, votre adresse e-mail et votre photo de profil avec Post Array. Post Array ne peut pas lire votre compte Gmail, Drive ou Agenda.',
   'auth.provider.facebook.access':
-    "Facebook partage votre nom, votre adresse e-mail et votre photo de profil avec Relay. La connexion d'une page sur laquelle publier est une étape distincte que vous approuverez plus tard.",
+    "Facebook partage votre nom, votre adresse e-mail et votre photo de profil avec Post Array. La connexion d'une page sur laquelle publier est une étape distincte que vous approuverez plus tard.",
   'auth.provider.note': 'Cela vous connecte. Il ne connecte pas un compte sur lequel publier.',
   'auth.continueWithEmail': "Continuer avec l'e-mail",
   'auth.method.password': 'Mot de passe',
@@ -183,9 +183,7 @@ export const webShellMessages = {
     'Pour votre sécurité, nous ne disons pas si une adresse est enregistrée.',
   'auth.failure.provider': "La connexion avec {provider} n'a pas terminé. Rien n'a été changé.",
   'auth.failure.network':
-    "Nous n'avons pas pu atteindre Relay. Vérifiez votre connexion et réessayez.",
-  'auth.signUp.trialNote':
-    "Sept jours d'essai complets. Un mode de paiement est requis. 0 $ à payer aujourd'hui.",
+    "Nous n'avons pas pu atteindre Post Array. Vérifiez votre connexion et réessayez.",
   'auth.signUp.emailInUseNote':
     "Si cette adresse possède déjà un compte, nous envoyons par e-mail un lien de connexion au lieu d'en créer un deuxième.",
   'auth.legal.readTerms': 'Lire les conditions',
@@ -219,7 +217,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Détecté à partir de cet appareil : {timeZone}',
   'onboarding.connect.permissionsTitle': 'Quoi {provider} sera demandé',
   'onboarding.connect.permissionsFooter':
-    "Relay ne demande jamais une autorisation qu'il n'utilise pas et vous pouvez vous déconnecter à tout moment.",
+    "Post Array ne demande jamais une autorisation qu'il n'utilise pas et vous pouvez vous déconnecter à tout moment.",
   'onboarding.connect.chooseProvider': 'Choisissez une plateforme',
   'onboarding.connect.opensProvider': 'Ouvertures continues {provider} dans cet onglet.',
   'onboarding.compose.help':

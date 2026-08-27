@@ -11,7 +11,7 @@ export const errorMessages = {
   'error.internal.message': 'Це проблема з нашого боку, а не з вашим вмістом.',
   'error.internal.action':
     'Ваша робота збережена. Нас попереджено. Повторіть спробу через кілька хвилин.',
-  'error.not_implemented.message': 'Relay ще не створив цього.',
+  'error.not_implemented.message': 'Post Array ще не створив цього.',
   'error.not_implemented.action': 'Слідкуйте за журналом змін, коли він надійде.',
   'error.offline.message': 'Ви офлайн.',
   'error.offline.action':
@@ -60,6 +60,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Оновіть спосіб оплати на порталі Polar.',
   'error.trial_expired.message': 'Суд закінчився {date}.',
   'error.trial_expired.action': 'Розпочніть підписку, щоб продовжити публікацію.',
+  'error.post_credits_exhausted.message':
+    'У цьому робочому просторі використано всі безкоштовні дописи. Усе інше працює далі.',
+  'error.post_credits_exhausted.action':
+    'Оберіть тарифний план, щоб публікувати далі. Ваші акаунти лишаються підключеними, а чернетки та розклади збережено.',
   'error.entitlement_missing.message': 'Ця робоча область не має доступу до цієї функції.',
   'error.entitlement_missing.action':
     'Перевірте налаштування платежів або зверніться до служби підтримки.',
@@ -102,7 +106,7 @@ export const errorMessages = {
   'error.capability_unsupported.message': '{provider}не пропонує цей свій офіційний API.',
   'error.capability_unsupported.action':
     'Використовуйте формат, який підтримує цей обліковий запис.',
-  'error.capability_not_implemented.message': 'Relay не створив це для {provider} ще.',
+  'error.capability_not_implemented.message': 'Post Array не створив це для {provider} ще.',
   'error.capability_not_implemented.action':
     'На сторінці можливостей перелічено, що кожен конектор може робити сьогодні.',
   'error.capability_requires_review.message':

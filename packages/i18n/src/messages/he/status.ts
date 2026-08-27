@@ -76,6 +76,6 @@ export const statusMessages = withHebrewPluralForms({
   'confirm.cancelScheduled.body': 'זה לא יפורסם. הטיוטה נשארת כאן כדי שתוכל לתזמן אותה שוב.',
   'confirm.publishNow.title': 'לפרסם עכשיו?',
   'confirm.publishNow.body':
-    '{count, plural, one {זה מפרסם לחשבון אחד באופן מיידי} other {זה מתפרסם ל-# חשבונות באופן מיידי}}. לא ניתן להחזיר אותו מ-Relay.',
+    '{count, plural, one {זה מפרסם לחשבון אחד באופן מיידי} other {זה מתפרסם ל-# חשבונות באופן מיידי}}. לא ניתן להחזיר אותו מ-Post Array.',
   'confirm.typeToConfirm': 'הקלד {word} כדי לאשר.',
 });

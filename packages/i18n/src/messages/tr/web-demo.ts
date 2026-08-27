@@ -6,7 +6,7 @@
  * English, matching the other translated catalogs.
  */
 export const webDemoMessages = {
-  'web.meta.demo.title': 'Relay’in nasıl çalıştığını görün',
+  'web.meta.demo.title': 'Post Array’in nasıl çalıştığını görün',
   'web.meta.demo.description':
     'Yeni bir projeden alındıya kadar yayıncılık iş akışının, örnek içerikle gerçek arayüzde gösterilen rehberli bir turu. Henüz hiçbir şey yayınlanmıyor ve tur, o sınırın nerede olduğunu söylüyor.',
 
@@ -22,6 +22,10 @@ export const webDemoMessages = {
   'web.demo.control.play': 'Gösterimi oynat',
   'web.demo.control.replay': 'Gösterimi tekrar oynat',
 
+  'web.demo.hero.viewCta': 'Demoyu görüntüle',
+  'web.demo.hero.projectsLine':
+    'Tek bir hesap birden çok işletmeyi yönetir. Her proje, kendi bağlı hesapları, kendi takvimi ve kendi onaylarıyla ayrı bir işletmedir; aralarında tek bir menüden geçersiniz, tıpkı bir arama konsolunda mülk değiştirir gibi.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# hesap} other {# hesap}}',
   'web.demo.hero.caption':
     'Bir taslak, platform başına bir sürüm olur, bir zaman alır ve haftaya yerleşir. Örnek içerik, canlı bir hesap değil.',
   'web.demo.hero.more': 'Tüm iş akışını adım adım görün',

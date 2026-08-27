@@ -319,7 +319,7 @@ function toConfig(
       appUrl: env.APP_URL,
       apiUrl: env.API_URL,
       siteOrigin: env.NEXT_PUBLIC_SITE_ORIGIN,
-      allowFakeConnector: env.RELAY_ALLOW_FAKE_CONNECTOR,
+      allowFakeConnector: env.POSTARRAY_ALLOW_FAKE_CONNECTOR,
       logLevel: env.LOG_LEVEL,
     },
     database: {

@@ -24,7 +24,7 @@ composition, OAuth and canary blockers.
 
 ## 1. Mission and release posture
 
-Relay is a multi-tenant publishing control plane. A customer brings finished
+Post Array is a multi-tenant publishing control plane. A customer brings finished
 text or media, creates platform-native variants, obtains approval, publishes
 through official provider APIs and receives an immutable receipt. Web, REST,
 MCP, CLI and signed webhooks must call the same application services,
@@ -146,8 +146,8 @@ Files and commands: `packages/database/migrations/`,
 
 Tasks:
 
-1. Create a Relay-owned isolated Neon branch. Do not use the MCP-visible
-   `ldr-app` project as Relay data; its inspected branches have no Relay
+1. Create a Post Array-owned isolated Neon branch. Do not use the MCP-visible
+   `ldr-app` project as Post Array data; its inspected branches have no Post Array
    migration ledger or product tables.
 2. Apply the reviewed migration set through
    `0063_credential_envelope_v1.sql`. Verify checksums and ledger without
@@ -241,12 +241,12 @@ Tasks:
 2. Persist the seven-day cooling-off request before scheduling. Use one
    deterministic workflow ID, support cancellation and return the same row on
    duplicate requests or worker restarts.
-3. During execution cancel Relay jobs, remove Relay credentials and secrets,
+3. During execution cancel Post Array jobs, remove Post Array credentials and secrets,
    page through tenant storage, expire export objects, revoke memberships and
    active sessions, tombstone analytics as `unavailable`, and soft-delete the
    workspace while retention-bound audit and publication evidence remains
    addressable. Published provider posts are never claimed to be erased.
-4. Distinguish Relay credential removal from provider-side revoke. Do not claim
+4. Distinguish Post Array credential removal from provider-side revoke. Do not claim
    official provider revoke until the connector adapter has passed its gate.
 
 Acceptance: real Prisma/RLS run, seven-day request/cancel browser journey,
@@ -463,8 +463,8 @@ Do not replace those failures with a local or MCP-connected database.
 
 These are external-state blockers, not reasons to weaken a gate:
 
-- The MCP-visible Neon project `ldr-app` is not the Relay database and must not
-  receive migrations or product data. A Relay-owned branch and credentials are
+- The MCP-visible Neon project `ldr-app` is not the Post Array database and must not
+  receive migrations or product data. A Post Array-owned branch and credentials are
   required before `release:check` can pass.
 - No database URL, KMS key, private Storage bucket, Neon Auth tenant, Redis,
   Temporal namespace, mail sender, provider OAuth application or Polar merchant

@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon підключається за токеном доступу, створеним на вашому сервері, а не за паролем.',
   'web.connection.requirement.telegram':
-    'Relay публікує від імені бота. Додайте бота в канал або групу, куди хочете публікувати.',
+    'Post Array публікує від імені бота. Додайте бота в канал або групу, куди хочете публікувати.',
   'web.connection.requirement.reddit':
     'Запис у Reddit вимагає схваленого застосунку, а кожній публікації потрібні заголовок і сабредит.',
   'web.connection.requirement.wordpress':
-    'Relay публікує через REST API сайту з паролем застосунку, створеним у WordPress.',
+    'Post Array публікує через REST API сайту з паролем застосунку, створеним у WordPress.',
   'web.connection.requirement.medium':
-    'Medium підключається через OAuth, і Relay публікує відкриті історії в Markdown.',
+    'Medium підключається через OAuth, і Post Array публікує відкриті історії в Markdown.',
   'web.connection.requirement.devto':
     'Dev.to підключається за API-ключем, створеним у налаштуваннях Dev.to.',
   'web.connection.requirement.pinterest':
     'Запис у Pinterest вимагає схваленого доступу застосунку, а піну потрібні зображення і власна дошка.',
   'web.connection.requirement.discord':
-    'Relay публікує від імені бота. Додайте бота на сервери й у канали, куди хочете публікувати.',
+    'Post Array публікує від імені бота. Додайте бота на сервери й у канали, куди хочете публікувати.',
   'web.connection.requirement.slack':
-    'Relay публікує від імені застосунку. Додайте застосунок у канали, куди хочете публікувати.',
+    'Post Array публікує від імені застосунку. Додайте застосунок у канали, куди хочете публікувати.',
   'web.provider.fake': "Тестовий роз'єм",
 
   'web.accountType.personal_profile': 'Особистий профіль',
@@ -165,7 +165,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'Ця публікація вже опублікована',
   'web.calendar.published.body':
-    'Публікація існує на {provider} в {permalinkLabel}. Переміщення запису в Relay не переміщує публікацію на платформі. Виберіть те, що ви хочете, щоб сталося.',
+    'Публікація існує на {provider} в {permalinkLabel}. Переміщення запису в Post Array не переміщує публікацію на платформі. Виберіть те, що ви хочете, щоб сталося.',
   'web.calendar.published.optionLocal': 'Оновлюйте лише локальний запис',
   'web.calendar.published.optionLocalHint':
     'Квитанція зберігає реальний час публікації. Зміщується лише запис про планування, тому ваш календар відповідає вашому плану.',
@@ -268,7 +268,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Аналітику для цієї публікації ще не синхронізовано.',
   'web.receipt.analytics.explain':
-    'Постачальники збираються за власним графіком. Нижче вказано час, коли Relay востаннє їх читав, а не час, коли цифри були правдивими.',
+    'Постачальники збираються за власним графіком. Нижче вказано час, коли Post Array востаннє їх читав, а не час, коли цифри були правдивими.',
 
   'web.receipt.export.download': 'Завантажте квитанцію',
   'web.receipt.export.copyReference': 'Скопіюйте довідку про отримання',
@@ -280,11 +280,11 @@ export const webCalendarMessages = {
     'Повторна спроба ніколи не торкається цілі, яка вже створила зовнішню публікацію.',
 
   'web.receipt.remediation.user_action_required':
-    'Для цього потрібно внести зміни в Relay або на {provider} перш ніж він може запуститися знову.',
+    'Для цього потрібно внести зміни в Post Array або на {provider} перш ніж він може запуститися знову.',
   'web.receipt.remediation.content_invalid':
     'Відредагуйте вміст, щоб він проходив {provider} перевірки, а потім знову заплануйте її.',
   'web.receipt.remediation.transient_provider':
-    '{provider}тимчасову помилку. Relay повторив спробу за власним розкладом.',
+    '{provider}тимчасову помилку. Post Array повторив спробу за власним розкладом.',
   'web.receipt.remediation.permanent_provider':
     '{provider}відмовився від цього назавжди. Повторна спроба того самого вмісту не змінити відповідь.',
   'web.receipt.remediation.internal':
@@ -349,17 +349,17 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {#запланований пост} few {# заплановані публікації} many {# заплановані публікації} other {# заплановані публікації}} для цього запису не буде опубліковано.',
   'web.connection.disconnect.consequence.published':
-    'Вже опубліковані публікації залишаються {provider}. Relay не видає їх.',
+    'Вже опубліковані публікації залишаються {provider}. Post Array не видає їх.',
   'web.connection.disconnect.consequence.analytics':
     'Уже зібрані показники залишаються в цій робочій області та припиняють оновлення.',
 
   'web.connection.connect.title': 'Підключіть обліковий запис',
   'web.connection.connect.chooseProvider': 'Яка платформа',
-  'web.connection.connect.permissionHeading': 'Що запитує Relay {provider} для',
+  'web.connection.connect.permissionHeading': 'Що запитує Post Array {provider} для',
   'web.connection.connect.requirementHeading': 'Перш ніж продовжити',
   'web.connection.connect.continue': 'Продовжуйте{provider}',
   'web.connection.connect.handoffNote':
-    'Наступний екран {provider}, а не Relay. Relay ніколи не бачив ваш пароль.',
+    'Наступний екран {provider}, а не Post Array. Post Array ніколи не бачив ваш пароль.',
   'web.connection.connect.noWriteWithoutApproval':
     'Підключення облікового запису нічого не публікує. Кожна публікація досі відповідає цій політиці схвалення робочої області.',
 
@@ -373,13 +373,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Для публікації Instagram потрібен професійний обліковий запис, який означає обліковий запис компанії або творця, пов’язаний зі сторінкою Facebook.',
   'web.connection.requirement.facebook':
-    'Relay публікує на Facebook Pages. Особистий профіль не може бути метою публікації.',
+    'Post Array публікує на Facebook Pages. Особистий профіль не може бути метою публікації.',
   'web.connection.requirement.linkedin':
     'Щоб опублікувати для організації, вам потрібна роль адміністратора вмісту на сторінці LinkedIn.',
   'web.connection.requirement.youtube':
     'Доки Google не завершить перевірку програми, завантаження з цього проекту публікуються як приватні. Згодом ви можете змінити видимість на YouTube.',
   'web.connection.requirement.tiktok':
-    'TikTok вимагає, щоб ви самі вибирали аудиторію для кожної публікації. Relay не може попередньо вибрати для вас.',
+    'TikTok вимагає, щоб ви самі вибирали аудиторію для кожної публікації. Post Array не може попередньо вибрати для вас.',
   'web.connection.requirement.x':
     'X плати за операцію. Публікація, яка містить URL, коштує дорожче, ніж публікація звичайного тексту, а кошторис показується перед заплануванням.',
   'web.connection.requirement.threads':
@@ -387,13 +387,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky підключається за допомогою пароля програми, створеного в налаштуваннях Bluesky, а не пароля облікового запису.',
   'web.connection.requirement.generic':
-    'Вам потрібен дозвіл на публікацію в цьому обліковому записі від самої платформи. Relay не може надати його.',
+    'Вам потрібен дозвіл на публікацію в цьому обліковому записі від самої платформи. Post Array не може надати його.',
 
-  'web.connection.purpose.publish': 'Публікація запланованих публікацій у Relay.',
+  'web.connection.purpose.publish': 'Публікація запланованих публікацій у Post Array.',
   'web.connection.purpose.readPosts':
-    'Читання опублікованого допису Relay, тому квитанція може підтвердити, що він активний.',
+    'Читання опублікованого допису Post Array, тому квитанція може підтвердити, що він активний.',
   'web.connection.purpose.identity':
-    'Показ точної назви облікового запису в Relay, щоб ви ніколи не публікували в неправильному обліковому записі.',
+    'Показ точної назви облікового запису в Post Array, щоб ви ніколи не публікували в неправильному обліковому записі.',
   'web.connection.purpose.analytics':
     'Читання показників, які звітує ця платформа для ваших власних публікацій.',
   'web.connection.purpose.refresh':
@@ -404,7 +404,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Дозволи на{account}',
   'web.connection.permissions.scopeColumn': 'Дозвіл',
   'web.connection.permissions.stateColumn': 'Держава',
-  'web.connection.permissions.purposeColumn': 'Для чого його використовує Relay',
+  'web.connection.permissions.purposeColumn': 'Для чого його використовує Post Array',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {#дозвіл відсутній} few {# відсутні дозволи} many {# відсутні дозволи} other {# відсутні дозволи}}. Повторно підключіться та прийміть його, щоб відновити наведені нижче функції.',
   'web.connection.permissions.snapshot': 'Читайте з{provider} {relativeTime}',
@@ -416,9 +416,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'Можливість',
   'web.connection.capability.legendTitle': 'Як це читати',
   'web.connection.capability.legend.supported':
-    'Relay може зробити це сьогодні для підключеного облікового запису потрібного типу.',
+    'Post Array може зробити це сьогодні для підключеного облікового запису потрібного типу.',
   'web.connection.capability.legend.not_implemented':
-    'Платформа пропонує це, і Relay ще не створив її. Це на дорожній карті роз’єму.',
+    'Платформа пропонує це, і Post Array ще не створив її. Це на дорожній карті роз’єму.',
   'web.connection.capability.legend.unsupported':
     'Платформа не пропонує цього через свій офіційний API, тому жоден інструмент не може зробити це безпечно.',
   'web.connection.capability.legend.requires_review':

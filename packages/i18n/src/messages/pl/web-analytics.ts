@@ -304,9 +304,9 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Utwórz link śledzony',
   'analytics.links.empty': 'Brak jeszcze śledzonych linków',
   'analytics.links.emptyBody':
-    'Śledzony link to krótki adres URL, przez który przekierowuje Relay, dzięki czemu możesz zobaczyć kliknięcia, nawet jeśli platforma ich nie zgłasza. Pierwotne miejsce docelowe nigdy nie jest zmieniane bez wpisu kontroli.',
+    'Śledzony link to krótki adres URL, przez który przekierowuje Post Array, dzięki czemu możesz zobaczyć kliknięcia, nawet jeśli platforma ich nie zgłasza. Pierwotne miejsce docelowe nigdy nie jest zmieniane bez wpisu kontroli.',
   'analytics.links.emptyExample':
-    'Przykład: Relay.to/a7Kq2 przekierowuje do acme.com/blog/launch z kampanią q3-launch.',
+    'Przykład: Post Array.to/a7Kq2 przekierowuje do acme.com/blog/launch z kampanią q3-launch.',
   'analytics.links.table.caption':
     'Śledzone linki w tym obszarze roboczym i liczba ich pierwszych kliknięć.',
   'analytics.links.campaign': 'Kampania',
@@ -709,7 +709,7 @@ export const webAnalyticsMessages = {
     'Zamień kanał w wersje robocze lub zaplanowane posty z taką samą walidacją i zatwierdzeniem, jak wszystko, co napiszesz samodzielnie.',
   'automation.rss.empty': 'Brak jeszcze kanałów',
   'automation.rss.emptyBody':
-    'Dodaj kanał, a Relay sprawdzi go zgodnie z harmonogramem. Każdy nowy element staje się wersją roboczą, zaplanowanym postem lub prośbą o zatwierdzenie, w zależności od tego, co wybierzesz.',
+    'Dodaj kanał, a Post Array sprawdzi go zgodnie z harmonogramem. Każdy nowy element staje się wersją roboczą, zaplanowanym postem lub prośbą o zatwierdzenie, w zależności od tego, co wybierzesz.',
   'automation.rss.emptyExample':
     'Przykład: kanał bloga Acme tworzy wersję roboczą dla X i LinkedIn za każdym razem, gdy publikowany jest artykuł, i czeka na zatwierdzenie.',
   'automation.rss.table.caption': 'Zasila ankiety tego obszaru roboczego.',
@@ -738,7 +738,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Brak obrazu w tym elemencie',
   'automation.rss.previewImageAlt': 'Obraz z elementu kanału {title}',
   'automation.rss.previewNoDate':
-    'Ten element nie ma sygnatury czasowej, więc Relay wykorzystuje czas, w którym został zobaczony po raz pierwszy.',
+    'Ten element nie ma sygnatury czasowej, więc Post Array wykorzystuje czas, w którym został zobaczony po raz pierwszy.',
   'automation.rss.previewFieldsTitle': 'Pola udostępniane przez ten kanał',
   'automation.rss.previewFieldMissing': 'Nie ma w tym kanale',
 
@@ -810,7 +810,7 @@ export const webAnalyticsMessages = {
     'Przekaźnik sprawdza zgodnie z normalnym harmonogramem. Z częściowej odpowiedzi nic nie zostało opublikowane.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Niedostępne w żadnej regule',
   'automation.refuse.body':

@@ -1,4 +1,4 @@
-# Relay
+# Post Array
 
 A multilingual social publishing control plane for people and agents.
 
@@ -8,7 +8,7 @@ happened. The same workflow is available from the web app, a REST API, a remote
 MCP server, a CLI and signed webhooks. All of them share one backend, one
 authorization model and one approval policy.
 
-`Relay` is a working codename.
+`Post Array` is a working codename.
 
 ## Status
 

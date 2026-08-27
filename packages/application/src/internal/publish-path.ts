@@ -2,6 +2,7 @@ import { evaluateAgentAction, type AgentActionKind, type AgentTarget } from '@re
 import {
   ApprovalRequiredError,
   EntitlementRequiredError,
+  MAX_SCHEDULE_HORIZON_DAYS,
   PolicyBlockedError,
   hasErrors,
   publishHoldReasonSchema,
@@ -245,6 +246,19 @@ export async function runPublishPath(
       issueCodes: validation.issues
         .filter((issue) => issue.severity === 'error')
         .map((issue) => issue.code),
+    });
+  }
+
+  // 1b. The schedule horizon, before anything is frozen. Thirty days, the
+  //     same window media is retained for, so a scheduled post can never
+  //     outlive its own attachments. `publishNow` passes the current instant
+  //     and sails through.
+  const horizonMs = MAX_SCHEDULE_HORIZON_DAYS * 24 * 60 * 60 * 1000;
+  const requestedInstant = new Date(input.scheduleSpec.instant).getTime();
+  if (requestedInstant > deps.clock.now().getTime() + horizonMs) {
+    throw invalid('validation.schedule_too_far_ahead.message', {
+      limit: `${MAX_SCHEDULE_HORIZON_DAYS} days`,
+      instant: input.scheduleSpec.instant,
     });
   }
 

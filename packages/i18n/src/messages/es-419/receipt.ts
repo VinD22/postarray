@@ -23,7 +23,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'cuenta de servicio {name}',
   'receipt.actor.oauthApp': '{app}actuando para {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
   'receipt.timeline.title': 'Línea de tiempo',
   'receipt.timeline.created': 'Borrador creado por {actor}',
   'receipt.timeline.approvalRequested': 'Aprobación solicitada de {approver}',

@@ -10,7 +10,7 @@ import { join } from 'node:path';
  * during a support conversation can never leak a token.
  */
 
-export const CONFIG_DIR_NAME = 'relay';
+export const CONFIG_DIR_NAME = 'postarray';
 export const CONFIG_FILE_NAME = 'config.json';
 export const CREDENTIALS_FILE_NAME = 'credentials.json';
 

@@ -107,7 +107,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Bu dönemde {account} takipçi sayısı {percent} değişti.',
   'analytics.evidence.confounder.paid':
-    'Relay, bu gönderilerden herhangi birinin ücretli dağıtım alıp almadığını söyleyemez.',
+    'Post Array, bu gönderilerden herhangi birinin ücretli dağıtım alıp almadığını söyleyemez.',
   'analytics.evidence.confounder.provider':
     '{provider} bu dönemde {metric} raporlama şeklini değiştirdi.',
 
@@ -389,7 +389,7 @@ export const webAnalyticsMessages = {
     'Herkese açık bir https adresi olmalıdır. Özel ağ adresleri ve yönlendirme zincirleri, yönlendirme hizmeti tarafından reddedilir.',
   'analytics.links.createCampaign': 'Kampanya adı',
   'analytics.links.createSlug': 'Özel bitiş',
-  'analytics.links.createSlugHelp': 'Bunu boş bırakın ve Relay kısa, rastgele bir son oluşturur.',
+  'analytics.links.createSlugHelp': 'Bunu boş bırakın ve Post Array kısa, rastgele bir son oluşturur.',
   'analytics.links.createUtm': 'UTM parametreleri',
   'analytics.links.blockedScheme': 'Yalnızca https hedefleri kabul edilir.',
   'analytics.links.blockedPrivate':
@@ -535,7 +535,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# işlem} other {# işlem}} seçilen hesaplar bunları gerçekleştiremediğinden listelenmiyor.',
   'automation.picker.hiddenDetail': '{action} {provider} için mevcut değildir. {reason}',
   'automation.picker.consequential': 'Bir platformda bir şeyler yaratır',
-  'automation.picker.internalOnly': "Relay'in içinde kalır",
+  'automation.picker.internalOnly': "Post Array'in içinde kalır",
 
   'automation.accounts.label': 'Bu kuralın geçerli olabileceği hesaplar',
   'automation.accounts.help':
@@ -714,7 +714,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Adım {current} / {total}',
 
   'automation.rss.urlHelp':
-    'Relay, yayını tarayıcınızdan değil, sunucularımızdan alır. Özel ağ adresleri reddedilir.',
+    'Post Array, yayını tarayıcınızdan değil, sunucularımızdan alır. Özel ağ adresleri reddedilir.',
   'automation.rss.validateAction': "Bu feed'i kontrol edin",
   'automation.rss.validateFailed': 'Bu adres okunabilir bir yayın döndürmedi',
   'automation.rss.validateFailedReason': 'Geri aldığımız şey: {reason}',
@@ -726,7 +726,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Bu öğede resim yok',
   'automation.rss.previewImageAlt': 'Besleme öğesinden resim {title}',
   'automation.rss.previewNoDate':
-    'Bu öğenin zaman damgası yoktur, dolayısıyla Relay onu ilk gördüğü zamanı kullanır.',
+    'Bu öğenin zaman damgası yoktur, dolayısıyla Post Array onu ilk gördüğü zamanı kullanır.',
   'automation.rss.previewFieldsTitle': "Bu feed'in sağladığı alanlar",
   'automation.rss.previewFieldMissing': "Bu feed'de mevcut değil",
 
@@ -798,7 +798,7 @@ export const webAnalyticsMessages = {
     'Röle normal programda kontrol etmeye devam ediyor. Kısmi bir yanıttan hiçbir şey yayınlanmadı.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Hiçbir kuralda mevcut değil',
   'automation.refuse.body':

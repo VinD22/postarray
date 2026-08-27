@@ -123,7 +123,7 @@ export const webAnalyticsMessages = withHebrewPluralForms({
   'analytics.format.document': 'מסמך',
   'analytics.format.thread': 'חוט',
   'analytics.value.unavailableReason.notImplemented':
-    'Relay עדיין לא בנה את המיפוי עבור המדד הזה ב-{provider}.',
+    'Post Array עדיין לא בנה את המיפוי עבור המדד הזה ב-{provider}.',
   'analytics.value.estimated': 'משוער',
   'analytics.value.estimatedMethod': 'שיטה: {method}.',
   'analytics.freshness.title': 'מאיפה הגיעו המספרים האלה',
@@ -222,7 +222,7 @@ export const webAnalyticsMessages = withHebrewPluralForms({
     'אנליטיקה צריכה את תפקיד האנליסט או יותר. בעלים או מנהל של סביבת עבודה זו יכולים להעניק זאת.',
   'analytics.state.rateLimitTitle': '{provider} הוא בקשות ניתוח מגבילות קצב',
   'analytics.state.rateLimitCause':
-    'החשבון השתמש בחלקו במכסת הספקים עבור חלון זה. Relay לא מנסה שוב יותר, כי זה יעכב את הפרסום.',
+    'החשבון השתמש בחלקו במכסת הספקים עבור חלון זה. Post Array לא מנסה שוב יותר, כי זה יעכב את הפרסום.',
   'analytics.state.rateLimitAlternative':
     'צמצם את טווח התאריכים או את מסנן החשבון, שמבקש מהספק פחות.',
   'analytics.state.rateLimitReset': 'בקשות מתחדשות',
@@ -230,7 +230,7 @@ export const webAnalyticsMessages = withHebrewPluralForms({
   'analytics.links.new': 'צור קישור במעקב',
   'analytics.links.empty': 'עדיין אין קישורים במעקב',
   'analytics.links.emptyBody':
-    'קישור במעקב הוא מפנה כתובת URL קצרה דרך Relay, כך שתוכל לראות קליקים גם כאשר פלטפורמה לא מדווחת על שום קליקים. היעד המקורי לעולם לא משתנה ללא ערך ביקורת.',
+    'קישור במעקב הוא מפנה כתובת URL קצרה דרך Post Array, כך שתוכל לראות קליקים גם כאשר פלטפורמה לא מדווחת על שום קליקים. היעד המקורי לעולם לא משתנה ללא ערך ביקורת.',
   'analytics.links.emptyExample':
     'דוגמה: relay.to/a7Kq2 מפנה אל acme.com/blog/launch עם מסע פרסום q3-launch.',
   'analytics.links.table.caption':
@@ -566,7 +566,7 @@ export const webAnalyticsMessages = withHebrewPluralForms({
     'הפוך עדכון לטיוטות או פוסטים מתוזמנים, עם אותם אימות ואישור כמו כל דבר שאתה כותב בעצמך.',
   'automation.rss.empty': 'אין עדיין עדכונים',
   'automation.rss.emptyBody':
-    'הוסף עדכון ו-Relay בודק אותו לפי לוח זמנים. כל פריט חדש הופך לטיוטה, לפוסט מתוזמן או לבקשת אישור, לפי מה שתבחרו.',
+    'הוסף עדכון ו-Post Array בודק אותו לפי לוח זמנים. כל פריט חדש הופך לטיוטה, לפוסט מתוזמן או לבקשת אישור, לפי מה שתבחרו.',
   'automation.rss.emptyExample':
     'דוגמה: פיד הבלוג של Acme יוצר טיוטה עבור X ו-LinkedIn בכל פעם שמתפרסם מאמר, וממתין למאשר.',
   'automation.rss.table.caption': 'מזין את הסקרים של סביבת העבודה הזו.',
@@ -593,7 +593,7 @@ export const webAnalyticsMessages = withHebrewPluralForms({
   'automation.rss.previewNoImage': 'אין תמונה בפריט זה',
   'automation.rss.previewImageAlt': 'תמונה מפריט העדכון {title}',
   'automation.rss.previewNoDate':
-    'לפריט זה אין חותמת זמן, אז Relay משתמש בזמן שבו הוא ראה אותו לראשונה.',
+    'לפריט זה אין חותמת זמן, אז Post Array משתמש בזמן שבו הוא ראה אותו לראשונה.',
   'automation.rss.previewFieldsTitle': 'שדות שהעדכון הזה מספק',
   'automation.rss.previewFieldMissing': 'לא קיים בפיד הזה',
   'automation.rss.seenTitle': 'מה נחשב כפי שכבר נראה',

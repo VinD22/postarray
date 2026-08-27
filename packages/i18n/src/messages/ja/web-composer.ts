@@ -130,7 +130,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider}では、このアカウント タイプのエンティティ検索は提供されません。',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay はエンティティ検索を構築していません{provider}まだ。その間、何も推測されません。',
+    'Post Array はエンティティ検索を構築していません{provider}まだ。その間、何も推測されません。',
   'composerWeb.entity.searchHint': '少なくとも 2 文字を入力し、結果を選択します。',
   'composerWeb.entity.resultCount': '{count, plural, other {# 件の一致}}',
   'composerWeb.links.heading': 'リンク',
@@ -145,7 +145,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': '学期',
   'composerWeb.links.utmContent': 'コンテンツ',
   'composerWeb.links.domainVerified': '{domain}、このワークスペースに対して確認済み',
-  'composerWeb.links.domainDefault': 'Relay デフォルト ドメイン',
+  'composerWeb.links.domainDefault': 'Post Array デフォルト ドメイン',
   'composerWeb.links.domainNone': 'ブランド ドメインはまだ検証されていません。',
   'composerWeb.links.notAllowedHere': '{account}ここではリンクを許可しません。',
   'composerWeb.sequence.kindComment': 'コメント',
@@ -201,7 +201,7 @@ export const webComposerMessages = {
     'この主張に関する情報源は見つかりませんでした。公開する前に確認してください。',
   'composerWeb.assist.failed': 'アシストリクエストは完了しませんでした。テキストは変更されません。',
   'composerWeb.assist.noMediaGeneration':
-    'Relay は画像やビデオを作成しません。完成したファイルをライブラリに持ち込み、ここで公開します。',
+    'Post Array は画像やビデオを作成しません。完成したファイルをライブラリに持ち込み、ここで公開します。',
   'composerWeb.autosave.pinned':
     'これは承認されたバージョンです。編集すると新しいバージョンが作成され、承認がクリアされます。',
   'composerWeb.autosave.pinnedAcknowledge': '承認を編集およびクリアする',
@@ -246,7 +246,7 @@ export const webComposerMessages = {
     '何も失われませんでした。もう一度試してください。失敗し続ける場合は、サポートがリクエストを見つけるのに以下の参照が役立ちます。',
   'composerWeb.page.noConnectionsTitle': '作曲する前にアカウントを接続する',
   'composerWeb.page.noConnectionsBody':
-    'Relay が制限、プレビュー、表示する設定を認識できるように、下書きには少なくとも 1 つの接続されたアカウントが必要です。',
+    'Post Array が制限、プレビュー、表示する設定を認識できるように、下書きには少なくとも 1 つの接続されたアカウントが必要です。',
   'composerWeb.page.noConnectionsExample':
     '例: X と LinkedIn を接続すると、1 つのドラフトが独自のカウンターを持つ 2 つのネイティブ バージョンになります。',
   'composerWeb.page.permissionTitle': 'このワークスペースでは投稿を作成できません',
@@ -274,7 +274,7 @@ export const webComposerMessages = {
   'mediaLib.openDetail': '開ける{name}',
   'mediaLib.empty.title': 'まだメディアがありません',
   'mediaLib.empty.body':
-    'すでに持っている画像やビデオをアップロードするか、URL からファイルをインポートします。 Relay は、公開先の各アカウントに対してタイプとサイズをチェックします。',
+    'すでに持っている画像やビデオをアップロードするか、URL からファイルをインポートします。 Post Array は、公開先の各アカウントに対してタイプとサイズをチェックします。',
   'mediaLib.empty.example':
     '例: launch_hero.jpg、1600 x 900、代替テキスト セット、2 つの投稿で使用。',
   'mediaLib.error.title': 'ライブラリをロードできませんでした',
@@ -395,7 +395,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'このファイルには埋め込みコンテンツの認証情報は含まれません。それはよくあることであり、何かが間違っているというわけではありません。',
   'mediaLib.provenance.unverified':
-    'これらの詳細は、Relay ではなく、ソースから取得されます。信頼する前に確認してください。',
+    'これらの詳細は、Post Array ではなく、ソースから取得されます。信頼する前に確認してください。',
   'mediaLib.picker.title': 'メディアの選択',
   'mediaLib.picker.description':
     'ファイルは、このドラフトで選択されたアカウントに対してチェックされます。',

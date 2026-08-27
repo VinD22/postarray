@@ -224,7 +224,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'ได้รับอนุญาตแล้ว',
   'settings.ui.security.socialPermissionsTitle': 'การอนุญาตบัญชีโซเชียล',
   'settings.ui.security.socialPermissionsBody':
-    'สิ่งที่บัญชีที่เชื่อมต่อแต่ละบัญชีอนุญาตให้ Relay ทำได้ จากภาพรวมความสามารถที่ถ่ายในเวลาการเชื่อมต่อ',
+    'สิ่งที่บัญชีที่เชื่อมต่อแต่ละบัญชีอนุญาตให้ Post Array ทำได้ จากภาพรวมความสามารถที่ถ่ายในเวลาการเชื่อมต่อ',
   'settings.ui.security.viewInSection': 'จัดการใน {section}',
   'settings.ui.security.emptySessions': 'เฉพาะเซสชันนี้เท่านั้นที่ลงชื่อเข้าใช้',
   'settings.ui.security.emptyGrants':
@@ -258,7 +258,7 @@ export const webSettingsMessages = {
     'เลือกสิ่งที่เล็กที่สุดที่จะแก้ปัญหาของคุณ แต่ละตัวเลือกด้านล่างจะระบุถึงสิ่งที่ยังคงอยู่',
   'settings.ui.data.deleteConnection': 'เพิกถอนการเชื่อมต่อทางสังคมหนึ่งรายการ',
   'settings.ui.data.deleteConnectionHelp':
-    'ลบการเข้าถึงบัญชีนั้น Relay พื้นที่ทำงาน เนื้อหา และใบเสร็จรับเงินจะยังคงอยู่',
+    'ลบการเข้าถึงบัญชีนั้น Post Array พื้นที่ทำงาน เนื้อหา และใบเสร็จรับเงินจะยังคงอยู่',
   'settings.ui.data.deleteProject': 'ลบแบรนด์',
   'settings.ui.data.deleteProjectHelp':
     'ลบแบรนด์ กฎเกณฑ์ และอภิธานศัพท์ออก เนื้อหาที่เผยแพร่ภายใต้จะเก็บใบเสร็จรับเงินไว้',
@@ -285,7 +285,7 @@ export const webSettingsMessages = {
     'โพสต์ที่เผยแพร่บนแพลตฟอร์มแล้วจะไม่ถูกลบ ลบสิ่งเหล่านั้นบนแพลตฟอร์ม',
   'settings.ui.data.exportFirst': 'ส่งออกข้อมูลของคุณก่อนที่จะลบ',
   'settings.ui.referral.description':
-    'แบ่งปัน Relay พร้อมลิงก์ที่เปิดเผย ค่าคอมมิชชันไม่มีเงื่อนไขในการทบทวนเชิงบวก',
+    'แบ่งปัน Post Array พร้อมลิงก์ที่เปิดเผย ค่าคอมมิชชันไม่มีเงื่อนไขในการทบทวนเชิงบวก',
   'settings.ui.referral.linkLabel': 'ลิงค์ผู้อ้างอิงของคุณ',
   'settings.ui.referral.tableCaption':
     'การลงชื่อสมัครใช้ที่มีการระบุแหล่งที่มาและสถานะค่าคอมมิชชั่น',
@@ -416,7 +416,7 @@ export const webSettingsMessages = {
     'ลงทะเบียนแอปพลิเคชันเพื่อให้บุคคลอื่นสามารถให้สิทธิ์ในการเข้าถึงพื้นที่ทำงานของตนได้ แต่ละแอปมีเอกลักษณ์ของตัวเอง รายการอนุญาตการเปลี่ยนเส้นทาง และเส้นทางการตรวจสอบของตัวเอง',
   'developer.ui.apps.emptyTitle': 'ไม่มีแอปที่ลงทะเบียน',
   'developer.ui.apps.emptyBody':
-    'ลงทะเบียนแอปเมื่อผลิตภัณฑ์อื่นจำเป็นต้องดำเนินการในนามของผู้ใช้ Relay สำหรับระบบอัตโนมัติของคุณเอง ให้ใช้บัญชีบริการแทน',
+    'ลงทะเบียนแอปเมื่อผลิตภัณฑ์อื่นจำเป็นต้องดำเนินการในนามของผู้ใช้ Post Array สำหรับระบบอัตโนมัติของคุณเอง ให้ใช้บัญชีบริการแทน',
   'developer.ui.apps.emptyExample':
     'ตัวอย่าง: "Acme Publisher" ลูกค้าที่เป็นความลับ เปลี่ยนเส้นทาง https://acme.example/oauth/callback ขอบเขตบัญชี:อ่านและร่าง:เขียน',
   'developer.ui.apps.typeHelp':
@@ -439,7 +439,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroup.consequential': 'สิทธิ์ที่ตามมา',
   'developer.ui.apps.scopeGroupHelp.read': 'สิ่งเหล่านี้ทำให้แอปดูข้อมูลได้ ไม่มีอะไรเปลี่ยนแปลง',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'สิ่งเหล่านี้ทำให้แอปสร้างหรือแก้ไขสิ่งต่าง ๆ ภายใน Relay ไม่มีอะไรเข้าถึงแพลตฟอร์มได้',
+    'สิ่งเหล่านี้ทำให้แอปสร้างหรือแก้ไขสิ่งต่าง ๆ ภายใน Post Array ไม่มีอะไรเข้าถึงแพลตฟอร์มได้',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'สิ่งเหล่านี้อาจทำให้เกิดการโพสต์ในบัญชีจริงหรือเปลี่ยนแปลงผู้ที่สามารถเข้าถึงบัญชีของคุณได้ โดยจะแสดงรายการแยกกันเสมอและจะไม่มีการรวมกลุ่มกัน',
   'developer.ui.apps.noBundling':
@@ -591,7 +591,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X และผู้ให้บริการรายอื่นบางรายคิดค่าบริการต่อการดำเนินการ ค่าธรรมเนียมเหล่านั้นจะถูกส่งผ่านในราคาต้นทุนและไม่ได้เป็นส่วนหนึ่งของราคาแผน',
   'billing.ui.allowanceNoMedia':
-    'ไม่รวมการสร้างภาพและการสร้างวิดีโอและไม่ได้จำหน่าย Relay ไม่สร้างสื่อ',
+    'ไม่รวมการสร้างภาพและการสร้างวิดีโอและไม่ได้จำหน่าย Post Array ไม่สร้างสื่อ',
   'billing.ui.readFairUse': 'อ่านนโยบายการใช้งานโดยชอบ',
   'billing.ui.readMeteredPolicy': 'อ่านวิธีเรียกเก็บเงินการใช้งานแบบคิดค่าบริการตามปริมาณข้อมูล',
   'billing.ui.usageCaption':
@@ -652,8 +652,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'การสมัครสมาชิกนี้ถูกยกเลิก',
   'billing.ui.resume': 'เริ่มการสมัครสมาชิกอีกครั้ง',
   'billing.ui.noSubscriptionTitle': 'ไม่มีการสมัครสมาชิกในพื้นที่ทำงานนี้',
-  'billing.ui.noSubscriptionBody':
-    'เริ่มการทดลองใช้เจ็ดวันเพื่อเผยแพร่ Polar รวบรวมวิธีการชำระเงินและไม่เรียกเก็บเงินใดๆ ในวันนี้',
   'billing.ui.noSubscriptionExample':
     'รายเดือนคือ $29 รายปีคือ $300 ซึ่งเรียกเก็บเงิน $25/เดือนเป็นรายปี ประหยัด $48/ปี',
   'billing.ui.overChannelLimitAction': 'ตรวจสอบช่องที่เชื่อมต่อ',
@@ -758,7 +756,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'สิ่งจูงใจจะต้องได้รับการเปิดเผยในทุกโพสต์ที่เป็นผลลัพธ์ โดยคุณและผู้เข้าร่วม',
   'growth.ui.ugc.honesty':
-    'นี่เป็นการวางแผนแคมเปญที่คุณใช้งานกับคนจริง Relay ไม่พบผู้สร้าง ติดต่อพวกเขา เขียนคำรับรอง หรือสร้างเนื้อหาของลูกค้า',
+    'นี่เป็นการวางแผนแคมเปญที่คุณใช้งานกับคนจริง Post Array ไม่พบผู้สร้าง ติดต่อพวกเขา เขียนคำรับรอง หรือสร้างเนื้อหาของลูกค้า',
   'growth.ui.opportunities.caption':
     'โอกาสที่ยืนยันแล้วจากแค็ตตาล็อก จัดอันดับตามความเหมาะสมกับโปรไฟล์ของคุณ',
   'growth.ui.opportunities.column.opportunity': 'โอกาส',
@@ -780,7 +778,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'กฎเกณฑ์ของพวกเขาที่ยกมา',
   'growth.ui.opportunities.prepareChecklist': 'สิ่งที่ต้องเตรียมไป',
   'growth.ui.opportunities.prepareManual':
-    'คุณส่งสิ่งนี้ด้วยตนเองบนเว็บไซต์ของพวกเขา Relay ไม่ได้กรอกแบบฟอร์ม สร้างบัญชี หรือส่งอีเมลถึงใครก็ตาม',
+    'คุณส่งสิ่งนี้ด้วยตนเองบนเว็บไซต์ของพวกเขา Post Array ไม่ได้กรอกแบบฟอร์ม สร้างบัญชี หรือส่งอีเมลถึงใครก็ตาม',
   'growth.ui.opportunities.pitchTitle': 'ร่างสำนวนการขาย',
   'growth.ui.opportunities.pitchHelp': 'แก้ไขก่อนที่จะส่ง ใช้เฉพาะข้อเท็จจริงที่คุณยืนยันเท่านั้น',
   'growth.ui.opportunities.submittedOn': 'ส่งแล้ว {date}',
@@ -797,7 +795,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'ทุกรายการต้องมีราคาที่ตรวจสอบ เงื่อนไขสิทธิ์ที่ตรวจสอบ และข้อจำกัดที่มีการตั้งชื่อก่อนที่จะปรากฏที่นี่',
   'growth.ui.tools.emptyExample':
-    'รายการระบุสิ่งที่ดีที่สุดสำหรับ เหตุใดจึงเหมาะกับแผนของคุณ สิ่งใดที่ทำไม่ได้ ทักษะที่ต้องการ ผลลัพธ์กลับมาที่ Relay ได้อย่างไร และตรวจสอบราคาครั้งล่าสุดเมื่อใด',
+    'รายการระบุสิ่งที่ดีที่สุดสำหรับ เหตุใดจึงเหมาะกับแผนของคุณ สิ่งใดที่ทำไม่ได้ ทักษะที่ต้องการ ผลลัพธ์กลับมาที่ Post Array ได้อย่างไร และตรวจสอบราคาครั้งล่าสุดเมื่อใด',
   'growth.ui.tools.openSite': 'เปิดเว็บไซต์อย่างเป็นทางการสำหรับ {name}',
   'growth.ui.tools.stale': 'เลยวันที่ตรวจทานแล้ว แยกออกจากแผนที่สร้างขึ้น',
   'growth.ui.item.explainTitle': 'เหตุใดจึงมีการแนะนำสิ่งนี้',

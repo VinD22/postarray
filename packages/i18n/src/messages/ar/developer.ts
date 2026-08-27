@@ -82,7 +82,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'تطبيقات المطورين',
   'developer.apps.subtitle':
-    'اسمح لمنتج آخر بالتصرف من خلال Relay بالأذونات التي يمنحها المستخدم له.',
+    'اسمح لمنتج آخر بالتصرف من خلال Post Array بالأذونات التي يمنحها المستخدم له.',
   'developer.apps.create': 'قم بتسجيل تطبيق',
   'developer.apps.name': 'اسم التطبيق',
   'developer.apps.type.label': 'نوع العميل',

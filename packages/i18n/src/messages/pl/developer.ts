@@ -83,7 +83,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'Aplikacje dla programistów',
   'developer.apps.subtitle':
-    'Pozwól innemu produktowi działać poprzez Relay z uprawnieniami przyznanymi mu przez użytkownika.',
+    'Pozwól innemu produktowi działać poprzez Post Array z uprawnieniami przyznanymi mu przez użytkownika.',
   'developer.apps.create': 'Zarejestruj aplikację',
   'developer.apps.name': 'Nazwa aplikacji',
   'developer.apps.type.label': 'Typ klienta',

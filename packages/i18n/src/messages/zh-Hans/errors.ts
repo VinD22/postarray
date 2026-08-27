@@ -4,7 +4,7 @@ export const errorMessages = {
   'error.unknown.action': '再试一次。如果这种情况持续发生，请向我们发送以下参考信息。',
   'error.internal.message': '这是我们这边的问题，而不是您的内容的问题。',
   'error.internal.action': '您的工作已保存。我们已收到警报。几分钟后重试。',
-  'error.not_implemented.message': 'Relay 还没有构建这个。',
+  'error.not_implemented.message': 'Post Array 还没有构建这个。',
   'error.not_implemented.action': '请遵循发布时的变更日志。',
   'error.offline.message': '您已离线。',
   'error.offline.action': '您的草稿保存在此设备上。连接恢复后，发布和计划将恢复。',
@@ -44,6 +44,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': '更新 Polar 门户中的付款方式。',
   'error.trial_expired.message': '试验于 {date} 结束。',
   'error.trial_expired.action': '开始订阅以继续发布。',
+  'error.post_credits_exhausted.message':
+    '此工作区已用完所有免费发布次数。其他功能仍可正常使用。',
+  'error.post_credits_exhausted.action':
+    '选择一个方案即可继续发布。你的账号仍保持连接，草稿和排期都会保留。',
   'error.entitlement_missing.message': '此工作区无权访问该功能。',
   'error.entitlement_missing.action': '检查计费设置，或联系支持人员。',
   'error.channel_limit_reached.message': '此工作区已使用所有 {limit} 活动通道。',
@@ -67,7 +71,7 @@ export const errorMessages = {
     '帖子私下发布，直至审核通过。我们会在页面发生变化时更新此页面。',
   'error.capability_unsupported.message': '{provider} 不通过其官方 API 提供此功能。',
   'error.capability_unsupported.action': '使用此帐户支持的格式。',
-  'error.capability_not_implemented.message': 'Relay 尚未为 {provider} 构建此功能。',
+  'error.capability_not_implemented.message': 'Post Array 尚未为 {provider} 构建此功能。',
   'error.capability_not_implemented.action': '功能页面列出了每个连接器目前可以执行的操作。',
   'error.capability_requires_review.message': '{provider} 仅在审核应用程序或帐户后才授予此权限。',
   'error.capability_requires_review.action': '在审核通过之前，它一直不可用。',

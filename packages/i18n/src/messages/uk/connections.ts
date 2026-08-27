@@ -38,7 +38,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Зрозуміло',
   'connection.permissions.missing': 'Не надано',
   'connection.permissions.explainBeforeOAuth':
-    'Relay запитує {provider} для цих дозволів. Ви можете будь-коли відключитися.',
+    'Post Array запитує {provider} для цих дозволів. Ви можете будь-коли відключитися.',
   'connection.permissions.whyNeeded': 'Навіщо це потрібно',
 
   'connection.reconnect.title': 'Повторне підключення {account}',
@@ -92,11 +92,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Потребує перегляду платформи',
   'capability.level.beta': 'Бета',
   'capability.level.unknown': 'Недоступний',
-  'capability.explain.supported': 'Relay може зробити це для цього облікового запису сьогодні.',
+  'capability.explain.supported': 'Post Array може зробити це для цього облікового запису сьогодні.',
   'capability.explain.unsupported':
     '{provider} не пропонує цей свій офіційний API, тому жодний інструмент не може зробити це безпечно.',
   'capability.explain.not_implemented':
-    '{provider} пропонує це, але Relay ще не створив. Це на дорожній карті роз’єму.',
+    '{provider} пропонує це, але Post Array ще не створив. Це на дорожній карті роз’єму.',
   'capability.explain.requires_review':
     '{provider} надає це лише після перевірки програми або професійного запису. Він залишається недоступним, доки перевірка не пройде.',
   'capability.explain.beta':

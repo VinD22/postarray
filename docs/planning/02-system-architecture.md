@@ -15,7 +15,7 @@ official source before the code that depends on them is written.
 
 ## 1. What the system is
 
-Relay is a multi-tenant social publishing control plane. A workspace connects up to 30
+Post Array is a multi-tenant social publishing control plane. A workspace connects up to 30
 active external posting identities, composes one master draft with explicit per-target
 variants, gets it approved, and publishes it durably through official provider APIs, with
 an immutable receipt for every external action.
@@ -47,14 +47,14 @@ graph TB
     subgraph People
         U["Member<br/>owner, admin, manager, editor,<br/>approver, analyst, viewer"]
         DEV["Third-party developer<br/>(OAuth app)"]
-        ADMIN["Relay operator<br/>(catalog + trust review)"]
+        ADMIN["Post Array operator<br/>(catalog + trust review)"]
     end
 
     subgraph Agents
         AG["Agent host<br/>Codex, Claude Code, Hermes"]
     end
 
-    RELAY["<b>Relay</b><br/>Social publishing control plane<br/>web, API, MCP, CLI, webhooks"]
+    RELAY["<b>Post Array</b><br/>Social publishing control plane<br/>web, API, MCP, CLI, webhooks"]
 
     subgraph "Provider APIs (official only)"
         X["X API"]
@@ -597,7 +597,7 @@ graph LR
 - Provider fetch URLs are signed and short-lived. **TikTok pull-from-URL requires a
   verified owned domain** (source register, TikTok Content Sharing guidelines, 4 August
   2026, **re-verify before implementation**).
-- **No Relay watermark is ever inserted**, and specifically never for TikTok.
+- **No Post Array watermark is ever inserted**, and specifically never for TikTok.
 - URL imports use the same SSRF-safe fetcher as RSS: scheme allowlist (http/https only),
   DNS and IP checks before *and* after each redirect, private and link-local network
   denial, redirect depth cap, size cap, time cap.
@@ -628,7 +628,7 @@ Non-negotiables:
   estimate without a visible label and stated methodology.
 - Every metric carries the provider's own field name and definition. "Engagement rate" is
   shown with its denominator because the denominator differs per provider.
-- Provider-reported link clicks and Relay short-link clicks are **two separate series with
+- Provider-reported link clicks and Post Array short-link clicks are **two separate series with
   separate definitions**. Neither is ever substituted for the other.
 - Respect provider restrictions on combining or deriving API data (YouTube API Services
   policies, source register 4 August 2026, **re-verify before implementation**).
@@ -898,7 +898,7 @@ provider documentation, each recorded with a retrieval date in
 `docs/research/06-source-register.md`.
 
 **Consequences.**
-- Contributors do not read the Postiz repository while writing Relay code. Anyone who has
+- Contributors do not read the Postiz repository while writing Post Array code. Anyone who has
   read it says so before touching an adjacent module.
 - Naming, token prefixes, API shapes and UI structure are independently designed. We do not
   reuse their token prefix or interface.
