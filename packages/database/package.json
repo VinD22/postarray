@@ -11,7 +11,7 @@
     "./audit": "./src/audit/index.ts"
   },
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "prisma generate && tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vitest run",
