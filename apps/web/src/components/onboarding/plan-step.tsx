@@ -12,8 +12,6 @@ import { useFormatters, useTranslations } from '@/lib/i18n';
 
 type Interval = 'monthly' | 'annual';
 
-const TRIAL_DAYS = 7;
-const DAY_MS = 86_400_000;
 
 /**
  * The two figures, read from the one place that holds them.
@@ -52,9 +50,13 @@ function amountFor(interval: Interval): {
  * "most popular" flag and no countdown.
  *
  * Beside the primary action, every fact a person needs before handing over a
- * card: nothing due today, seven full trial days, the exact first charge date
- * and amount, the renewal interval, the payment method requirement, when the
- * reminder arrives, and how to cancel without being charged.
+ * card: what comes off today, what it renews at, that cancelling is a standing
+ * right rather than a deadline, and who takes the money.
+ *
+ * This block used to describe a seven day trial: nothing due today, a first
+ * charge a week out, a payment method held in advance and a reminder before
+ * conversion. The products carry no trial period, so every one of those facts
+ * was false, and they were false on the screen where a person decides to pay.
  *
  * The block itself is the product's one panel recipe (`panelSurface`), not a
  * marketing card: this is a step inside the app. It does not borrow the
@@ -70,10 +72,8 @@ export function PlanStep() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const firstChargeAt = new Date(Date.now() + TRIAL_DAYS * DAY_MS);
   const amount = amountFor(interval);
   const formattedAmount = format.money(amount);
-  const formattedDate = format.date(firstChargeAt, 'long');
 
   const continueToCheckout = async () => {
     setPending(true);
@@ -146,25 +146,21 @@ export function PlanStep() {
           </h2>
 
           <dl className="border-border-subtle flex flex-col border-t">
-            <Fact term={t('billing.trial.dueToday')} detail={t('billing.trial.length')} />
             <Fact
-              term={t('billing.trial.firstCharge', {
-                amount: formattedAmount,
-                date: formattedDate,
-              })}
-              detail={t('billing.trial.renewal', {
+              term={t('billing.charge.dueToday', { amount: formattedAmount })}
+              detail={t('billing.tier.everyFeature')}
+            />
+            <Fact
+              term={t('billing.charge.renewal', {
                 amount: formattedAmount,
                 interval:
                   interval === 'monthly'
                     ? t('billing.plan.interval.monthly')
                     : t('billing.plan.interval.annual'),
               })}
+              detail={t('billing.charge.cancelAnyTime')}
             />
-            <Fact
-              term={t('billing.trial.paymentMethodRequired')}
-              detail={t('billing.trial.reminder')}
-            />
-            <Fact term={t('billing.trial.cancelBefore')} detail={t('billing.checkout.hostedBy')} />
+            <Fact term={t('billing.checkout.hostedBy')} detail={t('billing.checkout.taxNote')} />
           </dl>
         </section>
 
