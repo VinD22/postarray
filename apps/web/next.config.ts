@@ -17,8 +17,21 @@ const nextConfig: NextConfig = {
   // `localhost` for this app's own origin, which Next's cross-origin dev-asset
   // check then blocks by default. Has no effect on a production build.
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
-  // The Docker runtime stage copies .next/standalone and runs server.js.
-  output: 'standalone',
+  /*
+   * Standalone output, except on Vercel.
+   *
+   * A self-hosted deployment wants it: `.next/standalone` carries a server.js
+   * and only the files the app actually imports, which is what makes running
+   * this on a small box practical.
+   *
+   * Vercel does its own file tracing and reads `.next/next-server.js.nft.json`
+   * in its post-build step. Standalone writes traces inside
+   * `.next/standalone` instead and never produces that file, so the build
+   * completes, generates every page, and then dies with an ENOENT on the last
+   * line. It is a confusing failure precisely because everything before it
+   * succeeded.
+   */
+  ...(process.env.VERCEL === '1' ? {} : { output: 'standalone' as const }),
   outputFileTracingRoot: fileURLToPath(new URL('../../', import.meta.url)),
   poweredByHeader: false,
   typedRoutes: true,
