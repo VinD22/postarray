@@ -530,6 +530,11 @@ export const LOCAL_SITE_ORIGIN = 'http://localhost:3000';
 /** Only the two variables the origin depends on, so the check is testable. */
 export interface SiteOriginEnv {
   readonly NEXT_PUBLIC_SITE_ORIGIN?: string | undefined;
+  /**
+   * The production domain, set by Vercel itself. A host with no scheme, and
+   * the custom domain rather than the deployment URL once one is attached.
+   */
+  readonly VERCEL_PROJECT_PRODUCTION_URL?: string | undefined;
   readonly NODE_ENV?: string | undefined;
 }
 
@@ -546,18 +551,40 @@ export interface SiteOriginEnv {
  *
  * Development and test keep the localhost fallback, so a local build stays
  * reproducible without a `.env` file.
+ *
+ * On Vercel the origin does not have to be configured by hand. Vercel sets
+ * `VERCEL_PROJECT_PRODUCTION_URL` to the production domain, which is the custom
+ * domain once one is attached and the deployment URL until then, and either is
+ * a truthful canonical for that deployment. An explicit
+ * `NEXT_PUBLIC_SITE_ORIGIN` still wins, because a deployment that must claim an
+ * origin Vercel does not know about has to be able to say so.
+ *
+ * This is a build-time value read on the server. `SITE_ORIGIN` is used by
+ * `robots.ts` and by metadata construction, never by a client component, so it
+ * does not need the `NEXT_PUBLIC_` prefix that would inline it into a browser
+ * bundle.
  */
 export function resolveSiteOrigin(env: SiteOriginEnv = process.env): string {
   const configured = env.NEXT_PUBLIC_SITE_ORIGIN?.trim() ?? '';
-  const usable = configured !== '' && !configured.includes('localhost');
+  const vercelHost = env.VERCEL_PROJECT_PRODUCTION_URL?.trim() ?? '';
+  const derived = vercelHost === '' ? '' : `https://${vercelHost}`;
+  const resolved = configured !== '' ? configured : derived;
+  const usable = resolved !== '' && !resolved.includes('localhost');
+
   if (env.NODE_ENV === 'production' && !usable) {
     throw new Error(
-      'NEXT_PUBLIC_SITE_ORIGIN must be set to the public HTTPS origin for a production build. ' +
-        `Received ${configured === '' ? 'no value' : `"${configured}"`}. ` +
-        'A localhost canonical, hreflang or sitemap URL must never ship.',
+      'The public HTTPS origin could not be resolved for a production build. ' +
+        `NEXT_PUBLIC_SITE_ORIGIN received ${configured === '' ? 'no value' : `"${configured}"`}` +
+        `, and VERCEL_PROJECT_PRODUCTION_URL received ${
+          vercelHost === '' ? 'no value' : `"${vercelHost}"`
+        }. ` +
+        'Set NEXT_PUBLIC_SITE_ORIGIN to the public origin, for example ' +
+        'https://postarray.com. A localhost canonical, hreflang or sitemap URL ' +
+        'must never ship.',
     );
   }
-  return configured === '' ? LOCAL_SITE_ORIGIN : configured;
+
+  return resolved === '' ? LOCAL_SITE_ORIGIN : resolved;
 }
 
 export const SITE_ORIGIN = resolveSiteOrigin();
