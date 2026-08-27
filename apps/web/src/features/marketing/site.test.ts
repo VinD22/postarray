@@ -41,6 +41,35 @@ describe('resolveSiteOrigin in production', () => {
     }
   });
 
+  it('derives the origin from the domain Vercel already knows', () => {
+    // Two failed production builds came from setting this by hand and getting
+    // it wrong, when the host already knows its own production domain.
+    expect(
+      resolveSiteOrigin({
+        NODE_ENV: 'production',
+        VERCEL_PROJECT_PRODUCTION_URL: 'postarray.com',
+      }),
+    ).toBe('https://postarray.com');
+  });
+
+  it('lets an explicit origin beat the one Vercel derived', () => {
+    // A deployment that must claim an origin the host does not know about has
+    // to be able to say so, so the explicit value wins rather than merging.
+    expect(
+      resolveSiteOrigin({
+        NODE_ENV: 'production',
+        NEXT_PUBLIC_SITE_ORIGIN: 'https://postarray.com',
+        VERCEL_PROJECT_PRODUCTION_URL: 'postarray-web.vercel.app',
+      }),
+    ).toBe('https://postarray.com');
+  });
+
+  it('still refuses a localhost origin that arrived through the host', () => {
+    expect(() =>
+      resolveSiteOrigin({ NODE_ENV: 'production', VERCEL_PROJECT_PRODUCTION_URL: 'localhost:3000' }),
+    ).toThrow(/localhost/);
+  });
+
   it('accepts a real public origin and trims incidental whitespace', () => {
     expect(
       resolveSiteOrigin({
