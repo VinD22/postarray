@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, Viewport } from 'next';
 import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import type { ReactNode } from 'react';
 
 import { themeBootstrapScript } from '@relay/design-system/theme-bootstrap';
@@ -108,6 +109,21 @@ export default async function LocaleLayout({
         >
           {children}
         </Providers>
+        {/*
+          Page views, and nothing else.
+
+          Vercel Analytics sets no cookie, stores no IP address and follows
+          nobody between sites, which is why it sits here unconditionally rather
+          than behind a consent gate: there is no consent to collect for a
+          measurement that identifies no one. It is disclosed in the
+          subprocessor table like every other vendor, because a legal page that
+          omits a vendor is worse than not having the page.
+
+          If this is ever swapped for something that does identify a visitor,
+          it needs a consent gate and a different row in that table, and both
+          have to land in the same change as the swap.
+        */}
+        <Analytics />
       </body>
     </html>
   );
