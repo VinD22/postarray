@@ -32,7 +32,7 @@ export const webShellMessages = {
   'shell.demo.body':
     "L'API Post Array n'est pas accessible à partir de ce navigateur, les écrans sont donc remplis avec un exemple d'espace de travail prédéfini. Rien ici n'est connecté à un compte réel et rien ne peut publier.",
   'shell.demo.howToConnect':
-    "Définissez NEXT_PUBLIC_RELAY_API_URL et redémarrez l'application pour utiliser les données en direct.",
+    "Définissez NEXT_PUBLIC_POSTARRAY_API_URL et redémarrez l'application pour utiliser les données en direct.",
 
   /* -- Connectivity ------------------------------------------------------ */
   'shell.offline.title': 'Vous êtes hors ligne',

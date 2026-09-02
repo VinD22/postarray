@@ -305,7 +305,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'A tracked link is a short URL Post Array redirects through, so you can see clicks even when a platform reports none. The original destination is never changed without an audit entry.',
   'analytics.links.emptyExample':
-    'Example: relay.to/a7Kq2 redirects to acme.com/blog/launch with campaign q3-launch.',
+    'Example: pa.link/a7Kq2 redirects to acme.com/blog/launch with campaign q3-launch.',
   'analytics.links.table.caption':
     'Tracked links in this workspace and their first party click counts.',
   'analytics.links.campaign': 'Campaign',

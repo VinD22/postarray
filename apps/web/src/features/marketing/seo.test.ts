@@ -52,6 +52,71 @@ describe('toOpenGraphLocale', () => {
   });
 });
 
+describe('the share card', () => {
+  /**
+   * The defect this pins: every builder here declares its own `openGraph`
+   * object, and doing so stops Next merging the file-convention
+   * `opengraph-image`. The live site carried zero `og:image` tags on every page
+   * while `twitter.card` advertised `summary_large_image`, so every shared link
+   * rendered bare. Nothing failed; the tags were simply absent.
+   */
+  it('is attached by every metadata builder, not left to Next to merge', async () => {
+    const page = await pageMetadata(
+      'web.meta.pricing.title',
+      'web.meta.pricing.description',
+      '/pricing',
+    );
+    const content = await contentPageMetadata(
+      'A comparison',
+      'A description',
+      '/compare/platform-native-tools',
+      DEFAULT_LOCALE,
+      ['en'],
+    );
+
+    for (const metadata of [page, content]) {
+      const images = metadata.openGraph?.images;
+      expect(Array.isArray(images) && images.length > 0).toBe(true);
+    }
+  });
+
+  it('points at the rendered card at its declared size', async () => {
+    const metadata = await pageMetadata(
+      'web.meta.home.title',
+      'web.meta.home.description',
+      '/',
+    );
+    const images = metadata.openGraph?.images;
+    const first = Array.isArray(images) ? images[0] : undefined;
+
+    expect(first).toMatchObject({
+      url: absoluteUrl('/opengraph-image'),
+      width: 1200,
+      height: 630,
+    });
+  });
+});
+
+describe('page titles', () => {
+  it('does not let the layout append the brand to a title that already names it', async () => {
+    // "Post Array, the multilingual publishing control plane · Post Array" was
+    // the live home title. `absolute` opts the page out of the root template.
+    const home = await pageMetadata('web.meta.home.title', 'web.meta.home.description', '/');
+    expect(home.title).toEqual({
+      absolute: expect.stringContaining('Post Array') as unknown as string,
+    });
+  });
+
+  it('leaves a title that does not name the brand for the template to complete', async () => {
+    const pricing = await pageMetadata(
+      'web.meta.pricing.title',
+      'web.meta.pricing.description',
+      '/pricing',
+    );
+    expect(typeof pricing.title).toBe('string');
+  });
+});
+
 describe('localized metadata and structured data', () => {
   it('uses the locale for a self-canonical URL and Open Graph locale', async () => {
     const metadata = await pageMetadata(

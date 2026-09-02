@@ -302,7 +302,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'Sledovaný odkaz je krátká adresa URL přesměrovává, takže můžete vidět kliknutí, i když platforma žádné nehlásí. Původní cíl se nikdy nezmění bez záznamu auditu.',
   'analytics.links.emptyExample':
-    'Příklad: relay.to/a7Kq2 přesměruje na acme.com/blog/launch s kampaní q3-launch.',
+    'Příklad: pa.link/a7Kq2 přesměruje na acme.com/blog/launch s kampaní q3-launch.',
   'analytics.links.table.caption':
     'Sledované odkazy v tomto pracovním prostoru a jejich počet kliknutí první stranou.',
   'analytics.links.campaign': 'Kampaň',

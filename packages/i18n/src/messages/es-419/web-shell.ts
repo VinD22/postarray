@@ -22,7 +22,7 @@ export const webShellMessages = {
   'shell.demo.body':
     'No se puede acceder a la API Post Array desde este navegador, por lo que las pantallas están llenas de un espacio de trabajo de ejemplo inicializado. Nada aquí está conectado a una cuenta real y nada se puede publicar.',
   'shell.demo.howToConnect':
-    'Configure NEXT_PUBLIC_RELAY_API_URL y reinicie la aplicación para usar datos en vivo.',
+    'Configure NEXT_PUBLIC_POSTARRAY_API_URL y reinicie la aplicación para usar datos en vivo.',
   'shell.offline.title': 'Estás desconectado',
   'shell.offline.body':
     'Los borradores se guardan en este dispositivo. La programación y publicación se reanudan cuando se restablece la conexión.',

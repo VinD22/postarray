@@ -22,6 +22,23 @@ export interface LocaleAlternates {
 }
 
 /** Build an absolute URL for an indexable marketing route in an interface locale. */
+/**
+ * The share card every page points at.
+ *
+ * `apps/web/src/app/opengraph-image.tsx` renders it, and Next merges that
+ * file-convention image automatically only for routes that do not declare their
+ * own `openGraph` object. Every page here declares one, which silently wiped the
+ * image from the whole site: the live HTML carried zero `og:image` tags while
+ * `twitter.card` advertised `summary_large_image`, so every share was a bare
+ * link. Naming it explicitly is what restores it.
+ *
+ * Locale neutral on purpose, matching the card itself: it carries the wordmark
+ * and nothing that needs translating.
+ */
+function shareCard(alt: string): NonNullable<Metadata['openGraph']>['images'] {
+  return [{ url: absoluteUrl('/opengraph-image'), width: 1200, height: 630, alt }];
+}
+
 export function absoluteUrl(path: string, locale: string = DEFAULT_LOCALE): string {
   return new URL(localizedHref(path, locale), SITE_ORIGIN).toString();
 }
@@ -123,6 +140,23 @@ export function openGraphAlternateLocales(
   ];
 }
 
+/**
+ * A page title, and whether the layout should append the brand to it.
+ *
+ * Several titles name the product themselves because they read better that way
+ * in a search result: "Post Array for agencies" beats "For agencies". The root
+ * layout's template appends `· Post Array` to every title, which turned those
+ * into "Post Array, the multilingual publishing control plane · Post Array" and
+ * spent about eleven characters of the title budget saying it twice.
+ *
+ * Rather than strip the brand from six strings in twenty five locales, and ask
+ * every future translator to remember the rule, a title that already carries the
+ * name opts out of the template with `absolute`.
+ */
+function pageTitle(title: string, brand: string): Metadata['title'] {
+  return title.includes(brand) ? { absolute: title } : title;
+}
+
 export async function pageMetadata(
   titleKey: MessageKey,
   descriptionKey: MessageKey,
@@ -137,8 +171,10 @@ export async function pageMetadata(
   const openGraphLocale = toOpenGraphLocale(locale);
   const alternateOpenGraphLocales = openGraphAlternateLocales(locale);
 
+  const brand = t.t('web.brand.name');
+
   return {
-    title,
+    title: pageTitle(title, brand),
     description,
     alternates,
     openGraph: {
@@ -146,7 +182,8 @@ export async function pageMetadata(
       url,
       title,
       description,
-      siteName: t.t('web.brand.name'),
+      images: shareCard(title),
+      siteName: brand,
       ...(openGraphLocale === undefined ? {} : { locale: openGraphLocale }),
       ...(alternateOpenGraphLocales.length === 0
         ? {}
@@ -187,8 +224,10 @@ export async function contentPageMetadata(
   const openGraphLocale = toOpenGraphLocale(canonicalLocale);
   const alternateLocales = openGraphAlternateLocales(canonicalLocale, eligibleLocales);
 
+  const brand = t.t('web.brand.name');
+
   return {
-    title,
+    title: pageTitle(title, brand),
     description,
     alternates,
     openGraph: {
@@ -196,7 +235,8 @@ export async function contentPageMetadata(
       url,
       title,
       description,
-      siteName: t.t('web.brand.name'),
+      images: shareCard(title),
+      siteName: brand,
       ...(openGraphLocale === undefined ? {} : { locale: openGraphLocale }),
       ...(alternateLocales.length === 0 ? {} : { alternateLocale: alternateLocales }),
     },
@@ -412,6 +452,7 @@ export async function articleMetadata(input: ArticleSeoInput): Promise<Metadata>
       url,
       title: input.headline,
       description: input.description,
+      images: shareCard(input.headline),
       siteName: t.t('web.brand.name'),
       publishedTime: calendarDateToInstant(input.published),
       modifiedTime: calendarDateToInstant(input.updated),

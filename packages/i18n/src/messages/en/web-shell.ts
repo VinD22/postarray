@@ -31,7 +31,7 @@ export const webShellMessages = {
   'shell.demo.title': 'You are looking at demo data',
   'shell.demo.body':
     'The Post Array API is not reachable from this browser, so the screens are filled with a seeded example workspace. Nothing here is connected to a real account and nothing can publish.',
-  'shell.demo.howToConnect': 'Set NEXT_PUBLIC_RELAY_API_URL and restart the app to use live data.',
+  'shell.demo.howToConnect': 'Set NEXT_PUBLIC_POSTARRAY_API_URL and restart the app to use live data.',
 
   /* -- Connectivity ------------------------------------------------------ */
   'shell.offline.title': 'You are offline',

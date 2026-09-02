@@ -244,7 +244,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'Tautan terlacak adalah URL pendek yang dialihkan Post Array, sehingga Anda dapat melihat klik bahkan ketika platform tidak melaporkan apa pun. Tujuan awal tidak pernah berubah tanpa entri audit.',
   'analytics.links.emptyExample':
-    'Contoh: relay.to/a7Kq2 dialihkan ke acme.com/blog/launch dengan kampanye q3-launch.',
+    'Contoh: pa.link/a7Kq2 dialihkan ke acme.com/blog/launch dengan kampanye q3-launch.',
   'analytics.links.table.caption':
     'Tautan yang dilacak di ruang kerja ini dan jumlah klik pihak pertamanya.',
   'analytics.links.campaign': 'Kampanye',
