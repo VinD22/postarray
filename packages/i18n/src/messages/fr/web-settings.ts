@@ -908,6 +908,7 @@ export const webSettingsMessages = {
     "Les règles de rédaction par langue ne sont pas encore construites. Les langues et marchés de l'espace de travail restent disponibles dans Localisation.",
   'settings.ui.projects.capacityTitle': 'Capacité en projets',
   'settings.ui.projects.capacitySummary': '{used} sur {limit}',
+  'settings.ui.projects.atLimitAction': 'Voir les formules',
   'settings.ui.projects.atLimitTitle':
     'Cet espace de travail a utilisé toutes ses places de projet',
   'settings.ui.projects.atLimitBody':

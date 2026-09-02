@@ -210,6 +210,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'The $29 base plan includes 3 active projects. A workspace can be entitled for up to 20 without creating another account.',
   'settings.ui.projects.capacitySummary': '{used} of {limit}',
+  'settings.ui.projects.atLimitAction': 'See plans',
   'settings.ui.projects.atLimitTitle': 'This workspace has used every project slot',
   'settings.ui.projects.atLimitBody':
     'Archive an inactive project or change the workspace entitlement before adding another. The current limit is {limit}.',

@@ -66,6 +66,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     '이 항목에 대한 계정이 없습니다.{provider}로그인 연결이 가능합니다.{reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    '이 {provider} 로그인에서 연결할 수 있는 계정이 없습니다.',
+  'connection.oauth.claimFailed': '해당 계정을 연결하지 못했습니다',
+  'connection.oauth.claimFailedAction':
+    '플랫폼에서는 아무것도 변경되지 않았습니다. 다시 시도하고, 계속 실패하면 연결을 처음부터 시작하세요.',
   'connection.oauth.canceled': '연결이 취소되었습니다.{provider}. 아무것도 바뀌지 않았습니다.',
   'connection.oauth.alreadyConnected': '{account}이 작업공간에 이미 연결되어 있습니다.',
   'connection.oauth.connectedToAnotherWorkspace':

@@ -51,7 +51,11 @@ export function OAuthAccountSelectionPanel(): ReactNode {
 
   if (transactionId === undefined) return null;
 
-  const provider = providerName(pending.data?.provider ?? result?.provider ?? 'bluesky');
+  // No hardcoded provider fallback: naming the wrong platform in the heading is
+  // worse than naming none, and this screen appears immediately after a person
+  // authorised a specific one.
+  const resolvedProvider = pending.data?.provider ?? result?.provider ?? null;
+  const provider = resolvedProvider === null ? '' : providerName(resolvedProvider);
 
   if (pending.isLoading) {
     return (
@@ -104,19 +108,29 @@ export function OAuthAccountSelectionPanel(): ReactNode {
         <Notice
           tone="warning"
           liveness="alert"
-          title={t('connection.oauth.noEligibleAccounts', { provider, reason: '' })}
+          title={t('connection.oauth.noEligibleAccountsShort', { provider })}
         />
       ) : (
-        <Button
-          type="button"
-          variant="primary"
-          disabled={selected.length === 0 || claim.isPending}
-          onClick={() => {
-            void claim.mutate();
-          }}
-        >
-          {t('connection.oauth.connectSelected')}
-        </Button>
+        <>
+          {claim.isError ? (
+            <Notice
+              tone="destructive"
+              liveness="alert"
+              title={t('connection.oauth.claimFailed')}
+              description={t('connection.oauth.claimFailedAction')}
+            />
+          ) : null}
+          <Button
+            type="button"
+            variant="primary"
+            disabled={selected.length === 0 || claim.isPending}
+            onClick={() => {
+              void claim.mutate();
+            }}
+          >
+            {t('connection.oauth.connectSelected')}
+          </Button>
+        </>
       )}
       {claim.isSuccess ? (
         <Notice tone="success" liveness="status" title={t('connection.oauth.claimComplete')} />

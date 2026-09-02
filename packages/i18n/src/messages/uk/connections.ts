@@ -77,6 +77,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'На це немає облікових записів {provider} логін можна підключити.{reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'Жоден акаунт із цього входу {provider} не можна підключити.',
+  'connection.oauth.claimFailed': 'Не вдалося підключити ці акаунти',
+  'connection.oauth.claimFailedAction':
+    'На платформі нічого не змінилося. Спробуйте ще раз, а якщо помилка повторюється, почніть підключення спочатку.',
   'connection.oauth.canceled': 'З’єднання було скасовано {provider}. Нічого не змінилося.',
   'connection.oauth.alreadyConnected': '{account} вже підключено до цієї робочої області.',
   'connection.oauth.connectedToAnotherWorkspace':

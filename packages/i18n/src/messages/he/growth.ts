@@ -4,6 +4,8 @@ export const growthMessages = withHebrewPluralForms({
   'growth.title': 'יועץ צמיחה',
   'growth.subtitle':
     'תוכנית מודרכת הבנויה מעובדות שאתה מאשר. הוא מציע עבודה. הוא אף פעם לא מפרסם לבד.',
+  'growth.profile.noProject':
+    'בחרו פרויקט לפני שמירת הפרופיל. פרופיל עסקי שייך לפרויקט אחד.',
   'growth.profile.title': 'פרופיל עסקי',
   'growth.profile.intro': 'תענה על אלה פעם אחת. כל מה שהיועץ מציע מבוסס על מה שאתה מאשר כאן.',
   'growth.profile.productUrl': 'כתובת אתר של מוצר או אתר',

@@ -206,6 +206,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Základní plán za 29 $ zahrnuje 3 aktivní projekty. Pracovní prostor může mít nárok až na 20 bez vytváření dalšího účtu.',
   'settings.ui.projects.capacitySummary': '{used} z {limit}',
+  'settings.ui.projects.atLimitAction': 'Zobrazit tarify',
   'settings.ui.projects.atLimitTitle': 'Tento pracovní prostor využil každé místo pro projekt',
   'settings.ui.projects.atLimitBody':
     'Před přidáním dalšího archivujte neaktivní projekt nebo změňte nárok pracovního prostoru. Aktuální limit je {limit}.',

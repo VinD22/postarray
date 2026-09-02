@@ -73,6 +73,16 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'No accounts on this {provider} login can be connected. {reason}',
+  // The same sentence without the trailing reason, for the caller that has no
+  // reason to give. Interpolating an empty string produced "...can be connected. "
+  // with a dangling space where an explanation should be.
+  'connection.oauth.noEligibleAccountsShort':
+    'No accounts on this {provider} login can be connected.',
+  // A claim can fail after a person has already authorised on the provider, and
+  // the screen used to say nothing at all when it did.
+  'connection.oauth.claimFailed': 'Those accounts could not be connected',
+  'connection.oauth.claimFailedAction':
+    'Nothing was changed on the platform. Try again, and if it keeps failing, start the connection over.',
   'connection.oauth.canceled': 'The connection was canceled on {provider}. Nothing changed.',
   'connection.oauth.alreadyConnected': '{account} is already connected to this workspace.',
   'connection.oauth.connectedToAnotherWorkspace':

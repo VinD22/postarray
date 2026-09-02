@@ -211,6 +211,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Kasama sa $29 na base plan ang 3 aktibong proyekto. Puwedeng magkaroon ang isang workspace ng entitlement na hanggang 20 nang hindi gumagawa ng ibang account.',
   'settings.ui.projects.capacitySummary': '{used} sa {limit}',
+  'settings.ui.projects.atLimitAction': 'Tingnan ang mga plano',
   'settings.ui.projects.atLimitTitle':
     'Nagamit na ng workspace na ito ang lahat ng slot para sa proyekto',
   'settings.ui.projects.atLimitBody':

@@ -13,6 +13,7 @@ import { projectsGateway, growthGateway, securityGateway } from '../settings/lib
 import { useFormatters } from '../settings/lib/formatters';
 import { settingsKey, useWorkspaceId } from '../settings/lib/keys';
 import { useSettingsMutation } from '../settings/lib/use-settings-mutation';
+import { useSession } from '@/lib/auth/session-context';
 import { ExportPanel } from './export-panel';
 import { IntakeForm, type IntakeValue } from './intake-form';
 import { GrowthPlanTabs } from './plan-tabs';
@@ -45,6 +46,8 @@ export function GrowthScreen(): ReactNode {
 
   const profile = useQuery({ queryKey: PROFILE_KEY, queryFn: () => growthGateway.profile() });
   const plan = useQuery({ queryKey: PLAN_KEY, queryFn: () => growthGateway.plan() });
+  const { project } = useSession();
+  const [intakeError, setIntakeError] = useState<string | null>(null);
   const projects = useQuery({ queryKey: PROJECTS_KEY, queryFn: () => projectsGateway.list() });
   const connections = useQuery({
     queryKey: CONNECTIONS_KEY,
@@ -114,8 +117,19 @@ export function GrowthScreen(): ReactNode {
   );
 
   function submitIntake(value: IntakeValue): void {
-    const projectId = projects.data?.[0]?.id;
-    if (projectId === undefined) return;
+    // The active project, not the first one in the list. Reading
+    // `projects.data[0]` meant that switching projects and filling in the intake
+    // silently wrote the profile onto whichever project happened to sort first,
+    // with nothing on screen to say so.
+    const projectId = project?.id;
+    if (projectId === undefined) {
+      // A bare `return` here made the submit button look broken: it did nothing
+      // and explained nothing. This cannot normally happen, because the shell
+      // requires an active project, so it is reported rather than swallowed.
+      setIntakeError(t('growth.profile.noProject'));
+      return;
+    }
+    setIntakeError(null);
     void saveProfile.run({ ...value, projectId });
   }
 
@@ -159,12 +173,17 @@ export function GrowthScreen(): ReactNode {
         >
           <GrowthStepTransition activeKey={step} className="flex flex-col gap-6">
             {step === 'intake' ? (
-              <IntakeForm
-                availableLocales={availableLocales}
-                availableChannels={availableChannels}
-                saving={saveProfile.isSaving}
-                onSubmit={submitIntake}
-              />
+              <>
+                {intakeError === null ? null : (
+                  <Notice tone="warning" title={intakeError} />
+                )}
+                <IntakeForm
+                  availableLocales={availableLocales}
+                  availableChannels={availableChannels}
+                  saving={saveProfile.isSaving}
+                  onSubmit={submitIntake}
+                />
+              </>
             ) : null}
 
             {step === 'confirm' && profile.data != null ? (

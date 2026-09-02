@@ -208,6 +208,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Het basisplan van $29 omvat 3 actieve projecten. Een werkruimte kan recht hebben op tot 20 zonder een ander account te maken.',
   'settings.ui.projects.capacitySummary': '{used} van {limit}',
+  'settings.ui.projects.atLimitAction': 'Bekijk abonnementen',
   'settings.ui.projects.atLimitTitle': 'Deze werkruimte heeft elke projectplek gebruikt',
   'settings.ui.projects.atLimitBody':
     'Archiveer een inactief project of wijzig het recht van de werkruimte voordat je er nog een toevoegt. De huidige limiet is {limit}.',

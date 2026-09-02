@@ -69,6 +69,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'No hay cuentas sobre esto {provider}El inicio de sesión se puede conectar. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'No se puede conectar ninguna cuenta de este inicio de sesión de {provider}.',
+  'connection.oauth.claimFailed': 'Esas cuentas no se pudieron conectar',
+  'connection.oauth.claimFailedAction':
+    'No se cambió nada en la plataforma. Vuelve a intentarlo y, si sigue fallando, empieza la conexión de nuevo.',
   'connection.oauth.canceled': 'La conexión fue cancelada el {provider}. Nada cambió.',
   'connection.oauth.alreadyConnected': '{account}ya está conectado a este espacio de trabajo.',
   'connection.oauth.connectedToAnotherWorkspace':

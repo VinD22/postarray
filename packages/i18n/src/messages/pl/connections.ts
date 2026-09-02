@@ -76,6 +76,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Brak kont na tym {provider} login można podłączyć. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'Żadnego konta z tego logowania {provider} nie można połączyć.',
+  'connection.oauth.claimFailed': 'Nie udało się połączyć tych kont',
+  'connection.oauth.claimFailedAction':
+    'Na platformie nic się nie zmieniło. Spróbuj ponownie, a jeśli błąd się powtarza, rozpocznij łączenie od nowa.',
   'connection.oauth.canceled':
     'Połączenie zostało anulowane w dniu {provider}. Nic się nie zmieniło.',
   'connection.oauth.alreadyConnected': '{account} jest już połączony z tym obszarem roboczym.',
