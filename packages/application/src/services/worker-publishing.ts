@@ -384,8 +384,71 @@ export function createWorkerPublishingService(deps: ServiceDeps): WorkerPublishi
       });
     },
 
-    async prepareTargetMedia() {
-      return { preparedMediaIds: [], derivativeCount: 0, totalBytes: 0 };
+    /**
+     * Resolve the media this target will actually send.
+     *
+     * This returned an empty list unconditionally, so every image and video
+     * post published as text only, and the providers that require media
+     * (Pinterest, Instagram, TikTok, YouTube) failed at the provider rather
+     * than here. The receipt's `mediaChecksums` was always empty too, which is
+     * the field that proves what shipped.
+     *
+     * Derivatives are preferred over originals when one exists: the derivative
+     * pipeline produces the bytes a provider actually accepts, and its
+     * `presetKey` is chosen per provider. When none exists the original is
+     * sent, which is correct for a small image that needed no transform.
+     *
+     * A signed URL is minted per asset because several providers pull from a
+     * URL rather than accept an upload. The TTL is deliberately short and
+     * generous enough to survive a retry inside one dispatch.
+     */
+    async prepareTargetMedia(input) {
+      return runInWorkspace(deps, context(input.ctx), async (db) => {
+        const variant = await db.postVariant.findFirst({
+          where: { id: input.targetId, workspaceId: input.ctx.workspaceId },
+          select: { mediaAssetIds: true, provider: true },
+        });
+        if (variant === null || variant.mediaAssetIds.length === 0) {
+          return { preparedMediaIds: [], derivativeCount: 0, totalBytes: 0 };
+        }
+
+        const assets = await db.mediaAsset.findMany({
+          where: { id: { in: variant.mediaAssetIds }, workspaceId: input.ctx.workspaceId },
+          select: { id: true, byteSize: true, scanState: true },
+        });
+
+        // An asset that has not cleared the safety scan never reaches a
+        // provider. Composer validation refuses it first; this is the second
+        // guard, because dispatch happens long after that check.
+        const clean = assets.filter((asset) => asset.scanState === 'clean');
+
+        const derivatives = await db.mediaDerivative.findMany({
+          where: {
+            mediaAssetId: { in: clean.map((asset) => asset.id) },
+            workspaceId: input.ctx.workspaceId,
+          },
+          select: { id: true, mediaAssetId: true, byteSize: true },
+        });
+
+        // Order follows the variant's own list: the author chose it, and for a
+        // carousel the order is the content.
+        const ordered = variant.mediaAssetIds.filter((id) =>
+          clean.some((asset) => asset.id === id),
+        );
+
+        const totalBytes = ordered.reduce((sum, id) => {
+          const derivative = derivatives.find((row) => row.mediaAssetId === id);
+          const asset = clean.find((row) => row.id === id);
+          const bytes = derivative?.byteSize ?? asset?.byteSize ?? 0n;
+          return sum + Number(bytes);
+        }, 0);
+
+        return {
+          preparedMediaIds: ordered,
+          derivativeCount: derivatives.length,
+          totalBytes,
+        };
+      });
     },
     async scheduleAnalyticsFetches() {
       return { offsetsMs: [60 * 60 * 1000, 24 * 60 * 60 * 1000, 7 * 24 * 60 * 60 * 1000] };

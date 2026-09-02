@@ -259,6 +259,113 @@ async function fetchMetricsFor(
   };
 }
 
+
+/**
+ * One media reference as the provider draft describes it.
+ *
+ * Declared here rather than imported: `apps/worker` does not depend on
+ * `@relay/connectors` and should not start to for a single type. The execution
+ * gateway parses this against `providerMediaRefSchema` on the way through, so
+ * the contract is still enforced, just not at this boundary.
+ */
+interface ProviderMediaRef {
+  readonly mediaId: string;
+  readonly derivativeId: string | null;
+  readonly kind: 'image' | 'video' | 'gif' | 'document' | 'audio';
+  readonly mimeType: string;
+  readonly byteSize: number;
+  readonly width: number | null;
+  readonly height: number | null;
+  readonly durationSeconds: number | null;
+  readonly checksum: string;
+  readonly altText: string | null;
+  readonly altTextWaived: boolean;
+  readonly sourceUrl: string | null;
+  readonly sourceUrlExpiresAt: string | null;
+}
+
+/**
+ * The media refs a draft carries, in the order the author chose.
+ *
+ * This is what an asset *is*: kind, mime type, size, dimensions, checksum and
+ * alt text. Where the provider ends up putting it is `preparedMedia`, which the
+ * execution gateway fills by calling the connector's own `prepareMedia` just
+ * before publishing.
+ *
+ * A derivative wins over the original when one exists, because the derivative
+ * pipeline produces the bytes a given provider actually accepts and its
+ * checksum is what the receipt should record.
+ *
+ * `sourceUrl` is null for now. Providers that upload bytes are unaffected;
+ * providers that pull from a URL need a short-lived signed link, which needs
+ * the storage port threaded into the worker. It is left explicitly null rather
+ * than faked, so a connector that requires one refuses honestly instead of
+ * fetching nothing.
+ */
+async function loadProviderMedia(
+  options: ConnectorBridgeOptions,
+  workspaceId: string,
+  mediaAssetIds: readonly string[],
+): Promise<ProviderMediaRef[]> {
+  if (mediaAssetIds.length === 0) return [];
+
+  const assets = await options.prisma.mediaAsset.findMany({
+    where: { id: { in: [...mediaAssetIds] }, workspaceId, scanState: 'clean' },
+    select: {
+      id: true,
+      kind: true,
+      mimeType: true,
+      byteSize: true,
+      width: true,
+      height: true,
+      durationMs: true,
+      checksumSha256: true,
+      altText: true,
+      altTextWaivedAt: true,
+    },
+  });
+
+  const derivatives = await options.prisma.mediaDerivative.findMany({
+    where: { mediaAssetId: { in: assets.map((asset) => asset.id) }, workspaceId },
+    select: {
+      id: true,
+      mediaAssetId: true,
+      mimeType: true,
+      byteSize: true,
+      width: true,
+      height: true,
+      durationMs: true,
+      checksumSha256: true,
+    },
+  });
+
+  // The variant's order is the author's order, and for a carousel it is the
+  // content. A `findMany` result order is not.
+  return mediaAssetIds.flatMap((assetId) => {
+    const asset = assets.find((row) => row.id === assetId);
+    if (asset === undefined) return [];
+    const derivative = derivatives.find((row) => row.mediaAssetId === assetId) ?? null;
+    const durationMs = derivative?.durationMs ?? asset.durationMs;
+    return [
+      {
+        mediaId: asset.id,
+        derivativeId: derivative?.id ?? null,
+        kind: asset.kind,
+        mimeType: derivative?.mimeType ?? asset.mimeType,
+        byteSize: Number(derivative?.byteSize ?? asset.byteSize),
+        width: derivative?.width ?? asset.width,
+        height: derivative?.height ?? asset.height,
+        durationSeconds: durationMs === null ? null : durationMs / 1000,
+        checksum: derivative?.checksumSha256 ?? asset.checksumSha256,
+        altText: asset.altText,
+        altTextWaived: asset.altTextWaivedAt !== null,
+        sourceUrl: null,
+        sourceUrlExpiresAt: null,
+      },
+    ];
+  });
+}
+
 export function createConnectorExecutionActivities(
   options: ConnectorBridgeOptions,
 ): ProviderActivities {
@@ -290,7 +397,7 @@ export function createConnectorExecutionActivities(
               contentVersionId: input.contentVersionId,
               connectionId: input.connectionId,
             },
-            select: { id: true, settings: true },
+            select: { id: true, settings: true, mediaAssetIds: true },
           }),
           options.prisma.publishAttempt.findFirst({
             where: {
@@ -310,6 +417,10 @@ export function createConnectorExecutionActivities(
           await options.gateway.capabilitiesFor({ workspaceId: input.ctx.workspaceId, connection }),
         );
         const dispatchedAt = (job.dispatchedAt ?? new Date()).toISOString();
+        // The draft used to carry `media: []` unconditionally, so an image post
+        // published as text and a media-only provider failed at the provider
+        // rather than here.
+        const mediaRefs = await loadProviderMedia(options, input.ctx.workspaceId, variant.mediaAssetIds);
         const result = await options.gateway.publish({
           workspaceId: input.ctx.workspaceId,
           connection,
@@ -321,7 +432,7 @@ export function createConnectorExecutionActivities(
               locale: resolved.values.locale,
               title: master.title,
               body: resolved.values.body,
-              media: [],
+              media: mediaRefs,
               links: [...resolved.values.links],
               threadItems: resolved.values.threadItems.map((item) => ({
                 threadItemId: item.id,
