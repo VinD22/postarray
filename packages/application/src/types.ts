@@ -60,6 +60,7 @@ import type {
   VariantOverrides,
   WebhookEventName,
   DomainEventEnvelope,
+  MediaReadUrls,
   ErrorClass,
   ErrorCode,
 } from '@relay/contracts';
@@ -2136,6 +2137,11 @@ export interface MediaService {
     readonly retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  /**
+   * Short-lived URLs a browser can load this asset from. See the
+   * implementation: renditions that do not exist are null, never guessed.
+   */
+  getReadUrls(ctx: ActorContext, mediaId: string): Promise<MediaReadUrls>;
   /**
    * Accept the upload body itself.
    *

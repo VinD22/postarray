@@ -17,6 +17,7 @@ export * from './capabilities';
 export * from './content';
 export * from './validation';
 export * from './media-derivatives';
+export * from './media-read';
 export * from './publishing';
 export * from './queue-rules';
 export * from './posting-sets';

@@ -1,11 +1,14 @@
 import {
   CapabilityNotImplementedError,
+  MEDIA_READ_URL_TTL_SECONDS,
   ForbiddenError,
   IMAGE_UPLOAD_LIMIT_BYTES,
   MEDIA_RETENTION_DAYS,
   VIDEO_UPLOAD_LIMIT_BYTES,
   newIdFor,
   type MediaDerivativeOperation,
+  type MediaReadUrl,
+  type MediaReadUrls,
   type OperationRef,
   type Paginated,
 } from '@relay/contracts';
@@ -712,6 +715,75 @@ export function createMediaService(deps: ServiceDeps): MediaService {
       return authorized(deps, ctx, 'media.read', undefined, async (db) =>
         toView(await requireMedia(db, mediaId, deps.clock.now())),
       );
+    },
+
+    /**
+     * Short-lived URLs a browser can load this asset from.
+     *
+     * Everything that wanted to show a picture had nothing to point at: the
+     * media views describe an asset without ever saying where to read it, so
+     * the composer and the library both rendered grey rectangles. A thumbnail
+     * is preferred where one has been generated, because sending a full
+     * resolution photo to a 96 pixel tile is the difference between a library
+     * that opens instantly and one that does not.
+     *
+     * A rendition that does not exist is null, never a guessed URL. An asset
+     * whose bytes have been deleted by retention reports every rendition as
+     * null rather than handing out a link that will 404.
+     */
+    async getReadUrls(ctx: ActorContext, mediaId: string): Promise<MediaReadUrls> {
+      return authorized(deps, ctx, 'media.read', undefined, async (db) => {
+        const row = await requireMedia(db, mediaId, deps.clock.now());
+        if (row.storageDeletedAt !== null) {
+          return { mediaId, thumbnail: null, poster: null, original: null };
+        }
+
+        const derivatives = await db.mediaDerivative.findMany({
+          where: { mediaAssetId: mediaId, workspaceId: ctx.workspaceId },
+          orderBy: { createdAt: 'desc' },
+          select: { kind: true, storageKey: true, width: true, height: true },
+        });
+
+        const expiresAt = new Date(
+          deps.clock.now().getTime() + MEDIA_READ_URL_TTL_SECONDS * 1_000,
+        ).toISOString();
+
+        const sign = async (
+          storageKey: string,
+          width: number | null,
+          height: number | null,
+        ): Promise<MediaReadUrl | null> => {
+          try {
+            const url = await deps.storage.createDownloadUrl(storageKey, MEDIA_READ_URL_TTL_SECONDS);
+            return { url, width, height, expiresAt };
+          } catch {
+            // A storage adapter that cannot sign is not a reason to fail the
+            // whole request. The caller renders the unavailable tile.
+            return null;
+          }
+        };
+
+        const thumbnailRow = derivatives.find((row) => row.kind === 'thumbnail');
+        const thumbnail =
+          thumbnailRow === undefined
+            ? null
+            : await sign(thumbnailRow.storageKey, thumbnailRow.width, thumbnailRow.height);
+
+        const original = await sign(
+          `${row.workspaceId}/${row.checksumSha256}`,
+          row.width,
+          row.height,
+        );
+
+        return {
+          mediaId,
+          thumbnail,
+          // Video posters are a derivative kind the pipeline does not produce
+          // yet. Null is the honest answer until it does.
+          poster: null,
+          original,
+        };
+      });
     },
 
     async delete(ctx: ActorContext, mediaId: string): Promise<void> {

@@ -27,6 +27,7 @@ import type {
   OperationRef,
   OpportunityRecord,
   Paginated,
+  MediaReadUrls,
   ProviderId,
   PublishState,
   Scope,
@@ -37,7 +38,7 @@ import type {
 import type { HealthReport, Logger } from '@relay/observability';
 import type { RelayConfig } from '@relay/config';
 
-export type { Paginated } from '@relay/contracts';
+export type { MediaReadUrls, Paginated } from '@relay/contracts';
 import type {
   ActionItemView as ApplicationActionItemView,
   AgentConfirmationView as ApplicationAgentConfirmationView,
@@ -467,6 +468,8 @@ export interface MediaService {
     retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  /** Short-lived URLs a browser can load this asset from. Absent renditions are null. */
+  getReadUrls(ctx: ActorContext, mediaId: string): Promise<MediaReadUrls>;
   /** Local filesystem adapter only. Presigned-PUT deployments refuse both. */
   acceptDirectUpload(
     ctx: ActorContext,
