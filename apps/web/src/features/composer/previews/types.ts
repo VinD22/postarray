@@ -8,6 +8,7 @@
  * provider files from each growing their own idea of what X allows.
  */
 
+import type { ReactNode } from 'react';
 import type {
   CapabilitySupport,
   ContentKind,
@@ -130,4 +131,4 @@ export interface PreviewProps {
   readonly device: PreviewDevice;
 }
 
-export type PreviewComponent = (props: PreviewProps) => import('react').ReactNode;
+export type PreviewComponent = (props: PreviewProps) => ReactNode;
