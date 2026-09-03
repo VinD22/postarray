@@ -34,6 +34,16 @@ export const webComposerMessages = {
   'composerWeb.summary.costUnknown': 'Cost not priced yet',
   'composerWeb.summary.openReview': 'Open review',
 
+  // ----------------------------------------------------------- action bar
+  'composerWeb.actionBar.label': 'Draft actions',
+  'composerWeb.actionBar.toFix': '{count, plural, one {# to fix} other {# to fix}}',
+  'composerWeb.saveSplit.title':
+    '{count, plural, one {# account was not saved} other {# accounts were not saved}}',
+  'composerWeb.saveSplit.body':
+    'Your text is still here. The accounts below keep the version on this device, and Post Array writes them again with your next edit.',
+  'composerWeb.saveSplit.saved': 'Saved',
+  'composerWeb.saveSplit.unsaved': 'Not saved yet',
+
   // ---------------------------------------------------------------- rail
   'composerWeb.rail.masterEntry': 'Master draft',
   'composerWeb.rail.masterHint': 'Edit here to reach every target that still inherits.',

@@ -28,10 +28,11 @@ import { CostPanel } from './cost-panel';
 import { MasterPanel } from './master-panel';
 import { PaneTransition } from './pane-transition';
 import { ProviderPreview } from './provider-preview';
+import { PartialSaveNotice } from './partial-save-notice';
 import { SavedFlash, useSavedFlash } from './saved-flash';
 import { ScheduleSheet, type ScheduleIntent } from './schedule-sheet';
 import { ShortcutsDialog } from './shortcuts-dialog';
-import { SummaryBar } from './summary-bar';
+import { ActionBar, useActionBarReserve } from './action-bar';
 import { TargetRail } from './target-rail';
 import { ValidationPanel } from './validation-panel';
 import { VariantEditor } from './variant-editor';
@@ -79,6 +80,22 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [issueIndex, setIssueIndex] = useState<number | null>(null);
   const savedFlash = useSavedFlash();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const validationRef = useRef<HTMLDivElement>(null);
+  useActionBarReserve(rootRef, barRef);
+
+  /** The bar's "{n} to fix" opens the panel that lists them and goes to it. */
+  const showIssues = useCallback(() => {
+    setShowPreview(true);
+    setStep('review');
+    // The panel is rendered by the same click, so the scroll waits a frame
+    // rather than looking for an element that does not exist yet.
+    requestAnimationFrame(() => {
+      validationRef.current?.scrollIntoView({ block: 'nearest' });
+      validationRef.current?.focus();
+    });
+  }, []);
 
   const issues = useMemo(() => issueCursorList(summaries), [summaries]);
   const active =
@@ -143,16 +160,16 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   const reviewPane = (
     <div className="flex flex-col gap-6">
       {active ? <ProviderPreview summary={active} /> : null}
-      <ValidationPanel focusedIssueIndex={issueIndex} />
-      <CostPanel />
-      <div className="flex flex-wrap gap-2">
-        <Button variant="primary" onClick={() => setScheduleOpen(true)} disabled={!online}>
-          {t.full('action.schedule')}
-        </Button>
-        <Button variant="secondary" onClick={() => void saveNow()}>
-          {t.full('action.saveDraft')}
-        </Button>
+      {/*
+        The commit buttons used to live here, at the end of a column that
+        scrolls. They are in the sticky bar now, which is the only place a
+        primary action belongs on a screen this tall.
+      */}
+      <div ref={validationRef} tabIndex={-1}>
+        <ValidationPanel focusedIssueIndex={issueIndex} />
       </div>
+      <PartialSaveNotice />
+      <CostPanel />
       {online ? null : (
         <Notice tone="warning" title={t.full('composerWeb.review.offlineBlocked')} />
       )}
@@ -198,23 +215,25 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
 
   if (!isTablet) {
     return (
-      <div className="flex min-h-dvh flex-col gap-4 px-4 pt-4">
+      <div ref={rootRef} className="flex min-h-dvh flex-col gap-4 px-4 pt-4">
         <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
 
         <StepTabs step={step} onStepChange={setStep} />
 
-        <PaneTransition panelKey={step} className="flex-1 pb-4">
+        <PaneTransition
+          panelKey={step}
+          className="flex-1 pb-[var(--composer-action-bar-size,4rem)]"
+        >
           {step === 'targets' ? <TargetRail /> : null}
           {step === 'write' ? masterPane : null}
           {step === 'variant' ? editorPane : null}
           {step === 'review' ? reviewPane : null}
         </PaneTransition>
 
-        <SummaryBar
-          onOpenReview={() => {
-            setStep('review');
-            setScheduleOpen(true);
-          }}
+        <ActionBar
+          barRef={barRef}
+          onCommit={() => setScheduleOpen(true)}
+          onShowIssues={showIssues}
         />
 
         <ScheduleSheet
@@ -230,7 +249,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col gap-4 px-4 pt-4 lg:px-6">
+    <div ref={rootRef} className="flex min-h-dvh flex-col gap-4 px-4 pt-4 lg:px-6">
       <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
 
       {/* 768 to 1023: the rail becomes a horizontal strip above the editor. */}
@@ -261,7 +280,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           aria-label={
             active ? t.full('composerWeb.pane.variant') : t.full('composerWeb.pane.master')
           }
-          className="min-w-0 pb-10"
+          className="min-w-0 pb-[var(--composer-action-bar-size,4rem)]"
         >
           <PaneTransition panelKey={active ? active.connectionId : 'master'}>
             {active ? editorPane : masterPane}
@@ -273,8 +292,8 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
             aria-label={t.full('composerWeb.pane.review')}
             className={
               isDesktop
-                ? 'border-border-subtle hidden border-s ps-4 pb-10 xl:block'
-                : 'border-border-subtle border-s ps-4 pb-10'
+                ? 'border-border-subtle hidden border-s ps-4 pb-[var(--composer-action-bar-size,4rem)] xl:block'
+                : 'border-border-subtle border-s ps-4 pb-[var(--composer-action-bar-size,4rem)]'
             }
           >
             <div className="flex justify-end">
@@ -292,9 +311,15 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         at any width it can be collapsed and brought back with a real control.
       */}
       {showPreview ? (
-        <div className={isDesktop ? 'pb-10 xl:hidden' : 'hidden'}>{reviewPane}</div>
+        <div
+          className={
+            isDesktop ? 'pb-[var(--composer-action-bar-size,4rem)] xl:hidden' : 'hidden'
+          }
+        >
+          {reviewPane}
+        </div>
       ) : (
-        <div className="border-border-subtle flex flex-wrap items-center gap-3 border-t pt-3 pb-10">
+        <div className="border-border-subtle flex flex-wrap items-center gap-3 border-t pt-3 pb-[var(--composer-action-bar-size,4rem)]">
           <p className="text-body-sm text-text-tertiary">
             {t.full('composerWeb.pane.previewCollapsed')}
           </p>
@@ -310,6 +335,8 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           when: state.master.schedule === null ? 'now' : 'scheduled',
         })}
       </p>
+
+      <ActionBar barRef={barRef} onCommit={() => setScheduleOpen(true)} onShowIssues={showIssues} />
 
       <ScheduleSheet
         open={scheduleOpen}

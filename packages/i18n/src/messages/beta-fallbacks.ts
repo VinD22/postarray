@@ -614,6 +614,15 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'composerWeb.preview.counter.underAnnounce',
   'composerWeb.preview.link.domainOnly',
   'composerWeb.preview.thread.overLimit',
+  // The composer's sticky action bar, and the notice that names the accounts a
+  // save did not reach. Reviewed English until a reviewer covers them in each
+  // locale.
+  'composerWeb.actionBar.label',
+  'composerWeb.actionBar.toFix',
+  'composerWeb.saveSplit.title',
+  'composerWeb.saveSplit.body',
+  'composerWeb.saveSplit.saved',
+  'composerWeb.saveSplit.unsaved',
 ] as const;
 
 /**
