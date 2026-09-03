@@ -1,14 +1,17 @@
 'use client';
 
 import { useState, type ReactElement } from 'react';
-import { EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
-import { Badge, Button, Field, Input, Switch } from '@relay/design-system/primitives';
+import type { QueueRuleView } from '@relay/contracts';
+import { ConfirmDialog, Notice, PageHeader } from '@relay/design-system/patterns';
+import { Button, Field, Input, Switch } from '@relay/design-system/primitives';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
+import { describeApiError } from '@/features/settings/lib/api-error';
 import { useSession } from '@/lib/auth/session-context';
 
 import { BlackoutList } from './components/blackout-list';
+import { QueueRuleList } from './components/rule-list';
 import { WindowGrid } from './components/window-grid';
 import { WindowList } from './components/window-list';
 import { useArchiveQueueRule, useQueueRules, useSaveQueueRule } from './queries';
@@ -31,6 +34,12 @@ import {
  * it is read in, mark the hours, set the spacing and the daily ceiling, list
  * the days it must not post on, then save. The grid and the typed window list
  * edit the same thing, so no part of this screen needs a pointer.
+ *
+ * Two things this screen owes the person using it. The rule list distinguishes
+ * "still loading" from "there are none", because an empty state shown while a
+ * read is in flight tells somebody their rules are gone. And a save that fails
+ * says so next to the button they pressed, with everything they typed still in
+ * front of them, rather than nowhere at all.
  */
 export function QueueRuleEditorScreen(): ReactElement {
   const t = useTranslations();
@@ -43,8 +52,11 @@ export function QueueRuleEditorScreen(): ReactElement {
   const zone = workspace.timeZone;
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState<RuleDraft>(() => emptyDraft(zone));
+  const [archiving, setArchiving] = useState<QueueRuleView | null>(null);
 
   const issues = draftIssues(draft);
+  const saveFailure = save.error === null ? null : describeApiError(save.error);
+  const archiveFailure = archive.error === null ? null : describeApiError(archive.error);
   const patch = (change: Partial<RuleDraft>): void => {
     setDraft((current) => ({ ...current, ...change }));
   };
@@ -58,44 +70,30 @@ export function QueueRuleEditorScreen(): ReactElement {
           <h2 id="queue-rules-heading" className="text-title-md text-text-primary">
             {t.full('queue.rules.heading')}
           </h2>
-          {rules.data === undefined || rules.data.length === 0 ? (
-            <EmptyState
-              title={t.full('queue.rules.heading')}
-              description={t.full('queue.rules.empty')}
+          <QueueRuleList
+            rules={rules.data}
+            loading={rules.isPending}
+            failed={rules.isError}
+            onRetry={() => {
+              void rules.refetch();
+            }}
+            onEdit={(rule) => {
+              setEditingId(rule.id);
+              setDraft(toDraft(rule));
+            }}
+            onArchive={setArchiving}
+          />
+          {archiveFailure === null ? null : (
+            <Notice
+              liveness="alert"
+              tone="destructive"
+              title={t.full('web.queue.archive.failedTitle')}
+              description={
+                archiveFailure.messageKey === null
+                  ? t.full('web.queue.archive.failedBody')
+                  : t(archiveFailure.messageKey, archiveFailure.values)
+              }
             />
-          ) : (
-            <ul className="flex flex-col">
-              {rules.data.map((rule) => (
-                <li
-                  key={rule.id}
-                  className="border-border-subtle flex flex-wrap items-center gap-3 border-b py-3 last:border-b-0"
-                >
-                  <span className="text-body-md text-text-primary grow">{rule.name}</span>
-                  <Badge tone={rule.enabled ? 'success' : 'neutral'}>
-                    {rule.enabled ? t.full('queue.rules.enabled') : t.full('queue.rules.disabled')}
-                  </Badge>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      setEditingId(rule.id);
-                      setDraft(toDraft(rule));
-                    }}
-                  >
-                    {t.full('queue.rules.edit')}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      archive.mutate(rule.id);
-                    }}
-                  >
-                    {t.full('queue.rules.archive')}
-                  </Button>
-                </li>
-              ))}
-            </ul>
           )}
           <p className="text-body-sm text-text-tertiary">{t.full('queue.rules.archiveHelp')}</p>
         </section>
@@ -115,6 +113,12 @@ export function QueueRuleEditorScreen(): ReactElement {
                 />
               )}
             </Field>
+            {/*
+              A free text zone name. It stays free text for now: the typed
+              zone picker belongs to the shared date and time control another
+              lane is building, and a second one here would be thrown away.
+              TODO(owner): depends on design-system DateTimeField
+            */}
             <Field
               label={t.full('queue.field.timeZone')}
               description={t.full('queue.field.timeZoneHelp')}
@@ -217,6 +221,19 @@ export function QueueRuleEditorScreen(): ReactElement {
             <Notice tone="warning" title={t.full('queue.windows.empty')} />
           ) : null}
 
+          {saveFailure === null ? null : (
+            <Notice
+              liveness="alert"
+              tone="destructive"
+              title={t.full('web.queue.save.failedTitle')}
+              description={
+                saveFailure.messageKey === null
+                  ? t.full('web.queue.save.failedBody')
+                  : t(saveFailure.messageKey, saveFailure.values)
+              }
+            />
+          )}
+
           <div className="flex flex-wrap gap-2">
             <Button
               variant="cta"
@@ -229,7 +246,7 @@ export function QueueRuleEditorScreen(): ReactElement {
                   {
                     onSuccess: (rule) => {
                       setEditingId(rule.id);
-                      announce(t.full('queue.rules.enabled'), 'polite');
+                      announce(t.full('web.queue.save.announcement'), 'polite');
                     },
                   },
                 );
@@ -251,6 +268,39 @@ export function QueueRuleEditorScreen(): ReactElement {
           </div>
         </section>
       </div>
+
+      <ConfirmDialog
+        open={archiving !== null}
+        onOpenChange={(next) => {
+          if (!next) setArchiving(null);
+        }}
+        title={t.full('web.queue.archive.title', { name: archiving?.name ?? '' })}
+        description={t.full('web.queue.archive.body')}
+        consequences={[
+          {
+            id: 'proposals',
+            text: t.full('web.queue.archive.consequence.proposals'),
+          },
+          {
+            id: 'reserved',
+            text: t.full('web.queue.archive.consequence.reserved'),
+          },
+          {
+            id: 'scheduled',
+            text: t.full('web.queue.archive.consequence.scheduled'),
+          },
+        ]}
+        tone="destructive"
+        confirmLabel={t.full('web.queue.archive.confirm')}
+        cancelLabel={t.full('web.queue.archive.cancel')}
+        closeLabel={t.full('a11y.label.closeDialog')}
+        onConfirm={async () => {
+          const rule = archiving;
+          if (rule === null) return;
+          await archive.mutateAsync(rule.id).catch(() => undefined);
+          setArchiving(null);
+        }}
+      />
     </div>
   );
 }

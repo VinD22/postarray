@@ -155,4 +155,18 @@ export const postingSetMessages = {
   'web.set.noProject.title': 'No project selected',
   'web.set.noProject.body':
     'A Posting Set belongs to one project. Pick a project in the workspace switcher, then open this screen again.',
+  'web.set.archive.title': 'Archive {name}?',
+  'web.set.archive.body':
+    'This Set disappears from the picker as soon as you archive it. It is not deleted, and nothing already made from it is touched.',
+  'web.set.archive.consequence.picker':
+    'Nobody in this project can start a new post from this Set.',
+  'web.set.archive.consequence.existing':
+    'Drafts and scheduled posts already made from it keep every account and every setting they were given.',
+  'web.set.archive.consequence.restore':
+    'You can see it again with Show archived, and bring it back later.',
+  'web.set.archive.confirm': 'Archive this Set',
+  'web.set.archive.cancel': 'Keep this Set',
+  'web.set.archive.failedTitle': 'That Set was not archived',
+  'web.set.archive.failedBody':
+    'It is still in the picker and still available to everyone in this project. Retry, or leave it as it is.',
 } as const;

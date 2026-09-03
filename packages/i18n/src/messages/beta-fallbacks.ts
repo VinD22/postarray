@@ -484,6 +484,37 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.set.error.body',
   'web.set.noProject.title',
   'web.set.noProject.body',
+  // The same two screens, made honest: a rule list that no longer shows its
+  // empty state while it is still loading, a save error that is now on screen
+  // instead of nowhere, and a confirmation before archiving a rule or a Set.
+  // The consequence sentences are the part most worth a human translator:
+  // each one draws the line between what stops and what carries on exactly as
+  // planned, and a machine translation that blurred the two would describe a
+  // different and more frightening action.
+  'web.queue.rules.loading',
+  'web.queue.rules.loadFailed.title',
+  'web.queue.rules.loadFailed.body',
+  'web.queue.save.failedTitle',
+  'web.queue.save.failedBody',
+  'web.queue.save.announcement',
+  'web.queue.archive.title',
+  'web.queue.archive.body',
+  'web.queue.archive.consequence.proposals',
+  'web.queue.archive.consequence.reserved',
+  'web.queue.archive.consequence.scheduled',
+  'web.queue.archive.confirm',
+  'web.queue.archive.cancel',
+  'web.queue.archive.failedTitle',
+  'web.queue.archive.failedBody',
+  'web.set.archive.title',
+  'web.set.archive.body',
+  'web.set.archive.consequence.picker',
+  'web.set.archive.consequence.existing',
+  'web.set.archive.consequence.restore',
+  'web.set.archive.confirm',
+  'web.set.archive.cancel',
+  'web.set.archive.failedTitle',
+  'web.set.archive.failedBody',
 ] as const;
 
 /**

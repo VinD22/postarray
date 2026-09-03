@@ -16,6 +16,7 @@ import { useState, type ReactNode } from 'react';
 import {
   Badge,
   Button,
+  ConfirmDialog,
   EmptyState,
   ErrorState,
   LoadingState,
@@ -52,6 +53,7 @@ export function PostingSetsScreen({
   const t = useTranslations();
   const [includeArchived, setIncludeArchived] = useState(false);
   const [editing, setEditing] = useState<Editing | null>(null);
+  const [archiving, setArchiving] = useState<PostingSetView | null>(null);
   const query = usePostingSets({ projectId, includeArchived });
   const create = useCreatePostingSet();
   const update = useUpdatePostingSet();
@@ -128,6 +130,15 @@ export function PostingSetsScreen({
           <ErrorState title={t('error.unknown.message')} description={t('error.unknown.action')} />
         ) : null}
 
+        {archive.error === null ? null : (
+          <Notice
+            liveness="alert"
+            tone="destructive"
+            title={t('web.set.archive.failedTitle')}
+            description={t('web.set.archive.failedBody')}
+          />
+        )}
+
         {query.data !== undefined && query.data.data.length === 0 ? (
           <EmptyState title={t('set.empty.title')} description={t('set.empty.body')} />
         ) : null}
@@ -188,7 +199,7 @@ export function PostingSetsScreen({
                       variant="ghost"
                       loading={archive.isPending && archive.variables === set.id}
                       loadingLabel={t('loading.default')}
-                      onClick={() => archive.mutate(set.id)}
+                      onClick={() => setArchiving(set)}
                     >
                       {t('set.archive')}
                     </Button>
@@ -208,6 +219,30 @@ export function PostingSetsScreen({
           ) : null}
         </div>
       </div>
+
+      <ConfirmDialog
+        open={archiving !== null}
+        onOpenChange={(next) => {
+          if (!next) setArchiving(null);
+        }}
+        title={t('web.set.archive.title', { name: archiving?.name ?? '' })}
+        description={t('web.set.archive.body')}
+        consequences={[
+          { id: 'picker', text: t('web.set.archive.consequence.picker') },
+          { id: 'existing', text: t('web.set.archive.consequence.existing') },
+          { id: 'restore', text: t('web.set.archive.consequence.restore') },
+        ]}
+        tone="destructive"
+        confirmLabel={t('web.set.archive.confirm')}
+        cancelLabel={t('web.set.archive.cancel')}
+        closeLabel={t('a11y.label.closeDialog')}
+        onConfirm={async () => {
+          const set = archiving;
+          if (set === null) return;
+          await archive.mutateAsync(set.id).catch(() => undefined);
+          setArchiving(null);
+        }}
+      />
     </div>
   );
 }
