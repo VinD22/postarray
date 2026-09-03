@@ -84,6 +84,26 @@ Also fixed along the way: the CLI was sending `x-postarray-workspace-id`, a
 header no route reads. Any credential bound to more than one workspace could
 never pin one, and every such call returned a missing workspace.
 
+## What the analytics work could not honestly build
+
+The overview screen was specified with columns the API does not serve. Recorded
+so the gap is a decision rather than an omission somebody quietly fills in.
+
+- **No followers, reach or engagement rate.** The plan asks for a per-channel
+  table carrying those three, from a `channels` field on the overview response.
+  That field does not exist and neither do the numbers. An engagement rate
+  computed here would be a figure the screen invented, so the table shows posts
+  measured, the ranked metric where it is legitimately addable, the unavailable
+  count and freshness. The columns follow when the backend ships the field.
+- **No 28-day preset.** `AnalyticsRange['preset']` accepts `7d`, `30d`, `90d`
+  and `custom`, and the server echoes the same enum, so the 28 the plan asked
+  for would fail the client's own response parse. Shipped as 7, 30, 90, custom.
+- **`ExperimentView` declared five fields the API has never returned.** The
+  experiments screen now says per-variant readings are not reported, rather
+  than rendering an empty list that reads as "no variants".
+- **The custom range uses two native date inputs** behind a `TODO(web)`,
+  because the `DateTimeField` primitive in FE section B9 is not built yet.
+
 ## Known issues, in priority order
 
 1. **The character counter excludes signature text that will publish.**

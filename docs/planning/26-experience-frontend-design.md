@@ -303,7 +303,16 @@ Recommendation: GSAP origin continuity, not View Transitions. Reasons: no `ViewT
 
 ### D1. Chart kit location and dependencies
 
-Decision: `packages/design-system/src/charts/`, hand-rolled SVG, no d3.
+Decision: `packages/design-system/src/charts/`, over `d3-scale` and `d3-shape`.
+
+**Superseded 2026-09-03.** This section originally argued for hand-rolled SVG
+with no d3, on the grounds that two pure modules a junior can read beat a typed
+dependency they cannot. The owner approved `d3-scale` and `d3-shape` as pinned
+dependencies before implementation, and the kit was built on them. The
+reasoning below is kept because its conclusions still bind: `scale.ts` and
+`path.ts` are the only files that import a d3 type, so the rest of the kit is
+still readable without knowing d3, and every rule about gaps, animation and
+colour is unchanged.
 
 - The design system may take third-party dependencies from its declared toolchain list, and `d3-scale`/`d3-shape` are not product coupling, so they are permissible. They are still not worth it: the kit needs a linear scale, a time scale, a band scale, "nice" ticks and a line/area path generator, roughly 250 lines total, all pure and testable, and the existing `trend-chart.tsx` already hand-rolls most of it (badly, at 464 lines). Two pure modules a junior can read beat a typed dependency they cannot.
 - Colour: chart series must not use marigold or ultramarine (README: scene vocabulary and "nothing else may join"). Add four semantic tokens to `theme.css` in both themes with contrast assertions: `--chart-line` (ink), `--chart-line-compare` (text-secondary), `--chart-grid` (border-subtle), `--chart-area` (surface-sunken). Multi-series is distinguished by dash pattern plus a text legend, not hue. This is also the colour-blind-safe answer.
