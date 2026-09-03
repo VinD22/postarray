@@ -10,7 +10,7 @@ import { Kbd } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
 import { PageTransitionProvider } from '@/components/motion';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
 import { AccountMenu } from './account-menu';
 import { ActionCenterPanel } from './action-center-panel';
@@ -40,11 +40,29 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const router = useLocalizedRouter();
 
+  // The locale prefix is part of the path for every locale but the default,
+  // so the suffix is what identifies the screen rather than an equality check.
+  const onCompose = pathname === '/compose' || pathname.endsWith('/compose');
+
+  // Every binding below is advertised in `shortcut-catalog.ts`, and
+  // `shortcut-catalog.test.ts` reads this file to prove the two agree. Add a
+  // binding here and the catalog, or the cheat sheet starts lying again.
+  //
+  // Both of these stay live inside a field: the palette and Compose are how
+  // you leave whatever you are typing, and a chord with a modifier cannot eat
+  // a character out of a draft the way a bare letter would.
   useHotkeys(
     {
       'mod+k': () => {
         setPaletteOpen(true);
+      },
+      'mod+shift+c': () => {
+        // Already composing. Navigating to the screen you are on would throw
+        // away the draft on it, which is the opposite of what the key means.
+        if (onCompose) return;
+        router.push('/compose');
       },
     },
     { enableInFormFields: true },

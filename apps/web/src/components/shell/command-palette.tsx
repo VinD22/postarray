@@ -27,6 +27,7 @@ import { useSession } from '@/lib/auth/session-context';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
 import { NAV_ITEMS } from './nav-items';
+import { shortcutKeys } from './shortcut-catalog';
 
 interface Command {
   readonly id: string;
@@ -78,6 +79,8 @@ export function CommandPalette({
     [close, router],
   );
 
+  const composeShortcut = shortcutKeys('compose');
+
   const commands = useMemo<readonly Command[]>(() => {
     const actionGroup = t('palette.group.actions');
     const goToGroup = t('palette.group.goTo');
@@ -94,7 +97,9 @@ export function CommandPalette({
         run: () => {
           go('/compose');
         },
-        shortcut: 'mod+shift+c',
+        // The catalog, not a literal. The Kbd printed here used to advertise a
+        // binding that existed nowhere.
+        ...(composeShortcut === undefined ? {} : { shortcut: composeShortcut }),
       });
     }
 
@@ -212,7 +217,7 @@ export function CommandPalette({
     );
 
     return entries;
-  }, [canPublish, close, go, router, session.workspaces, t, workspace.id]);
+  }, [canPublish, close, composeShortcut, go, router, session.workspaces, t, workspace.id]);
 
   const results = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase();
