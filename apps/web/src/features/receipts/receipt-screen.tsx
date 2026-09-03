@@ -230,8 +230,21 @@ function PostDocument({
       />
 
       <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
-        {/* ---- What happened -------------------------------------------- */}
-        <section aria-labelledby="receipt-summary" className="flex flex-col gap-3">
+        {/*
+          ---- What happened ----------------------------------------------
+
+          `id="receipt"` is the anchor the calendar links to. Three places in
+          the calendar built a `/posts/{id}#receipt` href and no element with
+          that id existed anywhere, so every one of them dropped the reader at
+          the top of the page to find the receipt themselves. It is on the
+          section rather than on the heading so the scroll lands above the
+          heading rather than under the sticky header.
+        */}
+        <section
+          id="receipt"
+          aria-labelledby="receipt-summary"
+          className="flex scroll-mt-20 flex-col gap-3"
+        >
           <SectionHeading id="receipt-summary">{t('web.receipt.section.summary')}</SectionHeading>
 
           <div className="flex flex-wrap items-center gap-3">

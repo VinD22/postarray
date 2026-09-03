@@ -344,16 +344,20 @@ export function CalendarScreen({
     [reschedule, format.timeZone],
   );
 
-  const hrefForEntry = useCallback(
-    (entry: CalendarEntry) => postHrefPattern.replace('{id}', entry.contentItemId),
-    [postHrefPattern],
-  );
   // The receipt lives on the post page. A post with no publish job has no
   // receipt yet, and linking to one that does not exist is worse than no link.
   const hrefForReceipt = useCallback(
     (entry: CalendarEntry) =>
       entry.publishJobId ? `${postHrefPattern.replace('{id}', entry.contentItemId)}#receipt` : null,
     [postHrefPattern],
+  );
+  // A chip for something that has published opens the post at its receipt,
+  // which is what somebody clicking a published chip came to read. A chip for
+  // a draft opens the post itself, because there is no receipt to land on.
+  const hrefForEntry = useCallback(
+    (entry: CalendarEntry) =>
+      hrefForReceipt(entry) ?? postHrefPattern.replace('{id}', entry.contentItemId),
+    [hrefForReceipt, postHrefPattern],
   );
   const hrefForDay = useCallback(
     (day: Date) => {
