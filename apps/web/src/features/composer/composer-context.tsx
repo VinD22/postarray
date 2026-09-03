@@ -55,6 +55,8 @@ export interface ComposerContextValue {
   readonly conflict: ConflictInfo | null;
   readonly resolveConflict: (keep: 'mine' | 'theirs') => void;
   readonly online: boolean;
+  /** True while the draft holds edits the server has not accepted yet. */
+  readonly dirty: boolean;
   /** Saves now and resolves with the content item id, creating it if needed. */
   readonly saveNow: () => Promise<string>;
   /** Targets whose last variant write was rejected. They retry on the next save. */
@@ -100,6 +102,9 @@ export function ComposerProvider({
   const [conflict, setConflict] = useState<ConflictInfo | null>(null);
   const [online, setOnline] = useState(true);
   const [failedTargetConnectionIds, setFailedTargets] = useState<readonly string[]>([]);
+  // The same fact as `lastSavedRevision`, in a form the screen can render: the
+  // device copy of the draft and the leave guard both need to know about it.
+  const [savedRevision, setSavedRevision] = useState(0);
   const lastSavedRevision = useRef(0);
   // A save reads the draft when it runs, not when it was asked for, so a
   // coalesced round writes the latest text rather than the text of the
@@ -160,6 +165,7 @@ export function ComposerProvider({
     try {
       const outcome = await onSave(next);
       lastSavedRevision.current = revision;
+      setSavedRevision(revision);
       if (next.master.id !== outcome.contentItemId) {
         dispatch({ type: 'master/assign-id', contentItemId: outcome.contentItemId });
       }
@@ -297,6 +303,7 @@ export function ComposerProvider({
       conflict,
       resolveConflict,
       online,
+      dirty: state.revision !== savedRevision,
       saveNow,
       failedTargetConnectionIds,
     }),
@@ -310,6 +317,7 @@ export function ComposerProvider({
       resolveConflict,
       runAll,
       savedAt,
+      savedRevision,
       saveNow,
       state,
       summaries,

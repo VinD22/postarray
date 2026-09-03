@@ -623,6 +623,21 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'composerWeb.saveSplit.body',
   'composerWeb.saveSplit.saved',
   'composerWeb.saveSplit.unsaved',
+  // Draft recovery and the leave guard. Each sentence states exactly where a
+  // person's unsaved text is and is not, so it stays on the reviewed English
+  // source until a reviewer covers it in each locale.
+  'composerWeb.restore.title',
+  'composerWeb.restore.body',
+  'composerWeb.restore.restore',
+  'composerWeb.restore.discard',
+  'composerWeb.restore.supersededTitle',
+  'composerWeb.restore.supersededBody',
+  'web.unsaved.title',
+  'web.unsaved.body',
+  'web.unsaved.keptOnDevice',
+  'web.unsaved.notOnServer',
+  'web.unsaved.leave',
+  'web.unsaved.stay',
 ] as const;
 
 /**

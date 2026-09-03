@@ -28,7 +28,11 @@ import { CostPanel } from './cost-panel';
 import { MasterPanel } from './master-panel';
 import { PaneTransition } from './pane-transition';
 import { ProviderPreview } from './provider-preview';
+import { UnsavedChangesPrompt } from '@/lib/navigation/unsaved-changes';
+
+import { useDraftMirror } from '../hooks/use-draft-mirror';
 import { PartialSaveNotice } from './partial-save-notice';
+import { RestoreBanner } from './restore-banner';
 import { SavedFlash, useSavedFlash } from './saved-flash';
 import { ScheduleSheet, type ScheduleIntent } from './schedule-sheet';
 import { ShortcutsDialog } from './shortcuts-dialog';
@@ -69,7 +73,19 @@ export interface ComposerScreenProps {
 
 export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   const t = useTranslations();
-  const { state, dispatch, summaries, totals, saveNow, online } = useComposer();
+  const { bootstrap, state, dispatch, summaries, totals, saveNow, online, dirty, savedAt } =
+    useComposer();
+
+  // The draft is mirrored to this device while it is dirty, so a reload, a
+  // crash or a closed tab is not a lost post. It is removed the moment the
+  // server has the work.
+  useDraftMirror({
+    workspaceId: state.master.workspaceId,
+    state,
+    dirty,
+    savedAt,
+    loadedAt: bootstrap.updatedAt,
+  });
   // Three named layouts, not one layout squeezed twice.
   const isTablet = useBreakpoint('md'); // 768: editor plus review, rail on top
   const isDesktop = useBreakpoint('lg'); // 1024: three panes, review collapsible
@@ -218,6 +234,8 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       <div ref={rootRef} className="flex min-h-dvh flex-col gap-4 px-4 pt-4">
         <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
 
+        <RestoreBanner />
+
         <StepTabs step={step} onStepChange={setStep} />
 
         <PaneTransition
@@ -244,6 +262,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         />
         <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
         <SavedFlash visible={savedFlash.visible} />
+        <UnsavedChangesPrompt dirty={dirty} />
       </div>
     );
   }
@@ -251,6 +270,8 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   return (
     <div ref={rootRef} className="flex min-h-dvh flex-col gap-4 px-4 pt-4 lg:px-6">
       <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
+
+      <RestoreBanner />
 
       {/* 768 to 1023: the rail becomes a horizontal strip above the editor. */}
       {isDesktop ? null : (
@@ -346,6 +367,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       />
       <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
       <SavedFlash visible={savedFlash.visible} />
+      <UnsavedChangesPrompt dirty={dirty} />
     </div>
   );
 }

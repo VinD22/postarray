@@ -218,6 +218,7 @@ export async function loadComposer(input: {
 
   return {
     master,
+    updatedAt: composite?.updatedAt ?? null,
     accounts,
     /*
      * Sets used to be hardcoded to `[]` here, which meant "apply a Set" was

@@ -243,4 +243,13 @@ export const webShellMessages = {
   'onboarding.receipt.goHome': 'Go to Home',
   'onboarding.blocked.title': 'This step needs the previous one',
   'onboarding.blocked.body': 'Finish {step} first. Nothing you entered is lost.',
+
+  // Leaving a screen that still holds unsaved work.
+  'web.unsaved.title': 'Leave without saving?',
+  'web.unsaved.body':
+    'This draft has edits Post Array has not saved yet. Leaving now takes you away from them.',
+  'web.unsaved.keptOnDevice': 'Your unsaved edits stay in this browser and are offered back here.',
+  'web.unsaved.notOnServer': 'They are not on the server, so another device will not see them.',
+  'web.unsaved.leave': 'Leave the page',
+  'web.unsaved.stay': 'Keep editing',
 } as const;

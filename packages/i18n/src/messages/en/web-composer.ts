@@ -44,6 +44,16 @@ export const webComposerMessages = {
   'composerWeb.saveSplit.saved': 'Saved',
   'composerWeb.saveSplit.unsaved': 'Not saved yet',
 
+  // ------------------------------------------------------- draft recovery
+  'composerWeb.restore.title': 'Unsaved changes from this device',
+  'composerWeb.restore.body':
+    'This browser kept a copy of edits that never reached Post Array. Restore them, or discard the copy and keep the version on the server.',
+  'composerWeb.restore.restore': 'Restore unsaved changes',
+  'composerWeb.restore.discard': 'Discard the copy',
+  'composerWeb.restore.supersededTitle': 'A newer version was saved elsewhere',
+  'composerWeb.restore.supersededBody':
+    'This draft was saved from another device after the copy on this one was made, so the copy has been removed and you are looking at the saved version.',
+
   // ---------------------------------------------------------------- rail
   'composerWeb.rail.masterEntry': 'Master draft',
   'composerWeb.rail.masterHint': 'Edit here to reach every target that still inherits.',

@@ -340,6 +340,7 @@ export const SEED_DOMAINS: readonly BrandedDomain[] = [
 
 export const SEED_BOOTSTRAP: ComposerBootstrap = {
   master: SEED_MASTER,
+  updatedAt: '2026-08-04T07:05:00.000Z',
   accounts: SEED_ACCOUNTS,
   sets: SEED_SETS,
   signatures: SEED_SIGNATURES,

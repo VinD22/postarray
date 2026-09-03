@@ -192,6 +192,13 @@ export interface ComposerState {
 /** What the composer needs from the server before it can render. */
 export interface ComposerBootstrap {
   readonly master: MasterDraft;
+  /**
+   * The server's `updatedAt` for this draft, or null when no row exists yet.
+   *
+   * The device copy of the draft is only offered back while the server still
+   * holds this same version. A newer one means somebody saved elsewhere.
+   */
+  readonly updatedAt: string | null;
   readonly accounts: readonly TargetAccount[];
   readonly sets: readonly TargetSet[];
   readonly signatures: readonly SignatureOption[];
