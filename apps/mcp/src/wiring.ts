@@ -2,7 +2,7 @@ import type { Services } from '@relay/application';
 import { ForbiddenError } from '@relay/contracts';
 
 import type { ConfirmationStore } from './confirmations';
-import type { RelayServicePort } from './ports';
+import type { RecentEventsPage, RelayServicePort } from './ports';
 
 /**
  * The single adapter between `@relay/application` and this server's port.
@@ -16,7 +16,26 @@ import type { RelayServicePort } from './ports';
  * the compiler points at this file, which is the whole point of keeping the
  * seam explicit rather than importing `Services` into every tool.
  */
-export function toRelayServicePort(services: Services): RelayServicePort {
+/**
+ * Reads the live event stream, when the deployment has one.
+ *
+ * The stream lives in Redis rather than PostgreSQL, so it is not part of
+ * `Services` and cannot be reached through the pass-through below. The
+ * composition root supplies it, and a deployment without Redis supplies
+ * nothing, in which case the tool honestly answers that there is no recent
+ * activity to report rather than pretending the workspace was quiet.
+ */
+export interface RecentEventsReader {
+  readRecent(
+    workspaceId: string,
+    input: { readonly since: string | null; readonly limit?: number },
+  ): Promise<RecentEventsPage['events']>;
+}
+
+export function toRelayServicePort(
+  services: Services,
+  events?: RecentEventsReader,
+): RelayServicePort {
   return {
     connections: {
       list: (ctx, input) => services.connections.list(ctx, input),
@@ -62,6 +81,20 @@ export function toRelayServicePort(services: Services): RelayServicePort {
       generatePlan: (ctx, input) => services.growth.generatePlan(ctx, input),
       createDraftFromItem: (ctx, input) => services.growth.createDraftFromItem(ctx, input),
       listOpportunities: (ctx, input) => services.growth.listOpportunities(ctx, input),
+    },
+    events: {
+      async listRecent(ctx, input): Promise<RecentEventsPage> {
+        if (events === undefined) {
+          return { events: [], lastEventId: null };
+        }
+        // The workspace comes from the verified actor context, never from the
+        // tool arguments, which is the same rule every other method here obeys.
+        const page = await events.readRecent(ctx.workspaceId, {
+          since: input.since ?? null,
+          limit: input.limit,
+        });
+        return { events: page, lastEventId: page[page.length - 1]?.id ?? null };
+      },
     },
   };
 }

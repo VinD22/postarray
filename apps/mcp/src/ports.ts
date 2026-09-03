@@ -12,6 +12,7 @@ import type {
   PageInfo,
   ProviderId,
   PublishState,
+  RealtimeEvent,
   Scope,
   ValidationResult,
 } from '@relay/contracts';
@@ -370,6 +371,27 @@ export interface RelayServicePort {
       },
     ): Promise<readonly OpportunityRecord[]>;
   };
+
+  /**
+   * Recent status changes in this workspace.
+   *
+   * A tool call answers and ends, so an agent cannot hold the event stream open
+   * the way a browser tab or `postarray events --follow` does. Polling this
+   * between turns is the honest equivalent: same events, same tenancy, same
+   * read scope, bounded page.
+   */
+  readonly events: {
+    listRecent(
+      ctx: ActorContextLike,
+      input: { readonly since?: string; readonly limit: number },
+    ): Promise<RecentEventsPage>;
+  };
+}
+
+/** One page of live events, plus the id to resume from next turn. */
+export interface RecentEventsPage {
+  readonly events: readonly RealtimeEvent[];
+  readonly lastEventId: string | null;
 }
 
 /**
