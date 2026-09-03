@@ -296,6 +296,14 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
 export const BETA_ENGLISH_FALLBACK_KEYS = [
+  // Added when the experiments screen stopped rendering a variant breakdown
+  // the API has never returned. The screen now states that per-variant
+  // readings are not reported and shows the window and the server's own
+  // conclusion instead. Reviewed English until a reviewer covers each locale.
+  'analytics.experiment.status.collectingNow',
+  'analytics.experiment.windowRange',
+  'analytics.experiment.variantsNotReported',
+  'analytics.experiment.result.associationOnly',
   // Added when `lastVerifiedAt` became nullable so an unverified metric
   // definition stops rendering a fabricated 1970 verification date. Reviewed
   // English until a reviewer covers it in each locale.

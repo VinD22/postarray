@@ -250,7 +250,13 @@ export const webAnalyticsMessages = {
     'Below this count the result is shown as inconclusive rather than as a winner.',
   'analytics.experiment.status.planned': 'Planned',
   'analytics.experiment.status.collecting': 'Collecting. {published} of {target} posts published.',
+  'analytics.experiment.status.collectingNow': 'Collecting',
   'analytics.experiment.status.inconclusive': 'Complete, no clear difference',
+  'analytics.experiment.windowRange': 'Measured from {start} to {end}',
+  'analytics.experiment.variantsNotReported':
+    'Per-variant readings are not reported yet. This record holds what you are testing and the window it runs over. The numbers for each variant are not part of this read.',
+  'analytics.experiment.result.associationOnly':
+    'A difference here is an association, not a cause. Anything else that changed in the same period changed with it.',
   'analytics.experiment.result.difference':
     '{variant} recorded {percent} more {metric} than {otherVariant}.',
   'analytics.experiment.result.noDifference':
