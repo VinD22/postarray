@@ -60,6 +60,30 @@ error anywhere, and because the shape of the mistake will recur.
    `provider_destinations.id`. The search now carries the stored row id, and a
    destination with no row stays local rather than inventing one.
 
+## Three constraints the realtime design got wrong
+
+Recorded because each would be rediscovered the hard way by anyone extending
+the event stream.
+
+1. **`EventSource` cannot be used.** It cannot set a request header, and every
+   route pins its tenant with `x-relay-workspace-id`. Anyone in two workspaces
+   would have received a 404 for the workspace. The web client reads the
+   response body with `fetch` instead, which also sends `Last-Event-ID` on
+   every reconnect rather than only when the browser chooses to.
+2. **Express `compression()` silently swallows a stream.** It is mounted
+   globally. The events response sets `cache-control: no-cache, no-transform`,
+   and `no-transform` is the directive compression honours. Without it frames
+   sit in the compressor until its window fills, which for a few hundred bytes
+   of JSON never happens.
+3. **MCP tools do not call HTTP.** They go through `RelayServicePort` against
+   the application services. Events live in Redis and are not part of
+   `Services`, so the composition root supplies a reader on its own connection
+   and the sandbox supplies none.
+
+Also fixed along the way: the CLI was sending `x-postarray-workspace-id`, a
+header no route reads. Any credential bound to more than one workspace could
+never pin one, and every such call returned a missing workspace.
+
 ## Known issues, in priority order
 
 1. **The character counter excludes signature text that will publish.**
