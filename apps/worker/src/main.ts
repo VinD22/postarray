@@ -12,9 +12,11 @@ import { createLogger, type Logger } from '@relay/observability';
 import {
   createApplicationRuntime,
   createDomainEventOutboxDispatcher,
+  createRedisRealtimePublisher,
   createWorkflowOutboxDispatcher,
   resolveStoragePort,
   type ConnectorExecutionGateway,
+  type RealtimeRedisClient,
 } from '@relay/runtime';
 import Redis from 'ioredis';
 
@@ -178,6 +180,39 @@ export async function loadGateway(
   return adoptGateway(
     await Promise.resolve(build({ connectorExecution: options.connectorExecution ?? null })),
   );
+}
+
+/**
+ * The live-update publisher, or nothing.
+ *
+ * Nothing is a supported state. Without Redis the product still publishes,
+ * still delivers webhooks and still writes receipts; screens fall back to
+ * their polling interval, which is exactly what they do today. So a missing
+ * `REDIS_URL` degrades the experience and is never allowed to stop a publish.
+ */
+function createRealtimePublisher(
+  config: RelayConfig,
+  logger: Logger,
+): { publisher: ReturnType<typeof createRedisRealtimePublisher>; close: () => Promise<void> } | null {
+  if (config.redis.url === undefined) {
+    logger.warn({}, 'worker.realtime_disabled');
+    return null;
+  }
+  const client = new Redis(config.redis.url, {
+    lazyConnect: false,
+    enableReadyCheck: true,
+    maxRetriesPerRequest: 3,
+  });
+  // ioredis implements every command this port needs; its overloaded
+  // declarations are wider than the structural type, exactly as they are for
+  // the key value store above.
+  const realtimeClient = client as unknown as RealtimeRedisClient;
+  return {
+    publisher: createRedisRealtimePublisher({ client: realtimeClient, logger }),
+    close: async () => {
+      await client.quit();
+    },
+  };
 }
 
 async function createWorkerKeyValueStore(
@@ -366,6 +401,7 @@ export async function main(): Promise<void> {
     throw error;
   }
   const scheduler = new WorkerScheduler({ worker, config, clock: systemClock, logger });
+  const realtime = createRealtimePublisher(config, logger);
   let kv: KeyValueStore | null = null;
   let runtime: ReturnType<typeof createApplicationRuntime>;
   try {
@@ -381,6 +417,7 @@ export async function main(): Promise<void> {
         // comment says so. It exists because nothing else in the product moved
         // an asset out of `pending`, so no uploaded image could ever publish.
         mediaScanner: createPassthroughScanner({ storage: resolveStoragePort(config, systemClock) }),
+        ...(realtime === null ? {} : { realtime: realtime.publisher }),
         credentialStore: connectorRuntime.credentialStore,
         ...(connectorRuntime.credentialVault === null
           ? {}
@@ -511,6 +548,7 @@ export async function main(): Promise<void> {
         await outbox.stop();
         await domainEventOutbox.stop();
         await runtime.close();
+        await realtime?.close();
         await scheduler.close();
         connectorRuntime.close();
         await prisma.$disconnect();
