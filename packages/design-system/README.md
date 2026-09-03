@@ -122,7 +122,16 @@ Everything outside those three lines is still banned.
 
 Two tiers. Functional, in-app motion stays 120-200ms, three named easings,
 nothing animates for spectacle and nothing animates data. Expressive motion
-(400-900ms) is reserved for marketing and overlay entrances/exits. **GSAP is
+(400-900ms) is reserved for marketing and overlay entrances/exits.
+
+Continuous indicators are a third thing and are named apart:
+`--duration-loop-spin` (720ms, one rotation of `Spinner`) and `--duration-loop`
+(1600ms, one breath of the skeleton pulse and one pass of the shimmer). They
+are loop periods, not transition durations, so the functional ceiling does not
+apply to them. Everything else in `theme.css` reaches for a `--duration-*`
+token: `src/tokens/motion-literals.test.ts` fails the build on a literal time
+inside an `animation` or `transition` declaration anywhere outside the token
+block, which is how a 320ms popover got in unnoticed the first time. **GSAP is
 banned in this package** — it lives only in `apps/web/src/lib/motion`; this
 package stays CSS-only, so a component here animates without a JS branch and
 the global reduced-motion override actually reaches it.

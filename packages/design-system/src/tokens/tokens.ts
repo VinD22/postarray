@@ -574,6 +574,23 @@ export const durations = {
   expressiveLg: 900,
 } as const;
 
+/**
+ * Loop periods for continuous indicators, kept out of `durations` on purpose.
+ *
+ * A spinner and a skeleton pulse repeat for as long as the wait lasts. Their
+ * period describes the speed of an indicator, not the length of a state
+ * change, so measuring it against the 80-200ms functional ceiling would be
+ * measuring the wrong thing. Naming them apart is what lets
+ * `motion-literals.test.ts` insist that every other duration in `theme.css`
+ * comes from the scale.
+ */
+export const loopDurations = {
+  /** One full rotation of `Spinner`. */
+  spin: 720,
+  /** One breath of the skeleton pulse, and one pass of the shimmer sweep. */
+  pulse: 1600,
+} as const;
+
 export const easings = {
   standard: 'cubic-bezier(0.2, 0, 0.15, 1)',
   entrance: 'cubic-bezier(0.05, 0.7, 0.1, 1)',

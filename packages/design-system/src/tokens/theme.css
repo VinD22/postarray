@@ -1062,6 +1062,13 @@
   --duration-expressive-sm: 400ms;
   --duration-expressive-md: 650ms;
   --duration-expressive-lg: 900ms;
+  /* Loop periods, not transition durations. A spinner and a skeleton pulse
+     repeat for as long as the wait lasts, so their period is the speed of a
+     continuous indicator rather than the length of a state change, and it has
+     no business on the 80-200ms functional scale. They are named apart so a
+     reviewer can tell a slow transition (a bug) from a calm loop (correct). */
+  --duration-loop-spin: 720ms;
+  --duration-loop: 1600ms;
   --ease-standard: cubic-bezier(0.2, 0, 0.15, 1);
   --ease-entrance: cubic-bezier(0.05, 0.7, 0.1, 1);
   --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);
@@ -1247,11 +1254,11 @@
   }
 
   .relay-anim-pulse {
-    animation: relay-pulse 1.6s var(--ease-standard) infinite;
+    animation: relay-pulse var(--duration-loop) var(--ease-standard) infinite;
   }
 
   .relay-anim-spin {
-    animation: relay-spin 720ms linear infinite;
+    animation: relay-spin var(--duration-loop-spin) linear infinite;
   }
 
   .relay-anim-fade-in {
@@ -1318,7 +1325,7 @@
   }
 
   .relay-pop-in {
-    animation: relay-pop-in 320ms var(--ease-out-expo);
+    animation: relay-pop-in var(--duration-slow) var(--ease-out-expo);
   }
 
   /* Sheet entrance (F6 Batch B): slides in from its logical anchor edge with
@@ -1402,7 +1409,7 @@
       var(--surface-sunken) 100%
     );
     background-size: 200% 100%;
-    animation: relay-shimmer 1.6s var(--ease-standard) infinite;
+    animation: relay-shimmer var(--duration-loop) var(--ease-standard) infinite;
   }
 
   /* Pressable controls, editorial edition: a quiet 1px settle on press plus
