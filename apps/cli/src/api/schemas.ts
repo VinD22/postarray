@@ -22,6 +22,7 @@ import {
   publishStateSchema,
   scopeSchema,
   validationResultSchema,
+  realtimeEventSchema,
 } from '@relay/contracts';
 
 /**
@@ -287,6 +288,12 @@ export const metricObservationViewSchema = z.object({
 export type MetricObservationView = z.infer<typeof metricObservationViewSchema>;
 
 export const scopeListSchema = z.array(scopeSchema);
+
+/** One page of `GET /v1/events/recent`. */
+export const realtimeEventPageSchema = z.object({
+  events: z.array(realtimeEventSchema),
+  lastEventId: z.string().nullable(),
+});
 
 export {
   capabilitySnapshotSchema,

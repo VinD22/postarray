@@ -238,7 +238,15 @@ describe('human locale selection', () => {
       env: { RELAY_LOCALE: 'fr', LANG: 'de' },
     });
     const explicitContext = await createContext(
-      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false, locale: 'ja' },
+      {
+        json: false,
+        profile: undefined,
+        apiUrl: undefined,
+        workspaceId: undefined,
+        dryRun: false,
+        yes: false,
+        locale: 'ja',
+      },
       explicit,
     );
     expect(explicitContext.locale).toBe('ja');
@@ -252,14 +260,28 @@ describe('human locale selection', () => {
       env: { RELAY_LOCALE: 'de', LANG: 'ja' },
     });
     const profileContext = await createContext(
-      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false },
+      {
+        json: false,
+        profile: undefined,
+        apiUrl: undefined,
+        workspaceId: undefined,
+        dryRun: false,
+        yes: false,
+      },
       profile,
     );
     expect(profileContext.locale).toBe('fr');
 
     const posix = deps({ env: { LANG: 'de_DE.UTF-8' } });
     const posixContext = await createContext(
-      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false },
+      {
+        json: false,
+        profile: undefined,
+        apiUrl: undefined,
+        workspaceId: undefined,
+        dryRun: false,
+        yes: false,
+      },
       posix,
     );
     expect(posixContext.locale).toBe('de');

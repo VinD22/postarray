@@ -33,6 +33,10 @@ export const ROUTES = {
   mediaFinalize: (mediaId: string) => `/v1/media/${encodeURIComponent(mediaId)}/finalize`,
   mediaImports: () => '/v1/media/imports',
 
+  /** The live stream. Held open; every other route here answers and ends. */
+  events: () => '/v1/events',
+  recentEvents: () => '/v1/events/recent',
+
   calendar: () => '/v1/calendar',
   receipt: (receiptId: string) => `/v1/receipts/${encodeURIComponent(receiptId)}`,
 

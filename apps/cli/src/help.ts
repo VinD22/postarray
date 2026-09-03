@@ -49,6 +49,12 @@ export const CLI_HELP = {
 
   calendarGroup: { key: 'calendar.title' },
   calendarList: { key: 'cli.help.calendar.list' },
+  eventsWatch: { key: 'cli.help.events.watch' },
+  eventsFollow: { key: 'cli.help.events.follow' },
+  eventsNoReconnect: { key: 'cli.help.events.noReconnect' },
+  eventsSince: { key: 'cli.help.events.since' },
+  eventsType: { key: 'cli.help.events.type' },
+
   receiptsGroup: { key: 'receipt.title' },
   receiptsGet: { key: 'cli.help.receipts.get' },
   analyticsGroup: { key: 'analytics.title' },
