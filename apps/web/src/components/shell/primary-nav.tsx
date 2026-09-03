@@ -126,14 +126,88 @@ export function PrimaryNav() {
           </Link>
         );
 
-        return labelsVisible ? (
-          <div key={item.id}>{link}</div>
-        ) : (
-          <Tooltip key={item.id} content={label} side="right">
-            {link}
-          </Tooltip>
+        // Sub destinations appear only while their section is open, so the
+        // rail still reads as eight fixed places rather than as a tree that
+        // changes height for no reason.
+        const subItems = active ? (item.subItems ?? []) : [];
+
+        return (
+          <div key={item.id}>
+            {labelsVisible ? (
+              link
+            ) : (
+              <Tooltip content={label} side="right">
+                {link}
+              </Tooltip>
+            )}
+            {subItems.length === 0 ? null : (
+              <ul className="mt-0.5 flex flex-col gap-0.5">
+                {subItems.map((subItem) => (
+                  <li key={subItem.id}>
+                    <SubLink
+                      item={subItem}
+                      active={isNavSubItemActive(subItem, pathname)}
+                      label={t(subItem.labelKey)}
+                      labelVisible={labelsVisible}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         );
       })}
     </nav>
+  );
+}
+
+/**
+ * One sub destination in the rail.
+ *
+ * Indented from its parent when there is room for labels, and reduced to a
+ * tooltipped icon when there is not, so the icons-only rail at 768px never
+ * loses a destination the wide rail has.
+ */
+function SubLink({
+  item,
+  active,
+  label,
+  labelVisible,
+}: {
+  readonly item: NavSubItem;
+  readonly active: boolean;
+  readonly label: string;
+  readonly labelVisible: boolean;
+}): ReactNode {
+  const Icon = item.icon;
+
+  const link: ReactNode = (
+    <Link
+      href={item.href}
+      aria-current={active ? 'page' : undefined}
+      className={cn(
+        'flex min-h-11 items-center gap-3 rounded-md py-2 lg:min-h-9',
+        'text-body-sm transition-[background-color,color] duration-(--duration-fast)',
+        labelVisible ? 'ps-7 pe-2.5' : 'px-2.5',
+        active
+          ? 'bg-surface-raised text-text-primary font-medium'
+          : 'text-text-tertiary hover:bg-surface-hover hover:text-text-primary',
+      )}
+    >
+      <Icon aria-hidden="true" className={cn('size-4 shrink-0', active && 'text-accent')} />
+      {labelVisible ? (
+        <span className="truncate">{label}</span>
+      ) : (
+        <span className="sr-only">{label}</span>
+      )}
+    </Link>
+  );
+
+  return labelVisible ? (
+    link
+  ) : (
+    <Tooltip content={label} side="right">
+      {link}
+    </Tooltip>
   );
 }

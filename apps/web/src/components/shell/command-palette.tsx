@@ -154,6 +154,18 @@ export function CommandPalette({
           go(item.href);
         },
       });
+      // Sub destinations are only visible in the rail while their section is
+      // open, so the palette is the one place they can always be reached.
+      for (const subItem of item.subItems ?? []) {
+        entries.push({
+          id: `nav-${item.id}-${subItem.id}`,
+          label: t(subItem.labelKey),
+          group: goToGroup,
+          run: () => {
+            go(subItem.href);
+          },
+        });
+      }
     }
 
     for (const candidate of session.workspaces) {
