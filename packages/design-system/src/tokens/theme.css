@@ -1455,6 +1455,33 @@
     animation: relay-shimmer var(--duration-loop) var(--ease-standard) infinite;
   }
 
+  /* The segmented control's sliding chip. `useSegmentedThumb` measures the
+     inline-axis offset as a length and hands it over as a custom property; the
+     one thing CSS knows that the measurement does not is which way the inline
+     axis points, so the sign lives here and the TypeScript stays
+     direction-free. `inset-inline-start: 0` anchors the chip at the track's
+     inline start in both directions, so the offset always means "this far
+     along the track" and never "this far from the left of the screen". */
+  .relay-segmented-thumb {
+    inset-inline-start: 0;
+    translate: var(--relay-segment-offset, 0px) 0;
+    transition:
+      translate var(--duration-base) var(--ease-standard),
+      inline-size var(--duration-base) var(--ease-standard),
+      block-size var(--duration-base) var(--ease-standard),
+      inset-block-start var(--duration-base) var(--ease-standard);
+  }
+
+  [dir='rtl'] .relay-segmented-thumb {
+    translate: calc(0px - var(--relay-segment-offset, 0px)) 0;
+  }
+
+  /* No entrance. The chip is placed before it is allowed to move, so the first
+     paint shows it already over the selected segment. */
+  .relay-segmented-thumb:not([data-ready='true']) {
+    transition: none;
+  }
+
   /* Pressable controls, editorial edition: a quiet 1px settle on press plus
      the shadow softening, rather than the old offset-shadow collapse. The
      press is vertical only, so RTL needs no mirrored rule. */

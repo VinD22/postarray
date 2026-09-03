@@ -78,8 +78,11 @@ The vermilion button's focus ring is still terracotta and still `outline-offset`
 which is the only reason it is visible: terracotta drawn _on_ the vermilion fill
 measures 1.02:1. Do not give the primary button an inset focus ring.
 
-`--cta-*` and `--accent-blush-*` survive as small-control fills (the calendar
-view switch, the growth plan tabs, the "today" cell). They are warm paper tints
+`--cta-*` and `--accent-blush-*` survive as small-control fills (the "today"
+cell). They no longer fill the calendar view switch or the growth plan tabs:
+both now use `SegmentedControl`, whose chip is a raised paper surface in a
+sunken track, which is the same physical idea as every other editorial
+surface. They are warm paper tints
 (`#EDE8E0`), not the sunshine yellow and bubblegum pink they were named for,
 and ink is still the only foreground either one carries.
 
