@@ -1,7 +1,8 @@
 import { parseStoredMaster, parseVariantSettings, resolveTarget } from '@relay/application';
 import { capabilitySnapshotSchema, ERROR_CODES, RelayError } from '@relay/contracts';
 import { z } from 'zod';
-import type { RelayPrismaClient } from '@relay/database';
+import { withWorkspaceContext } from '@relay/database';
+import type { RelayPrismaClient, WorkspaceScopedClient } from '@relay/database';
 import type { ConnectorExecutionGateway, ConnectionDetails } from '@relay/runtime';
 
 import type {
@@ -111,12 +112,34 @@ function unavailable(reason: string): RelayError {
   });
 }
 
+/**
+ * Run one contiguous block of reads or writes inside the workspace.
+ *
+ * These activities used the bare Prisma client. Every query did filter by
+ * `workspaceId` by hand, so nothing leaked, but this is the one file that
+ * publishes to a provider and it was the only place in the product where the
+ * workspace-scoped proxy and the RLS claims were both absent. The proxy is the
+ * layer that catches a forgotten filter in review and in a unit test, which is
+ * exactly the mistake worth catching here.
+ *
+ * Scoped per block on purpose. `withWorkspaceContext` opens a transaction, and
+ * a transaction must never be held open across a call to a provider, so each
+ * use covers reads that sit together with no network between them.
+ */
+function inWorkspace<T>(
+  options: ConnectorBridgeOptions,
+  workspaceId: string,
+  handler: (db: WorkspaceScopedClient) => Promise<T>,
+): Promise<T> {
+  return withWorkspaceContext(options.prisma, { workspaceId, role: 'service_role' }, handler);
+}
+
 async function loadConnection(
-  prisma: RelayPrismaClient,
+  db: WorkspaceScopedClient,
   workspaceId: string,
   connectionId: string,
 ) {
-  const row = await prisma.socialConnection.findFirst({
+  const row = await db.socialConnection.findFirst({
     where: { id: connectionId, workspaceId },
     select: {
       id: true,
@@ -216,18 +239,16 @@ async function fetchMetricsFor(
 ): Promise<FetchMetricsResult> {
   const sink = options.analytics ?? null;
   if (sink === null) throw unavailable('analytics_persistence_unavailable');
-  const connection = await loadConnection(
-    options.prisma,
-    input.ctx.workspaceId,
-    input.connectionId,
-  );
-  const receipt =
-    input.receiptId === null
-      ? null
-      : await options.prisma.publicationReceipt.findFirst({
-          where: { id: input.receiptId, workspaceId: input.ctx.workspaceId },
-          select: { externalPostId: true },
-        });
+  const { connection, receipt } = await inWorkspace(options, input.ctx.workspaceId, async (db) => ({
+    connection: await loadConnection(db, input.ctx.workspaceId, input.connectionId),
+    receipt:
+      input.receiptId === null
+        ? null
+        : await db.publicationReceipt.findFirst({
+            where: { id: input.receiptId, workspaceId: input.ctx.workspaceId },
+            select: { externalPostId: true },
+          }),
+  }));
   if (input.receiptId !== null && receipt === null) {
     throw new RelayError(ERROR_CODES.NOT_FOUND, {
       messageKey: 'error.not_found.message',
@@ -258,7 +279,6 @@ async function fetchMetricsFor(
     providerCostMinor: null,
   };
 }
-
 
 /**
  * One media reference as the provider draft describes it.
@@ -309,34 +329,38 @@ async function loadProviderMedia(
 ): Promise<ProviderMediaRef[]> {
   if (mediaAssetIds.length === 0) return [];
 
-  const assets = await options.prisma.mediaAsset.findMany({
-    where: { id: { in: [...mediaAssetIds] }, workspaceId, scanState: 'clean' },
-    select: {
-      id: true,
-      kind: true,
-      mimeType: true,
-      byteSize: true,
-      width: true,
-      height: true,
-      durationMs: true,
-      checksumSha256: true,
-      altText: true,
-      altTextWaivedAt: true,
-    },
-  });
+  const { assets, derivatives } = await inWorkspace(options, workspaceId, async (db) => {
+    const assets = await db.mediaAsset.findMany({
+      where: { id: { in: [...mediaAssetIds] }, workspaceId, scanState: 'clean' },
+      select: {
+        id: true,
+        kind: true,
+        mimeType: true,
+        byteSize: true,
+        width: true,
+        height: true,
+        durationMs: true,
+        checksumSha256: true,
+        altText: true,
+        altTextWaivedAt: true,
+      },
+    });
 
-  const derivatives = await options.prisma.mediaDerivative.findMany({
-    where: { mediaAssetId: { in: assets.map((asset) => asset.id) }, workspaceId },
-    select: {
-      id: true,
-      mediaAssetId: true,
-      mimeType: true,
-      byteSize: true,
-      width: true,
-      height: true,
-      durationMs: true,
-      checksumSha256: true,
-    },
+    const derivatives = await db.mediaDerivative.findMany({
+      where: { mediaAssetId: { in: assets.map((asset) => asset.id) }, workspaceId },
+      select: {
+        id: true,
+        mediaAssetId: true,
+        mimeType: true,
+        byteSize: true,
+        width: true,
+        height: true,
+        durationMs: true,
+        checksumSha256: true,
+      },
+    });
+
+    return { assets, derivatives };
   });
 
   // The variant's order is the author's order, and for a carousel it is the
@@ -380,34 +404,39 @@ export function createConnectorExecutionActivities(
 
     async publishTarget(input) {
       try {
-        const [connection, job, version, variant, attempt] = await Promise.all([
-          loadConnection(options.prisma, input.ctx.workspaceId, input.connectionId),
-          options.prisma.publishJob.findFirst({
-            where: { id: input.publishJobId, workspaceId: input.ctx.workspaceId },
-            select: { scheduledFor: true, dispatchedAt: true, idempotencyKey: true },
-          }),
-          options.prisma.contentVersion.findFirst({
-            where: { id: input.contentVersionId, workspaceId: input.ctx.workspaceId },
-            select: { contentItemId: true, contentHash: true, payload: true },
-          }),
-          options.prisma.postVariant.findFirst({
-            where: {
-              id: input.targetId,
-              workspaceId: input.ctx.workspaceId,
-              contentVersionId: input.contentVersionId,
-              connectionId: input.connectionId,
-            },
-            select: { id: true, settings: true, mediaAssetIds: true },
-          }),
-          options.prisma.publishAttempt.findFirst({
-            where: {
-              id: input.attemptId,
-              workspaceId: input.ctx.workspaceId,
-              publishJobId: input.publishJobId,
-            },
-            select: { attemptNumber: true },
-          }),
-        ]);
+        const [connection, job, version, variant, attempt] = await inWorkspace(
+          options,
+          input.ctx.workspaceId,
+          (db) =>
+            Promise.all([
+              loadConnection(db, input.ctx.workspaceId, input.connectionId),
+              db.publishJob.findFirst({
+                where: { id: input.publishJobId, workspaceId: input.ctx.workspaceId },
+                select: { scheduledFor: true, dispatchedAt: true, idempotencyKey: true },
+              }),
+              db.contentVersion.findFirst({
+                where: { id: input.contentVersionId, workspaceId: input.ctx.workspaceId },
+                select: { contentItemId: true, contentHash: true, payload: true },
+              }),
+              db.postVariant.findFirst({
+                where: {
+                  id: input.targetId,
+                  workspaceId: input.ctx.workspaceId,
+                  contentVersionId: input.contentVersionId,
+                  connectionId: input.connectionId,
+                },
+                select: { id: true, settings: true, mediaAssetIds: true },
+              }),
+              db.publishAttempt.findFirst({
+                where: {
+                  id: input.attemptId,
+                  workspaceId: input.ctx.workspaceId,
+                  publishJobId: input.publishJobId,
+                },
+                select: { attemptNumber: true },
+              }),
+            ]),
+        );
         if (job === null || version === null || variant === null || attempt === null)
           throw new RelayError(ERROR_CODES.NOT_FOUND, { messageKey: 'error.not_found.message' });
         const master = parseStoredMaster(version.payload);
@@ -420,7 +449,11 @@ export function createConnectorExecutionActivities(
         // The draft used to carry `media: []` unconditionally, so an image post
         // published as text and a media-only provider failed at the provider
         // rather than here.
-        const mediaRefs = await loadProviderMedia(options, input.ctx.workspaceId, variant.mediaAssetIds);
+        const mediaRefs = await loadProviderMedia(
+          options,
+          input.ctx.workspaceId,
+          variant.mediaAssetIds,
+        );
         const result = await options.gateway.publish({
           workspaceId: input.ctx.workspaceId,
           connection,
@@ -485,14 +518,21 @@ export function createConnectorExecutionActivities(
           // Keep what the provider said it created. A provider that publishes a
           // whole thread in one call has already made every part, and this row
           // is how the sequence workflow finds them instead of making them again.
-          await options.prisma.publishAttempt.updateMany({
-            where: {
-              id: input.attemptId,
-              workspaceId: input.ctx.workspaceId,
-              publishJobId: input.publishJobId,
-            },
-            data: { sanitizedResponse: { items: result.result.items } },
-          });
+          // Read out of the narrowed union before the closure, which cannot
+          // see the discriminant check above it.
+          const publishedItems = result.result.items;
+          // Its own context: this runs after the provider call, and a
+          // transaction must never be held open across the network.
+          await inWorkspace(options, input.ctx.workspaceId, (db) =>
+            db.publishAttempt.updateMany({
+              where: {
+                id: input.attemptId,
+                workspaceId: input.ctx.workspaceId,
+                publishJobId: input.publishJobId,
+              },
+              data: { sanitizedResponse: { items: publishedItems } },
+            }),
+          );
           return {
             outcome: 'published',
             publication: {
@@ -544,22 +584,24 @@ export function createConnectorExecutionActivities(
      */
     async pollPublishStatus(input): Promise<PublishTargetResult> {
       try {
-        const [connection, job, receipt] = await Promise.all([
-          loadConnection(options.prisma, input.ctx.workspaceId, input.connectionId),
-          options.prisma.publishJob.findFirst({
-            where: { id: input.publishJobId, workspaceId: input.ctx.workspaceId },
-            select: {
-              idempotencyKey: true,
-              dispatchedAt: true,
-              scheduledFor: true,
-              contentVersion: { select: { contentHash: true } },
-            },
-          }),
-          options.prisma.publicationReceipt.findFirst({
-            where: { publishJobId: input.publishJobId, workspaceId: input.ctx.workspaceId },
-            select: { externalPostId: true },
-          }),
-        ]);
+        const [connection, job, receipt] = await inWorkspace(options, input.ctx.workspaceId, (db) =>
+          Promise.all([
+            loadConnection(db, input.ctx.workspaceId, input.connectionId),
+            db.publishJob.findFirst({
+              where: { id: input.publishJobId, workspaceId: input.ctx.workspaceId },
+              select: {
+                idempotencyKey: true,
+                dispatchedAt: true,
+                scheduledFor: true,
+                contentVersion: { select: { contentHash: true } },
+              },
+            }),
+            db.publicationReceipt.findFirst({
+              where: { publishJobId: input.publishJobId, workspaceId: input.ctx.workspaceId },
+              select: { externalPostId: true },
+            }),
+          ]),
+        );
         if (job === null)
           throw new RelayError(ERROR_CODES.NOT_FOUND, {
             messageKey: 'error.not_found.message',
@@ -670,17 +712,19 @@ export function createConnectorExecutionActivities(
         });
       };
 
-      const [connection, attempt] = await Promise.all([
-        loadConnection(options.prisma, input.ctx.workspaceId, input.connectionId),
-        options.prisma.publishAttempt.findFirst({
-          where: {
-            id: input.attemptId,
-            workspaceId: input.ctx.workspaceId,
-            publishJobId: input.publishJobId,
-          },
-          select: { sanitizedResponse: true },
-        }),
-      ]);
+      const [connection, attempt] = await inWorkspace(options, input.ctx.workspaceId, (db) =>
+        Promise.all([
+          loadConnection(db, input.ctx.workspaceId, input.connectionId),
+          db.publishAttempt.findFirst({
+            where: {
+              id: input.attemptId,
+              workspaceId: input.ctx.workspaceId,
+              publishJobId: input.publishJobId,
+            },
+            select: { sanitizedResponse: true },
+          }),
+        ]),
+      );
       const reported = attemptItemsSchema.safeParse(attempt?.sanitizedResponse);
       const created = reported.success
         ? reported.data.items.find((item) => item.threadItemId === input.threadItemId)
@@ -706,10 +750,8 @@ export function createConnectorExecutionActivities(
     },
 
     async revalidateTarget(input) {
-      const connection = await loadConnection(
-        options.prisma,
-        input.ctx.workspaceId,
-        input.connectionId,
+      const connection = await inWorkspace(options, input.ctx.workspaceId, (db) =>
+        loadConnection(db, input.ctx.workspaceId, input.connectionId),
       );
       const snapshot = await options.gateway.capabilitiesFor({
         workspaceId: input.ctx.workspaceId,
@@ -729,10 +771,8 @@ export function createConnectorExecutionActivities(
     },
 
     async refreshCredential(input) {
-      const connection = await loadConnection(
-        options.prisma,
-        input.ctx.workspaceId,
-        input.connectionId,
+      const connection = await inWorkspace(options, input.ctx.workspaceId, (db) =>
+        loadConnection(db, input.ctx.workspaceId, input.connectionId),
       );
       const client = options.oauthClientFor?.(connection.provider) ?? null;
       if (client === null) throw unavailable('oauth_client_configuration_unavailable');
@@ -740,10 +780,8 @@ export function createConnectorExecutionActivities(
     },
 
     async revokeProviderConnection(input) {
-      const connection = await loadConnection(
-        options.prisma,
-        input.ctx.workspaceId,
-        input.connectionId,
+      const connection = await inWorkspace(options, input.ctx.workspaceId, (db) =>
+        loadConnection(db, input.ctx.workspaceId, input.connectionId),
       );
       const client = options.oauthClientFor?.(connection.provider) ?? null;
       if (client === null) throw unavailable('oauth_client_configuration_unavailable');

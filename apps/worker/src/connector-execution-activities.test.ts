@@ -2,14 +2,22 @@ import type { RelayPrismaClient } from '@relay/database';
 import type { ConnectorExecutionGateway } from '@relay/runtime';
 import { describe, expect, it, vi } from 'vitest';
 
+import { newIdFor } from '@relay/contracts';
+
 import type { ActivityContext } from './activities/types';
 import {
   createConnectorExecutionActivities,
   type WorkerAnalyticsSink,
 } from './connector-execution-activities';
 
+// A real identifier, not a label. The activities now open a workspace-scoped
+// RLS context, and the claim is validated as a Post Array id, which is the
+// point: a fixture that could not be a real workspace should not be able to
+// stand in for one.
+const WORKSPACE_ID = newIdFor('workspace');
+
 const ctx: ActivityContext = {
-  workspaceId: 'ws_1',
+  workspaceId: WORKSPACE_ID,
   correlationId: 'corr_1',
   actorId: 'worker',
   actorType: 'system',
@@ -32,12 +40,18 @@ const observation = {
   rawProviderPayloadHash: 'a'.repeat(64),
 } as const;
 
-function prismaDouble(): RelayPrismaClient {
-  return {
+/**
+ * The activities open a workspace-scoped RLS context, which runs its body
+ * inside a transaction and sets the claims on it. The double therefore has to
+ * answer `$transaction` and `$executeRaw`, and it hands the same object back as
+ * the transaction client so the model stubs below are what the body sees.
+ */
+function prismaDouble(overrides: Record<string, unknown> = {}): RelayPrismaClient {
+  const client: Record<string, unknown> = {
     socialConnection: {
       findFirst: vi.fn().mockResolvedValue({
         id: 'conn_1',
-        workspaceId: 'ws_1',
+        workspaceId: WORKSPACE_ID,
         provider: 'bluesky',
         accountType: 'personal_profile',
         externalAccountId: 'did:plc:example',
@@ -48,7 +62,15 @@ function prismaDouble(): RelayPrismaClient {
     publicationReceipt: {
       findFirst: vi.fn().mockResolvedValue({ externalPostId: 'at://post/1' }),
     },
-  } as unknown as RelayPrismaClient;
+    ...overrides,
+  };
+  // Bound after the overrides are merged so the transaction body sees the
+  // finished double, not the base one.
+  client['$executeRaw'] = vi.fn().mockResolvedValue(0);
+  client['$transaction'] = vi.fn(async (handler: (tx: unknown) => Promise<unknown>) =>
+    handler(client),
+  );
+  return client as unknown as RelayPrismaClient;
 }
 
 describe('connector metrics activities', () => {
@@ -140,8 +162,7 @@ describe('connector metrics activities', () => {
 
 describe('publish status polling', () => {
   function pollPrisma(overrides: Record<string, unknown> = {}): RelayPrismaClient {
-    return {
-      ...(prismaDouble() as unknown as Record<string, unknown>),
+    return prismaDouble({
       publishJob: {
         findFirst: vi.fn().mockResolvedValue({
           idempotencyKey: 'idem_publish_000000000001',
@@ -151,7 +172,7 @@ describe('publish status polling', () => {
         }),
       },
       ...overrides,
-    } as unknown as RelayPrismaClient;
+    });
   }
 
   const pollInput = {
@@ -215,10 +236,9 @@ describe('publish status polling', () => {
 
 describe('sequence item publication', () => {
   function sequencePrisma(sanitizedResponse: unknown): RelayPrismaClient {
-    return {
-      ...(prismaDouble() as unknown as Record<string, unknown>),
+    return prismaDouble({
       publishAttempt: { findFirst: vi.fn().mockResolvedValue({ sanitizedResponse }) },
-    } as unknown as RelayPrismaClient;
+    });
   }
 
   const itemInput = {
