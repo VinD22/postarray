@@ -52,7 +52,7 @@ export function PageHeader({
 
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="flex min-w-0 flex-col gap-1">
-          <h1 className="text-title-lg text-text-primary font-display font-bold text-balance">
+          <h1 className="type-title text-title-lg text-text-primary font-bold text-balance">
             {title}
           </h1>
           {description ? (

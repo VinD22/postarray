@@ -139,6 +139,21 @@ the global reduced-motion override actually reaches it.
 every transition and animation to 1ms globally, and `usePrefersReducedMotion`
 covers the cases CSS cannot reach.
 
+### Typography utilities
+
+Three things a `--text-*` step cannot say, so each is a utility you opt into:
+
+| Utility | Does | Use on |
+| --- | --- | --- |
+| `.type-title` | Fraunces at its display optical size (`opsz` 28) | Titles at 28px and up |
+| `.num` | `tabular-nums` | Any number that changes or sits in a column |
+| `.mono-id` | JetBrains Mono at 0.9375em, neutral tracking | IDs, hashes, timestamps |
+
+`.num` is not a preference. A follower count going from 999 to 1000 shifts
+every proportional digit beside it, and a column of proportional figures cannot
+be scanned vertically. `PageHeader`, `MetricValue`, numeric `TableCell`s and
+`Timeline` timestamps already carry the right one.
+
 ### Direction
 
 Everything uses logical properties: `ps-*`/`pe-*`, `start-*`/`end-*`,

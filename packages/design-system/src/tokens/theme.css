@@ -1187,6 +1187,49 @@
 }
 
 /* ==========================================================================
+   5b. Typography utilities.
+
+   Three jobs the type scale cannot do on its own, because none of them is a
+   size, a weight or a family. Each one is opt-in on the element that needs it,
+   and none of them changes what font is being used.
+   ========================================================================== */
+
+@layer utilities {
+  /* Titles at 28px and up. Fraunces carries an optical-size axis, and the
+     display cut is what the serif is here for: tighter joins, finer hairlines,
+     less of the chunky reading-size weight that looks clumsy at title scale.
+     `font-optical-sizing: auto` alone leaves the choice to the browser, which
+     resolves opsz from the computed font-size and gets it right only when the
+     element actually is 28px. Pinning the axis makes the display cut the
+     deliberate choice it should be rather than a side effect of a size. */
+  .type-title {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-variation-settings: 'opsz' 28;
+  }
+
+  /* Numbers that change must not move the things beside them. A follower count
+     ticking from 999 to 1000, a countdown, a column of currency: with
+     proportional figures every digit is a different width, so the row jitters
+     on every update and the eye cannot compare two rows down a column.
+     Tabular figures cost nothing and fix both. */
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Post IDs, connection IDs, request IDs, hashes. Monospace so a character is
+     unambiguous when someone reads one out or pastes one into a support
+     thread, at 0.9375em because JetBrains Mono runs large next to Inter and an
+     inline ID should not shout over the sentence carrying it. The tracking is
+     neutral: monospace is already wide enough. */
+  .mono-id {
+    font-family: var(--font-mono);
+    font-size: 0.9375em;
+    letter-spacing: normal;
+  }
+}
+
+/* ==========================================================================
    6. Motion policy. Functional only, and fully removable.
    ========================================================================== */
 
