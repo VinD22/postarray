@@ -60,6 +60,7 @@ import type {
   VariantOverrides,
   WebhookEventName,
   DomainEventEnvelope,
+  RealtimeEventInput,
   MediaReadUrls,
   ErrorClass,
   ErrorCode,
@@ -306,6 +307,17 @@ export interface DomainEventService {
  */
 export interface RealtimePublisherPort {
   publish(event: DomainEventEnvelope): Promise<void>;
+  /**
+   * Push a live update that has no outbox row behind it.
+   *
+   * The outbox fires at campaign boundaries. The states a person actually
+   * watches on a receipt screen, `preparing_media` through
+   * `provider_processing`, are set in between and have no domain event, so the
+   * calls that change them publish here directly. Nothing durable depends on
+   * this: it is a hint that a query is stale, and the truth is the row that
+   * was just written.
+   */
+  publishStatus(event: RealtimeEventInput): Promise<void>;
 }
 
 export interface WorkflowActorContext {

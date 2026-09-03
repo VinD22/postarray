@@ -1,4 +1,5 @@
-import { ERROR_CODES } from '@relay/contracts';
+import { ERROR_CODES, type PublishState } from '@relay/contracts';
+import { productMetrics } from '@relay/observability';
 
 import type {
   ActorContext,
@@ -9,7 +10,7 @@ import type {
 } from '../types';
 import { notFound } from '../internal/errors';
 import { toJson } from '../internal/json';
-import { runInWorkspace } from '../internal/runtime';
+import { runInWorkspace, type Db } from '../internal/runtime';
 
 function context(ctx: WorkerActivityContext): ActorContext {
   return { ...ctx, scopes: [] };
@@ -17,6 +18,66 @@ function context(ctx: WorkerActivityContext): ActorContext {
 
 function date(value: string): Date {
   return new Date(value);
+}
+
+/**
+ * The content item a publish job belongs to, or null.
+ *
+ * Read only when a realtime publisher is configured, so a deployment without
+ * Redis pays nothing for it. The id is what lets a live update invalidate the
+ * exact post screen somebody is watching rather than every query the workspace
+ * has open.
+ */
+async function contentItemOf(
+  deps: ServiceDeps,
+  db: Db,
+  workspaceId: string,
+  publishJobId: string,
+): Promise<string | null> {
+  if (deps.realtime === undefined) {
+    return null;
+  }
+  const job = await db.publishJob.findFirst({
+    where: { id: publishJobId, workspaceId },
+    select: { contentItemId: true },
+  });
+  return job?.contentItemId ?? null;
+}
+
+/**
+ * Tell connected clients a job moved, without letting that failure matter.
+ *
+ * The state is already committed by the time this runs. A publish that threw
+ * here and propagated would fail an activity over a cache hint, so the failure
+ * is logged and dropped: the screen falls back to its poll and is at most one
+ * interval stale.
+ */
+async function publishStatus(
+  deps: ServiceDeps,
+  workspaceId: string,
+  input: {
+    readonly publishJobId: string;
+    readonly contentItemId: string | null;
+    readonly state: PublishState;
+  },
+): Promise<void> {
+  const realtime = deps.realtime;
+  if (realtime === undefined) {
+    return;
+  }
+  try {
+    await realtime.publishStatus({
+      type: 'post.status',
+      workspaceId,
+      occurredAt: deps.clock.now().toISOString(),
+      data: { type: 'post.status', ...input },
+    });
+  } catch (error: unknown) {
+    deps.logger.warn(
+      { publishJobId: input.publishJobId, state: input.state, error: String(error) },
+      'realtime.status_publish_failed',
+    );
+  }
 }
 
 function publication(row: {
@@ -207,39 +268,47 @@ export function createWorkerPublishingService(deps: ServiceDeps): WorkerPublishi
     },
 
     async setTargetState(input) {
-      await runInWorkspace(deps, context(input.ctx), (db) =>
-        db.postVariant
-          .updateMany({
-            where: { id: input.targetId, workspaceId: input.ctx.workspaceId },
-            data: {
-              state: input.state,
-              validationIssues:
-                input.errorCode === null
-                  ? []
-                  : [{ code: input.errorCode, messageKey: input.messageKey }],
-            },
-          })
-          .then(() => undefined),
-      );
+      const contentItemId = await runInWorkspace(deps, context(input.ctx), async (db) => {
+        await db.postVariant.updateMany({
+          where: { id: input.targetId, workspaceId: input.ctx.workspaceId },
+          data: {
+            state: input.state,
+            validationIssues:
+              input.errorCode === null
+                ? []
+                : [{ code: input.errorCode, messageKey: input.messageKey }],
+          },
+        });
+        return contentItemOf(deps, db, input.ctx.workspaceId, input.publishJobId);
+      });
+      await publishStatus(deps, input.ctx.workspaceId, {
+        publishJobId: input.publishJobId,
+        contentItemId,
+        state: input.state,
+      });
     },
 
     async setJobState(input) {
-      await runInWorkspace(deps, context(input.ctx), (db) =>
-        db.publishJob
-          .updateMany({
-            where: { id: input.publishJobId, workspaceId: input.ctx.workspaceId },
-            data: {
-              state: input.state,
-              lastErrorCode: input.errorCode,
-              ...(['published', 'failed_permanently', 'partially_published', 'canceled'].includes(
-                input.state,
-              )
-                ? { completedAt: deps.clock.now() }
-                : {}),
-            },
-          })
-          .then(() => undefined),
-      );
+      const contentItemId = await runInWorkspace(deps, context(input.ctx), async (db) => {
+        await db.publishJob.updateMany({
+          where: { id: input.publishJobId, workspaceId: input.ctx.workspaceId },
+          data: {
+            state: input.state,
+            lastErrorCode: input.errorCode,
+            ...(['published', 'failed_permanently', 'partially_published', 'canceled'].includes(
+              input.state,
+            )
+              ? { completedAt: deps.clock.now() }
+              : {}),
+          },
+        });
+        return contentItemOf(deps, db, input.ctx.workspaceId, input.publishJobId);
+      });
+      await publishStatus(deps, input.ctx.workspaceId, {
+        publishJobId: input.publishJobId,
+        contentItemId,
+        state: input.state,
+      });
     },
 
     async writeReceipt(input) {
@@ -294,6 +363,35 @@ export function createWorkerPublishingService(deps: ServiceDeps): WorkerPublishi
         await deps.billing.spendPostCredit({
           workspaceId: input.ctx.workspaceId,
           contentItemId: input.contentVersionId,
+        });
+
+        // The one moment the product has demonstrably published. Recorded here
+        // rather than in the workflow body because a workflow replays and
+        // would count the same publication again; an activity runs once per
+        // receipt by the same reasoning the credit spend above relies on.
+        productMetrics.publishSuccessTotal.add(1, {
+          provider: input.provider,
+          surface: 'worker',
+        });
+
+        // How long the post waited between the instant it was promised and the
+        // instant it went out. This is the number that says whether scheduling
+        // is trustworthy, and nothing was measuring it.
+        const scheduledFor = date(input.scheduledInstant);
+        const publishedAt = date(input.publication.publishedAt);
+        if (scheduledFor !== null && publishedAt !== null) {
+          productMetrics.scheduleDispatchLatencySeconds.record(
+            Math.max((publishedAt.getTime() - scheduledFor.getTime()) / 1000, 0),
+            { provider: input.provider, surface: 'worker' },
+          );
+        }
+      } else {
+        // A second write for a job that already has a receipt is the
+        // duplicate-prevention machinery doing its job. It was invisible, so
+        // nobody could tell a quiet system from a broken one.
+        productMetrics.publishDuplicatePreventedTotal.add(1, {
+          provider: input.provider,
+          reason: 'receipt_exists',
         });
       }
       return written;

@@ -9,6 +9,7 @@ import {
   type WebhookEventName,
 } from '@relay/contracts';
 import { safeFetch } from '@relay/connectors';
+import { productMetrics } from '@relay/observability';
 
 import type { ServiceDeps, WorkerActivityContext, WorkerWebhookService } from '../types';
 
@@ -56,6 +57,7 @@ const DELIVERY_SELECT = {
   payloadHash: true,
   payload: true,
   deliveredAt: true,
+  createdAt: true,
 } as const;
 
 function workerContext(ctx: WorkerActivityContext) {
@@ -219,6 +221,15 @@ export function createWorkerWebhookService(deps: ServiceDeps): WorkerWebhookServ
         }
 
         const ok = fetchResult.status >= 200 && fetchResult.status < 300;
+
+        // How long a customer waited between the event happening and their
+        // endpoint hearing about it. Recorded on every attempt, successful or
+        // not, because a slow retry is exactly the case worth seeing.
+        productMetrics.webhookDeliveryLagSeconds.record(
+          Math.max((deps.clock.now().getTime() - delivery.createdAt.getTime()) / 1000, 0),
+          { event_type: delivery.eventType, outcome: ok ? 'delivered' : 'failed' },
+        );
+
         return {
           status: ok ? ('succeeded' as const) : ('failed' as const),
           responseStatus: fetchResult.status,
