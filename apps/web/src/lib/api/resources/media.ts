@@ -1,6 +1,6 @@
 /** The media library: uploads, provenance, rights and alt text. */
 
-import type { MediaKind, OperationRef, Paginated } from '@relay/contracts';
+import type { MediaKind, MediaReadUrls, OperationRef, Paginated } from '@relay/contracts';
 
 import { call } from '../call';
 import { page } from '../fixtures';
@@ -112,6 +112,22 @@ export const mediaApi = {
 
   get: (mediaId: string): Promise<MediaAssetView | null> =>
     call(`/media/${mediaId}`, {}, () => null),
+
+  /**
+   * Signed URLs a browser may read this asset's bytes from.
+   *
+   * A rendition that does not exist comes back null rather than as a guessed
+   * key, and the demo fixture answers the same way. Null is not an error: it
+   * means this asset has no rendition of that kind yet, so a caller renders
+   * its own placeholder rather than a broken image.
+   */
+  getReadUrls: (mediaId: string): Promise<MediaReadUrls> =>
+    call(`/media/${mediaId}/read-urls`, {}, () => ({
+      mediaId,
+      thumbnail: null,
+      poster: null,
+      original: null,
+    })),
 
   delete: (mediaId: string): Promise<void> =>
     call(`/media/${mediaId}`, { method: 'DELETE' }, () => undefined),

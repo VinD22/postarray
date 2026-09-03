@@ -495,4 +495,76 @@ export const webComposerMessages = {
     '{count, plural, =0 {Choose files} one {Add # file} other {Add # files}}',
   'mediaLib.picker.forMaster': 'Adding to the master draft',
   'mediaLib.picker.forVariant': 'Adding to the version for {account} only',
+
+  // ------------------------------------------------ platform native preview
+  // The preview renders the post the way the platform lays it out. Every
+  // sentence here either states a platform fact taken from the capability
+  // snapshot or says plainly that we are showing a model rather than the
+  // platform's own rendering.
+  'composerWeb.preview.frame': 'Preview: {account} on {provider}, {device}',
+  'composerWeb.preview.device.legend': 'Preview width',
+  'composerWeb.preview.device.mobile': 'Mobile',
+  'composerWeb.preview.device.desktop': 'Desktop',
+  'composerWeb.preview.postedNow': 'Just now',
+  'composerWeb.preview.seeMore': 'See more',
+  'composerWeb.preview.seeLess': 'See less',
+  'composerWeb.preview.empty': 'Nothing written yet.',
+  'composerWeb.preview.destination': 'Posting to {destination}',
+  'composerWeb.preview.titleLabel': 'Title',
+
+  'composerWeb.preview.kind.text': 'text posts',
+  'composerWeb.preview.kind.image': 'photo posts',
+  'composerWeb.preview.kind.carousel': 'carousels',
+  'composerWeb.preview.kind.video': 'videos',
+  'composerWeb.preview.kind.short_video': 'short videos',
+  'composerWeb.preview.kind.long_video': 'long videos',
+  'composerWeb.preview.kind.document': 'documents',
+  'composerWeb.preview.kind.thread': 'threads',
+
+  'composerWeb.preview.kindTitle.unsupported': '{provider} does not publish {kind}.',
+  'composerWeb.preview.kindTitle.not_implemented':
+    'Post Array cannot publish {kind} to {provider} yet.',
+  'composerWeb.preview.kindTitle.requires_review':
+    '{provider} reviews {kind} publishing before it is allowed.',
+  'composerWeb.preview.kindBody.unsupported':
+    'There is no post to show, because this account cannot receive one. Change the post type, or take this account off the draft.',
+  'composerWeb.preview.kindBody.not_implemented':
+    '{provider} offers this and it is on our connector roadmap. Until it ships, change the post type or take this account off the draft.',
+  'composerWeb.preview.kindBody.requires_review':
+    'It stays unavailable until that review passes. Change the post type, or take this account off the draft.',
+
+  'composerWeb.preview.notSent.title': 'Not sent',
+  'composerWeb.preview.notSent.body':
+    '{count, plural, one {# file is past what {provider} accepts for this post type. It will not be published.} other {# files are past what {provider} accepts for this post type. They will not be published.}}',
+  'composerWeb.preview.notSent.item': 'Not sent',
+
+  'composerWeb.preview.altText.present': 'Alt text',
+  'composerWeb.preview.altText.missing': 'No alt text',
+  'composerWeb.preview.altText.waived': 'Alt text waived',
+
+  'composerWeb.preview.media.loading': 'Loading this file',
+  'composerWeb.preview.media.unavailable': 'This file cannot be read right now.',
+  'composerWeb.preview.media.noThumbnail': 'No preview picture yet',
+  'composerWeb.preview.media.image': 'Image {position} of {count}',
+  'composerWeb.preview.media.video': 'Video',
+  'composerWeb.preview.media.videoDuration': 'Video, {duration}',
+  'composerWeb.preview.media.document': 'Document',
+  'composerWeb.preview.media.audio': 'Audio',
+  'composerWeb.preview.media.none': 'No file attached yet.',
+  'composerWeb.preview.carousel.position': '{position} of {count}',
+
+  'composerWeb.preview.counter.label': '{used} of {limit} characters',
+  'composerWeb.preview.counter.over':
+    '{count, plural, one {# character over} other {# characters over}}',
+  'composerWeb.preview.counter.nearAnnounce':
+    'Close to the {provider} limit. {remaining, plural, one {# character left} other {# characters left}}.',
+  'composerWeb.preview.counter.overAnnounce':
+    'Over the {provider} limit by {count, plural, one {# character} other {# characters}}.',
+  'composerWeb.preview.counter.underAnnounce': 'Back within the {provider} limit.',
+
+  'composerWeb.preview.link.domainOnly':
+    'Only the address is shown. Post Array does not fetch the destination page, so the headline and picture here would be a guess.',
+
+  'composerWeb.preview.thread.overLimit':
+    '{provider} accepts {limit, plural, =0 {no follow up parts} one {# follow up part} other {# follow up parts}}. The rest are not sent.',
 } as const;
