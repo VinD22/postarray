@@ -26,10 +26,18 @@ import type { ValidationIssue } from '@relay/contracts';
 import { composerReducer, type ComposerAction } from './state/composer-reducer';
 import { findUrls } from './state/capability-rules';
 import { initialComposerState } from './state/seed';
-import { summarizeTargets, totalsFor, type DraftTotals, type MediaLookup } from './state/selectors';
+import {
+  hasMeaningfulEdit,
+  summarizeTargets,
+  totalsFor,
+  type DraftTotals,
+  type MediaLookup,
+} from './state/selectors';
+import { isUnsavedDraft } from './types';
 import type {
   AutosaveState,
   ComposerBootstrap,
+  ComposerSaveOutcome,
   ComposerState,
   ConflictInfo,
   TargetSummary,
@@ -47,7 +55,10 @@ export interface ComposerContextValue {
   readonly conflict: ConflictInfo | null;
   readonly resolveConflict: (keep: 'mine' | 'theirs') => void;
   readonly online: boolean;
-  readonly saveNow: () => Promise<void>;
+  /** Saves now and resolves with the content item id, creating it if needed. */
+  readonly saveNow: () => Promise<string>;
+  /** Targets whose last variant write was rejected. They retry on the next save. */
+  readonly failedTargetConnectionIds: readonly string[];
 }
 
 const ComposerContext = createContext<ComposerContextValue | null>(null);
@@ -66,7 +77,7 @@ export interface ComposerProviderProps {
   readonly approvalRequired: boolean;
   readonly serverIssues?: readonly ValidationIssue[];
   /** Persists the draft. Rejecting marks the header failed and keeps the text. */
-  readonly onSave: (state: ComposerState) => Promise<void>;
+  readonly onSave: (state: ComposerState) => Promise<ComposerSaveOutcome>;
   readonly children: ReactNode;
 }
 
@@ -88,7 +99,13 @@ export function ComposerProvider({
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [conflict, setConflict] = useState<ConflictInfo | null>(null);
   const [online, setOnline] = useState(true);
+  const [failedTargetConnectionIds, setFailedTargets] = useState<readonly string[]>([]);
   const lastSavedRevision = useRef(0);
+  // A save reads the draft when it runs, not when it was asked for, so a
+  // coalesced round writes the latest text rather than the text of the
+  // keystroke that scheduled it.
+  const stateRef = useRef(state);
+  stateRef.current = state;
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const dispatch = useCallback((action: ComposerAction) => {
@@ -125,30 +142,82 @@ export function ComposerProvider({
     };
   }, [announce, t]);
 
-  const persist = useCallback(
-    async (next: ComposerState) => {
-      const revision = next.revision;
-      setAutosave('saving');
-      announce(t.full('a11y.announce.saving'), 'polite');
-      try {
-        await onSave(next);
-        lastSavedRevision.current = revision;
-        setSavedAt(new Date().toISOString());
-        setAutosave('saved');
-        announce(t.full('a11y.announce.saved'), 'polite');
-      } catch (error) {
-        setAutosave('failed');
-        announce(t.full('a11y.announce.saveFailed'), 'assertive');
-        throw error;
+  /*
+   * Saves are coalesced, never stacked.
+   *
+   * At most one save is in flight and at most one is waiting behind it. Every
+   * request that arrives while a save is running joins that single follow-up
+   * round, so holding a key down cannot queue thirty writes of the same draft.
+   */
+  const runningSave = useRef<Promise<string> | null>(null);
+  const queuedSave = useRef<Promise<string> | null>(null);
+
+  const runSave = useCallback(async (): Promise<string> => {
+    const next = stateRef.current;
+    const revision = next.revision;
+    setAutosave('saving');
+    announce(t.full('a11y.announce.saving'), 'polite');
+    try {
+      const outcome = await onSave(next);
+      lastSavedRevision.current = revision;
+      if (next.master.id !== outcome.contentItemId) {
+        dispatch({ type: 'master/assign-id', contentItemId: outcome.contentItemId });
       }
-    },
-    [announce, onSave, t],
-  );
+      dispatch({ type: 'save/settled', savedConnectionIds: outcome.savedConnectionIds });
+      setFailedTargets(outcome.failedConnectionIds);
+      setSavedAt(outcome.savedAt);
+      // A round where one target was rejected is not a save that worked. The
+      // header says failed, and that target is still dirty, so the next edit
+      // writes it again.
+      setAutosave(outcome.failedConnectionIds.length > 0 ? 'failed' : 'saved');
+      announce(
+        outcome.failedConnectionIds.length > 0
+          ? t.full('a11y.announce.saveFailed')
+          : t.full('a11y.announce.saved'),
+        outcome.failedConnectionIds.length > 0 ? 'assertive' : 'polite',
+      );
+      return outcome.contentItemId;
+    } catch (error) {
+      setAutosave('failed');
+      announce(t.full('a11y.announce.saveFailed'), 'assertive');
+      throw error;
+    }
+  }, [announce, dispatch, onSave, t]);
+
+  const persist = useCallback((): Promise<string> => {
+    if (runningSave.current === null) {
+      const started = runSave().finally(() => {
+        runningSave.current = null;
+      });
+      runningSave.current = started;
+      return started;
+    }
+    if (queuedSave.current === null) {
+      const queued = runningSave.current
+        .catch(() => undefined)
+        .then(() => {
+          queuedSave.current = null;
+          const started = runSave().finally(() => {
+            runningSave.current = null;
+          });
+          runningSave.current = started;
+          return started;
+        });
+      queuedSave.current = queued;
+      return queued;
+    }
+    return queuedSave.current;
+  }, [runSave]);
 
   // Debounced autosave. Nothing here can discard text: the state is the source
   // of truth and a failed save leaves it exactly where it was.
   useEffect(() => {
     if (state.revision === lastSavedRevision.current) {
+      return;
+    }
+    // Nothing is created for a visit. Until this draft has content of its own,
+    // there is nothing to write and no row to write it to.
+    if (isUnsavedDraft(state.master) && !hasMeaningfulEdit(state)) {
       return;
     }
     if (!online) {
@@ -159,7 +228,7 @@ export function ComposerProvider({
       clearTimeout(timer.current);
     }
     timer.current = setTimeout(() => {
-      void persist(state).catch(() => undefined);
+      void persist().catch(() => undefined);
     }, AUTOSAVE_DELAY_MS);
     return () => {
       if (timer.current !== null) {
@@ -172,8 +241,8 @@ export function ComposerProvider({
     if (timer.current !== null) {
       clearTimeout(timer.current);
     }
-    return persist(state);
-  }, [persist, state]);
+    return persist();
+  }, [persist]);
 
   const resolveConflict = useCallback(
     (keep: 'mine' | 'theirs') => {
@@ -229,12 +298,14 @@ export function ComposerProvider({
       resolveConflict,
       online,
       saveNow,
+      failedTargetConnectionIds,
     }),
     [
       autosave,
       bootstrap,
       conflict,
       dispatch,
+      failedTargetConnectionIds,
       online,
       resolveConflict,
       runAll,

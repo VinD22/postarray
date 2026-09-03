@@ -38,10 +38,11 @@ import { useRouter } from 'next/navigation';
 import { useLocalizedRouter } from '@/lib/i18n';
 import { api, newIdempotencyKey } from '@/lib/api';
 import {
-  saveComposer,
+  createComposerGateway,
   searchDestinations,
   searchMentions,
 } from '@/features/composer/data/composer-gateway';
+import { UNSAVED_DRAFT_ID } from '@/features/composer/types';
 
 export type ComposeStatus = 'ready' | 'loading' | 'error' | 'forbidden' | 'no_connections';
 
@@ -157,12 +158,26 @@ function ComposeReady({
     [assets],
   );
 
+  /*
+   * One gateway per open composer, so the lazy draft creation is memoised for
+   * as long as the screen is. A new one per render would create a draft per
+   * save instead of one per composer.
+   */
+  const gateway = useMemo(
+    () =>
+      createComposerGateway({
+        contentItemId: bootstrap.master.id === UNSAVED_DRAFT_ID ? null : bootstrap.master.id,
+        projectId: bootstrap.master.projectId ?? projectId ?? '',
+      }),
+    [bootstrap.master.id, bootstrap.master.projectId, projectId],
+  );
+
   return (
     <ComposerProvider
       bootstrap={bootstrap}
       media={media}
       approvalRequired={approvalRequired}
-      onSave={saveComposer}
+      onSave={gateway.save}
     >
       <ComposeSurface
         assets={assets}
@@ -230,17 +245,20 @@ function ComposeSurface({
 
   const commit = useCallback(
     async (intent: ScheduleIntent) => {
-      await saveNow();
+      // The save is what creates the draft on a lazily created composer, so the
+      // id every call below needs comes from it rather than from the state,
+      // which may still be holding the local placeholder.
+      const contentItemId = await saveNow();
       if (intent === 'draft') {
         return;
       }
       const version = await api.content.freezeVersion(
-        state.master.id,
+        contentItemId,
         newIdempotencyKey('content_version'),
       );
       if (intent === 'approval') {
         await api.approvals.request(
-          { contentItemId: state.master.id },
+          { contentItemId },
           newIdempotencyKey('approval_request'),
         );
       } else if (intent === 'schedule') {
@@ -250,7 +268,7 @@ function ComposeSurface({
         }
         await api.scheduling.schedule(
           {
-            contentItemId: state.master.id,
+            contentItemId,
             scheduledAt: schedule.instant,
             timeZone: schedule.ianaTimeZone,
           },
@@ -259,7 +277,7 @@ function ComposeSurface({
       } else {
         await api.publishing.publishNow(
           {
-            contentItemId: state.master.id,
+            contentItemId,
             confirmation: {
               acknowledgedTargetCount: totals.targetCount,
               acknowledgedVersionChecksum: version.checksum,
@@ -274,9 +292,9 @@ function ComposeSurface({
       // unfiltered month with no sign anything had happened. `/posts/{id}`
       // renders the real thing: the job, every target and, once it exists, the
       // provider receipt. It is also the href the calendar itself links to.
-      router.push(`/posts/${encodeURIComponent(state.master.id)}`);
+      router.push(`/posts/${encodeURIComponent(contentItemId)}`);
     },
-    [router, saveNow, state.master.id, state.master.schedule, totals.targetCount],
+    [router, saveNow, state.master.schedule, totals.targetCount],
   );
 
   const targetLabel =

@@ -18,6 +18,7 @@ import { SEED_BOOTSTRAP, type ComposerBootstrap } from '@/features/composer';
 import { COMPOSER_CONTENT_LOCALES } from '@/features/composer/content-locale-options';
 import { SEED_ASSETS, mediaAssetFromApi, type MediaAsset } from '@/features/media';
 import { loadComposer } from '@/features/composer/data/composer-gateway';
+import { scheduleFromQuickCreate } from '@/features/composer/state/quick-create';
 import { requireSession } from '@/lib/auth/require-session';
 import { ACTIVE_PROJECT_COOKIE, resolveActiveProject } from '@/lib/auth/project-selection';
 import { getRequestIntl } from '@/lib/i18n/server';
@@ -48,6 +49,11 @@ export default async function ComposePage({
   const params = await searchParams;
   const contentItemId = first(params.contentItemId);
   const projectId = first(params.projectId);
+  // From the calendar's empty-slot button. Invalid values seed nothing.
+  const quickCreateSchedule = scheduleFromQuickCreate({
+    at: first(params.at),
+    tz: first(params.tz),
+  });
 
   let status: ComposeStatus = 'ready';
   let bootstrap: ComposerBootstrap | null = null;
@@ -57,7 +63,13 @@ export default async function ComposePage({
   let activeProjectId: string | null = null;
 
   if (isDemoMode) {
-    bootstrap = SEED_BOOTSTRAP;
+    bootstrap =
+      quickCreateSchedule === null
+        ? SEED_BOOTSTRAP
+        : {
+            ...SEED_BOOTSTRAP,
+            master: { ...SEED_BOOTSTRAP.master, schedule: quickCreateSchedule },
+          };
     assets = SEED_ASSETS;
   } else {
     try {
@@ -99,8 +111,10 @@ export default async function ComposePage({
         loadComposer({
           contentItemId,
           projectId: selectedProject.id,
+          workspaceId: session.workspace.id,
           workspaceTimeZone: session.workspace.timeZone,
           forward,
+          ...(quickCreateSchedule === null ? {} : { schedule: quickCreateSchedule }),
         }),
         api.media.list({ projectId: selectedProject.id }, forward),
       ]);

@@ -1,7 +1,9 @@
 /** Drafts, validation, approvals, scheduling, publishing, receipts and media. */
 
 import type {
+  DisclosureFlags,
   MasterDraft,
+  MentionRef,
   PublicationReceipt,
   ValidationResult,
   VariantOverrides,
@@ -59,6 +61,55 @@ const emptyItem: ContentItemView = {
   targets: [],
   reviewVariants: [],
 };
+
+/**
+ * One target on `PUT /content/{id}/targets`.
+ *
+ * Everything past `connectionId` is per-target native state the server stores
+ * on the variant. It is optional on the wire and absent means "leave what is
+ * there", which is why the composer sends the full set for every target it
+ * writes rather than only the field that changed.
+ */
+export interface ContentTargetInput {
+  readonly connectionId: string;
+  readonly destinationId?: string | null;
+  readonly mentions?: readonly MentionRef[];
+  readonly privacyValue?: string | null;
+  readonly disclosure?: DisclosureFlags | null;
+}
+
+/** An empty draft in the application's own shape, for demo mode. */
+function demoCompositeItem(contentItemId: string): ApplicationContentItemView {
+  const now = new Date().toISOString();
+  return {
+    id: contentItemId,
+    workspaceId: emptyItem.workspaceId,
+    projectId: 'project_demo000000000000001',
+    campaignId: null,
+    title: null,
+    state: 'draft',
+    approvalPolicy: 'any_approver',
+    approvalState: 'not_required',
+    locale: 'en',
+    contentKind: 'text',
+    body: '',
+    mediaIds: [],
+    links: [],
+    signature: null,
+    threadItems: [],
+    schedule: null,
+    disclosure: { aiAssisted: false, commercialContent: false, brandedContent: false },
+    variants: [],
+    currentVersionId: null,
+    approvedVersionId: null,
+    currentChecksum: null,
+    reapprovalRequired: false,
+    createdVia: 'web',
+    createdByUserId: null,
+    createdAt: now,
+    updatedAt: now,
+  };
+}
 
 type MasterPatch = Pick<
   MasterDraft,
@@ -180,6 +231,28 @@ export const contentApi = {
       toContentItem,
     ),
 
+  /**
+   * The whole draft as the application models it: master fields, every
+   * variant's overrides, and each target's destination, mentions, privacy and
+   * disclosure.
+   *
+   * `get` below deliberately narrows to what list and review screens need, and
+   * that narrowing is lossy: it drops overrides and per-target settings
+   * entirely. The composer has to reopen a draft exactly as it was saved, so it
+   * reads the unnarrowed view instead of reconstructing fields the mapper threw
+   * away.
+   */
+  getComposite: (
+    contentItemId: string,
+    forward?: ForwardAuth,
+  ): Promise<ApplicationContentItemView> =>
+    call<ApplicationContentItemView, ApplicationContentItemView>(
+      `/content/${contentItemId}`,
+      { ...forward },
+      () => demoCompositeItem(contentItemId),
+      (item) => item,
+    ),
+
   get: (contentItemId: string, forward?: ForwardAuth): Promise<ContentItemView> =>
     call<ApplicationContentItemView, ContentItemView>(
       `/content/${contentItemId}`,
@@ -267,7 +340,7 @@ export const contentApi = {
 
   setTargets: (
     contentItemId: string,
-    input: { targets: readonly { connectionId: string }[] },
+    input: { targets: readonly ContentTargetInput[] },
   ): Promise<ContentItemView> =>
     call<ApplicationContentItemView, ContentItemView>(
       `/content/${contentItemId}/targets`,

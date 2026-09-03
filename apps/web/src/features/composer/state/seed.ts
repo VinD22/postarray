@@ -364,6 +364,9 @@ export function initialComposerState(bootstrap: ComposerBootstrap): ComposerStat
     linkPlan: { mode: 'original' as const, brandedDomain: null, utm: {} },
     appliedSetId: null,
     approvalPinned: bootstrap.approvalPinned,
+    // A target that arrived from the server is already in step with it. Only
+    // an edit made here puts a connection on this list.
+    dirtyConnectionIds: [],
     revision: 0,
   };
 }

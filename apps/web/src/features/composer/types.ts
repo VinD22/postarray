@@ -9,7 +9,6 @@
 
 import type {
   CapabilitySnapshot,
-  DestinationRef,
   DisclosureFlags,
   LinkSpec,
   MasterDraft,
@@ -82,9 +81,25 @@ export interface TargetSummary {
   readonly publishedUrl: string | null;
 }
 
+/**
+ * A native destination inside one account: a community, a page, a channel.
+ *
+ * Two identifiers, and they are not interchangeable. `destinationId` is the
+ * Post Array row the API stores on the variant, and it is the only one the
+ * server accepts. `externalId` is the provider's own id, which is what the
+ * search returns and what the field shows. Either can be missing: a reopened
+ * draft knows the stored row but not the provider id, and a destination the
+ * search found but nothing has stored yet has no row id to send.
+ */
+export interface ComposerDestination {
+  readonly destinationId: string | null;
+  readonly externalId: string | null;
+  readonly displayLabel: string;
+}
+
 /** Per-target settings that are not part of `VariantOverrides`. */
 export interface VariantSettings {
-  readonly destination: DestinationRef | null;
+  readonly destination: ComposerDestination | null;
   readonly mentions: readonly MentionRef[];
   readonly privacyValue: string | null;
   readonly disclosure: DisclosureFlags | null;
@@ -112,7 +127,34 @@ export interface BrandedDomain {
   readonly verified: boolean;
 }
 
+/** What one save round did, target by target. */
+export interface ComposerSaveOutcome {
+  /** The real content item id, created on the way if it did not exist. */
+  readonly contentItemId: string;
+  /** The server's `updatedAt` after this write. The draft mirror keys on it. */
+  readonly savedAt: string;
+  /** Targets whose variant reached the server. These go clean. */
+  readonly savedConnectionIds: readonly string[];
+  /** Targets whose variant write was rejected. These stay dirty and retry. */
+  readonly failedConnectionIds: readonly string[];
+}
+
 export type AutosaveState = 'idle' | 'saving' | 'saved' | 'offline' | 'conflict' | 'failed';
+
+/**
+ * The id a master carries before its server row exists.
+ *
+ * `/compose` no longer creates a draft on every visit, so the composer can be
+ * open and editable with nothing persisted yet. This sentinel is never sent to
+ * the API: everything that needs a real id awaits `ensureDraftId()` on the
+ * gateway, which creates the row exactly once.
+ */
+export const UNSAVED_DRAFT_ID = '';
+
+/** True while this draft has no server row yet. */
+export function isUnsavedDraft(master: Pick<MasterDraft, 'id'>): boolean {
+  return master.id === UNSAVED_DRAFT_ID;
+}
 
 export interface ConflictInfo {
   readonly editorName: string;
@@ -135,6 +177,15 @@ export interface ComposerState {
   readonly appliedSetId: string | null;
   /** True once this content version has been approved. Editing clears it. */
   readonly approvalPinned: boolean;
+  /**
+   * Targets whose variant differs from what the server last accepted.
+   *
+   * Autosave writes only these, so editing one caption in a six-target draft
+   * costs one variant request rather than six. A write that fails puts its
+   * target back in the list, which is what makes the retry happen on the next
+   * edit instead of never.
+   */
+  readonly dirtyConnectionIds: readonly string[];
   readonly revision: number;
 }
 

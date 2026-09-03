@@ -6,16 +6,28 @@
  * the shape of `@/lib/api`, which keeps the coupling to one import.
  */
 
+import type { ContentItemView as ApplicationContentItemView } from '@relay/application';
 import { api, newIdempotencyKey } from '@/lib/api';
+import type { ContentTargetInput } from '@/lib/api/resources/content';
 import type { ForwardAuth } from '@/lib/api/transport';
 import {
   type CapabilitySnapshot,
   type MasterDraft,
   type OverridableVariantField,
   type PostingSetView,
+  type VariantOverrides,
 } from '@relay/contracts';
 
-import type { ComposerBootstrap, ComposerState, TargetAccount, TargetSet } from '../types';
+import {
+  EMPTY_VARIANT_SETTINGS,
+  UNSAVED_DRAFT_ID,
+  type ComposerBootstrap,
+  type ComposerSaveOutcome,
+  type ComposerState,
+  type TargetAccount,
+  type TargetSet,
+  type VariantSettings,
+} from '../types';
 import type { ResolvedEntity } from '../components/entity-search-field';
 
 /**
@@ -38,11 +50,112 @@ function targetSetFromApi(view: PostingSetView): TargetSet {
   };
 }
 
+/** The master a lazily created draft starts from, before any server row. */
+function localMaster(input: {
+  readonly workspaceId: string;
+  readonly projectId: string;
+  readonly schedule: MasterDraft['schedule'];
+}): MasterDraft {
+  return {
+    id: UNSAVED_DRAFT_ID,
+    workspaceId: input.workspaceId,
+    projectId: input.projectId,
+    campaignId: null,
+    title: null,
+    body: '',
+    contentKind: 'text',
+    locale: 'en',
+    mediaIds: [],
+    links: [],
+    signature: null,
+    threadItems: [],
+    schedule: input.schedule,
+    disclosure: { aiAssisted: false, commercialContent: false, brandedContent: false },
+    createdVia: 'web',
+  };
+}
+
+/**
+ * The master, straight from the application's own view of the draft.
+ *
+ * This used to be a cast of the narrowed list view, which carries neither the
+ * links, the thread items, the schedule nor the disclosure flags. Reopening a
+ * draft therefore emptied all four, and the next autosave wrote the emptiness
+ * back.
+ */
+function masterFromComposite(item: ApplicationContentItemView): MasterDraft {
+  return {
+    id: item.id,
+    workspaceId: item.workspaceId,
+    projectId: item.projectId,
+    campaignId: item.campaignId,
+    title: item.title,
+    body: item.body,
+    contentKind: item.contentKind,
+    locale: item.locale,
+    mediaIds: [...item.mediaIds],
+    links: [...item.links],
+    signature: item.signature,
+    threadItems: [...item.threadItems],
+    schedule: item.schedule,
+    disclosure: item.disclosure,
+    createdVia: item.createdVia,
+  };
+}
+
+interface VariantState {
+  readonly selectedConnectionIds: readonly string[];
+  readonly overrides: Readonly<Record<string, VariantOverrides>>;
+  readonly settings: Readonly<Record<string, VariantSettings>>;
+}
+
+function emptyVariantState(): VariantState {
+  return { selectedConnectionIds: [], overrides: {}, settings: {} };
+}
+
+/** Every saved target, with what it overrides and how it is configured. */
+function variantStateFrom(item: ApplicationContentItemView): VariantState {
+  const overrides: Record<string, VariantOverrides> = {};
+  const settings: Record<string, VariantSettings> = {};
+
+  for (const variant of item.variants) {
+    if (Object.keys(variant.overrides).length > 0) {
+      overrides[variant.connectionId] = variant.overrides;
+    }
+    settings[variant.connectionId] = {
+      destination:
+        variant.destination === null
+          ? null
+          : {
+              destinationId: variant.destination.id,
+              // The stored view knows the row and its label. The provider's own
+              // id is not part of it, and inventing one would put a value in a
+              // field that no lookup returned.
+              externalId: null,
+              displayLabel: variant.destination.displayLabel,
+            },
+      mentions: [...variant.mentions],
+      privacyValue: variant.privacyValue,
+      disclosure: variant.disclosure,
+    };
+  }
+
+  return {
+    selectedConnectionIds: item.variants.map((variant) => variant.connectionId),
+    overrides,
+    settings,
+  };
+}
+
 /** Load the draft, the connectable accounts, their capabilities and the Sets. */
 export async function loadComposer(input: {
   readonly contentItemId: string | null;
   readonly projectId: string;
+  /** Needed for the local master of a draft whose row does not exist yet. */
+  readonly workspaceId: string;
   readonly workspaceTimeZone: string;
+  /** From `/compose?at=&tz=`, already validated. Seeds the schedule. */
+  readonly schedule?: MasterDraft['schedule'];
   /**
    * The session cookie and fingerprint headers to forward. This runs as part
    * of the Server Component render for `/compose`, not in the browser, so
@@ -78,14 +191,30 @@ export async function loadComposer(input: {
     }),
   );
 
-  const master =
+  /*
+   * A visit is not a draft.
+   *
+   * Creating the row here meant that opening the composer and closing it again
+   * left a permanent empty draft behind, so a person who looked at the screen
+   * three times had three of them to clean up. The row is now created on the
+   * first edit that has something to save, by `ensureDraftId()` below, and
+   * until then the master is local and carries `UNSAVED_DRAFT_ID`.
+   */
+  const composite =
     input.contentItemId === null
-      ? ((await api.content.createDraft(
-          { projectId: input.projectId },
-          newIdempotencyKey('draft'),
-          input.forward,
-        )) as unknown as MasterDraft)
-      : ((await api.content.get(input.contentItemId, input.forward)) as unknown as MasterDraft);
+      ? null
+      : await api.content.getComposite(input.contentItemId, input.forward);
+
+  const master =
+    composite === null
+      ? localMaster({
+          workspaceId: input.workspaceId,
+          projectId: input.projectId,
+          schedule: input.schedule ?? null,
+        })
+      : masterFromComposite(composite);
+
+  const variants = composite === null ? emptyVariantState() : variantStateFrom(composite);
 
   return {
     master,
@@ -130,9 +259,15 @@ export async function loadComposer(input: {
      */
     signatures: [],
     brandedDomains: [],
-    selectedConnectionIds: [],
-    overrides: {},
-    settings: {},
+    selectedConnectionIds: variants.selectedConnectionIds,
+    /*
+     * Read back, not thrown away. These two were hardcoded empty, so every
+     * per-platform rewrite and every native setting a person had saved
+     * disappeared the moment they reopened the draft: the server still had
+     * them, and the screen showed the master text instead.
+     */
+    overrides: variants.overrides,
+    settings: variants.settings,
     approvalPinned: false,
     approverName: null,
     approvalPolicy: null,
@@ -140,42 +275,154 @@ export async function loadComposer(input: {
   };
 }
 
-/** Persist the master and the per target overrides. Never optimistic. */
-export async function saveComposer(state: ComposerState): Promise<void> {
-  const master = state.master;
-  await api.content.updateMaster(master.id, {
-    title: master.title,
-    body: master.body,
-    contentKind: master.contentKind,
-    locale: master.locale,
-    mediaIds: master.mediaIds,
-    links: master.links,
-    signature: master.signature,
-    threadItems: master.threadItems,
-    schedule: master.schedule,
-    disclosure: master.disclosure,
-    campaignId: master.campaignId,
-  });
-  const targeted = await api.content.setTargets(state.master.id, {
-    targets: state.selectedConnectionIds.map((connectionId) => ({ connectionId })),
-  });
-  const targetByConnection = new Map(
-    targeted.targets.map((target) => [target.connectionId, target.variantId]),
-  );
-  for (const [connectionId, overrides] of Object.entries(state.overrides)) {
-    const fields = Object.keys(overrides) as readonly OverridableVariantField[];
-    const variantId = targetByConnection.get(connectionId);
-    if (variantId === undefined) {
-      continue;
+export interface ComposerGateway {
+  /**
+   * The content item id, creating the server row the first time it is asked
+   * for. Every caller that needs an id awaits this same promise, so a burst of
+   * concurrent edits creates exactly one draft.
+   */
+  readonly ensureDraftId: () => Promise<string>;
+  readonly save: (state: ComposerState) => Promise<ComposerSaveOutcome>;
+}
+
+export interface ComposerGatewayInput {
+  /** Null for a draft that has not been created yet. */
+  readonly contentItemId: string | null;
+  readonly projectId: string;
+  /** Called once, when the lazy draft is created, with its new id. */
+  readonly onDraftCreated?: (contentItemId: string) => void;
+}
+
+/**
+ * The composer's writes, as one object with one memoised draft creation.
+ *
+ * Saving is three waves and never more, whatever the target count:
+ *
+ *   1. create the draft, but only the first time and only if it is missing;
+ *   2. the master and the target list together;
+ *   3. every dirty variant at once.
+ *
+ * It used to be one request per target, awaited in a loop, on an 800ms
+ * autosave: six targets meant eight round trips in series while somebody was
+ * still typing, and the first rejection abandoned every target after it.
+ *
+ * TODO(owner): depends on api. `PATCH /v1/content/{id}/composer` (BE-3) would
+ * collapse waves 2 and 3 into one request. When it exists, `save` below is the
+ * only function that changes.
+ */
+export function createComposerGateway(input: ComposerGatewayInput): ComposerGateway {
+  let draftId: string | null = input.contentItemId;
+  let creating: Promise<string> | null = null;
+
+  const ensureDraftId = (): Promise<string> => {
+    if (draftId !== null) {
+      return Promise.resolve(draftId);
     }
-    if (fields.length === 0) {
-      // No overrides left on this target: every overridable field goes back to
-      // inheriting the master rather than keeping a stale copy of it.
-      await api.content.resetVariantToMaster(state.master.id, variantId);
-    } else {
-      await api.content.overrideVariant(state.master.id, variantId, { patch: overrides });
-    }
+    creating ??= api.content
+      .createDraft({ projectId: input.projectId }, newIdempotencyKey('draft'))
+      .then((created) => {
+        draftId = created.id;
+        input.onDraftCreated?.(created.id);
+        return created.id;
+      })
+      .catch((error: unknown) => {
+        // A failed creation must not poison every later save: the next edit
+        // asks again rather than resolving to a draft that does not exist.
+        creating = null;
+        throw error;
+      });
+    return creating;
+  };
+
+  const save = async (state: ComposerState): Promise<ComposerSaveOutcome> => {
+    const contentItemId = await ensureDraftId();
+    const master = state.master;
+
+    const [updated, targeted] = await Promise.all([
+      api.content.updateMaster(contentItemId, {
+        title: master.title,
+        body: master.body,
+        contentKind: master.contentKind,
+        locale: master.locale,
+        mediaIds: master.mediaIds,
+        links: master.links,
+        signature: master.signature,
+        threadItems: master.threadItems,
+        schedule: master.schedule,
+        disclosure: master.disclosure,
+        campaignId: master.campaignId,
+      }),
+      api.content.setTargets(contentItemId, { targets: targetInputs(state) }),
+    ]);
+
+    const variantByConnection = new Map(
+      targeted.targets.map((target) => [target.connectionId, target.variantId]),
+    );
+
+    // Only the targets whose variant actually changed. A settings-only edit is
+    // already carried by the target list above and needs no variant request.
+    const pending = state.dirtyConnectionIds.filter(
+      (connectionId) =>
+        state.overrides[connectionId] !== undefined && variantByConnection.has(connectionId),
+    );
+
+    const results = await Promise.allSettled(
+      pending.map((connectionId) =>
+        writeVariant(
+          contentItemId,
+          variantByConnection.get(connectionId) as string,
+          state.overrides[connectionId] ?? {},
+        ),
+      ),
+    );
+
+    const failedConnectionIds = pending.filter(
+      (_connectionId, index) => results[index]?.status === 'rejected',
+    );
+    const savedConnectionIds = state.dirtyConnectionIds.filter(
+      (connectionId) => !failedConnectionIds.includes(connectionId),
+    );
+
+    return {
+      contentItemId,
+      savedAt: updated.updatedAt,
+      savedConnectionIds,
+      failedConnectionIds,
+    };
+  };
+
+  return { ensureDraftId, save };
+}
+
+/** One target as the API takes it, native settings included. */
+function targetInputs(state: ComposerState): readonly ContentTargetInput[] {
+  return state.selectedConnectionIds.map((connectionId) => {
+    const settings = state.settings[connectionId] ?? EMPTY_VARIANT_SETTINGS;
+    return {
+      connectionId,
+      // Only a destination we have a stored row for can be referenced. One the
+      // provider search found but nothing has stored yet stays local until it
+      // does, rather than being sent as an id the server cannot resolve.
+      destinationId: settings.destination?.destinationId ?? null,
+      mentions: settings.mentions,
+      privacyValue: settings.privacyValue,
+      disclosure: settings.disclosure,
+    } satisfies ContentTargetInput;
+  });
+}
+
+function writeVariant(
+  contentItemId: string,
+  variantId: string,
+  overrides: VariantOverrides,
+): Promise<unknown> {
+  const fields = Object.keys(overrides) as readonly OverridableVariantField[];
+  if (fields.length === 0) {
+    // No overrides left on this target: every overridable field goes back to
+    // inheriting the master rather than keeping a stale copy of it.
+    return api.content.resetVariantToMaster(contentItemId, variantId);
   }
+  return api.content.overrideVariant(contentItemId, variantId, { patch: overrides });
 }
 
 /** Provider-backed destination search. A result without an id never returns. */
@@ -187,6 +434,10 @@ export async function searchDestinations(
   return results
     .filter((entry) => entry.externalId.length > 0)
     .map((entry) => ({
+      // The destination the variant stores is a row in our own table, and this
+      // is where its id comes from. Synthesizing one from the provider id, as
+      // the composer used to, wrote a reference to a row that does not exist.
+      recordId: entry.id,
       externalId: entry.externalId,
       label: entry.name,
       secondary: entry.kind,
@@ -202,6 +453,7 @@ export async function searchMentions(
   return results
     .filter((entry) => entry.externalId.length > 0)
     .map((entry) => ({
+      recordId: null,
       externalId: entry.externalId,
       label: entry.displayName,
       secondary: entry.handle,
