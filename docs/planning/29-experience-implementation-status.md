@@ -1,0 +1,97 @@
+# Experience programme: what is built, what is not, and what to watch
+
+Written 2026-09-03, at the end of the first implementation session against
+`docs/planning/28-experience-master-plan.md`. This is the handoff: read it
+before picking up any remaining phase, because several things in the plan
+turned out to be wrong and are corrected here rather than there.
+
+## Phase 0 is complete
+
+Every launch blocker in the plan is fixed and on `development`.
+
+| Blocker | Fix |
+| --- | --- |
+| Uploaded images could never publish | Scan pipeline. Assets leave `pending` through `mediaScanWorkflow`; the first adapter validates format, not malware, and says so in its own doc comment |
+| Outbound webhooks and notifications silently dead | Outbox split by kind into two dispatchers; delivery bodies stored rather than only hashed; contract header names; replay tool |
+| A non-production deploy swallowed every scheduled post | `POSTARRAY_RUNTIME_PROFILE` plus a local-database check gates the non-durable scheduler; `/readyz` fails when a process comes up degraded |
+| CI never ran on `development` | Push trigger fixed; `turbo.json` globalEnv completed |
+| 42 accessibility audits were auditing error pages | Playwright demo-mode variable renamed to the one the app reads, with a smoke test that fails if they diverge again |
+| The publish path had no workspace scoping | Connector execution activities run inside `withWorkspaceContext`, one context per contiguous block, never spanning a provider call |
+
+## Corrections to the plan and to the repository's own documents
+
+- **`AGENTS.md` said the primary button is ink.** It is vermilion, one per
+  screen. The design-system README is authoritative and was already right.
+- **`AGENTS.md` said tenancy is enforced three times.** Three layers exist, but
+  application traffic runs as `service_role` and every policy is
+  `is_service_role() OR membership`, so for those queries the membership branch
+  never decides. Write repository code as if row level security were not there.
+- **Google Business Profile was left in the launch cohort deliberately.** The
+  audit flagged it as advertised with no adapter. It is not offered for
+  connection: `listAvailableProviders` filters the cohort by
+  `connectors.has(provider)`. Its marketing page renders `adapterPresent:
+  false` as unavailable, which is a designed behaviour with seven tests. Removing
+  it deletes the only instance of that behaviour and makes the product less
+  honest, not more.
+- **Two of the four segmented controls are tabs, not radiogroups.** Connections
+  and the growth plan render real tab panels and own an `aria-controls`
+  relationship. They keep `Tabs` and share only the thumb.
+- **The calendar chip link was described backwards.** The chip linked to the
+  post correctly; the dead `#receipt` anchor was in the calendar table and the
+  entry sheet.
+
+## Known issues, in priority order
+
+1. **The character counter excludes signature text that will publish.**
+   `validate-draft.ts` and `summarizeTargets` count `values.body` alone, while
+   the preview correctly renders body plus signature. Nobody can hit this today
+   because the composer gateway serves an empty signature list, so it is latent.
+   It becomes a real "we said you were within the limit and the platform
+   truncated you" bug the moment signatures ship. Fix the counter and the
+   preview together; `previews/build-preview-model.test.ts` pins the current
+   agreement deliberately.
+2. **No preview collapse thresholds are sourced.** Every `collapse` rule in
+   `previews/presentation-rules.ts` is null. Several platforms truncate long
+   captions in their own clients but none publishes the threshold in developer
+   documentation. `collapseText` and the "See more" control are built and
+   tested; one sourced number turns each on. Do not guess one.
+3. **Video posters do not exist.** `GET /v1/media/{id}/read-urls` always returns
+   `poster: null` because the derivative pipeline generates no video stills. The
+   preview renders an honest placeholder and will start working with no client
+   change once the pipeline produces them.
+4. **Signatures have no read endpoint.** The posting-sets screen passes an empty
+   list with a `TODO(owner)`; `SetForm` renders signatures and nothing serves
+   them.
+5. **Two tests are flaky under parallel load**, not broken:
+   `features/marketing/components/editorial/tier-grid.test.tsx` and
+   `features/marketing/locale-metadata-sweep.test.ts`. Both pass alone and at a
+   raised timeout. A failure in either is worth re-running before investigating.
+6. **`packages/runtime/src/resend-mailer.test.ts`** times out at five seconds
+   under load for the same reason.
+
+## Traps that cost time in this session
+
+- **Adding one English key fails 26 i18n tests.** Every new key is a missing
+  key in all 25 locale catalogs until it is registered in
+  `BETA_ENGLISH_FALLBACK_KEYS` in `packages/i18n/src/messages/beta-fallbacks.ts`.
+  Namespaces listed in `LOCALE_FILLED_PREFIXES`, including `queue.` and `set.`,
+  cannot be registered at all; new copy there goes under a `web.` prefix, which
+  is what `web.receipt.*` already does.
+- **RLS claims are validated as real identifiers.** A fixture workspace id of
+  `ws_1` is rejected once a code path opens a workspace context. Use
+  `newIdFor('workspace')`.
+- **A Prisma double needs `$transaction` and `$executeRaw`** as soon as the code
+  under test opens a workspace context, and it must hand back the finished
+  double rather than the base one, or a model added by an override is invisible
+  inside the transaction body.
+- **Never put a Next navigation hook in `components/link.tsx`.** It is rendered
+  by many tests that mount without an App Router, and doing so breaks them in
+  bulk with failures that look unrelated.
+
+## What is not built
+
+Phases 2 and 3 of the master plan are only partly started. Notably absent:
+notifications (model, writer, preferences, emails), client reports, the setup
+guide and coachmarks, contextual help, the service worker, error reporting,
+hydration boundaries, Google sign-in, and the recurring and evergreen work.
+Section 3.6 of the plan remains explicitly optional.
