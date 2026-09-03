@@ -538,6 +538,13 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.receipt.retry.blocked.retryScheduled',
   'web.receipt.retry.blocked.canceled',
   'web.receipt.retry.blocked.actionRequired',
+  // Step three of the growth advisor used to be a dead end: a confirmed
+  // profile and an empty state saying the capability was not implemented,
+  // while the gateway that generates a plan was sitting right there. New
+  // English for the outcome sentences. Reviewed English until translated.
+  'growth.ui.plan.generateAnnouncement',
+  'growth.ui.plan.generateFailedTitle',
+  'growth.ui.plan.generateFailedBody',
 ] as const;
 
 /**

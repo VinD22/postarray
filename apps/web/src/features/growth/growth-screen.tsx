@@ -3,10 +3,11 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Badge, TabsContent } from '@relay/design-system/primitives';
-import { EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
+import { Notice, PageHeader } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
+import { describeApiError } from '../settings/lib/api-error';
 import { SettingsStack } from '../settings/components/section';
 import { AsyncBoundary } from '../settings/lib/async-boundary';
 import { projectsGateway, growthGateway, securityGateway } from '../settings/lib/gateway';
@@ -16,6 +17,7 @@ import { useSettingsMutation } from '../settings/lib/use-settings-mutation';
 import { useSession } from '@/lib/auth/session-context';
 import { ExportPanel } from './export-panel';
 import { IntakeForm, type IntakeValue } from './intake-form';
+import { GrowthPlanEmpty } from './plan-empty';
 import { GrowthPlanTabs } from './plan-tabs';
 import { ProfileConfirmation } from './profile-confirmation';
 import { GrowthStepTransition } from './step-transition';
@@ -93,6 +95,16 @@ export function GrowthScreen(): ReactNode {
     onSuccess: () => setBusyItemId(null),
   });
 
+  // The gateway that builds a plan has existed since the advisor shipped. The
+  // screen just never called it, and told people the capability was not
+  // implemented instead.
+  const generatePlan = useSettingsMutation({
+    section,
+    mutationFn: growthGateway.generate,
+    invalidate: [PLAN_KEY],
+    successMessage: t('growth.ui.plan.generateAnnouncement'),
+  });
+
   const proposeSlot = useSettingsMutation({
     section,
     mutationFn: growthGateway.proposeSlot,
@@ -137,6 +149,10 @@ export function GrowthScreen(): ReactNode {
     profile.data == null ? 'intake' : profile.data.confirmedAt === null ? 'confirm' : 'plan';
 
   const stepNumber = step === 'intake' ? 1 : step === 'confirm' ? 2 : 3;
+  const generateFailure =
+    generatePlan.error === undefined || generatePlan.error === null
+      ? null
+      : describeApiError(generatePlan.error);
 
   return (
     <>
@@ -174,9 +190,7 @@ export function GrowthScreen(): ReactNode {
           <GrowthStepTransition activeKey={step} className="flex flex-col gap-6">
             {step === 'intake' ? (
               <>
-                {intakeError === null ? null : (
-                  <Notice tone="warning" title={intakeError} />
-                )}
+                {intakeError === null ? null : <Notice tone="warning" title={intakeError} />}
                 <IntakeForm
                   availableLocales={availableLocales}
                   availableChannels={availableChannels}
@@ -318,12 +332,13 @@ export function GrowthScreen(): ReactNode {
             ) : null}
 
             {step === 'plan' && currentPlan === null ? (
-              <EmptyState
-                title={t('growth.ui.plan.emptyTitle')}
-                description={t('error.capability_not_implemented.message', {
-                  provider: t('home.advisor.title'),
-                })}
-                example={t('error.capability_not_implemented.action')}
+              <GrowthPlanEmpty
+                generating={generatePlan.isSaving}
+                failure={generateFailure}
+                formatDate={formatters.date}
+                onGenerate={() => {
+                  void generatePlan.run(undefined);
+                }}
               />
             ) : null}
           </GrowthStepTransition>
