@@ -111,6 +111,26 @@ export interface StatusTokens {
   readonly info: StatusTone;
 }
 
+/**
+ * The chart palette. Four tokens, all monochrome, all aliases of colours the
+ * system already ships: a chart may not introduce a hue of its own.
+ *
+ * `line` and `lineCompare` are close to each other by design. Two series are
+ * told apart by dash pattern plus the legend text, never by colour, which is
+ * the only answer that also works for a colour blind reader and for a printed
+ * page. `contrast.test.ts` asserts that closeness rather than assuming it.
+ */
+export interface ChartTokens {
+  /** The primary series stroke. Ink. */
+  readonly line: string;
+  /** The comparison series stroke. Drawn dashed, never merely tinted. */
+  readonly lineCompare: string;
+  /** Gridlines and axis rules. Quiet enough to sit behind the data. */
+  readonly grid: string;
+  /** The plotting band behind the series. */
+  readonly area: string;
+}
+
 export const PROVIDER_KEYS = [
   'x',
   'linkedin',
@@ -162,6 +182,8 @@ export interface ThemeTokens {
   readonly cta: CtaTokens;
   readonly blush: BlushTokens;
   readonly status: StatusTokens;
+  /** Chart ink. Monochrome by rule. See `ChartTokens`. */
+  readonly chart: ChartTokens;
   /** Provider identity. Permitted on 8px dots and 1px rules. Never a surface. */
   readonly brand: BrandTokens;
 }
@@ -255,6 +277,15 @@ export const lightTheme: ThemeTokens = {
       on: '#FFFFFF',
     },
     info: { fg: '#5A3DB0', bg: '#ECE8F5', border: '#7A5EC0' },
+  },
+  // Aliases of text.primary, text.secondary, border.subtle and
+  // surface.sunken. theme.css declares them as var() references to exactly
+  // those tokens; these literals are the copy a canvas or OG renderer reads.
+  chart: {
+    line: '#141413',
+    lineCompare: '#2E2E2E',
+    grid: '#EBE7DF',
+    area: '#F5F0E8',
   },
   brand: {
     // Matches `--brand-x` in theme.css. It reads as the same near-black as
@@ -373,6 +404,12 @@ export const darkTheme: ThemeTokens = {
       on: '#141413',
     },
     info: { fg: '#B8A0F0', bg: '#1A1430', border: '#7A5EC0' },
+  },
+  chart: {
+    line: '#FFFCF8',
+    lineCompare: '#D6D0C4',
+    grid: '#2A2A28',
+    area: '#080807',
   },
   brand: {
     x: '#FFFCF8',
@@ -815,11 +852,45 @@ const accentPairs: ContrastPair[] = [
   ...accentFamilyPairs('accentCool', (t) => t.accentCool),
 ];
 
+/*
+ * Chart ink, in the two places a chart is ever drawn: straight on the page,
+ * and on top of its own plotting band. Both are graphics rather than text, so
+ * the 3:1 boundary threshold applies, and both series strokes have to clear it
+ * on their own — the comparison series is not allowed to become a faint tint
+ * of the primary one just because it is secondary.
+ *
+ * `chart.grid` is deliberately absent. A gridline is decorative: WCAG asks
+ * nothing of it, and forcing it to 3:1 would put a hard rule through the data
+ * it is supposed to sit behind. It is held to "visible but quiet" in
+ * contrast.test.ts instead, the same way the surface steps are.
+ */
+const chartPairs: ContrastPair[] = (['line', 'lineCompare'] as const).flatMap((key) => [
+  {
+    id: `chart.${key} on surface.canvas`,
+    foreground: (t: ThemeTokens) => t.chart[key],
+    background: (t: ThemeTokens) => t.surface.canvas,
+    purpose: 'ui-boundary' as const,
+  },
+  {
+    id: `chart.${key} on surface.raised`,
+    foreground: (t: ThemeTokens) => t.chart[key],
+    background: (t: ThemeTokens) => t.surface.raised,
+    purpose: 'ui-boundary' as const,
+  },
+  {
+    id: `chart.${key} on chart.area`,
+    foreground: (t: ThemeTokens) => t.chart[key],
+    background: (t: ThemeTokens) => t.chart.area,
+    purpose: 'ui-boundary' as const,
+  },
+]);
+
 export const documentedContrastPairs: readonly ContrastPair[] = [
   ...textOnSurfacePairs,
   ...statusPairs,
   ...brandPairs,
   ...accentPairs,
+  ...chartPairs,
   // `accent.onAccent on accent.{default,hover,active}` used to be spelled out
   // here; `accentFamilyPairs` above now generates it for all three families.
   {

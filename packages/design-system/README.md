@@ -121,6 +121,30 @@ always carried:
 
 Everything outside those three lines is still banned.
 
+### Charts
+
+Four tokens, all monochrome, all aliases of colours the system already ships:
+`--chart-line` (ink), `--chart-line-compare` (text-secondary), `--chart-grid`
+(border-subtle), `--chart-area` (surface-sunken). A chart introduces no hue of
+its own, and marigold and ultramarine remain marketing scene vocabulary that
+may not appear in one.
+
+Series are told apart by **dash pattern plus a text legend**, never by colour.
+That is the only differentiator that survives colour blindness, a greyscale
+print and a bad projector, and `contrast.test.ts` asserts that the two series
+strokes stay too close in luminance to be told apart any other way.
+
+Four rules are compiled into `src/charts/` and are not props a caller can turn
+off:
+
+1. A missing reading is a gap in the line. Never an interpolation, never a
+   zero, never a dash in the table.
+2. Nothing animates. No draw-in, no transition on a path's `d`, no counted-up
+   number. `charts.test.tsx` reads the sources and fails on any of them.
+3. Every chart carries a caption and a "View as table" fallback.
+4. Every point is reachable from the keyboard through one tab stop and the
+   arrow keys.
+
 ### Motion
 
 Two tiers. Functional, in-app motion stays 120-200ms, three named easings,

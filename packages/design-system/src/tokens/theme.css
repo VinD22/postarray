@@ -578,6 +578,21 @@
   --status-info-bg: var(--relay-violet-bg);
   --status-info-border: var(--relay-violet-border);
 
+  /* Chart ink. Deliberately monochrome: a reader tells two series apart by the
+     dash pattern and the legend text, never by hue, which is also the only
+     answer that survives colour blindness and a black and white print. The
+     marketing scene accents (marigold, ultramarine) may not appear here.
+
+     Declared once, not once per theme: each one points at a semantic token
+     that section 3 already redeclares for dark, and custom properties resolve
+     at use time, so a chart repaints itself on a theme switch without a second
+     copy here. tokens.ts still carries a real value per theme, because a
+     canvas or OG renderer cannot follow a var(). */
+  --chart-line: var(--text-primary);
+  --chart-line-compare: var(--text-secondary);
+  --chart-grid: var(--border-subtle);
+  --chart-area: var(--surface-sunken);
+
   /* Provider identity. Dots and 1px rules only, never a surface. */
   --brand-x: #0f0f0f;
   --brand-linkedin: #0a66c2;
@@ -928,6 +943,11 @@
   --color-info-fg: var(--status-info-fg);
   --color-info-bg: var(--status-info-bg);
   --color-info-border: var(--status-info-border);
+
+  --color-chart-line: var(--chart-line);
+  --color-chart-line-compare: var(--chart-line-compare);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-area: var(--chart-area);
 
   --color-brand-x: var(--brand-x);
   --color-brand-linkedin: var(--brand-linkedin);
