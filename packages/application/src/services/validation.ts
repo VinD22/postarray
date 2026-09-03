@@ -41,6 +41,9 @@ import { resolveTarget } from '../internal/stored-content';
  */
 
 /** Posts inside this window are compared for duplicate and similarity. */
+/** How many recent receipts per connection the duplicate check looks back over. */
+const RECENT_RECEIPTS_PER_CONNECTION = 25;
+
 const DUPLICATE_WINDOW_HOURS = 72;
 const CROSS_ACCOUNT_SIMILARITY_THRESHOLD = 0.8;
 /** Default per-connection budget when the project has not set one. */
@@ -439,16 +442,39 @@ async function duplicateIssues(
 ): Promise<ValidationIssue[]> {
   const issues: ValidationIssue[] = [];
 
-  for (const target of targets) {
-    const recent = await db.publicationReceipt.findMany({
-      where: { connectionId: target.variant.connectionId, publishedAt: { gte: since } },
-      orderBy: { publishedAt: 'desc' },
-      take: 25,
-      select: { id: true, contentVersion: { select: { body: true } } },
+  // One query for every target, not one per target. Validation runs on every
+  // schedule and every publish, and cross-posting fans out, so the old shape
+  // cost a round trip per destination on the hottest path in the product.
+  // Twenty-five is the per-connection budget, so the cap scales with the
+  // number of connections being asked about.
+  const connectionIds = [...new Set(targets.map((target) => target.variant.connectionId))];
+  const recentByConnection = new Map<string, { id: string; body: string }[]>();
+  if (connectionIds.length > 0) {
+    const rows = await db.publicationReceipt.findMany({
+      where: { connectionId: { in: connectionIds }, publishedAt: { gte: since } },
+      orderBy: [{ connectionId: 'asc' }, { publishedAt: 'desc' }],
+      take: RECENT_RECEIPTS_PER_CONNECTION * connectionIds.length,
+      select: { id: true, connectionId: true, contentVersion: { select: { body: true } } },
     });
+    for (const row of rows) {
+      const bucket = recentByConnection.get(row.connectionId) ?? [];
+      // Ordered newest first within each connection by the query, so taking
+      // the first twenty-five preserves the previous behaviour exactly.
+      if (bucket.length < RECENT_RECEIPTS_PER_CONNECTION) {
+        bucket.push({ id: row.id, body: row.contentVersion.body });
+        recentByConnection.set(row.connectionId, bucket);
+      }
+    }
+  }
+
+  for (const target of targets) {
+    const recent = recentByConnection.get(target.variant.connectionId) ?? [];
+    // Fingerprinting the draft is pure work that does not depend on the
+    // receipt, so it happens once per target rather than once per comparison.
+    const targetFingerprint = contentFingerprint(target.body);
     for (const receipt of recent) {
-      const previous = receipt.contentVersion.body;
-      if (contentFingerprint(previous) === contentFingerprint(target.body)) {
+      const previous = receipt.body;
+      if (contentFingerprint(previous) === targetFingerprint) {
         issues.push(
           validationIssue({
             code: 'DUPLICATE_WITHIN_WINDOW',
@@ -519,14 +545,30 @@ async function cadenceIssues(
     );
   }
 
-  for (const [connectionId, requested] of perConnection) {
-    const scheduled = await db.publishJob.count({
+  // One grouped count for every connection rather than a count per connection.
+  // Same reason as the duplicate check above: this runs on every schedule and
+  // every publish, and the cost grew with the size of the cross-post.
+  const cadenceConnectionIds = [...perConnection.keys()];
+  const scheduledByConnection = new Map<string, number>();
+  if (cadenceConnectionIds.length > 0) {
+    const grouped = await db.publishJob.groupBy({
+      by: ['connectionId'],
       where: {
-        connectionId,
+        connectionId: { in: cadenceConnectionIds },
         scheduledFor: { gte: dayStart, lt: dayEnd },
         state: { notIn: ['canceled', 'failed_permanently'] },
       },
+      _count: { _all: true },
     });
+    for (const row of grouped) {
+      scheduledByConnection.set(row.connectionId, row._count._all);
+    }
+  }
+
+  for (const [connectionId, requested] of perConnection) {
+    // A connection with nothing scheduled today has no group row, which is
+    // zero jobs, not an unknown. This is the one place a zero is a fact.
+    const scheduled = scheduledByConnection.get(connectionId) ?? 0;
     if (scheduled + requested > DEFAULT_DAILY_CADENCE) {
       const target = targets.find((entry) => entry.variant.connectionId === connectionId);
       issues.push(

@@ -68,6 +68,9 @@ function manifestStorageKey(workspaceId: string, checksum: string): string {
   return `${workspaceId}/imports/${checksum}.csv`;
 }
 
+/** Rows per insert statement. Bounded so one statement never grows with the file. */
+const IMPORT_ROW_INSERT_CHUNK = 500;
+
 export function createBulkImportService(
   deps: ServiceDeps,
   content: ContentService,
@@ -160,22 +163,27 @@ export function createBulkImportService(
             select: BULK_IMPORT_JOB_SELECT,
           });
 
-          for (const row of manifest.rows) {
-            await db.bulkImportRow.create({
-              data: {
-                workspaceId: ctx.workspaceId,
-                bulkImportJobId: job.id,
-                externalRowKey: row.externalRowKey.slice(0, 200),
-                lineNumber: row.lineNumber,
-                state: row.payload === null ? 'invalid' : 'valid',
-                payload: row.payload === null ? undefined : toJson(row.payload),
-                validation: toJson({
-                  status: row.payload === null ? 'invalid' : 'valid',
-                  checkedAt: now.toISOString(),
-                  parserVersion: manifest.parserVersion,
-                }),
-                issues: toJson(row.issues),
-              },
+          // A manifest may carry five thousand rows, and inserting them one at
+          // a time meant five thousand round trips inside one transaction,
+          // which is both slow and a long-held lock. Chunked so a single
+          // statement never grows unbounded with the file.
+          const rows = manifest.rows.map((row) => ({
+            workspaceId: ctx.workspaceId,
+            bulkImportJobId: job.id,
+            externalRowKey: row.externalRowKey.slice(0, 200),
+            lineNumber: row.lineNumber,
+            state: row.payload === null ? 'invalid' : 'valid',
+            ...(row.payload === null ? {} : { payload: toJson(row.payload) }),
+            validation: toJson({
+              status: row.payload === null ? 'invalid' : 'valid',
+              checkedAt: now.toISOString(),
+              parserVersion: manifest.parserVersion,
+            }),
+            issues: toJson(row.issues),
+          }));
+          for (let start = 0; start < rows.length; start += IMPORT_ROW_INSERT_CHUNK) {
+            await db.bulkImportRow.createMany({
+              data: rows.slice(start, start + IMPORT_ROW_INSERT_CHUNK),
             });
           }
 

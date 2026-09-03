@@ -158,6 +158,12 @@ export interface KeyValueStore {
   setIfAbsent(key: string, value: string, options?: KeyValueSetOptions): Promise<boolean>;
   /** Atomic counter. The TTL is applied only when the counter is created. */
   increment(key: string, options?: KeyValueSetOptions): Promise<number>;
+  /**
+   * Add `amount` in one round trip. The rate limiter charges a cost per
+   * request, so incrementing one unit at a time made an expensive endpoint
+   * pay for its own accounting several times over.
+   */
+  incrementBy(key: string, amount: number, options?: KeyValueSetOptions): Promise<number>;
   /** Remaining time to live in seconds, or null when the key has none. */
   ttl(key: string): Promise<number | null>;
 }

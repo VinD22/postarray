@@ -123,6 +123,18 @@ const fakeDb = {
       rows.push(row);
       return row;
     },
+    createMany: async ({ data }: { data: readonly Record<string, unknown>[] }) => {
+      for (const entry of data) {
+        rows.push({
+          id: `importrow_${rows.length + 1}`,
+          contentItemId: null,
+          publishJobId: null,
+          appliedAt: null,
+          ...entry,
+        } as Row);
+      }
+      return { count: data.length };
+    },
     update: async ({ where, data }: { where: { id: string }; data: Record<string, unknown> }) => {
       const row = rows.find((entry) => entry.id === where.id);
       if (row === undefined) throw new Error('missing row');
