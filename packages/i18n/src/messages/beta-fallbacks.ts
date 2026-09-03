@@ -296,6 +296,36 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
 export const BETA_ENGLISH_FALLBACK_KEYS = [
+  // Added with the analytics overview rebuild: a working compare-to-previous
+  // query, a per-channel rollup table, a series chart and CSV export. Reviewed
+  // English until a reviewer covers them in each locale.
+  'analytics.definition.term.availability',
+  'analytics.table.provider',
+  'analytics.table.value',
+  'analytics.table.observedAt',
+  'analytics.filter.customFrom',
+  'analytics.filter.customTo',
+  'analytics.export.csv',
+  'analytics.export.started',
+  'analytics.export.nothing',
+  'analytics.channels.title',
+  'analytics.channels.intro',
+  'analytics.channels.postsMeasured',
+  'analytics.channels.total',
+  'analytics.channels.unavailableCount',
+  'analytics.channels.notAddable',
+  'analytics.channels.sortBy',
+  'analytics.channels.freshness',
+  'analytics.compare.heading',
+  'analytics.compare.range',
+  'analytics.compare.loading',
+  'analytics.compare.unavailable',
+  'analytics.compare.delta',
+  'analytics.compare.noPrevious',
+  'analytics.chart.selectAccounts',
+  'analytics.chart.caption',
+  'analytics.chart.ariaLabel',
+  'analytics.chart.points',
   // Added when the experiments screen stopped rendering a variant breakdown
   // the API has never returned. The screen now states that per-variant
   // readings are not reported and shows the window and the server's own

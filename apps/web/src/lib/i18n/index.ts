@@ -20,6 +20,7 @@ export {
   type NamespaceTranslator,
 } from '@relay/i18n/react';
 
+export { isPathActive, stripLocalePrefix } from './active-path';
 export { useFormatters, type Formatters } from './formatters';
 export { IntlProvider } from './provider';
 export { useLocalizedRouter } from './use-localized-router';

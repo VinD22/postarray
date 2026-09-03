@@ -6,12 +6,16 @@ import { DefinitionList, LoadingState, Notice, SkeletonText } from '@relay/desig
 import { Button, Separator } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
+import { csvFilename, csvNumber, toCsv } from '@/lib/export/csv';
+
+import { ExportButton } from './components/export-button';
 import { MetricDefinitionsPanel } from './components/metric-definition';
 import { MetricFigure } from './components/metric-figure';
 import { QueryErrorState } from './components/query-error-state';
-import { formatLabelKey } from './labels';
+import { formatLabelKey, providerLabelKey } from './labels';
 import {
   OUTCOME_GROUPS,
+  metricLabelKey,
   outcomeGroupHelpKey,
   outcomeGroupLabelKey,
   outcomeGroupOf,
@@ -117,6 +121,9 @@ export function PostMetricsScreen({
   }
 
   const post = query.data;
+  // One column for the number, named for what the column holds rather than
+  // for any single metric: each row names its own metric already.
+  const metricValueHeader = t('analytics.table.value');
 
   return (
     <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
@@ -156,11 +163,52 @@ export function PostMetricsScreen({
             },
           ]}
         />
-        {onOpenReceipt ? (
-          <Button size="sm" variant="secondary" className="self-start" onClick={onOpenReceipt}>
-            {t('action.viewReceipt')}
-          </Button>
-        ) : null}
+        <div className="flex flex-wrap gap-2">
+          {onOpenReceipt ? (
+            <Button size="sm" variant="secondary" onClick={onOpenReceipt}>
+              {t('action.viewReceipt')}
+            </Button>
+          ) : null}
+          <ExportButton
+            build={() =>
+              allReadings.length === 0
+                ? null
+                : {
+                    filename: csvFilename({
+                      project: post.title ?? post.contentItemId,
+                      from: post.publishedAt ?? new Date().toISOString(),
+                      to: post.publishedAt ?? new Date().toISOString(),
+                    }),
+                    content: toCsv(allReadings, [
+                      {
+                        header: t('analytics.definition.term.definition'),
+                        value: (item) => t(metricLabelKey(item.normalizedName)),
+                      },
+                      {
+                        header: t('analytics.table.provider'),
+                        value: (item) => t(providerLabelKey(item.provider)),
+                      },
+                      {
+                        header: t('analytics.definition.term.providerField'),
+                        value: (item) => item.definition.providerField,
+                      },
+                      // Empty when the provider did not return a reading. A
+                      // zero here would be averaged and charted downstream as
+                      // if we had measured it.
+                      { header: metricValueHeader, value: (item) => csvNumber(item.value) },
+                      {
+                        header: t('analytics.definition.term.availability'),
+                        value: (item) => item.availability,
+                      },
+                      {
+                        header: t('analytics.table.observedAt'),
+                        value: (item) => item.observedAt,
+                      },
+                    ]),
+                  }
+            }
+          />
+        </div>
       </section>
 
       <Separator />

@@ -34,6 +34,34 @@ export const webAnalyticsMessages = {
   'analytics.filter.format': 'Content format',
   'analytics.filter.allFormats': 'All formats',
   'analytics.filter.comparePrevious': 'Compare with the previous period',
+  'analytics.filter.customFrom': 'From',
+  'analytics.filter.customTo': 'To',
+  'analytics.export.csv': 'Export CSV',
+  'analytics.export.started': 'Download started. {filename}',
+  'analytics.export.nothing': 'There is nothing to export in this period.',
+  'analytics.channels.title': 'Channels in this period',
+  'analytics.channels.intro':
+    'One row per connected account, counted from the posts this period measured. Followers and reach are not in this read, so nothing here is derived from them.',
+  'analytics.channels.postsMeasured': 'Posts measured',
+  'analytics.channels.total': '{metric}, added up',
+  'analytics.channels.unavailableCount': 'Readings unavailable',
+  'analytics.channels.notAddable':
+    '{metric} is not a metric this provider allows to be added up across posts.',
+  'analytics.channels.sortBy': 'Sort by {column}',
+  'analytics.channels.freshness': 'Last synced',
+  'analytics.compare.heading': 'Against the previous period',
+  'analytics.compare.range': 'Previous period: {start} to {end}',
+  'analytics.compare.loading': 'Loading the previous period.',
+  'analytics.compare.unavailable':
+    'The previous period could not be loaded, so nothing here is compared against it.',
+  'analytics.compare.delta': '{current} this period against {previous} in the previous one.',
+  'analytics.compare.noPrevious': 'Nothing was measured for this account in the previous period.',
+  'analytics.chart.selectAccounts':
+    'Select up to four accounts in the filters above to chart them over the period.',
+  'analytics.chart.caption': '{metric} per day for {accounts}.',
+  'analytics.chart.ariaLabel':
+    '{metric} per day for {accounts}, from {start} to {end}. The same numbers follow as a table.',
+  'analytics.chart.points': '{metric} by day, {count, plural, one {# point} other {# points}}',
   'analytics.filter.applied':
     '{count, plural, =0 {No filters} one {# filter} other {# filters}} applied. {results, plural, =0 {No posts match} one {# post matches} other {# posts match}}.',
 
@@ -65,6 +93,8 @@ export const webAnalyticsMessages = {
   'analytics.table.caption':
     'Posts published in the selected range, with each one compared against your own recent baseline.',
   'analytics.table.post': 'Post',
+  'analytics.table.provider': 'Provider',
+  'analytics.table.observedAt': 'Observed at',
   'analytics.table.account': 'Account',
   'analytics.table.format': 'Format',
   'analytics.table.published': 'Published',
@@ -134,6 +164,7 @@ export const webAnalyticsMessages = {
     '{provider} does not state a history limit for this field.',
 
   'analytics.definition.term.providerField': 'Provider field',
+  'analytics.definition.term.availability': 'Availability',
   'analytics.definition.term.unit': 'Unit',
   'analytics.definition.term.denominator': 'Denominator',
   'analytics.definition.term.aggregation': 'How it is aggregated',

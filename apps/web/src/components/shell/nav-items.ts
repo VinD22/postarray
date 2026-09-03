@@ -12,6 +12,8 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 
+import { isPathActive } from '@/lib/i18n/active-path';
+
 /**
  * The eight primary destinations. Fixed, in this order, on every screen.
  *
@@ -142,13 +144,15 @@ export const NAV_ITEMS: readonly NavItem[] = [
 
 /** True when `pathname` is exactly this sub destination. */
 export function isNavSubItemActive(item: NavSubItem, pathname: string): boolean {
-  return pathname === item.href || pathname.startsWith(`${item.href}/`);
+  return isPathActive(pathname, item.href);
 }
 
-/** True when `pathname` is inside this destination. */
+/**
+ * True when `pathname` is inside this destination.
+ *
+ * Home matches exactly, because it is the shell's index and every other
+ * destination sits beside it rather than under it.
+ */
 export function isNavItemActive(item: NavItem, pathname: string): boolean {
-  if (item.href === '/home') {
-    return pathname === '/home';
-  }
-  return pathname === item.href || pathname.startsWith(`${item.href}/`);
+  return isPathActive(pathname, item.href, item.href === '/home');
 }
