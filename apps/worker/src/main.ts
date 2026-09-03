@@ -13,11 +13,13 @@ import {
   createApplicationRuntime,
   createDomainEventOutboxDispatcher,
   createWorkflowOutboxDispatcher,
+  resolveStoragePort,
   type ConnectorExecutionGateway,
 } from '@relay/runtime';
 import Redis from 'ioredis';
 
 import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
+import { createPassthroughScanner } from './media-scan/passthrough-scanner';
 import { WorkerScheduler } from './outbox-scheduler';
 import {
   createConnectorExecutionActivities,
@@ -85,7 +87,7 @@ type WebhookActivities = Pick<
 
 type BulkImportActivities = Pick<WorkerActivities, 'readBulkImportVerdict' | 'applyBulkImportRows'>;
 
-type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative'>;
+type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative' | 'scanMediaAsset'>;
 
 /** Repeats, feeds, rules and per-post feedback. None of these calls a provider. */
 type AutomationActivities = Pick<
@@ -294,6 +296,7 @@ export async function main(): Promise<void> {
   const deferredMediaDerivatives: MediaDerivativeActivities = {
     produceMediaDerivative: (input) =>
       mediaDerivativesReady.then((value) => value.produceMediaDerivative(input)),
+    scanMediaAsset: (input) => mediaDerivativesReady.then((value) => value.scanMediaAsset(input)),
   };
   let resolveSequenceState: ((sink: WorkerSequenceStateSink) => void) | undefined;
   const sequenceStateReady = new Promise<WorkerSequenceStateSink>((resolve) => {
@@ -374,6 +377,10 @@ export async function main(): Promise<void> {
         prisma,
         kv,
         scheduler,
+        // Format validation, not malware scanning, and the adapter's own doc
+        // comment says so. It exists because nothing else in the product moved
+        // an asset out of `pending`, so no uploaded image could ever publish.
+        mediaScanner: createPassthroughScanner({ storage: resolveStoragePort(config, systemClock) }),
         credentialStore: connectorRuntime.credentialStore,
         ...(connectorRuntime.credentialVault === null
           ? {}
@@ -423,6 +430,14 @@ export async function main(): Promise<void> {
     // web app, and no generative provider exists to inject in its place.
     const mediaTransform = createSharpMediaTransform();
     resolveMediaDerivatives?.({
+      // Format validation only, and the doc comment on the adapter says so
+      // plainly. It is the difference between an image that publishes and one
+      // that is stuck pending forever, not the difference between safe and
+      // unsafe bytes.
+      scanMediaAsset: (input) =>
+        runtime.services.workerMedia.scanMediaAsset(input.ctx, {
+          mediaAssetId: input.mediaAssetId,
+        }),
       produceMediaDerivative: async (input) => {
         const derivative = await runtime.services.workerMedia.produceDerivative(
           input.ctx,

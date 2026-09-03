@@ -597,6 +597,19 @@ export interface SchedulerPort {
    * same outbox row joins the run that already exists rather than sending the
    * event twice.
    */
+  /**
+   * Decide whether an uploaded object may be published.
+   *
+   * Optional like the other worker-side schedules. Without it the asset stays
+   * `pending`, validation keeps refusing it, and the action centre says why,
+   * which is honest. What must never happen is unexamined bytes reaching a
+   * provider.
+   */
+  scheduleMediaScan?(input: {
+    readonly workspaceId: string;
+    readonly mediaAssetId: string;
+    readonly workflowInput: MediaScanWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
   scheduleWebhookDelivery?(input: {
     readonly workspaceId: string;
     readonly deliveryId: string;
@@ -897,6 +910,8 @@ export interface ServiceDeps {
    * Redis; webhooks and notifications work without it, live updates do not.
    */
   readonly realtime?: RealtimePublisherPort;
+  /** Worker-only. The API never decodes uploaded bytes. */
+  readonly mediaScanner?: MediaScannerPort;
   readonly mailer: MailerPort;
   readonly logger: Logger;
   readonly clock: Clock;
@@ -2017,7 +2032,52 @@ export interface MediaDerivativeService {
 }
 
 /** Worker-facing. Writes the row only once the bytes are actually stored. */
+/**
+ * What a scan concluded about one uploaded object.
+ *
+ * `failed` is a scanner that could not reach a verdict. It is deliberately not
+ * `clean`: a scanner outage must not become an approval.
+ */
+export interface MediaScanResult {
+  readonly verdict: 'clean' | 'suspicious' | 'infected' | 'failed';
+  /** Read from the bytes, never the client's claim. */
+  readonly detectedMimeType: string | null;
+  readonly width: number | null;
+  readonly height: number | null;
+  readonly durationMs: number | null;
+  /** An i18n key, so the reason reaches the person in their language. */
+  readonly noteKey: string | null;
+  readonly scanner: 'passthrough' | 'clamav';
+}
+
+/**
+ * Decides whether an uploaded object may be published.
+ *
+ * Worker-only, for the same reason `sharp` is: the API never decodes bytes
+ * a stranger uploaded.
+ */
+export interface MediaScannerPort {
+  scan(input: {
+    readonly workspaceId: string;
+    readonly storageKey: string;
+    readonly claimedMimeType: string;
+    readonly byteSize: number;
+  }): Promise<MediaScanResult>;
+}
+
 export interface WorkerMediaService {
+  /**
+   * Move one asset out of `pending`.
+   *
+   * Assets are created `pending` and validation refuses anything that is not
+   * `clean`, so until this existed no uploaded image or video could be
+   * published at all: a person attached a photo, scheduled it, and got a
+   * text-only post with no explanation.
+   */
+  scanMediaAsset(
+    ctx: WorkflowActorContext,
+    input: { readonly mediaAssetId: string },
+  ): Promise<{ readonly scanState: string; readonly noteKey: string | null }>;
   produceDerivative(
     ctx: WorkflowActorContext,
     input: {
@@ -2027,6 +2087,12 @@ export interface WorkerMediaService {
     },
     transform: MediaTransformFn,
   ): Promise<MediaDerivativeView>;
+}
+
+/** What the scan workflow receives. Ids only; the bytes are read by the activity. */
+export interface MediaScanWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly mediaAssetId: string;
 }
 
 /**

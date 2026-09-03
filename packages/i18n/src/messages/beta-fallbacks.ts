@@ -545,6 +545,22 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'growth.ui.plan.generateAnnouncement',
   'growth.ui.plan.generateFailedTitle',
   'growth.ui.plan.generateFailedBody',
+  // The upload safety check. Every uploaded and imported file is verified to
+  // be the type it claims, to decode, and to be within its size limit before
+  // it can be published. These sentences tell a person which of those failed.
+  // Reviewed English until a reviewer covers them in each locale: a mistranslated
+  // "this file was not accepted" is a person re-uploading the same broken file.
+  'media.scan.pending',
+  'media.scan.mime_mismatch',
+  'media.scan.unrecognized_format',
+  'media.scan.decode_failed',
+  'media.scan.too_large',
+  'media.scan.unreadable',
+  'media.scan.scanner_unavailable',
+  // The action-centre row for an upload whose safety check has not finished.
+  // Reviewed English until a reviewer covers it in each locale.
+  'actionCenter.item.mediaScanStuck',
+  'actionCenter.action.openLibrary',
 ] as const;
 
 /**

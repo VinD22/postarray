@@ -51,6 +51,8 @@ import type {
   PrepareTargetMediaInput,
   PrepareTargetMediaResult,
   ProduceMediaDerivativeInput,
+  ScanMediaAssetInput,
+  ScanMediaAssetResult,
   ProduceMediaDerivativeResult,
   PreflightCampaignInput,
   PreflightCampaignResult,
@@ -137,6 +139,7 @@ export interface SimulatorOptions {
   readonly dataExport?: Partial<BuildDataExportResult>;
   readonly bulkImport?: Partial<BulkImportActivityResult>;
   readonly mediaDerivative?: Partial<ProduceMediaDerivativeResult>;
+  readonly mediaScan?: Partial<ScanMediaAssetResult>;
   readonly repeatPlan?: Partial<PlanRepeatOccurrenceResult>;
   readonly occurrenceTargets?: CreateOccurrenceJobResult['targets'];
   readonly metrics?: Partial<FetchMetricsResult>;
@@ -952,6 +955,20 @@ export class ActivitySimulator implements WorkerActivities {
    * real activity does. The simulator therefore has no branch for "produce
    * again", because the pipeline it stands in for does not have one either.
    */
+  /**
+   * The simulator's scanner always passes, which is what makes the publish
+   * loop testable without bytes. The interesting negative cases belong to the
+   * adapter's own tests, where real bytes are available.
+   */
+  scanMediaAsset(input: ScanMediaAssetInput): Promise<ScanMediaAssetResult> {
+    this.record('scanMediaAsset', input);
+    return Promise.resolve({
+      scanState: 'clean',
+      noteKey: null,
+      ...this.options.mediaScan,
+    });
+  }
+
   produceMediaDerivative(
     input: ProduceMediaDerivativeInput,
   ): Promise<ProduceMediaDerivativeResult> {

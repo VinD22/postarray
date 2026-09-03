@@ -112,6 +112,8 @@ export type {
   SchedulerKind,
   ClaimedDomainEventRow,
   DomainEventService,
+  MediaScanResult,
+  MediaScannerPort,
   RealtimePublisherPort,
   WebhookDeliveryWorkflowInput,
   SchedulingService,
@@ -149,6 +151,7 @@ export type {
 
 export { pendingGrantEnvelopeFromRow, pendingGrantEnvelopeToRow } from './oauth-pending-envelope';
 
+export { uploadLimitForMimeType } from './services/media';
 export { normalizeAliasForLookup } from './services/identity';
 export { deriveOnboardingComplete, mergeStep } from './services/onboarding';
 export {

@@ -294,6 +294,7 @@ export type ActionItemKind =
   | 'comment_failed'
   | 'analytics_stale'
   | 'rss_stalled'
+  | 'media_scan_stuck'
   | 'webhook_failing'
   | 'usage_balance';
 

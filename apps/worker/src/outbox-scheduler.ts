@@ -17,6 +17,7 @@ import { TemporalScheduler } from '@relay/runtime';
 import { analyticsSyncDescriptor } from './workflows/core/analytics-sync.core';
 import { bulkImportDescriptor } from './workflows/core/bulk-import.core';
 import { mediaDerivativeDescriptor } from './workflows/core/media-derivative.core';
+import { mediaScanDescriptor } from './workflows/core/media-scan.core';
 import { webhookDeliveryDescriptor } from './workflows/core/webhook-delivery.core';
 import { automationRuleDescriptor } from './workflows/core/automation-rule.core';
 import { dataExportDescriptor } from './workflows/core/data-export.core';
@@ -245,6 +246,24 @@ export class WorkerScheduler implements SchedulerPort {
   }): Promise<{ readonly workflowId: string; readonly runId: string }> {
     const workflowId = `whd:${input.workspaceId}:${input.deliveryId}`;
     this.#inline().startWorkflow(webhookDeliveryDescriptor, workflowId, input.workflowInput);
+    return { workflowId, runId: `${workflowId}:inline` };
+  }
+
+  /**
+   * Decide whether one uploaded asset may be published.
+   *
+   * Runs through the worker like the other media work: the codec and the
+   * sniffer live here and must never become dependencies of the API. The
+   * workflow id is deterministic per asset, so a duplicated upload finalize
+   * joins the scan that is already running rather than reading the bytes twice.
+   */
+  async scheduleMediaScan(input: {
+    readonly workspaceId: string;
+    readonly mediaAssetId: string;
+    readonly workflowInput: Parameters<typeof mediaScanDescriptor.run>[2];
+  }): Promise<{ readonly workflowId: string; readonly runId: string }> {
+    const workflowId = `scan:${input.workspaceId}:${input.mediaAssetId}`;
+    this.#inline().startWorkflow(mediaScanDescriptor, workflowId, input.workflowInput);
     return { workflowId, runId: `${workflowId}:inline` };
   }
 

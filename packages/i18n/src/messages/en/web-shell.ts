@@ -94,6 +94,7 @@ export const webShellMessages = {
   'actionCenter.action.openCalendar': 'Open the calendar',
   'actionCenter.action.viewStatus': 'View status',
   'actionCenter.action.checkFeed': 'Check the feed',
+  'actionCenter.action.openLibrary': 'Open the library',
   'actionCenter.action.inspectDeliveries': 'Inspect deliveries',
   'actionCenter.action.addBalance': 'Review usage',
   'actionCenter.action.fixConnection': 'Fix the connection',

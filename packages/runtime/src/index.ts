@@ -82,3 +82,5 @@ export {
 } from './outbox-dispatcher';
 export { dispatchDomainEventOutbox } from './event-outbox-dispatch';
 export { UnknownOutboxKindError } from './outbox-dispatch';
+
+export { resolveStoragePort } from './runtime';

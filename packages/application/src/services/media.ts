@@ -186,6 +186,37 @@ function kindForMimeType(mimeType: string): 'image' | 'video' | 'document' | 'au
 
 const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 
+/**
+ * Ask the worker to decide whether an asset may be published.
+ *
+ * Best effort on purpose: a deployment with no scheduler leaves the asset
+ * `pending`, which the action centre surfaces and validation refuses. The
+ * failure mode is a visible stuck upload, never an unexamined one that
+ * publishes.
+ */
+async function scheduleScan(
+  deps: ServiceDeps,
+  ctx: ActorContext,
+  mediaAssetId: string,
+): Promise<void> {
+  await deps.scheduler.scheduleMediaScan?.({
+    workspaceId: ctx.workspaceId,
+    mediaAssetId,
+    workflowInput: {
+      ctx: {
+        workspaceId: ctx.workspaceId,
+        correlationId: ctx.correlationId,
+        actorId: ctx.actorId,
+        actorType: ctx.actorType,
+        surface: ctx.surface,
+        approvalLevel: ctx.approvalLevel,
+        locale: ctx.locale,
+      },
+      mediaAssetId,
+    },
+  });
+}
+
 export function uploadLimitForMimeType(mimeType: string): number {
   return mimeType.startsWith('video/') ? VIDEO_UPLOAD_LIMIT_BYTES : IMAGE_UPLOAD_LIMIT_BYTES;
 }
@@ -517,6 +548,12 @@ export function createMediaService(deps: ServiceDeps): MediaService {
           },
         });
 
+        // Nothing else in the product moves an asset out of `pending`, and
+        // validation refuses anything that is not `clean`. Without this the
+        // upload succeeds, the composer accepts the attachment, and the post
+        // publishes as text with the image silently dropped.
+        await scheduleScan(deps, ctx, mediaId);
+
         return toView(updated);
       });
     },
@@ -622,6 +659,9 @@ export function createMediaService(deps: ServiceDeps): MediaService {
                 return id;
               },
             );
+
+            // Imported bytes are exactly as unexamined as uploaded ones.
+            await scheduleScan(deps, ctx, mediaId);
 
             const completedAt = deps.clock.now().toISOString();
             return {
