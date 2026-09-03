@@ -16,7 +16,6 @@ import { StaggerList } from '@/components/motion';
 import { ActionCenterList } from '@/components/shell/action-center-list';
 
 import { ConnectionHealth } from './connection-health';
-import { DigestCard } from './digest-card';
 import { RecentReceipts } from './recent-receipts';
 import { HomeSection } from './section';
 import { StatTiles } from './stat-tiles';
@@ -147,10 +146,6 @@ export function HomeScreen() {
         <Separator />
 
         <UpcomingQueue />
-
-        <Separator />
-
-        <DigestCard />
 
         <Separator />
 
