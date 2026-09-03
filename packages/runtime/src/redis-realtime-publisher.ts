@@ -171,6 +171,15 @@ export interface RealtimeEventReader {
    * a correct store" is exactly the assumption a tenancy bug is made of.
    */
   readRecent(workspaceId: string, input: RealtimeReplayInput): Promise<readonly RealtimeEvent[]>;
+  /**
+   * One entry by id, for this workspace only, or null.
+   *
+   * The subscriber is woken with an id and nothing else, so this is the read
+   * that turns the wake-up into an event. Returning null rather than throwing
+   * covers the ordinary case of an entry that was trimmed away between the
+   * announcement and the read.
+   */
+  readAt(workspaceId: string, id: string): Promise<RealtimeEvent | null>;
 }
 
 export function createRedisRealtimeEventReader(client: RealtimeRedisClient): RealtimeEventReader {
@@ -191,6 +200,16 @@ export function createRedisRealtimeEventReader(client: RealtimeRedisClient): Rea
         const parsed = parseEntry(entry);
         return parsed !== null && parsed.workspaceId === workspaceId ? [parsed] : [];
       });
+    },
+
+    async readAt(workspaceId, id) {
+      const entries = await client.xrange(realtimeStreamKey(workspaceId), id, id);
+      const entry = entries[0];
+      if (entry === undefined) {
+        return null;
+      }
+      const parsed = parseEntry(entry);
+      return parsed !== null && parsed.workspaceId === workspaceId ? parsed : null;
     },
   };
 }
