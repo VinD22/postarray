@@ -260,9 +260,6 @@ export const webCalendarMessages = {
   'web.receipt.partial.retryFailedOnly': 'Retry only the targets that failed',
   'web.receipt.partial.retryHint':
     'A retry never touches a target that already produced an external post.',
-  'web.receipt.partial.retryUnavailable.title': 'Retry is not available in prelaunch',
-  'web.receipt.partial.retryUnavailable.body':
-    'Schedule the failed account again as a new post. Accounts that already published will not be touched.',
 
   'web.receipt.remediation.user_action_required':
     'This needs a change in Post Array or on {provider} before it can run again.',
@@ -455,4 +452,47 @@ export const webCalendarMessages = {
   'web.connection.incident.scheduledOnHold':
     '{count, plural, one {# scheduled post is on hold} other {# scheduled posts are on hold}} for this account.',
   'web.connection.incident.nothingLost': 'Nothing is lost and nothing is duplicated.',
+
+  /* ---------------------------------------------------------------------
+   * Retrying one failed account.
+   *
+   * The retry itself was written and wired to nothing; the screen showed one
+   * sentence for every reason a retry might not be possible. Each blocked
+   * reason below is a different situation and gets a different sentence,
+   * because "unavailable" told a person whose post was cancelled on purpose
+   * the same thing as a person who could have fixed it with one click.
+   *
+   * The consequences are the load bearing part. A retry is scoped to a single
+   * account, and saying so is what stops somebody believing this republishes
+   * the whole campaign to accounts that already have a live post.
+   * ------------------------------------------------------------------- */
+  'web.receipt.retry.action': 'Retry this account',
+  'web.receipt.retry.confirmTitle': 'Publish to {account} now?',
+  'web.receipt.retry.confirmBody':
+    'This sends the same approved content to this one account, straight away. It is not scheduled and it does not wait for anything.',
+  'web.receipt.retry.consequence.publishes':
+    'A post goes to {account} on {provider} as soon as the platform accepts it.',
+  'web.receipt.retry.consequence.unaffected':
+    'The accounts that already published are not touched. They keep the post they have and get no second copy.',
+  'web.receipt.retry.consequence.once':
+    'Pressing this twice publishes once. The retry carries a key derived from the account, not a new one each time.',
+  'web.receipt.retry.confirm': 'Publish to this account',
+  'web.receipt.retry.cancel': 'Leave it as it is',
+  'web.receipt.retry.started': 'Retrying {account}.',
+  'web.receipt.retry.failedTitle': 'That retry did not start',
+  'web.receipt.retry.failedBody':
+    'Nothing was sent to this account. Every other account on this post is unaffected.',
+
+  'web.receipt.retry.blocked.alreadyPublished':
+    'This account already has the post. There is nothing to retry.',
+  'web.receipt.retry.blocked.noJob':
+    'No account on this post reached a platform, so there is no publication to retry against. Publish the post again from the calendar.',
+  'web.receipt.retry.blocked.inFlight':
+    'An attempt is running for this account right now. Retrying would send it twice.',
+  'web.receipt.retry.blocked.retryScheduled':
+    'This is already being retried on its own. Nothing needs to be pressed.',
+  'web.receipt.retry.blocked.canceled':
+    'This account was cancelled rather than failed, so nothing was ever sent to it.',
+  'web.receipt.retry.blocked.actionRequired':
+    'Something has to be fixed before this can be sent. Retrying now would fail the same way.',
 } as const;

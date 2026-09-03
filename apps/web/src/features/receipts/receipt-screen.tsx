@@ -48,6 +48,7 @@ import {
   useProviderName,
 } from '@/features/connections/provider';
 import { PublishCelebration, isFreshPublication } from './publish-celebration';
+import { RetryTargetButton } from './retry-target-button';
 import { ReceiptAttempts } from './receipt-attempts';
 import { ReceiptItems } from './receipt-items';
 import { ReceiptTimeline } from './receipt-timeline';
@@ -262,7 +263,7 @@ function PostDocument({
             // in the publishing flow, and it earns the loud poster outline
             // that `Notice` deliberately does not carry everywhere else.
             <div className="border-warning-border overflow-hidden rounded-lg border-2">
-              <PartialSuccess targets={targets} />
+              <PartialSuccess targets={targets} publishJobId={receipt?.publishJobId ?? null} />
             </div>
           ) : null}
 
@@ -434,7 +435,14 @@ function Term({ children }: { children: ReactNode }): ReactNode {
   return <span className="font-display text-label tracking-wide">{children}</span>;
 }
 
-function PartialSuccess({ targets }: { targets: readonly CampaignTargetView[] }): ReactNode {
+function PartialSuccess({
+  targets,
+  publishJobId,
+}: {
+  targets: readonly CampaignTargetView[];
+  /** The campaign's publish job. A retry is scoped to a variant inside it. */
+  publishJobId: string | null;
+}): ReactNode {
   const t = useTranslations();
   const providerName = useProviderName();
 
@@ -476,18 +484,17 @@ function PartialSuccess({ targets }: { targets: readonly CampaignTargetView[] })
             t('receipt.permalinkUnavailable', { provider: providerName(target.provider) })
           )
         ) : (
-          t(`state.${target.state}.label`)
+          <span className="flex flex-col gap-2">
+            <span>{t(`state.${target.state}.label`)}</span>
+            {/*
+              The retry sits on the target it retries, not under the group.
+              A single button beneath a list of failures would look like it
+              retried all of them, which is the one thing it must never do.
+            */}
+            <RetryTargetButton target={target} publishJobId={publishJobId} />
+          </span>
         ),
       }))}
-      actions={
-        failed.length > 0 ? (
-          <Notice
-            tone="info"
-            title={t('web.receipt.partial.retryUnavailable.title')}
-            description={t('web.receipt.partial.retryUnavailable.body')}
-          />
-        ) : null
-      }
     />
   );
 }

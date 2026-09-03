@@ -421,8 +421,6 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.creators.job.adapt.body',
   'web.developers.safety.body',
   'web.developers.safety.killSwitch',
-  'web.receipt.partial.retryUnavailable.title',
-  'web.receipt.partial.retryUnavailable.body',
   'validation.capability_unavailable.message',
   'validation.content_kind_unsupported.message',
   'validation.content_kind_not_implemented.message',
@@ -515,6 +513,31 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.set.archive.cancel',
   'web.set.archive.failedTitle',
   'web.set.archive.failedBody',
+  // Retrying one failed account on a partially published post. The retry was
+  // built and connected to nothing, and the screen answered every reason it
+  // might not be possible with a single blanket sentence. Each sentence below
+  // either states exactly what a button will publish, to which account, or
+  // states why nothing can be published, and a machine translation that blurred
+  // "the accounts that already published are not touched" would describe an
+  // action that duplicates real posts. Reviewed English until a person
+  // translates it.
+  'web.receipt.retry.action',
+  'web.receipt.retry.confirmTitle',
+  'web.receipt.retry.confirmBody',
+  'web.receipt.retry.consequence.publishes',
+  'web.receipt.retry.consequence.unaffected',
+  'web.receipt.retry.consequence.once',
+  'web.receipt.retry.confirm',
+  'web.receipt.retry.cancel',
+  'web.receipt.retry.started',
+  'web.receipt.retry.failedTitle',
+  'web.receipt.retry.failedBody',
+  'web.receipt.retry.blocked.alreadyPublished',
+  'web.receipt.retry.blocked.noJob',
+  'web.receipt.retry.blocked.inFlight',
+  'web.receipt.retry.blocked.retryScheduled',
+  'web.receipt.retry.blocked.canceled',
+  'web.receipt.retry.blocked.actionRequired',
 ] as const;
 
 /**
