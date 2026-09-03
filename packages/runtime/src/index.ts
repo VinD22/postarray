@@ -75,3 +75,10 @@ export {
 } from './credential-vault';
 
 export { schedulerFallbackAllowed, schedulerFallbackRefused } from './scheduler-fallback';
+
+export {
+  createDomainEventOutboxDispatcher,
+  createWorkflowOutboxDispatcher,
+} from './outbox-dispatcher';
+export { dispatchDomainEventOutbox } from './event-outbox-dispatch';
+export { UnknownOutboxKindError } from './outbox-dispatch';

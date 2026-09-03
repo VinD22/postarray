@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 
 import {
+  API_HEADERS,
   API_VERSION,
   ERROR_CODES,
   WEBHOOK_SCHEMA_VERSION,
@@ -53,6 +54,7 @@ const DELIVERY_SELECT = {
   state: true,
   attemptCount: true,
   payloadHash: true,
+  payload: true,
   deliveredAt: true,
 } as const;
 
@@ -73,12 +75,32 @@ function buildTestPayload(workspaceId: string): Record<string, unknown> {
   };
 }
 
+/**
+ * The bytes to sign and send.
+ *
+ * Deliveries store their body from migration 0079 onward, so the normal path
+ * is simply to read it back: the receiver gets exactly what was recorded, and
+ * a redelivery is provably the same bytes as the first attempt.
+ *
+ * Rows written before 0079 stored only a hash. For those, the one payload that
+ * can be honestly reconstructed is the connection test, whose shape is fixed
+ * and whose hash therefore identifies it. Anything else returns null and the
+ * delivery fails as not implemented rather than inventing a body.
+ */
 function buildDeliveryPayload(input: {
   readonly workspaceId: string;
   readonly eventId: string;
   readonly eventType: string;
   readonly payloadHash: string;
+  readonly payload: unknown;
 }): Record<string, unknown> | null {
+  if (
+    typeof input.payload === 'object' &&
+    input.payload !== null &&
+    !Array.isArray(input.payload)
+  ) {
+    return input.payload as Record<string, unknown>;
+  }
   const testPayload = buildTestPayload(input.workspaceId);
   const testHash = sha256PayloadHash(testPayload);
   if (input.eventType === 'connection.connected' && input.payloadHash === testHash) {
@@ -145,6 +167,7 @@ export function createWorkerWebhookService(deps: ServiceDeps): WorkerWebhookServ
           eventId: delivery.eventId,
           eventType: delivery.eventType,
           payloadHash: delivery.payloadHash,
+          payload: delivery.payload,
         });
         if (bodyPayload === null) {
           return {
@@ -177,9 +200,12 @@ export function createWorkerWebhookService(deps: ServiceDeps): WorkerWebhookServ
             method: 'POST',
             headers: {
               'content-type': 'application/json',
-              'relay-signature': `v1=${signature}`,
-              'relay-timestamp': timestamp,
-              'relay-event-id': delivery.eventId,
+              // The published contract is API_HEADERS. The worker used to send
+              // three different names, so a receiver following our own
+              // documentation could not verify a single signature.
+              [API_HEADERS.webhookSignature]: `v1=${signature}`,
+              [API_HEADERS.webhookTimestamp]: timestamp,
+              [API_HEADERS.webhookId]: delivery.eventId,
             },
             body: rawBody,
           });

@@ -251,6 +251,9 @@ export function createRefusingServices(): Services {
       redeliver: refuse('delivery'),
       emit: () => Promise.resolve([]),
     },
+    domainEvents: {
+      dispatch: () => Promise.resolve(),
+    },
     credentials: {
       status: refuse('connection'),
       describe: refuse('connection'),

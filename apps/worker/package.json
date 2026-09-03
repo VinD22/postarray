@@ -18,7 +18,8 @@
     "test": "vitest run",
     "start": "tsx src/main.ts",
     "clean": "rm -rf dist .turbo",
-    "dev": "tsx watch src/main.ts"
+    "dev": "tsx watch src/main.ts",
+    "outbox:replay": "tsx src/tools/outbox-replay.ts"
   },
   "dependencies": {
     "@relay/application": "workspace:*",

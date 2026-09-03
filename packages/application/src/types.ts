@@ -59,6 +59,7 @@ import type {
   ValidationResult,
   VariantOverrides,
   WebhookEventName,
+  DomainEventEnvelope,
   ErrorClass,
   ErrorCode,
 } from '@relay/contracts';
@@ -278,6 +279,34 @@ export interface MailerPort {
 }
 
 /** Safe workflow context. It may be persisted in Temporal history. */
+/**
+ * One claimed domain-event row, as the outbox repository hands it over. Kept
+ * structural so `packages/application` does not depend on the runtime's
+ * repository types.
+ */
+export interface ClaimedDomainEventRow {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly kind: string;
+  readonly dedupeKey: string;
+  readonly payload: unknown;
+  readonly createdAt?: Date | null;
+}
+
+/** Fans a claimed domain event out to webhooks, notifications and realtime. */
+export interface DomainEventService {
+  dispatch(row: ClaimedDomainEventRow): Promise<void>;
+}
+
+/**
+ * Pushes an event to connected clients. Optional: a deployment with no Redis
+ * still delivers webhooks and still writes notifications, it simply has no
+ * live updates.
+ */
+export interface RealtimePublisherPort {
+  publish(event: DomainEventEnvelope): Promise<void>;
+}
+
 export interface WorkflowActorContext {
   readonly workspaceId: string;
   readonly correlationId: string;
@@ -558,6 +587,20 @@ export interface SchedulerPort {
     readonly mediaAssetId: string;
     readonly presetKey: string;
     readonly workflowInput: MediaDerivativeWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  /**
+   * One signed delivery to one customer endpoint.
+   *
+   * Optional in the same way `scheduleMediaDerivative` is: a deployment with
+   * no scheduler still records the delivery row, it simply cannot send it. The
+   * workflow id is deterministic per delivery, so a repeated dispatch of the
+   * same outbox row joins the run that already exists rather than sending the
+   * event twice.
+   */
+  scheduleWebhookDelivery?(input: {
+    readonly workspaceId: string;
+    readonly deliveryId: string;
+    readonly workflowInput: WebhookDeliveryWorkflowInput;
   }): Promise<{ readonly workflowId: string; readonly runId: string }>;
   describe(input: {
     readonly jobId: string;
@@ -849,6 +892,11 @@ export interface ServiceDeps {
     >
   >;
   readonly exportEncryption?: DataExportEncryptionPort;
+  /**
+   * Pushes domain events to connected clients. Absent until a deployment has
+   * Redis; webhooks and notifications work without it, live updates do not.
+   */
+  readonly realtime?: RealtimePublisherPort;
   readonly mailer: MailerPort;
   readonly logger: Logger;
   readonly clock: Clock;
@@ -1981,6 +2029,20 @@ export interface WorkerMediaService {
   ): Promise<MediaDerivativeView>;
 }
 
+/**
+ * What the webhook delivery workflow receives. Ids and the event name only:
+ * the body itself is read from the delivery row by the activity, so the
+ * bytes that were signed cannot drift from the bytes that were stored.
+ */
+export interface WebhookDeliveryWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly deliveryId: string;
+  readonly endpointId: string;
+  readonly eventName: WebhookEventName;
+  readonly isRedelivery: boolean;
+  readonly maxAttempts: number;
+}
+
 /** What the derivative workflow receives. Ids, geometry and MIME types only. */
 export interface MediaDerivativeWorkflowInput {
   readonly ctx: WorkflowActorContext;
@@ -2699,6 +2761,7 @@ export interface Services {
   readonly growth: GrowthService;
   readonly assistant: AssistantService;
   readonly webhooks: WebhookService;
+  readonly domainEvents: DomainEventService;
   readonly credentials: CredentialVaultService;
   readonly apiKeys: ApiKeyService;
   readonly serviceAccounts: ServiceAccountService;

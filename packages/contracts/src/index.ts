@@ -25,6 +25,7 @@ export * from './bulk-import';
 export * from './growth';
 export * from './data';
 export * from './api';
+export * from './events';
 export * from './scopes';
 export * from './plan-limits';
 export * from './launch-policy';

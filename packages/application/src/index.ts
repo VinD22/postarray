@@ -8,6 +8,10 @@
  */
 
 export { createServices } from './services/index';
+export {
+  createDomainEventService,
+  type DomainEventServiceDeps,
+} from './services/domain-events';
 export { oauthCompletionReady, socialOAuthCallbackUrl } from './services/connections';
 export {
   createOAuthGateway,
@@ -106,6 +110,10 @@ export type {
   RssService,
   SchedulerPort,
   SchedulerKind,
+  ClaimedDomainEventRow,
+  DomainEventService,
+  RealtimePublisherPort,
+  WebhookDeliveryWorkflowInput,
   SchedulingService,
   ServiceDeps,
   Services,
@@ -152,6 +160,10 @@ export {
   startRuleRunOutboxPayloadSchema,
   startBulkImportPayloadSchema,
   startMediaDerivativePayloadSchema,
+  DOMAIN_EVENT_OUTBOX_KINDS,
+  WORKFLOW_OUTBOX_KINDS,
+  isDomainEventOutboxKind,
+  isWorkflowOutboxKind,
   workflowOutboxPayloadSchemas,
   type CancelPublishOutboxPayload,
   type PausePublishOutboxPayload,
@@ -163,6 +175,7 @@ export {
   type StartMediaDerivativePayload,
   type WorkflowOutboxInput,
   type WorkflowOutboxKind,
+  type DomainEventOutboxKind,
 } from './outbox';
 
 export type {

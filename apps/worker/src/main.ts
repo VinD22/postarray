@@ -11,7 +11,8 @@ import { createPrismaClient } from '@relay/database';
 import { createLogger, type Logger } from '@relay/observability';
 import {
   createApplicationRuntime,
-  OutboxDispatcher,
+  createDomainEventOutboxDispatcher,
+  createWorkflowOutboxDispatcher,
   type ConnectorExecutionGateway,
 } from '@relay/runtime';
 import Redis from 'ioredis';
@@ -461,13 +462,25 @@ export async function main(): Promise<void> {
     await worker.shutdown();
     throw error;
   }
-  const outbox = new OutboxDispatcher({
+  // Two loops, one table, disjoint kinds. The workflow loop hands intents to
+  // Temporal; the domain-event loop fans published facts out to customer
+  // webhook endpoints and, as they land, to notifications and realtime. They
+  // used to be one loop that understood only intents, which is why every
+  // domain event dead-lettered.
+  const outbox = createWorkflowOutboxDispatcher({
     prisma,
     scheduler,
     clock: systemClock,
     logger,
   });
   outbox.start();
+  const domainEventOutbox = createDomainEventOutboxDispatcher({
+    prisma,
+    domainEvents: runtime.services.domainEvents,
+    clock: systemClock,
+    logger,
+  });
+  domainEventOutbox.start();
   const mediaRetention = startMediaRetentionSweep({
     prisma,
     media: runtime.services.media,
@@ -481,6 +494,7 @@ export async function main(): Promise<void> {
       shutdown: async () => {
         await mediaRetention.stop();
         await outbox.stop();
+        await domainEventOutbox.stop();
         await runtime.close();
         await scheduler.close();
         connectorRuntime.close();
