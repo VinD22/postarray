@@ -11,6 +11,7 @@ import { cn } from '@relay/design-system/utils';
 
 import { PageTransitionProvider } from '@/components/motion';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
+import { RealtimeStatusProvider } from '@/lib/realtime';
 
 import { AccountMenu } from './account-menu';
 import { ActionCenterPanel } from './action-center-panel';
@@ -85,97 +86,102 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
   }, []);
 
   return (
-    <div className="bg-surface-canvas flex min-h-dvh flex-col">
-      <a
-        className="relay-skip-link"
-        href="#main"
-        onClick={(event) => {
-          const main = document.getElementById('main');
-          if (!main) return;
+    // Mounted once, here, so the whole application shares one stream. A hook
+    // per screen would open a connection per screen, which is exactly what the
+    // per-person cap on the endpoint exists to prevent.
+    <RealtimeStatusProvider>
+      <div className="bg-surface-canvas flex min-h-dvh flex-col">
+        <a
+          className="relay-skip-link"
+          href="#main"
+          onClick={(event) => {
+            const main = document.getElementById('main');
+            if (!main) return;
 
-          event.preventDefault();
-          main.focus({ preventScroll: true });
-          main.scrollIntoView({ block: 'start' });
-          window.history.replaceState(null, '', '#main');
-        }}
-      >
-        {t('nav.skipToContent')}
-      </a>
+            event.preventDefault();
+            main.focus({ preventScroll: true });
+            main.scrollIntoView({ block: 'start' });
+            window.history.replaceState(null, '', '#main');
+          }}
+        >
+          {t('nav.skipToContent')}
+        </a>
 
-      <header className="border-border-default bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b">
-        <div className="flex items-center gap-2 px-(--layout-gutter) py-2">
-          <Link
-            href="/home"
-            className="text-title-sm text-text-primary font-display hidden shrink-0 items-center px-1 font-bold md:flex"
-          >
-            {t('shell.appName')}
-          </Link>
+        <header className="border-border-default bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b">
+          <div className="flex items-center gap-2 px-(--layout-gutter) py-2">
+            <Link
+              href="/home"
+              className="text-title-sm text-text-primary font-display hidden shrink-0 items-center px-1 font-bold md:flex"
+            >
+              {t('shell.appName')}
+            </Link>
 
-          <WorkspaceSwitcher className="min-w-0 flex-1 md:flex-none" />
+            <WorkspaceSwitcher className="min-w-0 flex-1 md:flex-none" />
 
-          <button
-            type="button"
-            onClick={() => {
-              setPaletteOpen(true);
-            }}
-            className={cn(
-              'border-border-default ms-auto hidden min-h-9 items-center gap-2 rounded-md border',
-              'bg-surface-sunken text-body-sm text-text-tertiary px-2.5 lg:flex lg:w-72',
-              'hover:bg-surface-hover hover:text-text-secondary',
-              'focus-visible:border-border-bold lg:focus-visible:w-80',
-              'transition-[background-color,color,border-color,width] duration-(--duration-fast)',
-            )}
-          >
-            <Search aria-hidden="true" className="size-4" />
-            <span className="flex-1 text-start">{t('nav.search')}</span>
-            <Kbd keys="mod+k" />
-          </button>
-
-          <div className="ms-auto flex items-center gap-1 lg:ms-0">
             <button
               type="button"
-              aria-label={t('palette.open')}
               onClick={() => {
                 setPaletteOpen(true);
               }}
-              className="text-text-secondary hover:bg-surface-hover hover:text-text-primary flex size-11 items-center justify-center rounded-md md:size-9 lg:hidden"
+              className={cn(
+                'border-border-default ms-auto hidden min-h-9 items-center gap-2 rounded-md border',
+                'bg-surface-sunken text-body-sm text-text-tertiary px-2.5 lg:flex lg:w-72',
+                'hover:bg-surface-hover hover:text-text-secondary',
+                'focus-visible:border-border-bold lg:focus-visible:w-80',
+                'transition-[background-color,color,border-color,width] duration-(--duration-fast)',
+              )}
             >
               <Search aria-hidden="true" className="size-4" />
+              <span className="flex-1 text-start">{t('nav.search')}</span>
+              <Kbd keys="mod+k" />
             </button>
 
-            <ComposeButton className="hidden md:inline-flex" />
-            <ActionCenterPanel />
-            <HelpMenu
-              onOpenShortcuts={() => {
-                setShortcutsOpen(true);
-              }}
-            />
-            <AccountMenu />
+            <div className="ms-auto flex items-center gap-1 lg:ms-0">
+              <button
+                type="button"
+                aria-label={t('palette.open')}
+                onClick={() => {
+                  setPaletteOpen(true);
+                }}
+                className="text-text-secondary hover:bg-surface-hover hover:text-text-primary flex size-11 items-center justify-center rounded-md md:size-9 lg:hidden"
+              >
+                <Search aria-hidden="true" className="size-4" />
+              </button>
+
+              <ComposeButton className="hidden md:inline-flex" />
+              <ActionCenterPanel />
+              <HelpMenu
+                onOpenShortcuts={() => {
+                  setShortcutsOpen(true);
+                }}
+              />
+              <AccountMenu />
+            </div>
           </div>
+
+          <DemoNotice />
+          <ConnectivityBanner />
+        </header>
+
+        <div className="grid flex-1 grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[13.5rem_1fr]">
+          <PrimaryNav />
+
+          <main
+            id="main"
+            aria-label={t('a11y.region.main')}
+            data-relay-hydrated={hydrated ? 'true' : 'false'}
+            tabIndex={-1}
+            className="min-w-0 pb-20 md:pb-0"
+          >
+            <PageTransitionProvider tier="app">{children}</PageTransitionProvider>
+          </main>
         </div>
 
-        <DemoNotice />
-        <ConnectivityBanner />
-      </header>
+        <MobileNav />
 
-      <div className="grid flex-1 grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[13.5rem_1fr]">
-        <PrimaryNav />
-
-        <main
-          id="main"
-          aria-label={t('a11y.region.main')}
-          data-relay-hydrated={hydrated ? 'true' : 'false'}
-          tabIndex={-1}
-          className="min-w-0 pb-20 md:pb-0"
-        >
-          <PageTransitionProvider tier="app">{children}</PageTransitionProvider>
-        </main>
+        <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
+        <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
       </div>
-
-      <MobileNav />
-
-      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
-      <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
-    </div>
+    </RealtimeStatusProvider>
   );
 }

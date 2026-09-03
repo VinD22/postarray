@@ -30,6 +30,7 @@ import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
 import { Flip, useGSAP } from '@/lib/motion/gsap';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { PROVIDER_LABEL } from './provider-identity';
+import { RememberTargetsRow } from './remember-targets-row';
 import type { TargetRailState, TargetSummary } from '../types';
 
 /**
@@ -170,18 +171,10 @@ export function TargetRail(): ReactNode {
 
   return (
     <nav aria-label={t.full('composerWeb.pane.targets')} className="flex h-full flex-col gap-5">
-      {/* What the composer restored from last time, and what it deliberately
-          did not. A channel that was revoked, paused or expired since the last
-          post is never silently reselected, so it is named here instead. */}
-      {seeded.noticeKey === null ? null : (
-        <p
-          className="text-body-sm text-text-tertiary"
-          role="status"
-          data-testid="remembered-targets-notice"
-        >
-          {t.full(seeded.noticeKey, { count: seeded.count })}
-        </p>
-      )}
+      {/* The opt in, and what the restore did and did not bring back. A channel
+          that was revoked, paused or expired since the last post is never
+          silently reselected, so it is named there instead. */}
+      <RememberTargetsRow projectId={bootstrap.master.projectId ?? null} seeded={seeded} />
 
       <section aria-labelledby="composer-sets-heading" className="flex flex-col gap-2">
         <h2 id="composer-sets-heading" className="text-label text-text-tertiary">
