@@ -40,6 +40,26 @@ Every launch blocker in the plan is fixed and on `development`.
   post correctly; the dead `#receipt` anchor was in the calendar table and the
   entry sheet.
 
+## Three silent data-loss bugs that were already shipping
+
+Found while fixing the variant persistence the plan described. All three are
+fixed, but they are recorded because each one destroyed a person's work with no
+error anywhere, and because the shape of the mistake will recur.
+
+1. **Reopening a draft dropped most of the master, not just the variants.**
+   `api.content.get` returns a narrowed list view, and the composer cast it to
+   `MasterDraft`. Links, thread items, the schedule, disclosure flags and the
+   campaign id were all absent, and the next autosave wrote that emptiness back
+   over the stored draft. A cast at a boundary produced silent data loss,
+   exactly as AGENTS.md's parse-do-not-cast rule predicts.
+2. **Selecting a channel was only saved if a keystroke happened to follow it.**
+   `target/add` never bumped the revision the autosave watches, so a person who
+   picked their accounts and walked away had picked nothing.
+3. **Any save carrying a destination was rejected.** The composer built a
+   destination id as `dest_${externalId}`, but the column is a foreign key to
+   `provider_destinations.id`. The search now carries the stored row id, and a
+   destination with no row stays local rather than inventing one.
+
 ## Known issues, in priority order
 
 1. **The character counter excludes signature text that will publish.**
