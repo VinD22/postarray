@@ -130,6 +130,17 @@ const nonNegativeInt = z.coerce.number().int().nonnegative();
 const nonNegativeNumber = z.coerce.number().nonnegative();
 
 export const NODE_ENVIRONMENTS = ['development', 'test', 'production'] as const;
+/**
+ * What this process is for, stated rather than guessed.
+ *
+ * `NODE_ENV` answers "how should the toolchain build this", which is not the
+ * same question as "may this process degrade to an adapter that silently
+ * discards work". Staging boxes and preview deploys routinely run without
+ * `NODE_ENV=production` and are not places where a scheduled post may vanish.
+ * The profile is the explicit answer, defaulted from `NODE_ENV` so nothing
+ * existing has to set it.
+ */
+export const RUNTIME_PROFILES = ['local', 'test', 'staging', 'production'] as const;
 export const LOG_LEVELS = ['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'silent'] as const;
 export const POLAR_SERVERS = ['sandbox', 'production'] as const;
 /**
@@ -140,12 +151,20 @@ export const POLAR_SERVERS = ['sandbox', 'production'] as const;
 export const AI_PROVIDERS = ['deepseek', 'anthropic'] as const;
 
 export type NodeEnvironment = (typeof NODE_ENVIRONMENTS)[number];
+export type RuntimeProfile = (typeof RUNTIME_PROFILES)[number];
 export type LogLevel = (typeof LOG_LEVELS)[number];
 export type PolarServer = (typeof POLAR_SERVERS)[number];
 export type AiProvider = (typeof AI_PROVIDERS)[number];
 
 const coreShape = {
   NODE_ENV: z.enum(NODE_ENVIRONMENTS).default('development'),
+  /**
+   * Left unset it is derived from NODE_ENV, so `production` and `test` keep
+   * behaving exactly as before. Set it to `staging` on any deployed box that
+   * does not run with NODE_ENV=production, which is what makes the scheduler
+   * fallback refuse there.
+   */
+  POSTARRAY_RUNTIME_PROFILE: z.enum(RUNTIME_PROFILES).optional(),
   APP_URL: httpUrl.optional(),
   API_URL: httpUrl.optional(),
   NEXT_PUBLIC_SITE_ORIGIN: httpOrigin.optional(),

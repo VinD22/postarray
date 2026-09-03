@@ -105,6 +105,7 @@ export type {
   ReceiptService,
   RssService,
   SchedulerPort,
+  SchedulerKind,
   SchedulingService,
   ServiceDeps,
   Services,

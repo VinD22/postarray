@@ -55,6 +55,7 @@ describe('createApplicationRuntime', () => {
         prisma: database,
         kv: new MemoryKeyValueStore(clock),
         scheduler: {
+          describeKind: () => 'memory' as const,
           schedulePublish: vi.fn(),
           cancelPublish: vi.fn(),
           reschedulePublish: vi.fn(),

@@ -467,6 +467,23 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   // English until a person translates it.
   'web.home.b3.sticker.connectorsFact',
   'web.home.b3.sticker.connectorsSource',
+  // Two screens that were built and never routed: the queue rule editor at
+  // /calendar/queue and Posting Sets at /library/sets. Their loading, error
+  // and no-project copy is new English. It is filed under `web.` rather than
+  // inside `queue.` or `set.`, both of which every active locale has already
+  // translated key for key, so a new key there would read as a translation
+  // regression rather than as new work. Reviewed English until a person
+  // translates it.
+  'web.queue.loading',
+  'web.queue.error.title',
+  'web.queue.error.body',
+  'web.queue.noProject.title',
+  'web.queue.noProject.body',
+  'web.set.loading',
+  'web.set.error.title',
+  'web.set.error.body',
+  'web.set.noProject.title',
+  'web.set.noProject.body',
 ] as const;
 
 /**

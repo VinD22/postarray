@@ -106,4 +106,20 @@ export const queueMessages = {
   'queue.reason.connectionScoped':
     'This rule covers {count, plural, one {# account} other {# accounts}}.',
   'queue.reason.horizonExhausted': 'No window was free within {days} days.',
+
+  /* ---------------------------------------------------------------------
+   * The web route at /calendar/queue.
+   *
+   * Filed under `web.` rather than `queue.` because the domain namespace is
+   * already translated key for key in every active locale, while these are new
+   * English sentences awaiting review. They are registered in
+   * `beta-fallbacks.ts` so each locale falls back to this reviewed source.
+   * ------------------------------------------------------------------- */
+  'web.queue.loading': 'Loading the queue rules.',
+  'web.queue.error.title': 'The queue rules could not be loaded',
+  'web.queue.error.body':
+    'Nothing about your schedule changed. Posts already scheduled keep their times, and slots already reserved keep theirs.',
+  'web.queue.noProject.title': 'No project selected',
+  'web.queue.noProject.body':
+    'Queue rules belong to one project. Pick a project in the workspace switcher, then open this screen again.',
 } as const;

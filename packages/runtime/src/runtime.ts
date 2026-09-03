@@ -59,6 +59,7 @@ import { TemporalScheduler } from './temporal-scheduler';
 import { createVerifiedConnectorRegistry } from './verified-connectors';
 import { createComposedConnectorRegistry } from './connector-registry-composition';
 import { createCredentialStore } from './credential-store';
+import { schedulerFallbackAllowed, schedulerFallbackRefused } from './scheduler-fallback';
 import { createOAuthPendingDiscoveryStore } from './oauth-pending-store';
 import { asCredentialVaultPort, createConfiguredCredentialVault } from './credential-vault';
 
@@ -892,6 +893,26 @@ export interface ApplicationRuntime {
   close(): Promise<void>;
 }
 
+/**
+ * Temporal when it is configured, and otherwise a scheduler that does not
+ * durably execute, but only where losing scheduled work is acceptable.
+ *
+ * `InMemoryScheduler` records intent in a `Map`. On a laptop that is exactly
+ * right. On any deployed process it means every scheduled post is accepted and
+ * silently never published, so `schedulerFallbackAllowed` refuses it rather
+ * than letting the process boot into that state.
+ */
+function resolveScheduler(options: ApplicationRuntimeOptions, clock: Clock): SchedulerPort {
+  const configured = configuredScheduler(options.config, options.logger, clock);
+  if (configured !== undefined && configured !== null) {
+    return configured;
+  }
+  if (!schedulerFallbackAllowed(options.config)) {
+    throw schedulerFallbackRefused(options.config);
+  }
+  return new InMemoryScheduler(clock);
+}
+
 /** Build the canonical application graph and truthfully own its lifecycle. */
 export function createApplicationRuntime(options: ApplicationRuntimeOptions): ApplicationRuntime {
   const clock = options.clock ?? systemClock;
@@ -939,10 +960,7 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
         : { databaseUrl: options.config.database.url }),
     });
   const kv = adapters.kv ?? new MemoryKeyValueStore(clock);
-  const scheduler =
-    adapters.scheduler ??
-    configuredScheduler(options.config, options.logger, clock) ??
-    new InMemoryScheduler(clock);
+  const scheduler = adapters.scheduler ?? resolveScheduler(options, clock);
   const storage =
     adapters.storage ??
     configuredStorage(options.config, clock) ??

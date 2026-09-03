@@ -73,3 +73,5 @@ export {
   createConfiguredCredentialVault,
   type ConfiguredCredentialVault,
 } from './credential-vault';
+
+export { schedulerFallbackAllowed, schedulerFallbackRefused } from './scheduler-fallback';

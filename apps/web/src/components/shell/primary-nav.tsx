@@ -13,7 +13,7 @@ import { Flip, useGSAP } from '@/lib/motion/gsap';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { useTranslations } from '@/lib/i18n';
 
-import { isNavItemActive, NAV_ITEMS } from './nav-items';
+import { isNavItemActive, isNavSubItemActive, NAV_ITEMS, type NavSubItem } from './nav-items';
 
 /**
  * The navigation rail.

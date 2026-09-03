@@ -140,4 +140,19 @@ export const postingSetMessages = {
   'targetMemory.composer.forget': 'Stop remembering my accounts',
   'targetMemory.composer.forgotten': 'Your saved selection was deleted.',
   'targetMemory.composer.reviewAccounts': 'Review accounts',
+
+  /* ------------------------------------------------- the /library/sets route
+   *
+   * Filed under `web.` rather than `set.` because the domain namespace is
+   * already translated key for key in every active locale, while these are new
+   * English sentences awaiting review. They are registered in
+   * `beta-fallbacks.ts` so each locale falls back to this reviewed source.
+   */
+  'web.set.loading': 'Loading Posting Sets.',
+  'web.set.error.title': 'Posting Sets could not be loaded',
+  'web.set.error.body':
+    'Nothing changed. Your Sets, and every post already made from them, are unaffected.',
+  'web.set.noProject.title': 'No project selected',
+  'web.set.noProject.body':
+    'A Posting Set belongs to one project. Pick a project in the workspace switcher, then open this screen again.',
 } as const;

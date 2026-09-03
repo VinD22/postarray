@@ -441,7 +441,19 @@ export interface DataExportContent {
   readonly expiresAt: string;
 }
 
+/**
+ * Which of the three schedulers is in play.
+ *
+ * `temporal` executes durably. `inline` runs workflow bodies in this process
+ * with no durable history. `memory` records intent and never executes at all.
+ * Readiness reports this so a process that came up degraded is visibly not
+ * ready, rather than accepting schedules it will never honour.
+ */
+export type SchedulerKind = 'temporal' | 'inline' | 'memory';
+
 export interface SchedulerPort {
+  /** See `SchedulerKind`. Read by the health report. */
+  describeKind(): SchedulerKind;
   schedulePublish(input: {
     readonly jobId: string;
     readonly workspaceId: string;
