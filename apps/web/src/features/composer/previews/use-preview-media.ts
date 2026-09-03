@@ -22,6 +22,7 @@ import { keys } from '@/lib/api/keys';
 import { useWorkspaceId } from '@/lib/auth/session-context';
 
 import type { PreviewMediaFacts, PreviewMediaLookup } from './build-preview-model';
+import { displayableMediaUrl } from './media-source';
 
 interface Loaded {
   readonly asset: Awaited<ReturnType<typeof api.media.get>>;
@@ -73,9 +74,10 @@ export function usePreviewMedia(mediaIds: readonly string[]): PreviewMediaLookup
       }
       const asset = result.data?.asset ?? null;
       const urls = result.data?.urls ?? null;
+      const kind = asset?.kind ?? 'image';
       byId.set(mediaId, {
         id: mediaId,
-        kind: asset?.kind ?? 'image',
+        kind,
         altText: asset?.altText ?? null,
         altTextWaived: asset?.altTextWaived ?? false,
         width: asset?.width ?? null,
@@ -83,7 +85,7 @@ export function usePreviewMedia(mediaIds: readonly string[]): PreviewMediaLookup
         durationMs: asset?.durationMs ?? null,
         available: asset?.storageAvailable ?? false,
         loading: false,
-        thumbnailUrl: urls?.thumbnail?.url ?? urls?.poster?.url ?? null,
+        thumbnailUrl: displayableMediaUrl(kind, urls),
       });
     });
     return { get: (mediaId: string) => byId.get(mediaId) ?? null };

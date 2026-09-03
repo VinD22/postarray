@@ -81,6 +81,8 @@ export function PreviewThumbnail({ media, className }: PreviewThumbnailProps): R
       <img
         src={media.thumbnailUrl}
         alt={media.altText ?? ''}
+        loading="lazy"
+        decoding="async"
         className="size-full object-cover"
       />
       {media.kind === 'video' ? (

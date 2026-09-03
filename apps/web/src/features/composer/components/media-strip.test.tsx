@@ -57,15 +57,19 @@ function asset(overrides: Partial<MediaAsset> = {}): MediaAsset {
   };
 }
 
-function renderStrip(readUrl: string | null) {
+function rendition(url: string) {
+  return { url, width: 200, height: 200, expiresAt: '2026-09-04T07:00:00.000Z' };
+}
+
+function renderStrip(
+  urls: { thumbnail?: string; original?: string } = {},
+  overrides: Partial<MediaAsset> = {},
+) {
   vi.spyOn(api.media, 'getReadUrls').mockResolvedValue({
     mediaId: 'media_01j000000000000000000001',
-    thumbnail:
-      readUrl === null
-        ? null
-        : { url: readUrl, width: 200, height: 200, expiresAt: '2026-09-04T07:00:00.000Z' },
+    thumbnail: urls.thumbnail === undefined ? null : rendition(urls.thumbnail),
     poster: null,
-    original: null,
+    original: urls.original === undefined ? null : rendition(urls.original),
   });
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
@@ -73,7 +77,7 @@ function renderStrip(readUrl: string | null) {
       <SessionProvider session={demoSession}>
         <I18nProvider locale="en" catalog={en} timeZone="Europe/Berlin">
           <MediaStrip
-            assets={[asset()]}
+            assets={[asset(overrides)]}
             mediaIds={['media_01j000000000000000000001']}
             inherited={false}
             limit={4}
@@ -88,14 +92,29 @@ function renderStrip(readUrl: string | null) {
 }
 
 describe('the composer media strip', () => {
-  it('shows the file the moment a rendition exists', async () => {
-    renderStrip('https://cdn.example.com/thumb.png');
+  it('prefers a thumbnail derivative when one has been produced', async () => {
+    renderStrip({ thumbnail: 'https://cdn.example.com/thumb.png' });
     const image = await screen.findByRole('img', { name: 'A launch banner' });
     expect(image).toHaveAttribute('src', 'https://cdn.example.com/thumb.png');
   });
 
-  it('keeps the neutral tile when no rendition has been generated', async () => {
-    const { container } = renderStrip(null);
+  it('shows the original for a picture, which is what usually comes back', async () => {
+    renderStrip({ original: 'https://cdn.example.com/original.png' });
+    const image = await screen.findByRole('img', { name: 'A launch banner' });
+    expect(image).toHaveAttribute('src', 'https://cdn.example.com/original.png');
+  });
+
+  it('never points an image element at a video file', async () => {
+    const { container } = renderStrip(
+      { original: 'https://cdn.example.com/clip.mp4' },
+      { kind: 'video', name: 'clip.mp4', mimeType: 'video/mp4', altText: null },
+    );
+    await screen.findByText('clip.mp4');
+    expect(container.querySelector('img')).toBeNull();
+  });
+
+  it('keeps the neutral tile when there is no picture to show', async () => {
+    const { container } = renderStrip();
     await screen.findByText('launch.png');
     expect(container.querySelector('img')).toBeNull();
   });

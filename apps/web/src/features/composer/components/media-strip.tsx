@@ -18,6 +18,7 @@ import { cn } from '@relay/design-system/utils';
 
 import type { MediaAsset } from '../../media/types';
 import { DerivativeDialog } from '../../media/components/derivative-dialog';
+import { displayableMediaUrl } from '../previews/media-source';
 import { useMediaReadUrls } from '../previews/use-media-read-urls';
 
 /**
@@ -27,13 +28,14 @@ import { useMediaReadUrls } from '../previews/use-media-read-urls';
  * URL a browser could read. There is one now, so a person picking between four
  * uploads can tell them apart by looking rather than by reading file names.
  *
- * A file with no rendition yet keeps the grey square. That is the honest
- * answer: the thumbnail has not been generated, which is not the same as the
- * file being missing, and neither is an error worth interrupting the strip for.
+ * A file with no picture to show keeps the grey square. That is the honest
+ * answer, and it is the common one: a thumbnail derivative exists for very few
+ * assets, and a video has no poster at all yet. Neither is an error worth
+ * interrupting the strip for.
  */
 function StripThumbnail({ asset }: { readonly asset: MediaAsset }): ReactNode {
   const { data } = useMediaReadUrls(asset.id);
-  const url = data?.thumbnail?.url ?? data?.poster?.url ?? null;
+  const url = displayableMediaUrl(asset.kind, data);
 
   if (url === null || !asset.storageAvailable) {
     return (
@@ -49,6 +51,8 @@ function StripThumbnail({ asset }: { readonly asset: MediaAsset }): ReactNode {
     <img
       src={url}
       alt={asset.altText ?? ''}
+      loading="lazy"
+      decoding="async"
       className="border-border-subtle size-10 shrink-0 rounded-md border object-cover"
     />
   );
