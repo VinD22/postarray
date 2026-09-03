@@ -12,6 +12,21 @@ const PRODUCT_ROUTES = [
 ] as const;
 
 test.describe('critical product routes', () => {
+  /**
+   * The suite runs against seeded demo data. If the demo-mode environment
+   * variable and the name the app actually reads ever diverge again, every
+   * product route falls back to the error boundary, which still returns 200
+   * and still contains exactly one `<main>` element. Every other assertion in
+   * this file, and all 42 accessibility audits, would keep passing while
+   * auditing error pages. This test is the guard: it fails the moment the
+   * product screens stop being the thing under test.
+   */
+  test('the suite is auditing the product, not the error boundary', async ({ page }) => {
+    await openReadyPage(page, '/home');
+
+    await expect(page.getByText('You are looking at demo data')).toBeVisible();
+  });
+
   for (const route of PRODUCT_ROUTES) {
     test(`${route} renders one usable main landmark`, async ({ page }) => {
       const pageErrors: string[] = [];

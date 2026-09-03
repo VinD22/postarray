@@ -33,7 +33,7 @@ export default defineConfig({
       ...process.env,
       NEXT_PUBLIC_APP_URL: baseURL,
       NEXT_PUBLIC_SITE_ORIGIN: baseURL,
-      NEXT_PUBLIC_RELAY_DEMO_MODE: 'true',
+      NEXT_PUBLIC_POSTARRAY_DEMO_MODE: 'true',
       NEXT_PUBLIC_ENABLE_PSEUDO_LOCALES: 'true',
     },
   },

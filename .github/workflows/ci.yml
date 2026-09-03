@@ -6,7 +6,10 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    # `development` is this repository's integration branch and the one the team
+    # commits to. Listing only `main` meant every commit between releases landed
+    # with no CI at all.
+    branches: [main, development]
   pull_request:
 
 permissions:
