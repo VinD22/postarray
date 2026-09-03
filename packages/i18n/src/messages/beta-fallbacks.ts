@@ -638,6 +638,18 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.unsaved.notOnServer',
   'web.unsaved.leave',
   'web.unsaved.stay',
+  // The composer's control for remembering channels between posts, and the
+  // sentences that name the channels a restore left out. Reviewed English
+  // until a reviewer covers them in each locale.
+  'composerWeb.remember.toggle',
+  'composerWeb.remember.turnOff',
+  'composerWeb.remember.failedTitle',
+  'composerWeb.remember.failedBody',
+  'composerWeb.remember.droppedItem',
+  'composerWeb.remember.reason.paused',
+  'composerWeb.remember.reason.gone',
+  'composerWeb.remember.reason.unavailable',
+  'composerWeb.remember.unknownAccount',
 ] as const;
 
 /**

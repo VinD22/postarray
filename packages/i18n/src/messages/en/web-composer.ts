@@ -51,6 +51,18 @@ export const webComposerMessages = {
   'composerWeb.restore.restore': 'Restore unsaved changes',
   'composerWeb.restore.discard': 'Discard the copy',
   'composerWeb.restore.supersededTitle': 'A newer version was saved elsewhere',
+  // -------------------------------------------------- remembered channels
+  'composerWeb.remember.toggle': 'Start with the channels I used last time',
+  'composerWeb.remember.turnOff': 'Turn off and delete saved selections',
+  'composerWeb.remember.failedTitle': 'That setting was not changed',
+  'composerWeb.remember.failedBody':
+    'This is a project setting, so changing it needs permission to manage the project. Nothing was saved and nothing was deleted.',
+  'composerWeb.remember.droppedItem': '{account}: {reason}',
+  'composerWeb.remember.reason.paused': 'paused, so nothing can publish to it',
+  'composerWeb.remember.reason.gone': 'no longer available in this project',
+  'composerWeb.remember.reason.unavailable': 'not available right now',
+  'composerWeb.remember.unknownAccount': 'An account you can no longer see',
+
   'composerWeb.restore.supersededBody':
     'This draft was saved from another device after the copy on this one was made, so the copy has been removed and you are looking at the saved version.',
 
