@@ -76,6 +76,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Bu {provider} girişteki hiçbir hesap bağlanamıyor. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'Bu {provider} oturumundaki hiçbir hesap bağlanamaz.',
+  'connection.oauth.claimFailed': 'Bu hesaplar bağlanamadı',
+  'connection.oauth.claimFailedAction':
+    'Platformda hiçbir şey değişmedi. Tekrar deneyin; sorun sürerse bağlantıyı baştan başlatın.',
   'connection.oauth.canceled': 'Bağlantı {provider} tarihinde iptal edildi. Hiçbir şey değişmedi.',
   'connection.oauth.alreadyConnected': '{account} zaten bu çalışma alanına bağlı.',
   'connection.oauth.connectedToAnotherWorkspace':

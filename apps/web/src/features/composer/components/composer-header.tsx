@@ -25,9 +25,11 @@ export function ComposerHeader({ onClose, onShowShortcuts }: ComposerHeaderProps
   const { state, autosave, savedAt, conflict, resolveConflict, saveNow, dispatch } = useComposer();
 
   return (
-    <header className="border-border-subtle flex flex-col gap-2 border-b pb-3">
+    <header className="border-border-default bg-surface-raised shadow-raised flex flex-col gap-2 rounded-lg border px-4 py-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-title-md text-text-primary">{t.full('composer.title')}</h1>
+        <h1 className="text-text-primary text-[clamp(1.75rem,2.5vw,2.5rem)] leading-none font-bold tracking-[-0.035em]">
+          {t.full('composer.title')}
+        </h1>
 
         <div className="flex flex-wrap items-center gap-3">
           <p aria-live="polite" className="text-body-sm text-text-tertiary">

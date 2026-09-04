@@ -433,50 +433,96 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
         }
         const from = new Date(fromResult.data);
         const to = new Date(toResult.data);
-        const clicks = await db.shortLinkClick.findMany({
-          where: { shortLinkId: input.linkId, occurredAt: { gte: from, lte: to } },
-          orderBy: { occurredAt: 'asc' },
-          select: {
-            occurredAt: true,
-            countryCode: true,
-            deviceClass: true,
-            referrerClass: true,
-            botClass: true,
-          },
-        });
+        // A link that has been clicked a lot has a lot of rows, and this used
+        // to load every one of them into memory to count them. The database
+        // counts far better than we do, so the four rollups are four grouped
+        // queries and the totals come back as numbers rather than as an array
+        // whose length happens to be the answer.
+        const window = { shortLinkId: input.linkId, occurredAt: { gte: from, lte: to } };
+        const humanWindow = { ...window, botClass: 'human' as const };
+
+        const [byBucket, byCountry, byReferrer, byDevice, byBotClass, latest] = await Promise.all([
+          db.shortLinkClick.groupBy({
+            by: ['occurredAt'],
+            where: window,
+            _count: true,
+          }),
+          db.shortLinkClick.groupBy({
+            by: ['countryCode'],
+            where: humanWindow,
+            _count: true,
+          }),
+          db.shortLinkClick.groupBy({
+            by: ['referrerClass'],
+            where: humanWindow,
+            _count: true,
+          }),
+          db.shortLinkClick.groupBy({
+            by: ['deviceClass'],
+            where: humanWindow,
+            _count: true,
+          }),
+          db.shortLinkClick.groupBy({
+            by: ['botClass'],
+            where: window,
+            _count: true,
+          }),
+          db.shortLinkClick.findFirst({
+            where: window,
+            orderBy: { occurredAt: 'desc' },
+            select: { occurredAt: true },
+          }),
+        ]);
 
         const series = new Map<string, number>();
+        for (const row of byBucket) {
+          const bucket = row.occurredAt.toISOString();
+          series.set(bucket, (series.get(bucket) ?? 0) + groupCount(row));
+        }
+
+        // A grouped row whose grouping column is null is a click we could not
+        // classify. It is left out of the ranking rather than bucketed under a
+        // made-up label.
         const countries = new Map<string, number>();
+        for (const row of byCountry) {
+          if (row.countryCode !== null) {
+            countries.set(row.countryCode, (countries.get(row.countryCode) ?? 0) + groupCount(row));
+          }
+        }
         const referrers = new Map<string, number>();
+        for (const row of byReferrer) {
+          if (row.referrerClass !== null) {
+            referrers.set(
+              row.referrerClass,
+              (referrers.get(row.referrerClass) ?? 0) + groupCount(row),
+            );
+          }
+        }
         const devices = new Map<string, number>();
+        for (const row of byDevice) {
+          if (row.deviceClass !== null) {
+            devices.set(row.deviceClass, (devices.get(row.deviceClass) ?? 0) + groupCount(row));
+          }
+        }
+
+        let total = 0;
         let human = 0;
         let bots = 0;
-
-        for (const click of clicks) {
-          const bucket = click.occurredAt.toISOString();
-          series.set(bucket, (series.get(bucket) ?? 0) + 1);
-          if (click.botClass === 'human') {
-            human += 1;
-            if (click.countryCode !== null) {
-              countries.set(click.countryCode, (countries.get(click.countryCode) ?? 0) + 1);
-            }
-            if (click.referrerClass !== null) {
-              referrers.set(click.referrerClass, (referrers.get(click.referrerClass) ?? 0) + 1);
-            }
-            if (click.deviceClass !== null) {
-              devices.set(click.deviceClass, (devices.get(click.deviceClass) ?? 0) + 1);
-            }
-          } else if (click.botClass === 'suspected_bot' || click.botClass === 'known_bot') {
-            bots += 1;
+        for (const row of byBotClass) {
+          total += groupCount(row);
+          if (row.botClass === 'human') {
+            human += groupCount(row);
+          } else if (row.botClass === 'suspected_bot' || row.botClass === 'known_bot') {
+            bots += groupCount(row);
           }
         }
 
         return {
           linkId: input.linkId,
-          totalClicks: clicks.length,
+          totalClicks: total,
           humanClicks: human,
           suspectedBotClicks: bots,
-          lastEventAt: clicks.at(-1)?.occurredAt.toISOString() ?? null,
+          lastEventAt: latest?.occurredAt.toISOString() ?? null,
           series: [...series].map(([bucketStart, count]) => ({ bucketStart, requests: count })),
           topCountries: rank(countries).map(([countryCode, count]) => ({
             countryCode,
@@ -584,6 +630,19 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
       });
     },
   };
+}
+
+/**
+ * The count off one `groupBy` row.
+ *
+ * Prisma widens `_count` in a grouped result to a union of `true`, a
+ * per-column record and `undefined`, which TypeScript cannot narrow at this
+ * call site even though `_count: true` guarantees a scalar at runtime. This is
+ * the documented boundary shim for that, and it is deliberately total: a shape
+ * we did not ask for counts as nothing rather than throwing inside a read.
+ */
+function groupCount(row: { readonly _count?: unknown }): number {
+  return typeof row._count === 'number' ? row._count : 0;
 }
 
 function rank(counts: ReadonlyMap<string, number>): readonly [string, number][] {

@@ -12,7 +12,7 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import type { OperationRef, Paginated } from '@relay/contracts';
+import type { MediaReadUrls, OperationRef, Paginated } from '@relay/contracts';
 import type { Request, Response } from 'express';
 
 import type {
@@ -67,6 +67,21 @@ export class MediaController {
   @RequireScope('media:read')
   get(@Actor() actor: ActorContext, @Param('id') id: string): Promise<MediaAssetView> {
     return this.media.get(actor, parseParams(mediaIdSchema, id));
+  }
+
+  /**
+   * Short-lived URLs a browser can load this asset from.
+   *
+   * Nothing else in the API tells a client where an asset's bytes live, which
+   * is why the composer and the library rendered grey rectangles instead of
+   * pictures. Renditions that do not exist come back null rather than as a
+   * guessed URL, and every link carries the instant it stops working so a
+   * client can refresh before an image breaks.
+   */
+  @Get(':id/read-urls')
+  @RequireScope('media:read')
+  getReadUrls(@Actor() actor: ActorContext, @Param('id') id: string): Promise<MediaReadUrls> {
+    return this.media.getReadUrls(actor, parseParams(mediaIdSchema, id));
   }
 
   /**

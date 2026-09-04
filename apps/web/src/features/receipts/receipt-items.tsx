@@ -71,7 +71,7 @@ export function ReceiptItems({ receipt, provider }: ReceiptItemsProps): ReactNod
                     <span className="text-text-primary">
                       {item.kind === 'root'
                         ? t('web.receipt.item.root')
-                        : t(`web.receipt.item.${item.kind}`, { position: item.order })}
+                        : t(`web.receipt.item.${item.kind}`, { position: item.order + 1 })}
                     </span>
                     <span className="text-body-sm text-text-tertiary font-normal">
                       {item.delaySeconds === 0

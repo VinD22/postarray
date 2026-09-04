@@ -19,6 +19,7 @@ import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
 import { api } from '@/lib/api';
+import { useSession } from '@/lib/auth/session-context';
 import { useOnlineStatus } from '@/lib/utils/use-online-status';
 import { AsyncBoundary } from '@/features/settings/lib/async-boundary';
 import { describeApiError } from '@/features/settings/lib/api-error';
@@ -67,6 +68,8 @@ export function AssistantScreen(): ReactNode {
   const { announce } = useAnnouncer();
   const workspaceId = useWorkspaceId();
 
+  const { project } = useSession();
+
   const projects = useQuery({
     queryKey: settingsKey(workspaceId, 'projects'),
     queryFn: () => projectsGateway.list(),
@@ -85,7 +88,12 @@ export function AssistantScreen(): ReactNode {
 
   const items = drafts.data?.data ?? [];
   const selected = items.find((item) => item.id === contentItemId) ?? null;
-  const projectId = selected?.projectId ?? projects.data?.[0]?.id ?? '';
+  // The selected draft's project when there is one, otherwise the active
+  // project. It used to fall back to the first project in the list, so the
+  // assistant could act against a project the user was not looking at, and then
+  // to `''`, which was sent to the API as an empty id rather than blocking the
+  // call.
+  const projectId = selected?.projectId ?? project?.id ?? null;
 
   const confirmationId = pending?.action.confirmationId ?? null;
   const confirmation = useQuery({
@@ -97,7 +105,7 @@ export function AssistantScreen(): ReactNode {
 
   const context = useMemo<ToolContext>(
     () => ({
-      projectId,
+      projectId: projectId ?? '',
       contentItemId: selected?.id ?? null,
       connectionId: selected?.targets[0]?.connectionId ?? null,
       message: draftText,
@@ -129,7 +137,7 @@ export function AssistantScreen(): ReactNode {
   async function send(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     const message = draftText.trim();
-    if (message.length === 0 || projectId === '') {
+    if (message.length === 0 || projectId === null) {
       return;
     }
 

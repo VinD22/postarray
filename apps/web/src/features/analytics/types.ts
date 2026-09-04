@@ -48,11 +48,22 @@ export interface MetricDefinitionView {
   readonly definition: string;
   readonly definitionSourceUrl?: string | undefined;
   readonly unit: MetricUnit;
-  readonly denominator: MetricDenominator;
-  readonly aggregation: MetricAggregation;
+  /**
+   * Nullable, because not every read reports it. `GET /analytics/posts/{id}`
+   * returns the provider's field and wording without the catalog entry around
+   * them, and a substituted `none` there would state a denominator nobody
+   * chose. Null renders as unavailable, in the word.
+   */
+  readonly denominator: MetricDenominator | null;
+  readonly aggregation: MetricAggregation | null;
   readonly historyWindowDays: number | null;
-  /** When a human last checked this definition against provider documentation. */
-  readonly lastVerifiedAt: string;
+  /**
+   * When a human last checked this definition against provider documentation,
+   * or null when nobody has. It was declared non-nullable here and nullable on
+   * the wire, which the boundary cast hid; the component has always handled
+   * the null.
+   */
+  readonly lastVerifiedAt: string | null;
 }
 
 /**
@@ -182,28 +193,50 @@ export interface MetricSeriesView {
 
 export type ExperimentStatus = 'planned' | 'collecting' | 'complete' | 'inconclusive';
 
-export interface ExperimentVariant {
-  readonly id: string;
-  readonly label: string;
-  readonly description: string;
-  readonly postCount: number;
-  readonly reading: MetricReading | null;
-}
-
+/**
+ * One experiment, as the API reports it.
+ *
+ * This used to declare `variants`, `accounts`, `measurementWindowDays`,
+ * `minimumPostsPerVariant` and `excludedPostCount`, and the screen mapped over
+ * `variants`. The API returns none of them: `GET /v1/analytics/experiments`
+ * answers with the record itself, its window and, once it is finished, the
+ * conclusion and the caveats. The unchecked cast at the boundary made all five
+ * compile and every one of them would have been `undefined` in the browser.
+ *
+ * Per-variant readings are a real feature and a real backend dependency. Until
+ * the read model carries them, the screen says so rather than rendering an
+ * empty list that reads as "no variants were defined".
+ */
 export interface ExperimentView {
   readonly id: string;
   readonly name: string;
   readonly hypothesis: string;
   readonly successMetric: NormalizedMetricName;
   readonly status: ExperimentStatus;
-  readonly accounts: readonly AccountRef[];
-  readonly variants: readonly ExperimentVariant[];
-  readonly measurementWindowDays: number;
-  readonly minimumPostsPerVariant: number;
-  readonly startedAt: string | null;
-  readonly completedAt: string | null;
-  /** Posts whose success metric was unavailable, excluded rather than zeroed. */
-  readonly excludedPostCount: number;
+  /** The measurement window the server recorded. Both are instants. */
+  readonly windowStart: string;
+  readonly windowEnd: string;
+  /** The server's own summary. Null while the experiment is still collecting. */
+  readonly conclusion: string | null;
+  /** What would make that summary misleading. Null when none were recorded. */
+  readonly caveats: string | null;
+}
+
+/**
+ * Everything the post detail screen has about one post.
+ *
+ * Assembled from two reads, because no single endpoint answers the question.
+ * `GET /v1/analytics/posts/{id}` returns readings and nothing that identifies
+ * the post; the content read supplies the title and the format. Either can be
+ * absent, and each field is nullable so a missing one renders as unavailable
+ * rather than as an empty string that looks like a post with no title.
+ */
+export interface PostMetricsView {
+  readonly contentItemId: string;
+  readonly title: string | null;
+  readonly format: ContentKind | null;
+  readonly publishedAt: string | null;
+  readonly readings: readonly MetricReading[];
 }
 
 export interface AnalyticsRange {

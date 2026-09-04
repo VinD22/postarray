@@ -211,9 +211,11 @@ Every wireframe shows the desktop 1280px layout unless stated.
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Rules: no charts on Home. No "welcome back" hero. The trial banner disappears the moment the
-subscription is `active`. If there are zero action items the block reads "Nothing needs you right now."
-and does not render an illustration.
+Rules: no charts on Home. No "welcome back" hero. The trial banner appears only after a person has
+entered the optional paid-plan trial and disappears the moment the subscription is `active`. Free
+signup itself has no card or countdown. If there are zero action items the block reads "Nothing needs
+you right now." and may render the quiet Action center line scene; this is the one Home state with room
+for an illustration.
 
 ### 5.2 Composer
 
@@ -757,8 +759,8 @@ Status colour is always paired with a word and a shape:
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--font-ui` | Inter variable, system-ui fallback stack | All product UI |
-| `--font-editorial` | A transitional serif (decision below) | Marketing headlines and pull quotes only |
+| `--font-ui` | Manrope variable, system-ui fallback stack | Product body, controls, tables and labels |
+| `--font-editorial` | Fraunces variable, Georgia fallback | Marketing headlines and pull quotes; product screen and section titles |
 | `--font-mono` | JetBrains Mono, ui-monospace | IDs, hashes, JSON, CLI |
 
 Scale, 1.200 minor third from a 15px product base. Line heights are unitless.
@@ -781,8 +783,9 @@ counter or receipt. Never rely on font weight alone to convey state.
 ### 7.3 Spacing, radius, elevation
 
 4px base scale: `0, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 48, 64`.
-Product density: 8px vertical rhythm inside panels, 12px between fields, 24px between sections.
-Marketing density: 32/48/64.
+Product controls remain compact: 8px vertical rhythm inside panels and 12px between fields. Reading
+surfaces use comfortable density: `text-body-lg` for decision rows and 40px between sections. Tables,
+forms and controls keep their predictable product density. Marketing density remains 32/48/64.
 
 Radius: `--radius-control: 6px` (inputs, buttons, chips), `--radius-panel: 10px` (cards, sheets,
 popovers), `--radius-media: 14px` (marketing imagery only), `--radius-full` for avatars only.
@@ -951,13 +954,13 @@ Every item has an owner, a deadline and a default that ships if no decision is m
 
 | # | Question | Owner | Deadline | Recommended default if undecided |
 | --- | --- | --- | --- | --- |
-| D1 | Editorial serif for marketing headlines | Design Lead | 21 Aug 2026 | Source Serif 4, self-hosted, subset to Latin. Product UI stays Inter |
+| D1 | Editorial serif for marketing headlines | Design Lead | 21 Aug 2026 | Resolved: self-hosted Fraunces carries marketing headlines plus product screen and section titles. Manrope remains the product body and control face |
 | D2 | Calendar library: FullCalendar vs custom grid | Web Lead | 28 Aug 2026 | Custom CSS grid for week and month. FullCalendar's interaction model fights the keyboard and RTL requirements |
 | D3 | Rich text engine confirmation (Tiptap) | Web Lead | 21 Aug 2026 | Tiptap, with a plain-text serializer per connector so no editor markup can reach a provider |
-| D4 | Does Home show a 7-day published count | Product Lead | 4 Sep 2026 | No. Home stays a queue of actions. Counts live in Analytics |
+| D4 | Does Home show a 7-day published count | Product Lead | 4 Sep 2026 | Resolved: Home keeps three operational readings in a borderless ledger. They report scheduled work, connected accounts and the next slot, never engagement or vanity metrics |
 | D5 | Dark mode default | Design Lead | 4 Sep 2026 | Follow system, with an explicit three-way toggle in the account menu |
 | D6 | Agent chat placement: composer panel vs full surface | Product Lead | 18 Sep 2026 | Composer right-panel tab. AI does not get a destination |
-| D7 | Density toggle (comfortable vs compact) | Design Lead | 2 Oct 2026 | Ship one density (compact product, roomy marketing). Revisit after 25 design partners |
+| D7 | Density toggle (comfortable vs compact) | Design Lead | 2 Oct 2026 | Resolved: compact controls, comfortable reading. Decision rows use larger type and 40px section rhythm; forms and tables stay compact |
 | D8 | Per-platform brand colour in calendar chips | Design Lead | 4 Sep 2026 | No colour, monochrome mark plus text. Colour is reserved for status |
 | D9 | Locale picker visibility in V1 English-only UI | Product Lead | 16 Oct 2026 | Show it, list English as the only interface language, and name content languages separately so the distinction is never blurred |
 

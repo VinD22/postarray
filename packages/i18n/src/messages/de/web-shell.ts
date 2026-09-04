@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relais',
-  'shell.documentTitle': '{page} · Relais',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'Ein Verlagstisch für Menschen und Agenten.',
   'shell.menu.open': 'Öffnen Sie das Menü',
   'shell.menu.title': 'Menü',
@@ -32,7 +32,7 @@ export const webShellMessages = {
   'shell.demo.body':
     'Die Post Array-API ist über diesen Browser nicht erreichbar, daher werden die Bildschirme mit einem vordefinierten Beispielarbeitsbereich gefüllt. Hier ist nichts mit einem echten Konto verbunden und nichts kann veröffentlicht werden.',
   'shell.demo.howToConnect':
-    'Legen Sie NEXT_PUBLIC_RELAY_API_URL fest und starten Sie die App neu, um Live-Daten zu verwenden.',
+    'Legen Sie NEXT_PUBLIC_POSTARRAY_API_URL fest und starten Sie die App neu, um Live-Daten zu verwenden.',
 
   /* -- Connectivity ------------------------------------------------------ */
   'shell.offline.title': 'Du bist offline',

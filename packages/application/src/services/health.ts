@@ -37,12 +37,33 @@ async function timed(name: string, probe: () => Promise<void>): Promise<HealthCh
   }
 }
 
+/**
+ * A process that came up on a scheduler which does not execute durably has
+ * booted, can serve reads, and will silently drop every scheduled post. That
+ * is not ready, so readiness says so and the load balancer stops routing to
+ * it. Anything other than Temporal fails this check by design.
+ */
+function schedulerCheck(deps: ServiceDeps): HealthCheck {
+  const kind = deps.scheduler.describeKind();
+  if (kind === 'temporal') {
+    return { name: 'scheduler.kind', status: 'pass', detail: kind };
+  }
+  return {
+    name: 'scheduler.kind',
+    status: 'fail',
+    detail:
+      kind === 'memory'
+        ? 'scheduler records intent without executing it; set TEMPORAL_ADDRESS'
+        : 'scheduler runs in process without durable history; set TEMPORAL_ADDRESS',
+  };
+}
+
 export function createHealthService(deps: ServiceDeps): HealthService {
   const startedAt = deps.clock.now().getTime();
 
   return {
     async report(): Promise<HealthReport> {
-      const checks = await Promise.all([
+      const checks: HealthCheck[] = await Promise.all([
         timed('database.query', async () => {
           await deps.prisma.$queryRaw`select 1`;
         }),
@@ -53,6 +74,8 @@ export function createHealthService(deps: ServiceDeps): HealthService {
           await probeStorageHead(deps.storage);
         }),
       ]);
+
+      checks.push(schedulerCheck(deps));
 
       return buildHealthReport(detectCapabilities(deps.config), checks, {
         ...(deps.config.service === undefined ? {} : { service: deps.config.service }),

@@ -1,20 +1,23 @@
 'use client';
 
 /**
- * The weekly digest, on Home.
+ * The weekly digest, on Home. Built, and deliberately not rendered.
  *
- * The digest pipeline is being built in parallel with this card, so what
- * ships today is exactly one state: the honest empty one. That is deliberate,
- * and it is why this file has no loading skeleton and no partial render. A
- * card that showed a spinner for a pipeline that does not exist yet would be
- * claiming a capability, which is the failure the launch-truth gate exists to
- * catch. When the pipeline lands, this card gains a populated branch and
- * keeps this state for a workspace that has not published a week yet.
+ * Home no longer mounts this. It occupied a whole section of the first screen
+ * a person sees in order to say that a feature does not exist yet, which is a
+ * promise rather than information, and a promise on the first screen is worse
+ * than a blank space where nothing was ever offered.
  *
- * The empty state is written to be worth reading on its own: it says what the
- * digest is made of (your receipts and your own measurements), why it is not
- * here (there has to be a week of them), and plainly that the summary itself
- * is still being built. Nobody is left wondering whether something broke.
+ * The file stays because the state below is the right one to keep. It is
+ * written to be worth reading on its own: it says what the digest is made of
+ * (your receipts and your own measurements), why it is not here (there has to
+ * be a week of them), and plainly that the summary itself is still being
+ * built. When the pipeline lands, this card gains a populated branch and keeps
+ * this one for a workspace that has not published a week yet.
+ *
+ * TODO(owner): mount this again once the digest is wired end to end. The
+ * backend hardcodes `digest: null`, `digest.workflow.ts` is unexported,
+ * `DigestActivities` is unimplemented and `INSIGHTS_PORT` is unprovided.
  */
 
 import { type ReactNode } from 'react';

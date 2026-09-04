@@ -12,9 +12,11 @@ import { SettingsNav } from '@/features/settings/components/settings-nav';
  */
 export default function SettingsLayout({ children }: { children: ReactNode }): ReactNode {
   return (
-    <div className="mx-auto flex w-full max-w-[90rem] flex-col lg:flex-row lg:items-start">
+    <div className="bg-surface-sunken mx-auto grid w-full max-w-[90rem] gap-3 p-3 lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start">
       <SettingsNav />
-      <div className="min-w-0 flex-1">{children}</div>
+      <div className="border-border-default bg-surface-canvas min-w-0 overflow-hidden rounded-lg border">
+        {children}
+      </div>
     </div>
   );
 }

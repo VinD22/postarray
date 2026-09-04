@@ -8,7 +8,7 @@ import {
   EmptyState,
   ErrorState,
   LoadingState,
-  SkeletonTable,
+  SkeletonList,
   StatusPill,
 } from '@relay/design-system/patterns';
 import { Button, StatusDot } from '@relay/design-system/primitives';
@@ -27,9 +27,9 @@ const DAY_MS = 86_400_000;
 /**
  * The next 24 hours.
  *
- * A table at 768px and above, meaningful rows below it. Times are in the
- * workspace zone and the zone is named under the heading, because a queue that
- * does not say which clock it is on is a scheduling incident waiting to happen.
+ * A timeline list at every width. Times are in the workspace zone and the zone
+ * is named under the heading, because a queue that does not say which clock it
+ * is on is a scheduling incident waiting to happen.
  */
 export function UpcomingQueue() {
   const t = useTranslations();
@@ -50,12 +50,12 @@ export function UpcomingQueue() {
     <HomeSection
       id="home-upcoming"
       title={t('home.upcoming.title')}
-      meta={t('home.upcoming.timeZoneNote', { timeZone: workspace.timeZone })}
+      meta={t('home.v2.queue.timeZone', { timeZone: workspace.timeZone })}
       link={{ href: '/calendar', label: t('home.upcoming.viewAll') }}
     >
       {query.isPending ? (
         <LoadingState label={t('loading.calendar')}>
-          <SkeletonTable rows={3} columns={4} />
+          <SkeletonList rows={4} avatar={false} />
         </LoadingState>
       ) : query.error ? (
         <ErrorState
@@ -75,80 +75,55 @@ export function UpcomingQueue() {
           title={t('home.upcoming.empty')}
           description={t('home.upcoming.emptyBody')}
           action={
-            <Button variant="primary" size="sm" asChild>
+            <Button variant="secondary" size="sm" asChild>
               <Link href="/compose">{t('empty.calendar.action')}</Link>
             </Button>
           }
         />
       ) : (
-        <div className="relay-scroll-x">
-          <table className="text-body-md w-full border-collapse">
-            <caption className="sr-only">{t('home.upcoming.title')}</caption>
-            <thead>
-              <tr className="border-border-subtle border-y text-start">
-                <th
-                  scope="col"
-                  className="text-label text-text-tertiary py-2 pe-4 text-start font-medium"
+        <ol className="border-border-subtle border-t">
+          {entries.slice(0, 5).map((entry) => {
+            const dot = providerDotKey(entry.provider);
+            return (
+              <li
+                key={entry.contentItemId}
+                className="border-border-subtle grid gap-3 border-b py-4 md:grid-cols-[6rem_minmax(0,1fr)_auto] md:items-center md:gap-5"
+              >
+                <time
+                  dateTime={entry.scheduledAt}
+                  className="text-body-md text-text-primary font-mono whitespace-nowrap"
                 >
-                  {t('home.upcoming.columnTime')}
-                </th>
-                <th
-                  scope="col"
-                  className="text-label text-text-tertiary py-2 pe-4 text-start font-medium"
-                >
-                  {t('home.upcoming.columnAccount')}
-                </th>
-                <th
-                  scope="col"
-                  className="text-label text-text-tertiary py-2 pe-4 text-start font-medium"
-                >
-                  {t('home.upcoming.columnContent')}
-                </th>
-                <th
-                  scope="col"
-                  className="text-label text-text-tertiary py-2 text-start font-medium"
-                >
-                  {t('home.upcoming.columnStatus')}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.map((entry) => {
-                const dot = providerDotKey(entry.provider);
-                return (
-                  <tr key={entry.contentItemId} className="border-border-subtle border-b align-top">
-                    <td className="text-text-primary py-2.5 pe-4 whitespace-nowrap">
-                      <time dateTime={entry.scheduledAt}>{format.time(entry.scheduledAt)}</time>
-                    </td>
-                    <td className="text-text-secondary py-2.5 pe-4">
-                      <span className="flex items-center gap-1.5">
-                        {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
-                        <span className="truncate">{entry.accountLabel}</span>
+                  {format.time(entry.scheduledAt)}
+                </time>
+
+                <div className="flex min-w-0 flex-col gap-1.5">
+                  <Link
+                    href={`/posts/${entry.contentItemId}`}
+                    className="text-body-lg text-text-primary w-fit max-w-full truncate font-medium hover:underline"
+                  >
+                    {entry.title}
+                  </Link>
+                  <p className="text-body-sm text-text-secondary flex min-w-0 flex-wrap items-center gap-1.5">
+                    {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
+                    <span className="truncate">{entry.accountLabel}</span>
+                    {entry.targetCount > 1 ? (
+                      <span className="text-text-tertiary">
+                        {t('calendar.post.targetCount', { count: entry.targetCount })}
                       </span>
-                    </td>
-                    <td className="text-text-primary py-2.5 pe-4">
-                      <Link href={`/posts/${entry.contentItemId}`} className="hover:underline">
-                        {entry.title}
-                      </Link>
-                      {entry.targetCount > 1 ? (
-                        <span className="text-body-sm text-text-tertiary ps-2">
-                          {t('calendar.post.targetCount', { count: entry.targetCount })}
-                        </span>
-                      ) : null}
-                    </td>
-                    <td className="py-2.5">
-                      <StatusPill
-                        size="sm"
-                        state={entry.state}
-                        label={t(`state.${entry.state}.label`)}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                    ) : null}
+                  </p>
+                </div>
+
+                <StatusPill
+                  size="sm"
+                  state={entry.state}
+                  label={t(`state.${entry.state}.label`)}
+                  className="w-fit md:justify-self-end"
+                />
+              </li>
+            );
+          })}
+        </ol>
       )}
     </HomeSection>
   );

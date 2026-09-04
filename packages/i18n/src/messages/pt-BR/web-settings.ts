@@ -847,6 +847,7 @@ export const webSettingsMessages = {
     'As regras de escrita por idioma ainda não foram criadas. Os idiomas e mercados do espaço de trabalho continuam disponíveis em Localização.',
   'settings.ui.projects.capacityTitle': 'Capacidade de projetos',
   'settings.ui.projects.capacitySummary': '{used} de {limit}',
+  'settings.ui.projects.atLimitAction': 'Ver planos',
   'settings.ui.projects.atLimitTitle': 'Este espaço de trabalho usou todas as vagas de projeto',
   'settings.ui.projects.atLimitBody':
     'Arquive um projeto inativo ou altere a cota do espaço de trabalho antes de adicionar outro. O limite atual é {limit}.',

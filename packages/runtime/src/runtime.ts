@@ -17,6 +17,8 @@ import {
   type KeyValueStore,
   type MailerPort,
   type SchedulerPort,
+  type MediaScannerPort,
+  type RealtimePublisherPort,
   type Services,
   type StoragePort,
 } from '@relay/application';
@@ -59,6 +61,7 @@ import { TemporalScheduler } from './temporal-scheduler';
 import { createVerifiedConnectorRegistry } from './verified-connectors';
 import { createComposedConnectorRegistry } from './connector-registry-composition';
 import { createCredentialStore } from './credential-store';
+import { schedulerFallbackAllowed, schedulerFallbackRefused } from './scheduler-fallback';
 import { createOAuthPendingDiscoveryStore } from './oauth-pending-store';
 import { asCredentialVaultPort, createConfiguredCredentialVault } from './credential-vault';
 
@@ -876,6 +879,10 @@ export interface RuntimeAdapterOverrides {
   readonly scheduler?: SchedulerPort;
   readonly storage?: StoragePort;
   readonly exportEncryption?: DataExportEncryptionPort;
+  /** Worker-only: the API never decodes uploaded bytes. */
+  readonly mediaScanner?: MediaScannerPort;
+  /** Absent until a deployment has Redis. Live updates are best effort. */
+  readonly realtime?: RealtimePublisherPort;
   readonly mailer?: MailerPort;
 }
 
@@ -890,6 +897,38 @@ export interface ApplicationRuntime {
   readonly services: Services;
   readonly prisma: RelayPrismaClient;
   close(): Promise<void>;
+}
+
+/**
+ * Temporal when it is configured, and otherwise a scheduler that does not
+ * durably execute, but only where losing scheduled work is acceptable.
+ *
+ * `InMemoryScheduler` records intent in a `Map`. On a laptop that is exactly
+ * right. On any deployed process it means every scheduled post is accepted and
+ * silently never published, so `schedulerFallbackAllowed` refuses it rather
+ * than letting the process boot into that state.
+ */
+/**
+ * The object store this configuration names, or the local directory that
+ * stands in for it in development.
+ *
+ * Exported because the worker has to build a media scanner over the same
+ * bytes the runtime will later read, and passing it an adapter the runtime
+ * did not build would let the two disagree about where an object lives.
+ */
+export function resolveStoragePort(config: RelayConfig, clock: Clock): StoragePort {
+  return configuredStorage(config, clock) ?? localStorage(config, clock);
+}
+
+function resolveScheduler(options: ApplicationRuntimeOptions, clock: Clock): SchedulerPort {
+  const configured = configuredScheduler(options.config, options.logger, clock);
+  if (configured !== undefined && configured !== null) {
+    return configured;
+  }
+  if (!schedulerFallbackAllowed(options.config)) {
+    throw schedulerFallbackRefused(options.config);
+  }
+  return new InMemoryScheduler(clock);
 }
 
 /** Build the canonical application graph and truthfully own its lifecycle. */
@@ -939,14 +978,8 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
         : { databaseUrl: options.config.database.url }),
     });
   const kv = adapters.kv ?? new MemoryKeyValueStore(clock);
-  const scheduler =
-    adapters.scheduler ??
-    configuredScheduler(options.config, options.logger, clock) ??
-    new InMemoryScheduler(clock);
-  const storage =
-    adapters.storage ??
-    configuredStorage(options.config, clock) ??
-    localStorage(options.config, clock);
+  const scheduler = adapters.scheduler ?? resolveScheduler(options, clock);
+  const storage = adapters.storage ?? resolveStoragePort(options.config, clock);
   const exportEncryption =
     adapters.exportEncryption ?? configuredDataExportEncryption(options.config);
   const mailer =
@@ -1010,6 +1043,8 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
     scheduler,
     storage,
     exportEncryption: exportEncryption ?? undefined,
+    ...(adapters.mediaScanner === undefined ? {} : { mediaScanner: adapters.mediaScanner }),
+    ...(adapters.realtime === undefined ? {} : { realtime: adapters.realtime }),
     mailer,
     logger: options.logger,
     clock,

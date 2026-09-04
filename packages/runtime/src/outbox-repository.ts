@@ -22,6 +22,12 @@ export interface ClaimOutboxOptions {
   readonly now: Date;
   readonly limit: number;
   readonly leaseMs: number;
+  /**
+   * Which kinds this dispatcher owns. Two dispatchers poll one table, and a
+   * row claimed by the wrong one is a row that fails ten times and then dead
+   * letters, so the filter is required rather than defaulted.
+   */
+  readonly kinds: readonly string[];
 }
 
 const RETRY_DELAYS_MS = [30_000, 120_000, 600_000, 3_600_000, 21_600_000, 86_400_000] as const;
@@ -45,6 +51,7 @@ export function claimOutboxEvents(
         FROM private.outbox
         WHERE dispatched_at IS NULL
           AND dead_lettered_at IS NULL
+          AND kind = ANY(${options.kinds}::text[])
           AND available_at <= ${options.now}
           AND (claimed_at IS NULL OR claimed_at < ${staleBefore})
         ORDER BY available_at, id
@@ -98,6 +105,49 @@ export async function markOutboxDispatched(
           details: { resource: 'outbox_event', reason: 'lease_lost' },
         });
       }
+    },
+  );
+}
+
+/**
+ * Retire a row this dispatcher can never handle.
+ *
+ * A kind no dispatcher understands is a programming error, not a transient
+ * failure. Running it through the retry ladder burns twenty-four hours and
+ * ten attempts to reach the same conclusion, so it goes straight to the dead
+ * letter table where the replay tool can find it.
+ */
+export async function deadLetterOutboxEvent(
+  prisma: RelayPrismaClient,
+  event: ClaimedOutboxEvent,
+  errorCode: string,
+  now: Date,
+): Promise<void> {
+  await withWorkspaceContext(
+    prisma,
+    { workspaceId: event.workspaceId, role: 'service_role' },
+    async (db) => {
+      await db.outboxDeadLetter.create({
+        data: {
+          workspaceId: event.workspaceId,
+          outboxEventId: event.id,
+          kind: event.kind,
+          dedupeKey: event.dedupeKey,
+          payload: event.payload === null ? Prisma.JsonNull : event.payload,
+          attempts: event.attempts + 1,
+          errorCode,
+          failedAt: now,
+        },
+      });
+      await db.outboxEvent.update({
+        where: { id: event.id },
+        data: {
+          attempts: event.attempts + 1,
+          lastErrorCode: errorCode,
+          claimedAt: null,
+          deadLetteredAt: now,
+        },
+      });
     },
   );
 }

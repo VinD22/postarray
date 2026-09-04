@@ -73,3 +73,29 @@ export {
   createConfiguredCredentialVault,
   type ConfiguredCredentialVault,
 } from './credential-vault';
+
+export { schedulerFallbackAllowed, schedulerFallbackRefused } from './scheduler-fallback';
+
+export {
+  createDomainEventOutboxDispatcher,
+  createWorkflowOutboxDispatcher,
+} from './outbox-dispatcher';
+export { dispatchDomainEventOutbox } from './event-outbox-dispatch';
+export { UnknownOutboxKindError } from './outbox-dispatch';
+
+export { resolveStoragePort } from './runtime';
+export {
+  createRedisRealtimePublisher,
+  createRedisRealtimeEventReader,
+  parseEntry as parseRealtimeStreamEntry,
+  realtimeChannel,
+  realtimeStreamKey,
+  workspaceFromRealtimeChannel,
+  REALTIME_REPLAY_LIMIT,
+  REALTIME_STREAM_MAX_LEN,
+  REALTIME_STREAM_TTL_SECONDS,
+  type RealtimeEventReader,
+  type RealtimeRedisClient,
+  type RealtimeReplayInput,
+  type RedisRealtimePublisherOptions,
+} from './redis-realtime-publisher';

@@ -92,8 +92,12 @@ export class MemoryKeyValueStore implements DisconnectableKeyValueStore {
   }
 
   increment(key: string, options?: KeyValueSetOptions): Promise<number> {
+    return this.incrementBy(key, 1, options);
+  }
+
+  incrementBy(key: string, amount: number, options?: KeyValueSetOptions): Promise<number> {
     const existing = this.live(key);
-    const next = Number.parseInt(existing?.value ?? '0', 10) + 1;
+    const next = Number.parseInt(existing?.value ?? '0', 10) + amount;
     this.entries.set(key, {
       value: String(next),
       // The TTL is applied only when the counter is created, so a busy window
@@ -177,10 +181,19 @@ export class RedisKeyValueStore implements DisconnectableKeyValueStore {
     return result === 'OK';
   }
 
-  async increment(key: string, options?: KeyValueSetOptions): Promise<number> {
-    const next = await this.client.incr(key);
+  increment(key: string, options?: KeyValueSetOptions): Promise<number> {
+    return this.incrementBy(key, 1, options);
+  }
+
+  /**
+   * One round trip whatever the amount. The rate limiter charges a cost per
+   * request, and adding that cost one unit at a time meant an expensive
+   * endpoint made several Redis calls just to account for itself.
+   */
+  async incrementBy(key: string, amount: number, options?: KeyValueSetOptions): Promise<number> {
+    const next = await this.client.incrby(key, amount);
     // Only the creating call sets the expiry, so a window cannot extend itself.
-    if (next === 1 && options?.ttlSeconds !== undefined) {
+    if (next === amount && options?.ttlSeconds !== undefined) {
       await this.client.expire(key, options.ttlSeconds);
     }
     return next;

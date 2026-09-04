@@ -415,6 +415,7 @@ export function ScheduleSheet({
         <SheetFooter className="flex flex-wrap gap-2">
           <Button
             variant="secondary"
+            disabled={busy !== null}
             loading={busy === 'draft'}
             loadingLabel={t.full('composer.autosave.saving')}
             onClick={() => commit('draft')}
@@ -423,7 +424,7 @@ export function ScheduleSheet({
           </Button>
           <Button
             variant="secondary"
-            disabled={!online || totals.blockedCount > 0}
+            disabled={busy !== null || !online || totals.blockedCount > 0}
             loading={busy === 'approval'}
             loadingLabel={t.full('composer.autosave.saving')}
             onClick={() => commit('approval')}
@@ -431,8 +432,15 @@ export function ScheduleSheet({
             {t.full('action.requestApproval')}
           </Button>
           <Button
-            variant="primary"
-            disabled={justScheduled || !online || !totals.canSchedule || instant === null || inPast}
+            variant={instant === null ? 'secondary' : 'primary'}
+            disabled={
+              busy !== null ||
+              justScheduled ||
+              !online ||
+              !totals.canSchedule ||
+              instant === null ||
+              inPast
+            }
             loading={busy === 'schedule' && !justScheduled}
             loadingLabel={t.full('composer.autosave.saving')}
             onClick={() => commit('schedule')}
@@ -447,8 +455,8 @@ export function ScheduleSheet({
             )}
           </Button>
           <Button
-            variant="secondary"
-            disabled={!online || !totals.canSchedule}
+            variant={instant === null ? 'primary' : 'secondary'}
+            disabled={busy !== null || !online || !totals.canSchedule}
             loading={busy === 'publish'}
             loadingLabel={t.full('a11y.announce.publishing')}
             onClick={() => commit('publish')}

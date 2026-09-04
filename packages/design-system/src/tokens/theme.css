@@ -578,6 +578,21 @@
   --status-info-bg: var(--relay-violet-bg);
   --status-info-border: var(--relay-violet-border);
 
+  /* Chart ink. Deliberately monochrome: a reader tells two series apart by the
+     dash pattern and the legend text, never by hue, which is also the only
+     answer that survives colour blindness and a black and white print. The
+     marketing scene accents (marigold, ultramarine) may not appear here.
+
+     Declared once, not once per theme: each one points at a semantic token
+     that section 3 already redeclares for dark, and custom properties resolve
+     at use time, so a chart repaints itself on a theme switch without a second
+     copy here. tokens.ts still carries a real value per theme, because a
+     canvas or OG renderer cannot follow a var(). */
+  --chart-line: var(--text-primary);
+  --chart-line-compare: var(--text-secondary);
+  --chart-grid: var(--border-subtle);
+  --chart-area: var(--surface-sunken);
+
   /* Provider identity. Dots and 1px rules only, never a surface. */
   --brand-x: #0f0f0f;
   --brand-linkedin: #0a66c2;
@@ -929,6 +944,11 @@
   --color-info-bg: var(--status-info-bg);
   --color-info-border: var(--status-info-border);
 
+  --color-chart-line: var(--chart-line);
+  --color-chart-line-compare: var(--chart-line-compare);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-area: var(--chart-area);
+
   --color-brand-x: var(--brand-x);
   --color-brand-linkedin: var(--brand-linkedin);
   --color-brand-instagram: var(--brand-instagram);
@@ -1062,6 +1082,13 @@
   --duration-expressive-sm: 400ms;
   --duration-expressive-md: 650ms;
   --duration-expressive-lg: 900ms;
+  /* Loop periods, not transition durations. A spinner and a skeleton pulse
+     repeat for as long as the wait lasts, so their period is the speed of a
+     continuous indicator rather than the length of a state change, and it has
+     no business on the 80-200ms functional scale. They are named apart so a
+     reviewer can tell a slow transition (a bug) from a calm loop (correct). */
+  --duration-loop-spin: 720ms;
+  --duration-loop: 1600ms;
   --ease-standard: cubic-bezier(0.2, 0, 0.15, 1);
   --ease-entrance: cubic-bezier(0.05, 0.7, 0.1, 1);
   --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);
@@ -1180,6 +1207,49 @@
 }
 
 /* ==========================================================================
+   5b. Typography utilities.
+
+   Three jobs the type scale cannot do on its own, because none of them is a
+   size, a weight or a family. Each one is opt-in on the element that needs it,
+   and none of them changes what font is being used.
+   ========================================================================== */
+
+@layer utilities {
+  /* Titles at 28px and up. Fraunces carries an optical-size axis, and the
+     display cut is what the serif is here for: tighter joins, finer hairlines,
+     less of the chunky reading-size weight that looks clumsy at title scale.
+     `font-optical-sizing: auto` alone leaves the choice to the browser, which
+     resolves opsz from the computed font-size and gets it right only when the
+     element actually is 28px. Pinning the axis makes the display cut the
+     deliberate choice it should be rather than a side effect of a size. */
+  .type-title {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-variation-settings: 'opsz' 28;
+  }
+
+  /* Numbers that change must not move the things beside them. A follower count
+     ticking from 999 to 1000, a countdown, a column of currency: with
+     proportional figures every digit is a different width, so the row jitters
+     on every update and the eye cannot compare two rows down a column.
+     Tabular figures cost nothing and fix both. */
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Post IDs, connection IDs, request IDs, hashes. Monospace so a character is
+     unambiguous when someone reads one out or pastes one into a support
+     thread, at 0.9375em because JetBrains Mono runs large next to Inter and an
+     inline ID should not shout over the sentence carrying it. The tracking is
+     neutral: monospace is already wide enough. */
+  .mono-id {
+    font-family: var(--font-mono);
+    font-size: 0.9375em;
+    letter-spacing: normal;
+  }
+}
+
+/* ==========================================================================
    6. Motion policy. Functional only, and fully removable.
    ========================================================================== */
 
@@ -1247,11 +1317,11 @@
   }
 
   .relay-anim-pulse {
-    animation: relay-pulse 1.6s var(--ease-standard) infinite;
+    animation: relay-pulse var(--duration-loop) var(--ease-standard) infinite;
   }
 
   .relay-anim-spin {
-    animation: relay-spin 720ms linear infinite;
+    animation: relay-spin var(--duration-loop-spin) linear infinite;
   }
 
   .relay-anim-fade-in {
@@ -1318,7 +1388,7 @@
   }
 
   .relay-pop-in {
-    animation: relay-pop-in 320ms var(--ease-out-expo);
+    animation: relay-pop-in var(--duration-slow) var(--ease-out-expo);
   }
 
   /* Sheet entrance (F6 Batch B): slides in from its logical anchor edge with
@@ -1402,7 +1472,34 @@
       var(--surface-sunken) 100%
     );
     background-size: 200% 100%;
-    animation: relay-shimmer 1.6s var(--ease-standard) infinite;
+    animation: relay-shimmer var(--duration-loop) var(--ease-standard) infinite;
+  }
+
+  /* The segmented control's sliding chip. `useSegmentedThumb` measures the
+     inline-axis offset as a length and hands it over as a custom property; the
+     one thing CSS knows that the measurement does not is which way the inline
+     axis points, so the sign lives here and the TypeScript stays
+     direction-free. `inset-inline-start: 0` anchors the chip at the track's
+     inline start in both directions, so the offset always means "this far
+     along the track" and never "this far from the left of the screen". */
+  .relay-segmented-thumb {
+    inset-inline-start: 0;
+    translate: var(--relay-segment-offset, 0px) 0;
+    transition:
+      translate var(--duration-base) var(--ease-standard),
+      inline-size var(--duration-base) var(--ease-standard),
+      block-size var(--duration-base) var(--ease-standard),
+      inset-block-start var(--duration-base) var(--ease-standard);
+  }
+
+  [dir='rtl'] .relay-segmented-thumb {
+    translate: calc(0px - var(--relay-segment-offset, 0px)) 0;
+  }
+
+  /* No entrance. The chip is placed before it is allowed to move, so the first
+     paint shows it already over the selected segment. */
+  .relay-segmented-thumb:not([data-ready='true']) {
+    transition: none;
   }
 
   /* Pressable controls, editorial edition: a quiet 1px settle on press plus

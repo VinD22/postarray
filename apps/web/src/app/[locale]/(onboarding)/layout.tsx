@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 import { PageTransitionProvider } from '@/components/motion';
+import { ProductMark } from '@/components/brand/product-mark';
 import { OnboardingStepList } from '@/components/onboarding/step-list';
 import { Link } from '@/components/link';
 import { getSession } from '@/lib/auth/require-session';
@@ -29,28 +30,34 @@ export default async function OnboardingLayout({ children }: { readonly children
 
   return (
     <SessionProvider session={session}>
-      <div className="bg-surface-canvas min-h-dvh">
-        <header className="border-border-default border-b">
-          <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 md:px-6">
-            <p className="text-title-sm text-text-primary">{intl.t.format('shell.appName')}</p>
+      <div className="bg-surface-sunken min-h-dvh p-2 md:p-3">
+        <header className="border-border-default bg-surface-raised shadow-raised rounded-lg border">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-3 py-2 md:px-4">
+            <p className="text-title-sm text-text-primary flex items-center gap-3 font-semibold">
+              <ProductMark className="size-7 p-[6px]" />
+              <span>{intl.t.format('shell.appName')}</span>
+            </p>
             <Link
               href="/"
-              className="text-body-sm text-text-secondary hover:text-text-primary min-h-9 hover:underline"
+              className="text-body-sm text-text-secondary hover:bg-surface-hover hover:text-text-primary flex min-h-10 items-center rounded-md px-3"
             >
               {intl.t.format('onboarding.exit')}
             </Link>
           </div>
         </header>
 
-        <div className="mx-auto grid max-w-5xl gap-8 px-4 py-8 md:px-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
-          <div className="lg:pt-1">
+        <div className="mx-auto grid max-w-6xl gap-3 pt-3 lg:grid-cols-[16rem_minmax(0,1fr)]">
+          <aside className="border-border-default bg-surface-raised shadow-raised rounded-lg border p-5 lg:sticky lg:top-3 lg:self-start">
             <p className="text-body-md text-text-secondary pb-4">
               {intl.t.format('onboarding.goal')}
             </p>
             <OnboardingStepList />
-          </div>
+          </aside>
 
-          <main id="main" className="min-w-0">
+          <main
+            id="main"
+            className="relay-onboarding-panel border-border-default bg-surface-canvas shadow-raised min-w-0 rounded-lg border p-5 md:p-8 [&_h1]:text-[clamp(2.25rem,1.8rem+1.5vw,3.5rem)] [&_h1]:leading-[0.98] [&_h1]:font-bold [&_h1]:tracking-[-0.04em]"
+          >
             <PageTransitionProvider tier="onboarding">{children}</PageTransitionProvider>
           </main>
         </div>

@@ -48,22 +48,29 @@ import {
   useProviderName,
 } from '@/features/connections/provider';
 import { PublishCelebration, isFreshPublication } from './publish-celebration';
+import { RetryTargetButton } from './retry-target-button';
 import { ReceiptAttempts } from './receipt-attempts';
 import { ReceiptItems } from './receipt-items';
 import { ReceiptTimeline } from './receipt-timeline';
-import { buildTimeline, dispatchLatencyMs } from './timeline-model';
+import { PublishProgress } from './publish-progress';
+import { buildTimeline, dispatchLatencyMs, hasFailedFollowUp } from './timeline-model';
 import { usePostDetail } from './use-receipt';
 import { buildCampaignTargets, campaignOutcome, canExportReceipt } from './types';
 import type { CampaignTargetView, PostDetail } from './types';
 
 export interface ReceiptScreenProps {
   contentItemId: string;
+  publishJobId: string | null;
   calendarHref: string;
 }
 
-export function ReceiptScreen({ contentItemId, calendarHref }: ReceiptScreenProps): ReactNode {
+export function ReceiptScreen({
+  contentItemId,
+  publishJobId,
+  calendarHref,
+}: ReceiptScreenProps): ReactNode {
   const t = useTranslations();
-  const query = usePostDetail(contentItemId);
+  const query = usePostDetail(contentItemId, publishJobId);
 
   if (query.isPending) {
     return (
@@ -190,7 +197,8 @@ function PostDocument({
   // failed target is partially published even when the receipt on screen is a
   // success. Never label the whole thing by the target you happen to be on.
   const state =
-    isCampaign && outcome === 'partially_published'
+    (isCampaign && outcome === 'partially_published') ||
+    (receipt !== null && hasFailedFollowUp(receipt))
       ? ('partially_published' as const)
       : (receipt?.root.state ?? job?.state ?? item.state);
 
@@ -229,8 +237,21 @@ function PostDocument({
       />
 
       <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
-        {/* ---- What happened -------------------------------------------- */}
-        <section aria-labelledby="receipt-summary" className="flex flex-col gap-3">
+        {/*
+          ---- What happened ----------------------------------------------
+
+          `id="receipt"` is the anchor the calendar links to. Three places in
+          the calendar built a `/posts/{id}#receipt` href and no element with
+          that id existed anywhere, so every one of them dropped the reader at
+          the top of the page to find the receipt themselves. It is on the
+          section rather than on the heading so the scroll lands above the
+          heading rather than under the sticky header.
+        */}
+        <section
+          id="receipt"
+          aria-labelledby="receipt-summary"
+          className="flex scroll-mt-20 flex-col gap-3"
+        >
           <SectionHeading id="receipt-summary">{t('web.receipt.section.summary')}</SectionHeading>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -262,15 +283,25 @@ function PostDocument({
             // in the publishing flow, and it earns the loud poster outline
             // that `Notice` deliberately does not carry everywhere else.
             <div className="border-warning-border overflow-hidden rounded-lg border-2">
-              <PartialSuccess targets={targets} />
+              <PartialSuccess targets={targets} publishJobId={receipt?.publishJobId ?? null} />
             </div>
           ) : null}
 
-          {!receipt ? (
+          {!receipt && job ? <PublishProgress job={job} /> : null}
+
+          {!receipt && !job ? (
             <Notice
               tone="info"
-              title={t('web.receipt.notFound.title')}
-              description={t('web.receipt.notFound.body')}
+              title={
+                state === 'approval_requested'
+                  ? t('web.receipt.awaitingApproval.title')
+                  : t('web.receipt.notStarted.title')
+              }
+              description={
+                state === 'approval_requested'
+                  ? t('web.receipt.awaitingApproval.body')
+                  : t('web.receipt.notStarted.body')
+              }
             />
           ) : null}
         </section>
@@ -434,7 +465,14 @@ function Term({ children }: { children: ReactNode }): ReactNode {
   return <span className="font-display text-label tracking-wide">{children}</span>;
 }
 
-function PartialSuccess({ targets }: { targets: readonly CampaignTargetView[] }): ReactNode {
+function PartialSuccess({
+  targets,
+  publishJobId,
+}: {
+  targets: readonly CampaignTargetView[];
+  /** The campaign's publish job. A retry is scoped to a variant inside it. */
+  publishJobId: string | null;
+}): ReactNode {
   const t = useTranslations();
   const providerName = useProviderName();
 
@@ -476,18 +514,17 @@ function PartialSuccess({ targets }: { targets: readonly CampaignTargetView[] })
             t('receipt.permalinkUnavailable', { provider: providerName(target.provider) })
           )
         ) : (
-          t(`state.${target.state}.label`)
+          <span className="flex flex-col gap-2">
+            <span>{t(`state.${target.state}.label`)}</span>
+            {/*
+              The retry sits on the target it retries, not under the group.
+              A single button beneath a list of failures would look like it
+              retried all of them, which is the one thing it must never do.
+            */}
+            <RetryTargetButton target={target} publishJobId={publishJobId} />
+          </span>
         ),
       }))}
-      actions={
-        failed.length > 0 ? (
-          <Notice
-            tone="info"
-            title={t('web.receipt.partial.retryUnavailable.title')}
-            description={t('web.receipt.partial.retryUnavailable.body')}
-          />
-        ) : null
-      }
     />
   );
 }

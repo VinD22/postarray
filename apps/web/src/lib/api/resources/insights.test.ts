@@ -1,10 +1,38 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { analyticsOverviewViewSchema } from '@relay/contracts';
 
 const callMock = vi.hoisted(() => vi.fn());
 
 vi.mock('../call', () => ({ call: callMock }));
 
-import { shortLinksApi } from './insights';
+import { analyticsApi, shortLinksApi } from './insights';
+
+describe('analytics browser contracts', () => {
+  beforeEach(() => {
+    callMock.mockReset();
+    callMock.mockResolvedValue(null);
+  });
+
+  it('provides a schema-valid overview to explicit demo mode', async () => {
+    await analyticsApi.getOverview({
+      connectionIds: [],
+      from: '2026-08-01T00:00:00.000Z',
+      to: '2026-09-01T00:00:00.000Z',
+      metric: 'impressions',
+    });
+
+    const demo = callMock.mock.calls[0]?.[2];
+    expect(typeof demo).toBe('function');
+    if (typeof demo !== 'function') throw new Error('Expected a demo analytics reader');
+
+    const overview = analyticsOverviewViewSchema.parse(demo());
+    expect(overview.rows).toHaveLength(3);
+    expect(overview.accountsWithData).toBeLessThan(overview.accountsRequested);
+    expect(overview.rows.find((row) => row.reading.value === null)?.reading.availability).not.toBe(
+      'available',
+    );
+  });
+});
 
 describe('short link browser contracts', () => {
   beforeEach(() => {

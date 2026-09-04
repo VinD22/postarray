@@ -340,13 +340,35 @@ export const SEED_DOMAINS: readonly BrandedDomain[] = [
 
 export const SEED_BOOTSTRAP: ComposerBootstrap = {
   master: SEED_MASTER,
+  updatedAt: '2026-08-04T07:05:00.000Z',
   accounts: SEED_ACCOUNTS,
   sets: SEED_SETS,
   signatures: SEED_SIGNATURES,
   brandedDomains: SEED_DOMAINS,
   selectedConnectionIds: ['conn_seed_x_acme', 'conn_seed_li_acme'],
   overrides: {},
-  settings: {},
+  settings: {
+    conn_seed_x_acme: {
+      destination: {
+        destinationId: 'dest_seed_x_launch_community',
+        externalId: 'x-community-acme-builders',
+        displayLabel: 'Acme Builders',
+      },
+      mentions: [],
+      privacyValue: null,
+      disclosure: null,
+    },
+    conn_seed_li_acme: {
+      destination: {
+        destinationId: 'dest_seed_li_acme_europe',
+        externalId: 'linkedin-org-acme-europe',
+        displayLabel: 'Acme Europe',
+      },
+      mentions: [],
+      privacyValue: 'public',
+      disclosure: null,
+    },
+  },
   approvalPinned: false,
   approverName: 'Dana Ito',
   approvalPolicy: 'Two approvers for project Acme EU',
@@ -364,6 +386,9 @@ export function initialComposerState(bootstrap: ComposerBootstrap): ComposerStat
     linkPlan: { mode: 'original' as const, brandedDomain: null, utm: {} },
     appliedSetId: null,
     approvalPinned: bootstrap.approvalPinned,
+    // A target that arrived from the server is already in step with it. Only
+    // an edit made here puts a connection on this list.
+    dirtyConnectionIds: [],
     revision: 0,
   };
 }

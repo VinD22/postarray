@@ -32,7 +32,7 @@ export const webShellMessages = {
   'shell.demo.body':
     'Rozhraní Post Array API není z tohoto prohlížeče dostupné, takže obrazovky jsou vyplněny nasazeným příkladem pracovního prostoru. Nic zde není spojeno se skutečným účtem a nic nelze publikovat.',
   'shell.demo.howToConnect':
-    'Nastavte NEXT_PUBLIC_RELAY_API_URL a restartujte aplikaci, abyste mohli používat živá data.',
+    'Nastavte NEXT_PUBLIC_POSTARRAY_API_URL a restartujte aplikaci, abyste mohli používat živá data.',
 
   /* -- Connectivity ------------------------------------------------------ */
   'shell.offline.title': 'Jste offline',

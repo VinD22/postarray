@@ -78,8 +78,11 @@ The vermilion button's focus ring is still terracotta and still `outline-offset`
 which is the only reason it is visible: terracotta drawn _on_ the vermilion fill
 measures 1.02:1. Do not give the primary button an inset focus ring.
 
-`--cta-*` and `--accent-blush-*` survive as small-control fills (the calendar
-view switch, the growth plan tabs, the "today" cell). They are warm paper tints
+`--cta-*` and `--accent-blush-*` survive as small-control fills (the "today"
+cell). They no longer fill the calendar view switch or the growth plan tabs:
+both now use `SegmentedControl`, whose chip is a raised paper surface in a
+sunken track, which is the same physical idea as every other editorial
+surface. They are warm paper tints
 (`#EDE8E0`), not the sunshine yellow and bubblegum pink they were named for,
 and ink is still the only foreground either one carries.
 
@@ -118,17 +121,65 @@ always carried:
 
 Everything outside those three lines is still banned.
 
+### Charts
+
+Four tokens, all monochrome, all aliases of colours the system already ships:
+`--chart-line` (ink), `--chart-line-compare` (text-secondary), `--chart-grid`
+(border-subtle), `--chart-area` (surface-sunken). A chart introduces no hue of
+its own, and marigold and ultramarine remain marketing scene vocabulary that
+may not appear in one.
+
+Series are told apart by **dash pattern plus a text legend**, never by colour.
+That is the only differentiator that survives colour blindness, a greyscale
+print and a bad projector, and `contrast.test.ts` asserts that the two series
+strokes stay too close in luminance to be told apart any other way.
+
+Four rules are compiled into `src/charts/` and are not props a caller can turn
+off:
+
+1. A missing reading is a gap in the line. Never an interpolation, never a
+   zero, never a dash in the table.
+2. Nothing animates. No draw-in, no transition on a path's `d`, no counted-up
+   number. `charts.test.tsx` reads the sources and fails on any of them.
+3. Every chart carries a caption and a "View as table" fallback.
+4. Every point is reachable from the keyboard through one tab stop and the
+   arrow keys.
+
 ### Motion
 
 Two tiers. Functional, in-app motion stays 120-200ms, three named easings,
 nothing animates for spectacle and nothing animates data. Expressive motion
-(400-900ms) is reserved for marketing and overlay entrances/exits. **GSAP is
+(400-900ms) is reserved for marketing and overlay entrances/exits.
+
+Continuous indicators are a third thing and are named apart:
+`--duration-loop-spin` (720ms, one rotation of `Spinner`) and `--duration-loop`
+(1600ms, one breath of the skeleton pulse and one pass of the shimmer). They
+are loop periods, not transition durations, so the functional ceiling does not
+apply to them. Everything else in `theme.css` reaches for a `--duration-*`
+token: `src/tokens/motion-literals.test.ts` fails the build on a literal time
+inside an `animation` or `transition` declaration anywhere outside the token
+block, which is how a 320ms popover got in unnoticed the first time. **GSAP is
 banned in this package** — it lives only in `apps/web/src/lib/motion`; this
 package stays CSS-only, so a component here animates without a JS branch and
 the global reduced-motion override actually reaches it.
 `prefers-reduced-motion: reduce` collapses
 every transition and animation to 1ms globally, and `usePrefersReducedMotion`
 covers the cases CSS cannot reach.
+
+### Typography utilities
+
+Three things a `--text-*` step cannot say, so each is a utility you opt into:
+
+| Utility | Does | Use on |
+| --- | --- | --- |
+| `.type-title` | Fraunces at its display optical size (`opsz` 28) | Titles at 28px and up |
+| `.num` | `tabular-nums` | Any number that changes or sits in a column |
+| `.mono-id` | JetBrains Mono at 0.9375em, neutral tracking | IDs, hashes, timestamps |
+
+`.num` is not a preference. A follower count going from 999 to 1000 shifts
+every proportional digit beside it, and a column of proportional figures cannot
+be scanned vertically. `PageHeader`, `MetricValue`, numeric `TableCell`s and
+`Timeline` timestamps already carry the right one.
 
 ### Direction
 

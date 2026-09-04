@@ -208,6 +208,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Temel $29 plan 3 aktif proje içerir. Bir çalışma alanı, başka bir hesap oluşturmadan 20 projeye kadar hak kazanabilir.',
   'settings.ui.projects.capacitySummary': '{limit} üzerinden {used}',
+  'settings.ui.projects.atLimitAction': 'Planları gör',
   'settings.ui.projects.atLimitTitle': 'Bu çalışma alanı tüm proje kotasını kullandı',
   'settings.ui.projects.atLimitBody':
     'Başka bir tane eklemeden önce etkin olmayan bir projeyi arşivleyin veya çalışma alanı hakkını değiştirin. Mevcut limit {limit}.',

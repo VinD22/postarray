@@ -25,16 +25,12 @@ export function SettingsNav(): ReactNode {
     <nav
       aria-label={t('settings.ui.nav.label')}
       className={cn(
-        'relay-scrollbar border-border-subtle bg-surface-canvas border-b',
-        'lg:border-border-subtle lg:sticky lg:top-0 lg:h-fit lg:border-e lg:border-b-0',
-        'lg:w-60 lg:shrink-0 lg:self-start lg:py-4',
+        'relay-scrollbar border-border-default bg-surface-raised shadow-raised rounded-lg border',
+        'lg:sticky lg:top-[5.75rem] lg:h-fit lg:self-start lg:py-2',
       )}
     >
       <ul
-        className={cn(
-          'flex gap-1 overflow-x-auto px-2 py-2',
-          'lg:flex-col lg:gap-0.5 lg:overflow-visible lg:px-2 lg:py-0',
-        )}
+        className={cn('flex gap-1 overflow-x-auto p-2', 'lg:flex-col lg:gap-1 lg:overflow-visible')}
       >
         {SETTINGS_SECTIONS.map((section) => {
           const active = pathname === section.href || pathname.startsWith(`${section.href}/`);
@@ -52,7 +48,7 @@ export function SettingsNav(): ReactNode {
                   'transition-colors duration-[--duration-fast] ease-[--ease-standard]',
                   'motion-reduce:transition-none',
                   active &&
-                    'bg-accent-subtle text-text-accent hover:bg-accent-subtle-hover font-medium',
+                    'bg-surface-sunken text-text-primary hover:bg-surface-sunken font-semibold',
                 )}
               >
                 <span className="flex items-center gap-2">

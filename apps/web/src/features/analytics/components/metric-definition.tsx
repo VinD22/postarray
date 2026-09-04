@@ -74,12 +74,20 @@ export function MetricDefinitionBody({ definition }: MetricDefinitionBodyProps):
           {
             id: 'denominator',
             term: t('analytics.definition.term.denominator'),
-            definition: t(denominatorLabelKey(definition.denominator)),
+            // Null is "this read did not report it", which is a different fact
+            // from `none` and must not be printed as one.
+            definition:
+              definition.denominator === null
+                ? t('analytics.value.unavailable')
+                : t(denominatorLabelKey(definition.denominator)),
           },
           {
             id: 'aggregation',
             term: t('analytics.definition.term.aggregation'),
-            definition: t(aggregationLabelKey(definition.aggregation)),
+            definition:
+              definition.aggregation === null
+                ? t('analytics.value.unavailable')
+                : t(aggregationLabelKey(definition.aggregation)),
           },
           {
             id: 'history',

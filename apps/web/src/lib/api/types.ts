@@ -254,6 +254,10 @@ export interface ContentItemView {
 export interface CalendarEntryView {
   readonly publishJobId: string | null;
   readonly contentItemId: string;
+  /** Present on current API responses and used by the project filter. */
+  readonly projectId?: string | null;
+  /** Present for target-backed rows and used by the account filter. */
+  readonly connectionId?: string | null;
   readonly title: string;
   readonly scheduledAt: IsoInstant;
   readonly timeZone: string;
@@ -294,6 +298,7 @@ export type ActionItemKind =
   | 'comment_failed'
   | 'analytics_stale'
   | 'rss_stalled'
+  | 'media_scan_stuck'
   | 'webhook_failing'
   | 'usage_balance';
 

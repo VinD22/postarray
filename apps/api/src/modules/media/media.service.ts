@@ -9,6 +9,7 @@ import type {
   MediaAssetView,
   MediaDerivativeRequest,
   MediaDerivativeView,
+  MediaReadUrls,
   Services,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
@@ -35,6 +36,10 @@ export class MediaService {
 
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView> {
     return this.services.media.finalizeUpload(ctx, mediaId);
+  }
+
+  getReadUrls(ctx: ActorContext, mediaId: string): Promise<MediaReadUrls> {
+    return this.services.media.getReadUrls(ctx, mediaId);
   }
 
   acceptDirectUpload(

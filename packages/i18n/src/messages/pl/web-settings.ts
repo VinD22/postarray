@@ -206,6 +206,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Plan podstawowy za 29 USD obejmuje 3 aktywne projekty. Obszar roboczy może mieć uprawnienie do 20 bez tworzenia kolejnego konta.',
   'settings.ui.projects.capacitySummary': '{used} z {limit}',
+  'settings.ui.projects.atLimitAction': 'Zobacz plany',
   'settings.ui.projects.atLimitTitle': 'Ten obszar roboczy wykorzystał każde miejsce na projekt',
   'settings.ui.projects.atLimitBody':
     'Zarchiwizuj nieaktywny projekt lub zmień uprawnienie obszaru roboczego przed dodaniem kolejnego. Obecny limit to {limit}.',

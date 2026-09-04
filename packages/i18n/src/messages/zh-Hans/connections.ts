@@ -60,6 +60,11 @@ export const connectionMessages = {
   'connection.oauth.claimComplete': 'Selected accounts are connected',
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts': '无法连接此 {provider} 登录名上的任何帐户。 {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    '此 {provider} 登录下没有可连接的账号。',
+  'connection.oauth.claimFailed': '无法连接这些账号',
+  'connection.oauth.claimFailedAction':
+    '平台上没有任何变更。请重试；若持续失败，请重新开始连接。',
   'connection.oauth.canceled': '{provider} 上的连接已取消。一切都没有改变。',
   'connection.oauth.alreadyConnected': '{account} 已连接到此工作区。',
   'connection.oauth.connectedToAnotherWorkspace':

@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-import { cn, panelPoster } from '@relay/design-system/utils';
+import { cn, panelSurface } from '@relay/design-system/utils';
 
 import { AsideScene, type AsideSceneCard } from '@/components/auth/aside-scene';
+import { ProductMark } from '@/components/brand/product-mark';
+import { Link } from '@/components/link';
 import { getStaticIntl } from '@/lib/i18n/server';
 
 /**
@@ -12,11 +14,9 @@ import { getStaticIntl } from '@/lib/i18n/server';
  * A form column and, from 1024px, a quiet editorial column that says what the
  * product does in three factual sentences. No logos, no testimonials, no
  * screenshots of invented dashboards: nothing on this page claims anything we
- * cannot show. The three sentences sit in slightly rotated, hard-shadowed
- * paper cards (the loud system's poster-note treatment; full sentences don't
- * fit `Sticker`, which is built for short badge text) over `AsideScene` —
- * three abstract "post preview" cards that trade places on a loop. Both are
- * plain markup and CSS, so this stays `force-static`.
+ * cannot show. The three sentences sit in lightly rotated editorial cards over
+ * `AsideScene`, where three abstract post previews trade places on a loop. Both
+ * are plain markup and CSS, so this stays `force-static`.
  */
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
@@ -54,21 +54,31 @@ export default async function AuthLayout({
   }));
 
   return (
-    <div className="grid min-h-dvh grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-      <main id="main" className="flex flex-col justify-center px-5 py-10 sm:px-8 lg:px-12">
+    <div className="bg-surface-sunken grid min-h-dvh grid-cols-1 gap-2 p-2 lg:grid-cols-[minmax(0,1.08fr)_minmax(28rem,0.92fr)] lg:p-3">
+      <main
+        id="main"
+        className="bg-surface-canvas flex flex-col justify-center rounded-lg px-4 py-10 md:px-8 lg:px-12"
+      >
         <div
-          className={cn('mx-auto flex w-full max-w-[28rem] flex-col gap-6 p-6 sm:p-8', panelPoster)}
+          className={cn(
+            'relay-auth-panel shadow-raised mx-auto flex w-full max-w-[31rem] flex-col gap-7 p-6 md:p-9',
+            panelSurface,
+          )}
         >
-          <p className="text-title-md text-text-primary font-display font-bold">
-            {intl.t.format('shell.appName')}
-          </p>
+          <Link
+            href="/"
+            className="text-title-sm text-text-primary flex min-h-11 items-center gap-3 self-start font-semibold"
+          >
+            <ProductMark />
+            <span>{intl.t.format('shell.appName')}</span>
+          </Link>
           {children}
         </div>
       </main>
 
-      <aside className="bg-accent text-accent-on hidden flex-col justify-center gap-10 px-12 py-10 lg:flex">
-        <div className="max-w-[34ch]">
-          <h2 className="text-title-lg font-display font-bold text-balance">
+      <aside className="relay-auth-scene bg-surface-inverted text-text-inverted relative hidden overflow-hidden rounded-lg lg:flex lg:flex-col lg:justify-between lg:gap-10 lg:px-12 lg:py-12">
+        <div className="relative z-10 max-w-[34ch]">
+          <h2 className="font-display text-[clamp(2.5rem,4vw,4.75rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance">
             {intl.t.format('auth.aside.title')}
           </h2>
           <ul className="flex flex-col gap-5 pt-6">
@@ -76,8 +86,7 @@ export default async function AuthLayout({
               <li key={point.key}>
                 <p
                   className={cn(
-                    'bg-surface-raised text-body-md text-text-primary p-4',
-                    panelPoster,
+                    'border-border-default bg-surface-raised text-body-md text-text-primary shadow-raised rounded-lg border p-4',
                     point.rotate,
                   )}
                 >
@@ -88,7 +97,9 @@ export default async function AuthLayout({
           </ul>
         </div>
 
-        <AsideScene cards={sceneCards} />
+        <div className="relative z-10">
+          <AsideScene cards={sceneCards} />
+        </div>
       </aside>
     </div>
   );

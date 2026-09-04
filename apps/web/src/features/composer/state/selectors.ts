@@ -213,3 +213,24 @@ export function repeatOccurrences(
   }
   return output;
 }
+
+/**
+ * Is there anything here worth a server row?
+ *
+ * `/compose` creates the draft on the first edit that has content, not on the
+ * visit, so this is the line between "somebody opened the composer" and
+ * "somebody started a post". A channel selection alone is deliberately below
+ * the line: the rail can seed itself from the last post, and a seeded
+ * selection is not something a person did.
+ */
+export function hasMeaningfulEdit(state: ComposerState): boolean {
+  return (
+    state.master.body.trim().length > 0 ||
+    (state.master.title ?? '').trim().length > 0 ||
+    state.master.mediaIds.length > 0 ||
+    state.master.threadItems.length > 0 ||
+    state.master.schedule !== null ||
+    Object.keys(state.overrides).length > 0 ||
+    Object.keys(state.settings).length > 0
+  );
+}

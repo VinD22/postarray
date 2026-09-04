@@ -13,6 +13,7 @@ const RING_RADIUS = 14;
 
 // How much of the distance to the pointer the ring closes per frame.
 const RING_LERP = 0.18;
+const CURSOR_TARGET_SELECTOR = '[data-cursor], a, button, summary';
 
 /**
  * A dot + ring that replaces the native cursor on fine-pointer, hover-capable,
@@ -26,8 +27,9 @@ const RING_LERP = 0.18;
  *
  * The native cursor is never hidden globally — only on `a`/`button` while
  * this component is mounted and active (`[data-cursor-active] :where(a,
- * button)` in theme.css). Tab / `:focus-visible` fades this cursor out and
- * restores the native one until the next pointermove.
+ * button)` in theme.css). Links, buttons, summaries and opted-in media grow
+ * the ring. Tab / `:focus-visible` fades this cursor out and restores the
+ * native one until the next pointermove.
  */
 export function CustomCursor() {
   const motionOk = useMotionOk({ requireFinePointer: true });
@@ -80,21 +82,22 @@ export function CustomCursor() {
       showCursor();
     };
 
-    // Event delegation: any `data-cursor="link"|"button"|"media"` ancestor
-    // scales the ring. The specific value doesn't change the effect.
+    // Event delegation keeps ordinary controls expressive without requiring
+    // every shared button and link to carry marketing-only props. A custom
+    // `data-cursor` target still opts non-control media into the same response.
     const handlePointerOver = (event: PointerEvent) => {
-      if (event.target instanceof Element && event.target.closest('[data-cursor]')) {
+      if (event.target instanceof Element && event.target.closest(CURSOR_TARGET_SELECTOR)) {
         ring.setAttribute('data-cursor-hover', 'true');
       }
     };
 
     const handlePointerOut = (event: PointerEvent) => {
       const leaving =
-        event.target instanceof Element ? event.target.closest('[data-cursor]') : null;
+        event.target instanceof Element ? event.target.closest(CURSOR_TARGET_SELECTOR) : null;
       if (!leaving) return;
       const entering =
         event.relatedTarget instanceof Element
-          ? event.relatedTarget.closest('[data-cursor]')
+          ? event.relatedTarget.closest(CURSOR_TARGET_SELECTOR)
           : null;
       if (entering !== leaving) {
         ring.setAttribute('data-cursor-hover', 'false');

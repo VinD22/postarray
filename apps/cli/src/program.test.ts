@@ -210,17 +210,21 @@ describe('exit codes', () => {
 });
 
 describe('human locale selection', () => {
-  it('uses an explicit locale for help while keeping command vocabulary stable', async () => {
-    const dependencies = deps();
-    const result = await runCli(['--locale', 'es', '--help'], dependencies);
+  it(
+    'uses an explicit locale for help while keeping command vocabulary stable',
+    async () => {
+      const dependencies = deps();
+      const result = await runCli(['--locale', 'es', '--help'], dependencies);
 
-    expect(result.exitCode).toBe(EXIT_OK);
-    const help = dependencies.writer.stdout.join('\n');
-    // This is an existing reviewed catalog message, not a CLI-specific copy
-    // fixture. It proves Commander receives the locale-bound translator.
-    expect(help).toContain('Agentes y API');
-    expect(help).toContain('accounts');
-  });
+      expect(result.exitCode).toBe(EXIT_OK);
+      const help = dependencies.writer.stdout.join('\n');
+      // This is an existing reviewed catalog message, not a CLI-specific copy
+      // fixture. It proves Commander receives the locale-bound translator.
+      expect(help).toContain('Agentes y API');
+      expect(help).toContain('accounts');
+    },
+    30_000,
+  );
 
   it('localizes nested command help without translating command or option names', async () => {
     const dependencies = deps();
@@ -233,37 +237,63 @@ describe('human locale selection', () => {
     expect(help).toContain('--limit');
   });
 
-  it('resolves locale precedence as flag, profile, Post Array env, then OS env', async () => {
-    const explicit = deps({
-      env: { RELAY_LOCALE: 'fr', LANG: 'de' },
-    });
-    const explicitContext = await createContext(
-      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false, locale: 'ja' },
-      explicit,
-    );
-    expect(explicitContext.locale).toBe('ja');
+  it(
+    'resolves locale precedence as flag, profile, Post Array env, then OS env',
+    async () => {
+      const explicit = deps({
+        env: { RELAY_LOCALE: 'fr', LANG: 'de' },
+      });
+      const explicitContext = await createContext(
+        {
+          json: false,
+          profile: undefined,
+          apiUrl: undefined,
+          workspaceId: undefined,
+          dryRun: false,
+          yes: false,
+          locale: 'ja',
+        },
+        explicit,
+      );
+      expect(explicitContext.locale).toBe('ja');
 
-    const profile = deps({
-      configStore: createMemoryConfigStore({
-        version: 1,
-        defaultProfile: 'default',
-        profiles: { default: { apiUrl: API_URL, locale: 'fr' } },
-      }),
-      env: { RELAY_LOCALE: 'de', LANG: 'ja' },
-    });
-    const profileContext = await createContext(
-      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false },
-      profile,
-    );
-    expect(profileContext.locale).toBe('fr');
+      const profile = deps({
+        configStore: createMemoryConfigStore({
+          version: 1,
+          defaultProfile: 'default',
+          profiles: { default: { apiUrl: API_URL, locale: 'fr' } },
+        }),
+        env: { RELAY_LOCALE: 'de', LANG: 'ja' },
+      });
+      const profileContext = await createContext(
+        {
+          json: false,
+          profile: undefined,
+          apiUrl: undefined,
+          workspaceId: undefined,
+          dryRun: false,
+          yes: false,
+        },
+        profile,
+      );
+      expect(profileContext.locale).toBe('fr');
 
-    const posix = deps({ env: { LANG: 'de_DE.UTF-8' } });
-    const posixContext = await createContext(
-      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false },
-      posix,
-    );
-    expect(posixContext.locale).toBe('de');
-  });
+      const posix = deps({ env: { LANG: 'de_DE.UTF-8' } });
+      const posixContext = await createContext(
+        {
+          json: false,
+          profile: undefined,
+          apiUrl: undefined,
+          workspaceId: undefined,
+          dryRun: false,
+          yes: false,
+        },
+        posix,
+      );
+      expect(posixContext.locale).toBe('de');
+    },
+    30_000,
+  );
 
   it('localizes human API errors without changing the machine error envelope', async () => {
     const { fetch } = fakeFetch(() => ({

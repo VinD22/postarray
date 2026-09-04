@@ -166,6 +166,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     '$29 기본 요금제에는 활성 프로젝트 3개가 포함됩니다. 작업공간은 다른 계정을 만들지 않고도 최대 20개 프로젝트까지 권한을 받을 수 있습니다.',
   'settings.ui.projects.capacitySummary': '{limit}개 중 {used}개',
+  'settings.ui.projects.atLimitAction': '요금제 보기',
   'settings.ui.projects.atLimitTitle': '이 작업공간은 모든 프로젝트 슬롯을 사용했습니다',
   'settings.ui.projects.atLimitBody':
     '다른 프로젝트를 추가하기 전에 비활성 프로젝트를 보관하거나 작업공간 권한을 변경하세요. 현재 한도는 {limit}입니다.',

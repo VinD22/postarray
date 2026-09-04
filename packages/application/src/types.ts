@@ -59,6 +59,9 @@ import type {
   ValidationResult,
   VariantOverrides,
   WebhookEventName,
+  DomainEventEnvelope,
+  RealtimeEventInput,
+  MediaReadUrls,
   ErrorClass,
   ErrorCode,
 } from '@relay/contracts';
@@ -278,6 +281,45 @@ export interface MailerPort {
 }
 
 /** Safe workflow context. It may be persisted in Temporal history. */
+/**
+ * One claimed domain-event row, as the outbox repository hands it over. Kept
+ * structural so `packages/application` does not depend on the runtime's
+ * repository types.
+ */
+export interface ClaimedDomainEventRow {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly kind: string;
+  readonly dedupeKey: string;
+  readonly payload: unknown;
+  readonly createdAt?: Date | null;
+}
+
+/** Fans a claimed domain event out to webhooks, notifications and realtime. */
+export interface DomainEventService {
+  dispatch(row: ClaimedDomainEventRow): Promise<void>;
+}
+
+/**
+ * Pushes an event to connected clients. Optional: a deployment with no Redis
+ * still delivers webhooks and still writes notifications, it simply has no
+ * live updates.
+ */
+export interface RealtimePublisherPort {
+  publish(event: DomainEventEnvelope): Promise<void>;
+  /**
+   * Push a live update that has no outbox row behind it.
+   *
+   * The outbox fires at campaign boundaries. The states a person actually
+   * watches on a receipt screen, `preparing_media` through
+   * `provider_processing`, are set in between and have no domain event, so the
+   * calls that change them publish here directly. Nothing durable depends on
+   * this: it is a hint that a query is stale, and the truth is the row that
+   * was just written.
+   */
+  publishStatus(event: RealtimeEventInput): Promise<void>;
+}
+
 export interface WorkflowActorContext {
   readonly workspaceId: string;
   readonly correlationId: string;
@@ -441,7 +483,19 @@ export interface DataExportContent {
   readonly expiresAt: string;
 }
 
+/**
+ * Which of the three schedulers is in play.
+ *
+ * `temporal` executes durably. `inline` runs workflow bodies in this process
+ * with no durable history. `memory` records intent and never executes at all.
+ * Readiness reports this so a process that came up degraded is visibly not
+ * ready, rather than accepting schedules it will never honour.
+ */
+export type SchedulerKind = 'temporal' | 'inline' | 'memory';
+
 export interface SchedulerPort {
+  /** See `SchedulerKind`. Read by the health report. */
+  describeKind(): SchedulerKind;
   schedulePublish(input: {
     readonly jobId: string;
     readonly workspaceId: string;
@@ -546,6 +600,33 @@ export interface SchedulerPort {
     readonly mediaAssetId: string;
     readonly presetKey: string;
     readonly workflowInput: MediaDerivativeWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  /**
+   * One signed delivery to one customer endpoint.
+   *
+   * Optional in the same way `scheduleMediaDerivative` is: a deployment with
+   * no scheduler still records the delivery row, it simply cannot send it. The
+   * workflow id is deterministic per delivery, so a repeated dispatch of the
+   * same outbox row joins the run that already exists rather than sending the
+   * event twice.
+   */
+  /**
+   * Decide whether an uploaded object may be published.
+   *
+   * Optional like the other worker-side schedules. Without it the asset stays
+   * `pending`, validation keeps refusing it, and the action centre says why,
+   * which is honest. What must never happen is unexamined bytes reaching a
+   * provider.
+   */
+  scheduleMediaScan?(input: {
+    readonly workspaceId: string;
+    readonly mediaAssetId: string;
+    readonly workflowInput: MediaScanWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  scheduleWebhookDelivery?(input: {
+    readonly workspaceId: string;
+    readonly deliveryId: string;
+    readonly workflowInput: WebhookDeliveryWorkflowInput;
   }): Promise<{ readonly workflowId: string; readonly runId: string }>;
   describe(input: {
     readonly jobId: string;
@@ -837,6 +918,13 @@ export interface ServiceDeps {
     >
   >;
   readonly exportEncryption?: DataExportEncryptionPort;
+  /**
+   * Pushes domain events to connected clients. Absent until a deployment has
+   * Redis; webhooks and notifications work without it, live updates do not.
+   */
+  readonly realtime?: RealtimePublisherPort;
+  /** Worker-only. The API never decodes uploaded bytes. */
+  readonly mediaScanner?: MediaScannerPort;
   readonly mailer: MailerPort;
   readonly logger: Logger;
   readonly clock: Clock;
@@ -1957,7 +2045,52 @@ export interface MediaDerivativeService {
 }
 
 /** Worker-facing. Writes the row only once the bytes are actually stored. */
+/**
+ * What a scan concluded about one uploaded object.
+ *
+ * `failed` is a scanner that could not reach a verdict. It is deliberately not
+ * `clean`: a scanner outage must not become an approval.
+ */
+export interface MediaScanResult {
+  readonly verdict: 'clean' | 'suspicious' | 'infected' | 'failed';
+  /** Read from the bytes, never the client's claim. */
+  readonly detectedMimeType: string | null;
+  readonly width: number | null;
+  readonly height: number | null;
+  readonly durationMs: number | null;
+  /** An i18n key, so the reason reaches the person in their language. */
+  readonly noteKey: string | null;
+  readonly scanner: 'passthrough' | 'clamav';
+}
+
+/**
+ * Decides whether an uploaded object may be published.
+ *
+ * Worker-only, for the same reason `sharp` is: the API never decodes bytes
+ * a stranger uploaded.
+ */
+export interface MediaScannerPort {
+  scan(input: {
+    readonly workspaceId: string;
+    readonly storageKey: string;
+    readonly claimedMimeType: string;
+    readonly byteSize: number;
+  }): Promise<MediaScanResult>;
+}
+
 export interface WorkerMediaService {
+  /**
+   * Move one asset out of `pending`.
+   *
+   * Assets are created `pending` and validation refuses anything that is not
+   * `clean`, so until this existed no uploaded image or video could be
+   * published at all: a person attached a photo, scheduled it, and got a
+   * text-only post with no explanation.
+   */
+  scanMediaAsset(
+    ctx: WorkflowActorContext,
+    input: { readonly mediaAssetId: string },
+  ): Promise<{ readonly scanState: string; readonly noteKey: string | null }>;
   produceDerivative(
     ctx: WorkflowActorContext,
     input: {
@@ -1967,6 +2100,26 @@ export interface WorkerMediaService {
     },
     transform: MediaTransformFn,
   ): Promise<MediaDerivativeView>;
+}
+
+/** What the scan workflow receives. Ids only; the bytes are read by the activity. */
+export interface MediaScanWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly mediaAssetId: string;
+}
+
+/**
+ * What the webhook delivery workflow receives. Ids and the event name only:
+ * the body itself is read from the delivery row by the activity, so the
+ * bytes that were signed cannot drift from the bytes that were stored.
+ */
+export interface WebhookDeliveryWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly deliveryId: string;
+  readonly endpointId: string;
+  readonly eventName: WebhookEventName;
+  readonly isRedelivery: boolean;
+  readonly maxAttempts: number;
 }
 
 /** What the derivative workflow receives. Ids, geometry and MIME types only. */
@@ -1996,6 +2149,11 @@ export interface MediaService {
     readonly retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  /**
+   * Short-lived URLs a browser can load this asset from. See the
+   * implementation: renditions that do not exist are null, never guessed.
+   */
+  getReadUrls(ctx: ActorContext, mediaId: string): Promise<MediaReadUrls>;
   /**
    * Accept the upload body itself.
    *
@@ -2687,6 +2845,7 @@ export interface Services {
   readonly growth: GrowthService;
   readonly assistant: AssistantService;
   readonly webhooks: WebhookService;
+  readonly domainEvents: DomainEventService;
   readonly credentials: CredentialVaultService;
   readonly apiKeys: ApiKeyService;
   readonly serviceAccounts: ServiceAccountService;

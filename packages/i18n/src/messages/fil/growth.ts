@@ -4,6 +4,10 @@ export const growthMessages = {
   'growth.subtitle':
     'Isang ginabayang plano na binuo mula sa mga katotohanang kinukumpirma mo. Nagmumungkahi ito ng trabaho. Ito ay hindi kailanman naglalathala sa sarili nitong.',
 
+  'growth.profile.noProject':
+
+    'Pumili ng proyekto bago i-save ang profile. Ang isang business profile ay pag-aari ng isang proyekto.',
+
   'growth.profile.title': 'Profile ng negosyo',
   'growth.profile.intro':
     'Sagutin ang mga ito nang isang beses. Ang lahat ng iminumungkahi ng tagapayo ay batay sa kung ano ang kinukumpirma mo dito.',

@@ -321,9 +321,38 @@ export class ConnectorExecutionGateway {
         };
       }
 
+      /*
+       * Hand the media to the provider before the post that references it.
+       *
+       * `preparedMedia` used to be an empty array on every publish, because
+       * nothing ever called the connector's own `prepareMedia`. Connectors read
+       * both fields and they mean different things: `draft.media` is what the
+       * asset *is* (kind, mime type, size, alt text) and `preparedMedia` is
+       * where the provider put it. Pinterest looks for the first prepared item
+       * carrying a `publicUrl` and refuses the pin without one, so an image
+       * post reached the provider describing an image it had never uploaded.
+       *
+       * Preparation is idempotent on (asset, connection, variant) per the
+       * contract, so a retried dispatch re-prepares safely and connectors that
+       * cache report `reusedFromPreviousAttempt`.
+       */
+      const preparedMedia =
+        request.draft.media.length === 0
+          ? []
+          : await connector.prepareMedia({
+              connection: leased.connection,
+              postVariantId: request.draft.postVariantId,
+              contentKind: request.draft.contentKind,
+              media: request.draft.media,
+              idempotencyKey: request.idempotencyKey,
+              capabilities,
+            });
+
       return {
         status: 'executed',
-        result: publishResultSchema.parse(await connector.publish(request)),
+        result: publishResultSchema.parse(
+          await connector.publish({ ...request, preparedMedia }),
+        ),
       };
     } finally {
       leased.release();

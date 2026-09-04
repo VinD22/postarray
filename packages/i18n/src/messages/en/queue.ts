@@ -106,4 +106,43 @@ export const queueMessages = {
   'queue.reason.connectionScoped':
     'This rule covers {count, plural, one {# account} other {# accounts}}.',
   'queue.reason.horizonExhausted': 'No window was free within {days} days.',
+
+  /* ---------------------------------------------------------------------
+   * The web route at /calendar/queue.
+   *
+   * Filed under `web.` rather than `queue.` because the domain namespace is
+   * already translated key for key in every active locale, while these are new
+   * English sentences awaiting review. They are registered in
+   * `beta-fallbacks.ts` so each locale falls back to this reviewed source.
+   * ------------------------------------------------------------------- */
+  'web.queue.loading': 'Loading the queue rules.',
+  'web.queue.error.title': 'The queue rules could not be loaded',
+  'web.queue.error.body':
+    'Nothing about your schedule changed. Posts already scheduled keep their times, and slots already reserved keep theirs.',
+  'web.queue.noProject.title': 'No project selected',
+  'web.queue.noProject.body':
+    'Queue rules belong to one project. Pick a project in the workspace switcher, then open this screen again.',
+  'web.queue.rules.loading': 'Loading the rules in this project.',
+  'web.queue.rules.loadFailed.title': 'The rules in this project could not be read',
+  'web.queue.rules.loadFailed.body':
+    'The editor below still works, and saving a rule is unaffected. Retry to see the list again.',
+
+  'web.queue.save.failedTitle': 'That rule was not saved',
+  'web.queue.save.failedBody':
+    'Nothing changed on the server, and everything you typed is still on this screen. Change what the message asks for and save again.',
+  'web.queue.save.announcement': 'Rule saved.',
+
+  'web.queue.archive.title': 'Archive {name}?',
+  'web.queue.archive.body':
+    'This rule stops offering times the moment you archive it. It is not deleted, and nothing that is already on the calendar moves.',
+  'web.queue.archive.consequence.proposals': 'No new slot will be proposed from this rule.',
+  'web.queue.archive.consequence.reserved':
+    'Slots already reserved keep their time and the reason they were chosen.',
+  'web.queue.archive.consequence.scheduled':
+    'Posts already scheduled go out exactly when they were going to.',
+  'web.queue.archive.confirm': 'Archive this rule',
+  'web.queue.archive.cancel': 'Keep this rule',
+  'web.queue.archive.failedTitle': 'That rule was not archived',
+  'web.queue.archive.failedBody':
+    'It is still in use and still offering times. Retry, or leave it as it is.',
 } as const;

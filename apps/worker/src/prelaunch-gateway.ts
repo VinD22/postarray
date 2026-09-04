@@ -30,7 +30,7 @@ type WebhookActivities = Pick<
 
 type BulkImportActivities = Pick<WorkerActivities, 'readBulkImportVerdict' | 'applyBulkImportRows'>;
 
-type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative'>;
+type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative' | 'scanMediaAsset'>;
 
 /**
  * Everything that runs without a connector: repeats, feeds, rules and the

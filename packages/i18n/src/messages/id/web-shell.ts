@@ -22,7 +22,7 @@ export const webShellMessages = {
   'shell.demo.body':
     'Post Array API tidak dapat dijangkau dari browser ini, sehingga layar dipenuhi dengan contoh ruang kerja yang diunggulkan. Tidak ada apa pun di sini yang terhubung dengan akun nyata dan tidak ada yang dapat dipublikasikan.',
   'shell.demo.howToConnect':
-    'Setel NEXT_PUBLIC_RELAY_API_URL dan mulai ulang aplikasi untuk menggunakan data langsung.',
+    'Setel NEXT_PUBLIC_POSTARRAY_API_URL dan mulai ulang aplikasi untuk menggunakan data langsung.',
   'shell.offline.title': 'Anda sedang luring',
   'shell.offline.body':
     'Draf disimpan di perangkat ini. Penjadwalan dan penerbitan dilanjutkan ketika koneksi kembali.',

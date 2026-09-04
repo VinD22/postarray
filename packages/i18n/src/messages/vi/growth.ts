@@ -3,6 +3,8 @@ export const growthMessages = {
   'growth.title': 'Cố vấn tăng trưởng',
   'growth.subtitle':
     'Một kế hoạch có hướng dẫn được xây dựng từ những sự kiện bạn xác nhận. Nó đề xuất công việc. Nó không bao giờ tự xuất bản.',
+  'growth.profile.noProject':
+    'Hãy chọn một dự án trước khi lưu hồ sơ. Một hồ sơ doanh nghiệp thuộc về một dự án.',
   'growth.profile.title': 'Hồ sơ doanh nghiệp',
   'growth.profile.intro':
     'Hãy trả lời những điều này một lần. Mọi thứ cố vấn đề xuất đều dựa trên những gì bạn xác nhận ở đây.',

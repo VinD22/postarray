@@ -181,6 +181,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Gói cơ bản $29 bao gồm 3 dự án hoạt động. Một không gian làm việc có thể được cấp quyền tối đa 20 dự án mà không cần tạo tài khoản khác.',
   'settings.ui.projects.capacitySummary': '{used} trên {limit}',
+  'settings.ui.projects.atLimitAction': 'Xem các gói',
   'settings.ui.projects.atLimitTitle': 'Không gian làm việc này đã dùng hết mọi chỗ dự án',
   'settings.ui.projects.atLimitBody':
     'Hãy lưu trữ một dự án không hoạt động hoặc thay đổi hạn mức của không gian làm việc trước khi thêm dự án khác. Giới hạn hiện tại là {limit}.',

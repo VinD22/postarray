@@ -207,6 +207,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Grundplanen på 29 USD inkluderar 3 aktiva projekt. En arbetsyta kan berättigas till upp till 20 utan att skapa ett annat konto.',
   'settings.ui.projects.capacitySummary': '{used} av {limit}',
+  'settings.ui.projects.atLimitAction': 'Se planer',
   'settings.ui.projects.atLimitTitle': 'Denna arbetsyta har använt varje projektplats',
   'settings.ui.projects.atLimitBody':
     'Arkivera ett inaktivt projekt eller ändra arbetsytans rättighet innan du lägger till ett till. Den aktuella gränsen är {limit}.',

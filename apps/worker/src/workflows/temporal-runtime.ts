@@ -89,7 +89,9 @@ const persistence = wf.proxyActivities<
   >
 >(toTemporalActivityOptions(ACTIVITY_OPTIONS.persistence));
 
-const mediaProxy = wf.proxyActivities<Group<'prepareTargetMedia' | 'produceMediaDerivative'>>(
+const mediaProxy = wf.proxyActivities<
+  Group<'prepareTargetMedia' | 'produceMediaDerivative' | 'scanMediaAsset'>
+>(
   toTemporalActivityOptions(ACTIVITY_OPTIONS.prepareMedia),
 );
 
@@ -177,6 +179,7 @@ export const workerActivities: WorkerActivities = {
   readBulkImportVerdict: (input) => persistence.readBulkImportVerdict(input),
   applyBulkImportRows: (input) => persistence.applyBulkImportRows(input),
   produceMediaDerivative: (input) => mediaProxy.produceMediaDerivative(input),
+  scanMediaAsset: (input) => mediaProxy.scanMediaAsset(input),
 };
 
 // ---------------------------------------------------------------------------

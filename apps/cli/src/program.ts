@@ -16,6 +16,7 @@ import { localizeHelp } from './help';
 import { authLogin, authLogout, authWhoAmI } from './commands/auth';
 import type { LoginFlow } from './commands/auth';
 import { configGet, configSet, configUnset } from './commands/config';
+import { eventsWatch } from './commands/events';
 import { linksCreate, linksStats } from './commands/links';
 import { mediaGet, mediaImport, mediaList, mediaUpload } from './commands/media';
 import {
@@ -101,13 +102,11 @@ function argvOption(argv: readonly string[], name: string): string | undefined {
   return undefined;
 }
 
-async function helpTranslatorFor(
-  argv: readonly string[],
-  deps: CliDeps,
-): Promise<Translator> {
+async function helpTranslatorFor(argv: readonly string[], deps: CliDeps): Promise<Translator> {
   try {
     const config = await deps.configStore.read();
-    const profileName = argvOption(argv, '--profile') ?? deps.env.RELAY_PROFILE ?? config.defaultProfile;
+    const profileName =
+      argvOption(argv, '--profile') ?? deps.env.RELAY_PROFILE ?? config.defaultProfile;
     const profile = config.profiles[profileName] ?? {};
     const locale = resolveCliLocale({ locale: argvOption(argv, '--locale') }, profile, deps.env);
     return createTranslator(locale, await loadCatalog(locale));
@@ -194,7 +193,9 @@ export function buildProgram(
   });
 
   // ------------------------------------------------------------ accounts ----
-  const accounts = program.command('accounts').description(localizeHelp(helpTranslator, 'accountsGroup'));
+  const accounts = program
+    .command('accounts')
+    .description(localizeHelp(helpTranslator, 'accountsGroup'));
 
   const accountsListCommand = accounts
     .command('list')
@@ -202,7 +203,9 @@ export function buildProgram(
     .option('--provider <provider>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(accountsListCommand, {
     name: 'accounts list',
     run: async (context, render) => {
@@ -343,7 +346,9 @@ export function buildProgram(
     .option('--state <state>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(postsListCommand, {
     name: 'posts list',
     run: async (context, render) => {
@@ -358,9 +363,7 @@ export function buildProgram(
   });
 
   // --------------------------------------------------------------- media ----
-  const media = program
-    .command('media')
-    .description(localizeHelp(helpTranslator, 'mediaGroup'));
+  const media = program.command('media').description(localizeHelp(helpTranslator, 'mediaGroup'));
 
   const mediaListCommand = media
     .command('list')
@@ -368,7 +371,9 @@ export function buildProgram(
     .option('--project-id <id>')
     .option('--kind <kind>', localizeHelp(helpTranslator, 'mediaKind'))
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(mediaListCommand, {
     name: 'media list',
     run: async (context, render) => {
@@ -422,7 +427,9 @@ export function buildProgram(
   });
 
   // ------------------------------------------------------------ calendar ----
-  const calendar = program.command('calendar').description(localizeHelp(helpTranslator, 'calendarGroup'));
+  const calendar = program
+    .command('calendar')
+    .description(localizeHelp(helpTranslator, 'calendarGroup'));
   const calendarListCommand = calendar
     .command('list')
     .description(localizeHelp(helpTranslator, 'calendarList'))
@@ -430,7 +437,9 @@ export function buildProgram(
     .requiredOption('--to <instant>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(calendarListCommand, {
     name: 'calendar list',
     run: async (context, render) => {
@@ -446,7 +455,9 @@ export function buildProgram(
   });
 
   // ------------------------------------------------------------ receipts ----
-  const receipts = program.command('receipts').description(localizeHelp(helpTranslator, 'receiptsGroup'));
+  const receipts = program
+    .command('receipts')
+    .description(localizeHelp(helpTranslator, 'receiptsGroup'));
   const receiptsGetCommand = receipts
     .command('get <receipt-id>')
     .description(localizeHelp(helpTranslator, 'receiptsGet'));
@@ -458,8 +469,41 @@ export function buildProgram(
     },
   });
 
+  // -------------------------------------------------------------- events ----
+  const eventsCommand = program
+    .command('events')
+    .description(localizeHelp(helpTranslator, 'eventsWatch'))
+    .option('--follow', localizeHelp(helpTranslator, 'eventsFollow'), false)
+    .option('--no-reconnect', localizeHelp(helpTranslator, 'eventsNoReconnect'))
+    .option('--since <id>', localizeHelp(helpTranslator, 'eventsSince'))
+    .option('--type <type...>', localizeHelp(helpTranslator, 'eventsType'))
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
+  attach(eventsCommand, {
+    name: 'events',
+    run: async (context, render) => {
+      const options = eventsCommand.opts<{
+        follow?: boolean;
+        reconnect?: boolean;
+        since?: string;
+        type?: string[];
+        limit?: number;
+      }>();
+      await eventsWatch(context, render, {
+        follow: options.follow === true,
+        reconnect: options.reconnect !== false,
+        since: options.since,
+        type: options.type,
+        limit: options.limit,
+      });
+    },
+  });
+
   // ----------------------------------------------------------- analytics ----
-  const analytics = program.command('analytics').description(localizeHelp(helpTranslator, 'analyticsGroup'));
+  const analytics = program
+    .command('analytics')
+    .description(localizeHelp(helpTranslator, 'analyticsGroup'));
 
   const analyticsPostCommand = analytics
     .command('post <receipt-id>')
@@ -525,7 +569,9 @@ export function buildProgram(
     .command('list')
     .description(localizeHelp(helpTranslator, 'rulesList'))
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(rulesListCommand, {
     name: 'rules list',
     run: async (context, render) => {
@@ -606,7 +652,9 @@ export function buildProgram(
     },
   });
 
-  const configUnsetCommand = config.command('unset <key>').description(localizeHelp(helpTranslator, 'configUnset'));
+  const configUnsetCommand = config
+    .command('unset <key>')
+    .description(localizeHelp(helpTranslator, 'configUnset'));
   attach(configUnsetCommand, {
     name: 'config unset',
     run: async (context, render) => {
@@ -615,7 +663,9 @@ export function buildProgram(
     },
   });
 
-  const configGetCommand = config.command('get [key]').description(localizeHelp(helpTranslator, 'configGet'));
+  const configGetCommand = config
+    .command('get [key]')
+    .description(localizeHelp(helpTranslator, 'configGet'));
   attach(configGetCommand, {
     name: 'config get',
     run: async (context, render) => {
@@ -654,7 +704,10 @@ export async function runCli(argv: readonly string[], deps: CliDeps): Promise<Ru
       return { exitCode: error.exitCode === 0 ? EXIT_OK : EXIT_USAGE };
     }
     const relayError = RelayError.fromUnknown(error);
-    renderFailure({ command: 'postarray', json: state.json, writer, translator: state.translator }, relayError);
+    renderFailure(
+      { command: 'postarray', json: state.json, writer, translator: state.translator },
+      relayError,
+    );
     return { exitCode: exitCodeFor(relayError.code) };
   }
 }

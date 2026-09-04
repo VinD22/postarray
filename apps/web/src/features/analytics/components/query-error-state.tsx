@@ -99,7 +99,11 @@ export function QueryErrorState({
           ? `${t(apiError.messageKey, apiError.messageValues)} ${t(apiError.actionKey, apiError.messageValues)}`
           : description
       }
-      subject={{ label: t('common.details'), value: description }}
+      subject={
+        apiError === null
+          ? undefined
+          : { label: t('common.details'), value: t(apiError.actionKey, apiError.messageValues) }
+      }
       reference={
         apiError?.correlationId
           ? { label: t('analytics.state.reference'), value: apiError.correlationId }

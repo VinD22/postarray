@@ -592,6 +592,16 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
       },
     },
 
+    events: {
+      // The sandbox publishes to no stream, so there is nothing to report and
+      // saying so is the honest answer. Inventing events here would teach an
+      // agent that this tool describes a real workspace.
+      async listRecent(ctx) {
+        assertWorkspace(ctx);
+        return { events: [], lastEventId: null };
+      },
+    },
+
     auditSink: {
       async record(input: AuditRecordInput): Promise<void> {
         state.auditLog.push(input);

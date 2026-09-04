@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { metricAvailabilitySchema, providerIdSchema } from './enums';
+import { contentKindSchema, metricAvailabilitySchema, providerIdSchema } from './enums';
 import type { MetricAvailability } from './enums';
 import { checksumSchema, isoInstantSchema } from './primitives';
 
@@ -208,4 +208,209 @@ export function markStale(
       ? { ...observation, value: null, availability: 'unavailable_stale' as const }
       : observation,
   );
+}
+
+/* -------------------------------------------------------------------------
+   Response schemas for the analytics reads
+   -------------------------------------------------------------------------
+
+   The shapes `GET /v1/analytics/*` actually returns, as parsers rather than as
+   types. `apps/web` previously narrowed these responses with a bare
+   `value as T`, which is not a boundary check at all: it asserted a shape
+   nobody had verified and hid two real mismatches that would have thrown the
+   moment live data arrived. AGENTS.md is explicit that every external boundary
+   parses rather than casts, and an HTTP response read by a browser is an
+   external boundary even when the same repository serves it.
+
+   These are deliberately **not** `.strict()`, unlike the write-side schemas
+   above. Stripping unknown keys is what lets the API add a field and deploy
+   before every client has been rebuilt; rejecting them would turn an additive
+   server change into a broken screen. What matters here is that every field
+   the client reads is present and the right type.
+
+   The authoritative declarations live in `packages/application/src/views.ts`.
+   These mirror them, and `analytics.schemas.test.ts` in the API is where a
+   drift between the two should be caught. */
+
+export const analyticsAccountRefSchema = z.object({
+  connectionId: z.string().min(1),
+  handle: z.string(),
+  displayName: z.string(),
+  provider: providerIdSchema,
+});
+export type AnalyticsAccountRefView = z.infer<typeof analyticsAccountRefSchema>;
+
+export const metricDefinitionViewSchema = z.object({
+  normalizedName: normalizedMetricNameSchema,
+  provider: providerIdSchema,
+  providerField: z.string(),
+  definition: z.string(),
+  definitionSourceUrl: z.string().optional(),
+  unit: metricUnitSchema,
+  denominator: metricDenominatorSchema,
+  aggregation: metricAggregationSchema,
+  historyWindowDays: z.number().int().nullable(),
+  // Nullable, and it must stay that way. Nobody may have checked this
+  // definition against the provider's documentation, and an epoch substituted
+  // here renders as a real date and claims a verification that never happened.
+  lastVerifiedAt: isoInstantSchema.nullable(),
+});
+export type MetricDefinitionViewShape = z.infer<typeof metricDefinitionViewSchema>;
+
+export const metricReadingViewSchema = z.object({
+  normalizedName: normalizedMetricNameSchema,
+  provider: providerIdSchema,
+  availability: metricAvailabilitySchema,
+  value: z.number().nullable(),
+  observedAt: isoInstantSchema,
+  freshnessSeconds: z.number(),
+  definition: metricDefinitionViewSchema,
+});
+export type MetricReadingViewShape = z.infer<typeof metricReadingViewSchema>;
+
+export const baselinePostViewSchema = z.object({
+  contentItemId: z.string(),
+  title: z.string(),
+  publishedAt: isoInstantSchema,
+  value: z.number(),
+});
+
+export const baselineComparisonViewSchema = z.object({
+  metric: normalizedMetricNameSchema,
+  median: z.number(),
+  sampleSize: z.number().int().nonnegative(),
+  deltaRatio: z.number(),
+  direction: z.enum(['above', 'below', 'level']),
+  smallSample: z.boolean(),
+  comparablePosts: z.array(baselinePostViewSchema),
+  excludedCount: z.number().int().nonnegative(),
+  // Strings on the wire, because the server may name a confounder this build
+  // of the client has no copy for. The client keeps the ones it can explain
+  // and drops the rest; it never renders a raw code at a reader.
+  confounders: z.array(z.string()),
+  format: contentKindSchema,
+});
+
+export const postComparisonRowViewSchema = z.object({
+  contentItemId: z.string(),
+  title: z.string(),
+  account: analyticsAccountRefSchema,
+  format: contentKindSchema,
+  publishedAt: isoInstantSchema,
+  reading: metricReadingViewSchema,
+  baseline: baselineComparisonViewSchema.nullable(),
+  receiptUrl: z.string().optional(),
+});
+export type PostComparisonRowViewShape = z.infer<typeof postComparisonRowViewSchema>;
+
+export const accountFreshnessRowViewSchema = z.object({
+  account: analyticsAccountRefSchema,
+  state: z.enum(['fresh', 'aging', 'stale', 'never', 'syncing']),
+  lastSuccessAt: isoInstantSchema.nullable(),
+  nextAttemptAt: isoInstantSchema.nullable(),
+  providerDelaySeconds: z.number().nullable(),
+});
+
+export const accountAttentionRowViewSchema = z.object({
+  account: analyticsAccountRefSchema,
+  reason: z.enum(['permission_missing', 'access_expired', 'stale', 'sync_failing', 'no_posts']),
+  since: isoInstantSchema.nullable(),
+  consecutiveFailures: z.number().int().nonnegative(),
+  failureCode: z.string().nullable(),
+});
+
+export const analyticsRangeViewSchema = z.object({
+  start: isoInstantSchema,
+  end: isoInstantSchema,
+  preset: z.enum(['7d', '30d', '90d', 'custom']),
+});
+
+export const analyticsOverviewViewSchema = z.object({
+  range: analyticsRangeViewSchema,
+  rankMetric: normalizedMetricNameSchema,
+  rows: z.array(postComparisonRowViewSchema),
+  freshness: z.array(accountFreshnessRowViewSchema),
+  attention: z.array(accountAttentionRowViewSchema),
+  // The insight engine is not wired to this read, so the server sends an empty
+  // list. Modelled as "whatever arrives, ignored" rather than as a fixed empty
+  // tuple, so the client does not break on the day it starts arriving full.
+  observations: z.array(z.unknown()).default([]),
+  accountsRequested: z.number().int().nonnegative(),
+  accountsWithData: z.number().int().nonnegative(),
+  accountsWithoutData: z.array(accountAttentionRowViewSchema),
+});
+export type AnalyticsOverviewViewShape = z.infer<typeof analyticsOverviewViewSchema>;
+
+export const seriesPointViewSchema = z.object({
+  bucketStart: isoInstantSchema,
+  bucketSeconds: z.number().int().positive(),
+  // Null is "no observation was collected". It is not zero, and any consumer
+  // that coalesces it to zero is drawing a measurement nobody made.
+  value: z.number().nullable(),
+});
+
+export const metricSeriesViewSchema = z.object({
+  id: z.string(),
+  normalizedName: normalizedMetricNameSchema,
+  unit: metricUnitSchema,
+  /** The provider's field name. The client owns the translated legend label. */
+  label: z.string(),
+  points: z.array(seriesPointViewSchema),
+});
+export type MetricSeriesViewShape = z.infer<typeof metricSeriesViewSchema>;
+
+export const metricObservationViewSchema = z.object({
+  normalizedName: normalizedMetricNameSchema,
+  provider: providerIdSchema,
+  providerField: z.string(),
+  providerDefinition: z.string(),
+  scope: metricScopeSchema,
+  value: z.number().nullable(),
+  unit: metricUnitSchema,
+  availability: metricAvailabilitySchema,
+  observedAt: isoInstantSchema,
+  freshnessSeconds: z.number(),
+  derivationRestricted: z.boolean(),
+});
+export type MetricObservationViewShape = z.infer<typeof metricObservationViewSchema>;
+
+/**
+ * One experiment, exactly as the server sends it.
+ *
+ * Note what is not here: `variants`. The create endpoint accepts variant
+ * definitions, the read model does not return them, and the web app mapped
+ * over `experiment.variants` anyway behind an unchecked cast, which throws the
+ * first time a real experiment loads. Adding the field to this schema to make
+ * that code compile would have been the same lie in a new place, so the schema
+ * says what the wire says and the screen was changed to render what it gets.
+ *
+ * `state` is a free string on the wire and is narrowed by the client, which
+ * keeps a value this build has no copy for from being printed at a reader.
+ */
+export const experimentViewSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  hypothesis: z.string(),
+  successMetric: z.string(),
+  state: z.string(),
+  windowStart: isoInstantSchema,
+  windowEnd: isoInstantSchema,
+  caveats: z.string().nullable(),
+  conclusion: z.string().nullable(),
+});
+export type ExperimentViewShape = z.infer<typeof experimentViewSchema>;
+
+/** The `{ data: [...] }` envelope the post and account metric reads return. */
+export const metricObservationListSchema = z.object({
+  data: z.array(metricObservationViewSchema),
+});
+
+/** The `{ data, nextCursor }` envelope every list endpoint returns. */
+export function analyticsPageSchema<T extends z.ZodTypeAny>(
+  item: T,
+): z.ZodObject<{ data: z.ZodArray<T>; nextCursor: z.ZodOptional<z.ZodNullable<z.ZodString>> }> {
+  return z.object({
+    data: z.array(item),
+    nextCursor: z.string().nullable().optional(),
+  });
 }

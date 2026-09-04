@@ -1,6 +1,8 @@
 export const growthMessages = {
   'growth.title': 'Growth Advisor',
   'growth.subtitle': '根據你確認的事實建立引導式計畫。它提出工作建議，絕不自行發布。',
+  'growth.profile.noProject':
+    '儲存資料前請先選擇一個專案。一份業務資料只屬於一個專案。',
   'growth.profile.title': '商務檔案',
   'growth.profile.intro': '回答一次即可。顧問提出的一切都根據你在此確認的內容。',
   'growth.profile.productUrl': '產品或網站 URL',

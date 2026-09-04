@@ -4,6 +4,10 @@ export const growthMessages = {
   'growth.subtitle':
     'En guidad plan byggd från fakta du bekräftar. Den föreslår arbete. Den publicerar aldrig på egen hand.',
 
+  'growth.profile.noProject':
+
+    'Välj ett projekt innan du sparar profilen. En företagsprofil hör till ett projekt.',
+
   'growth.profile.title': 'Företagsprofil',
   'growth.profile.intro':
     'Svara på dessa en gång. Allt som rådgivaren föreslår bygger på det du bekräftar här.',

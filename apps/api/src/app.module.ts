@@ -25,6 +25,7 @@ import { AgentConfirmationsModule } from './modules/agent-confirmations/agent-co
 import { ApiKeysModule } from './modules/api-keys/api-keys.module';
 import { ApprovalsModule } from './modules/approvals/approvals.module';
 import { AuditModule } from './modules/audit/audit.module';
+import { EventsModule } from './modules/events/events.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AutomationRulesModule } from './modules/automation-rules/automation-rules.module';
 import { BillingModule } from './modules/billing/billing.module';
@@ -97,6 +98,7 @@ export class AppModule implements NestModule {
         ApprovalsModule,
         AgentConfirmationsModule,
         ActionCenterModule,
+        EventsModule,
         SchedulingModule,
         ImportModule,
         QueueRulesModule,

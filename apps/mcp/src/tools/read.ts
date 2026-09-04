@@ -475,6 +475,51 @@ export const listGrowthOpportunitiesTool = defineTool({
   },
 });
 
+export const listRecentEventsTool = defineTool({
+  name: 'list_recent_events',
+  risk: 'read',
+  summary:
+    'List what has changed in this workspace recently: post states, receipts, uploads and account health.',
+  sideEffects: 'none',
+  scopes: ['accounts:read'],
+  approvalLevel: 'level_0_read',
+  requiresIdempotencyKey: false,
+  requiresHumanConfirmation: false,
+  inputSchema: z.object({
+    /**
+     * The id from a previous call. A tool call answers and ends, so an agent
+     * cannot hold the stream open the way a browser tab does; carrying this id
+     * between turns is how it picks up exactly where it left off instead of
+     * re-reading what it already saw.
+     */
+    since: z.string().min(1).optional(),
+    limit: z.number().int().min(1).max(100).default(50),
+  }),
+  async run(context, input): Promise<ToolResult> {
+    const page = await context.services.events.listRecent(context.actor, {
+      ...(input.since === undefined ? {} : { since: input.since }),
+      limit: input.limit,
+    });
+
+    return {
+      data: {
+        // Ids and states only, exactly as the stream carries them. An agent
+        // that wants the post reads it with `get_post_status`, which is the
+        // call that is scoped and audited for reading a post.
+        events: page.events.map((event) => ({
+          event_id: event.id,
+          type: event.type,
+          occurred_at: event.occurredAt,
+          subject: event.data,
+        })),
+        next_since: page.lastEventId,
+        returned: page.events.length,
+      },
+      resourceLinks: [],
+    };
+  },
+});
+
 export const READ_TOOLS: readonly ToolDefinition[] = [
   listAccountsTool,
   getCapabilitiesTool,
@@ -485,6 +530,7 @@ export const READ_TOOLS: readonly ToolDefinition[] = [
   getAnalyticsTool,
   getGrowthPlanTool,
   listGrowthOpportunitiesTool,
+  listRecentEventsTool,
   ...MEDIA_READ_TOOLS,
   ...RECEIPT_READ_TOOLS,
 ];

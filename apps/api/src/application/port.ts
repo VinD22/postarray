@@ -27,6 +27,7 @@ import type {
   OperationRef,
   OpportunityRecord,
   Paginated,
+  MediaReadUrls,
   ProviderId,
   PublishState,
   Scope,
@@ -37,7 +38,7 @@ import type {
 import type { HealthReport, Logger } from '@relay/observability';
 import type { RelayConfig } from '@relay/config';
 
-export type { Paginated } from '@relay/contracts';
+export type { MediaReadUrls, Paginated } from '@relay/contracts';
 import type {
   ActionItemView as ApplicationActionItemView,
   AgentConfirmationView as ApplicationAgentConfirmationView,
@@ -157,6 +158,12 @@ export interface KeyValueStore {
   setIfAbsent(key: string, value: string, options?: KeyValueSetOptions): Promise<boolean>;
   /** Atomic counter. The TTL is applied only when the counter is created. */
   increment(key: string, options?: KeyValueSetOptions): Promise<number>;
+  /**
+   * Add `amount` in one round trip. The rate limiter charges a cost per
+   * request, so incrementing one unit at a time made an expensive endpoint
+   * pay for its own accounting several times over.
+   */
+  incrementBy(key: string, amount: number, options?: KeyValueSetOptions): Promise<number>;
   /** Remaining time to live in seconds, or null when the key has none. */
   ttl(key: string): Promise<number | null>;
 }
@@ -467,6 +474,8 @@ export interface MediaService {
     retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  /** Short-lived URLs a browser can load this asset from. Absent renditions are null. */
+  getReadUrls(ctx: ActorContext, mediaId: string): Promise<MediaReadUrls>;
   /** Local filesystem adapter only. Presigned-PUT deployments refuse both. */
   acceptDirectUpload(
     ctx: ActorContext,

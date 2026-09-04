@@ -73,6 +73,8 @@ export const calendarMessages = {
     'The main post published, but a follow up item for {account} failed.',
   'actionCenter.item.analyticsStale': 'Analytics for {account} have not updated since {date}.',
   'actionCenter.item.rssStalled': 'The feed {name} has not returned a valid item since {date}.',
+  'actionCenter.item.mediaScanStuck':
+    'A file uploaded on {date} has not finished its safety check, so it cannot be published yet.',
   'actionCenter.item.webhookFailing':
     'Deliveries to {endpoint} have failed {count, plural, one {# time} other {# times}} in a row.',
   'actionCenter.item.usageBalance':

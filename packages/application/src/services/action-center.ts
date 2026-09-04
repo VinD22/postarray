@@ -104,8 +104,16 @@ function connectionItems(
   return items;
 }
 
-async function loadEvidence(db: Db) {
-  const [connections, approvals, jobs, receipts, feeds, endpoints] = await Promise.all([
+/**
+ * How long an upload may sit unchecked before it becomes a row a person sees.
+ * Long enough that a slow scan is not noise, short enough that someone waiting
+ * to publish learns about it here rather than at the composer.
+ */
+const STUCK_SCAN_MS = 15 * 60_000;
+
+async function loadEvidence(db: Db, now: Date) {
+  const [connections, approvals, jobs, receipts, feeds, endpoints, stuckMedia] =
+    await Promise.all([
     db.socialConnection.findMany({
       where: { status: { not: 'disconnected' } },
       orderBy: { updatedAt: 'desc' },
@@ -184,8 +192,19 @@ async function loadEvidence(db: Db) {
       take: 100,
       select: { id: true, name: true, url: true, updatedAt: true, consecutiveFailures: true },
     }),
+    // An asset stuck at `pending` cannot be published, and validation refuses
+    // it with a message about the file rather than about the check. Fifteen
+    // minutes is long enough that a scan which is merely slow does not raise a
+    // row, and short enough that a person waiting to publish finds out here
+    // instead of at the composer.
+    db.mediaAsset.findMany({
+      where: { scanState: 'pending', createdAt: { lt: new Date(now.getTime() - STUCK_SCAN_MS) } },
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+      select: { id: true, createdAt: true, metadata: true },
+    }),
   ]);
-  return { connections, approvals, jobs, receipts, feeds, endpoints };
+  return { connections, approvals, jobs, receipts, feeds, endpoints, stuckMedia };
 }
 
 function remainingItems(
@@ -262,6 +281,21 @@ function remainingItems(
       },
     });
   }
+  for (const row of evidence.stuckMedia) {
+    items.push({
+      id: itemId('media_scan_stuck', row.id),
+      kind: 'media_scan_stuck',
+      urgency: 'soon',
+      category: 'publishing',
+      subject: row.id,
+      provider: null,
+      createdAt: row.createdAt.toISOString(),
+      dueAt: null,
+      snoozedUntil: null,
+      href: `/library?asset=${row.id}`,
+      values: { date: row.createdAt.toISOString() },
+    });
+  }
   for (const row of evidence.endpoints) {
     const subject = named(row.name, row.url);
     items.push({
@@ -294,7 +328,7 @@ export function createActionCenterService(deps: ServiceDeps): ActionCenterServic
   async function build(ctx: ActorContext): Promise<ActionItemView[]> {
     return authorized(deps, ctx, 'content.read', undefined, async (db) => {
       const now = deps.clock.now();
-      const evidence = await loadEvidence(db);
+      const evidence = await loadEvidence(db, deps.clock.now());
       return sorted([
         ...connectionItems(evidence.connections, now),
         ...remainingItems(evidence, now),

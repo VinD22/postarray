@@ -13,6 +13,9 @@ import { AsyncBoundary } from '../lib/async-boundary';
 import { projectsGateway } from '../lib/gateway';
 import { useFormatters } from '../lib/formatters';
 import { settingsKey, useWorkspaceId } from '../lib/keys';
+
+/** Referenced by the disabled create buttons so the refusal has a reason. */
+const AT_LIMIT_NOTICE_ID = 'projects-at-limit';
 import { useSettingsMutation } from '../lib/use-settings-mutation';
 import { SettingsStack } from '../components/section';
 import { ProjectEditor } from './project-editor';
@@ -78,7 +81,12 @@ export function ProjectsScreen(): ReactNode {
         title={section}
         description={t('settings.ui.projects.description')}
         actions={
-          <Button variant="primary" disabled={atLimit} onClick={() => setCreating(true)}>
+          <Button
+            variant="primary"
+            disabled={atLimit}
+            aria-describedby={atLimit ? AT_LIMIT_NOTICE_ID : undefined}
+            onClick={() => setCreating(true)}
+          >
             {t('settings.projects.add')}
           </Button>
         }
@@ -107,9 +115,15 @@ export function ProjectsScreen(): ReactNode {
 
         {atLimit ? (
           <Notice
+            id={AT_LIMIT_NOTICE_ID}
             tone="warning"
             title={t('settings.ui.projects.atLimitTitle')}
             description={t('settings.ui.projects.atLimitBody', { limit: workspace.projectLimit })}
+            actions={
+              <Button variant="secondary" onClick={() => router.push('/settings/billing')}>
+                {t('settings.ui.projects.atLimitAction')}
+              </Button>
+            }
           />
         ) : null}
 
@@ -125,7 +139,12 @@ export function ProjectsScreen(): ReactNode {
               description={t('settings.ui.projects.emptyBody')}
               example={t('settings.ui.projects.emptyExample')}
               action={
-                <Button variant="primary" disabled={atLimit} onClick={() => setCreating(true)}>
+                <Button
+            variant="primary"
+            disabled={atLimit}
+            aria-describedby={atLimit ? AT_LIMIT_NOTICE_ID : undefined}
+            onClick={() => setCreating(true)}
+          >
                   {t('settings.projects.add')}
                 </Button>
               }

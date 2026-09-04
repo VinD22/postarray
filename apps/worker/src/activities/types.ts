@@ -892,6 +892,17 @@ export interface WorkerActivities {
   readBulkImportVerdict(input: BulkImportActivityInput): Promise<BulkImportActivityResult>;
   applyBulkImportRows(input: ApplyBulkImportInput): Promise<BulkImportActivityResult>;
   produceMediaDerivative(input: ProduceMediaDerivativeInput): Promise<ProduceMediaDerivativeResult>;
+  scanMediaAsset(input: ScanMediaAssetInput): Promise<ScanMediaAssetResult>;
+}
+
+export interface ScanMediaAssetInput {
+  readonly ctx: ActivityContext;
+  readonly mediaAssetId: string;
+}
+
+export interface ScanMediaAssetResult {
+  readonly scanState: string;
+  readonly noteKey: string | null;
 }
 
 export type ActivityName = keyof WorkerActivities;
@@ -947,4 +958,5 @@ export const ACTIVITY_NAMES: readonly ActivityName[] = [
   'readBulkImportVerdict',
   'applyBulkImportRows',
   'produceMediaDerivative',
+  'scanMediaAsset',
 ];

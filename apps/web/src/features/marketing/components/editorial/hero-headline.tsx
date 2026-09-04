@@ -52,14 +52,16 @@ export function HeroHeadline({ lead, accent, id, className }: HeroHeadlineProps)
     <h1
       id={id}
       className={cn(
-        'font-display text-display-xl text-text-primary text-balance',
-        // The two lines are one heading, so they share a leading rather than
-        // stacking as two paragraphs. `text-display-xl` already sets 0.98.
+        'font-sans text-[clamp(3.25rem,2rem+5vw,7.75rem)] leading-[0.88]',
+        'text-text-primary font-[750] tracking-[-0.06em] text-balance',
         className,
       )}
     >
       <span className="block">{lead}</span>
-      <span data-accent-phrase="true" className="text-accent-action block">
+      <span
+        data-accent-phrase="true"
+        className="text-accent-action font-display mt-[0.12em] block font-[540] tracking-[-0.045em] italic"
+      >
         {accent}
       </span>
     </h1>

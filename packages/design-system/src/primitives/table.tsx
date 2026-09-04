@@ -165,7 +165,7 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(functi
       aria-sort={sortable ? (sortDirection ?? 'none') : undefined}
       className={cn(
         'text-label text-text-secondary px-3 py-2 font-medium whitespace-nowrap',
-        numeric ? 'text-end tabular-nums' : 'text-start',
+        numeric ? 'num text-end' : 'text-start',
         className,
       )}
       {...props}
@@ -209,7 +209,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(functi
       ref={ref}
       className={cn(
         'px-3 py-2 align-middle',
-        numeric ? 'text-end tabular-nums' : 'text-start',
+        numeric ? 'num text-end' : 'text-start',
         className,
       )}
       {...props}

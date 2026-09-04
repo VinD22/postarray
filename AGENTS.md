@@ -35,9 +35,16 @@ route handler or a Nest controller, stop: it belongs in `packages/application`.
 4. **Official APIs only.** No browser automation, cookie replay, scraping or
    unofficial posting endpoints. No auto-likes, auto-follows, unsolicited
    replies or DMs, engagement pods, or fabricated engagement.
-5. **Tenancy is enforced three times**: at the edge (authentication), in the
-   application service (authorization), and in PostgreSQL (row level security).
-   "The user is logged in" is never a policy.
+5. **Tenancy is enforced at three layers**: at the edge (authentication), in
+   the application service (authorization), and in PostgreSQL (row level
+   security). "The user is logged in" is never a policy. Be precise about the
+   third layer: application traffic runs as `service_role`, and every policy is
+   shaped `app.is_service_role() OR <membership check>`, so for those calls the
+   membership branch is not what is deciding. RLS is a backstop against a bug
+   in the first two layers, not an independent third check, and the workspace
+   scoping in `packages/application` is what actually holds. Write it as if
+   RLS were not there, because for your query it effectively is not. See
+   `docs/planning/25-rls-suite-findings.md`.
 6. **Every external side effect is idempotent** and produces an immutable
    publication receipt plus an audit event.
 7. **Do not invent provider capabilities.** A capability we have not built is
@@ -148,10 +155,11 @@ The shipped system is editorial: warm paper (`#FFFCF8`), near-black ink
 (`#141413`), hairline rules, hierarchy from type and space rather than from
 heavy shadows. The primary accent is a deep terracotta (`#B4462B` light,
 `#E07A5F` dark) carrying links, focus, selection and the active tab; the
-primary button fill stays ink. Two further accent families exist for the
-marketing scene vocabulary and nothing else may join them: marigold
-(`--accent-warm-*`) and ultramarine (`--accent-cool-*`). Neither carries a
-status meaning. Elevation is soft and tonal; the `--shadow-hard*` token names
+primary button fill is a vivid vermilion (`#CE2700` light, `#FF6D32` dark),
+one per screen and nothing else. Navigation and action are two different reds
+on purpose. Two further accent families exist for the marketing scene
+vocabulary and nothing else may join them: marigold (`--accent-warm-*`) and
+ultramarine (`--accent-cool-*`). Neither carries a status meaning. Elevation is soft and tonal; the `--shadow-hard*` token names
 are historical and now resolve to diffuse shadows. Dark is designed, not
 inverted.
 

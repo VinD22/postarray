@@ -20,6 +20,7 @@ export {
   borderWidths,
   zIndex,
   durations,
+  loopDurations,
   easings,
   breakpoints,
   documentedContrastPairs,

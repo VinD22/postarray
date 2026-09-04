@@ -31,7 +31,8 @@ export const webShellMessages = {
   'shell.demo.title': 'You are looking at demo data',
   'shell.demo.body':
     'The Post Array API is not reachable from this browser, so the screens are filled with a seeded example workspace. Nothing here is connected to a real account and nothing can publish.',
-  'shell.demo.howToConnect': 'Set NEXT_PUBLIC_RELAY_API_URL and restart the app to use live data.',
+  'shell.demo.howToConnect':
+    'Set NEXT_PUBLIC_POSTARRAY_API_URL and restart the app to use live data.',
 
   /* -- Connectivity ------------------------------------------------------ */
   'shell.offline.title': 'You are offline',
@@ -94,6 +95,7 @@ export const webShellMessages = {
   'actionCenter.action.openCalendar': 'Open the calendar',
   'actionCenter.action.viewStatus': 'View status',
   'actionCenter.action.checkFeed': 'Check the feed',
+  'actionCenter.action.openLibrary': 'Open the library',
   'actionCenter.action.inspectDeliveries': 'Inspect deliveries',
   'actionCenter.action.addBalance': 'Review usage',
   'actionCenter.action.fixConnection': 'Fix the connection',
@@ -138,7 +140,7 @@ export const webShellMessages = {
   'home.advisor.createDrafts': 'Create drafts from week {week}',
   'home.advisor.start': 'Start the business profile',
   'home.trial.banner':
-    'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
+    'Paid plan trial: {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'Manage or cancel',
   'home.error.title': 'Home could not load',
   'home.error.body': 'Your workspace is intact. This is a problem reaching the Post Array API.',
@@ -155,8 +157,15 @@ export const webShellMessages = {
     '{attention, plural, =0 {All of them are working} one {# needs attention} other {# need attention}}.',
   'home.v2.tiles.nextSlot': 'Next one out',
   'home.v2.tiles.nextSlotHint': 'To {account}, in {timeZone}.',
+  'home.v2.tiles.nextSlotAccount': 'To {account}',
   'home.v2.tiles.nextSlotNone': 'Nothing queued',
   'home.v2.tiles.nextSlotNoneHint': 'Give a draft a time and it will show up here.',
+  'home.v2.needsYou.remaining':
+    '{count, plural, one {# more item in the Action center} other {# more items in the Action center}}',
+  'home.v2.queue.timeZone': '{timeZone} time',
+  'home.v2.connections.summary':
+    '{healthy, plural, one {# account is working} other {# accounts are working}}. {attention, plural, =0 {None need attention} one {# needs attention} other {# need attention}}.',
+  'home.v2.activity.label': 'Recent publishing activity and connection health',
   'home.v2.digest.title': 'This week',
   'home.v2.digest.emptyTitle': 'Your first digest arrives after your first published week',
   'home.v2.digest.emptyBody':
@@ -197,7 +206,8 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak': 'For your safety we do not say whether an address is registered.',
   'auth.failure.provider': 'The sign in with {provider} did not complete. Nothing was changed.',
   'auth.failure.network': 'We could not reach Post Array. Check your connection and try again.',
-  'auth.signUp.trialNote': 'No card and no countdown. Connect accounts, schedule freely, and your first published posts are included.',
+  'auth.signUp.trialNote':
+    'No card and no countdown. Connect accounts, schedule freely, and your first published posts are included.',
   'auth.signUp.emailInUseNote':
     'If this address already has an account, we email a sign in link instead of creating a second one.',
   'auth.legal.readTerms': 'Read the Terms',
@@ -242,4 +252,13 @@ export const webShellMessages = {
   'onboarding.receipt.goHome': 'Go to Home',
   'onboarding.blocked.title': 'This step needs the previous one',
   'onboarding.blocked.body': 'Finish {step} first. Nothing you entered is lost.',
+
+  // Leaving a screen that still holds unsaved work.
+  'web.unsaved.title': 'Leave without saving?',
+  'web.unsaved.body':
+    'This draft has edits Post Array has not saved yet. Leaving now takes you away from them.',
+  'web.unsaved.keptOnDevice': 'Your unsaved edits stay in this browser and are offered back here.',
+  'web.unsaved.notOnServer': 'They are not on the server, so another device will not see them.',
+  'web.unsaved.leave': 'Leave the page',
+  'web.unsaved.stay': 'Keep editing',
 } as const;

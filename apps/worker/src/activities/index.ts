@@ -307,6 +307,7 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
       deps,
       gateway.produceMediaDerivative.bind(gateway),
     ),
+    scanMediaAsset: wrap('scanMediaAsset', deps, gateway.scanMediaAsset.bind(gateway)),
   };
 }
 

@@ -3,24 +3,33 @@
 /**
  * The Connections screen's tab switcher: accounts, capabilities, groups.
  *
- * Three peer views of the same account list read as a segmented control, not
- * three destinations, so this carries one sliding ink-bordered thumb instead
- * of three independent underlines. It is the same technique as the
- * calendar's view switcher (`features/calendar/view-switch.tsx`) and the
- * shell's primary nav rail (`components/shell/primary-nav.tsx`) — built on
- * the design system's `Tabs` for the roving-tabindex and manual activation
- * it already gets right, with only the per-trigger underline turned off
- * because the thumb is this control's only indicator.
+ * Three peer views of the same account list, so this wears the segmented
+ * control's surface: one sunken track, one sliding chip. It stays `Tabs` and
+ * not `SegmentedControl` for one reason, and it is not cosmetic. Each of the
+ * three views is a real panel with real content, so the control owns
+ * `aria-controls` and each panel is a `tabpanel`. Turning that into a radio
+ * group would drop the relationship and leave three unlabelled regions.
  *
- * The thumb never animates on first mount and jumps straight to position
- * with no tween when `usePrefersReducedMotion()` is true.
+ * The chip itself is `useSegmentedThumb` from the design system, shared with
+ * `SegmentedControl` and with the Growth plan's switcher. It replaces a GSAP
+ * Flip copy that lived here, an identical one in `features/growth/plan-tabs.tsx`
+ * and a third in `features/calendar/view-switch.tsx`. A CSS transition over a
+ * measured offset does the same job, needs no reduced-motion branch because
+ * the global override reaches it, and does not load an animation library to
+ * move a rectangle 90 pixels.
  */
 
 import { useRef, type ReactNode } from 'react';
-import { Tabs, TabsList, TabsTrigger, cn, touchTarget } from '@relay/design-system';
-import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
-import { Flip, useGSAP } from '@/lib/motion/gsap';
-import { useMotionOk } from '@/lib/motion/use-motion-ok';
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  segmentedItem,
+  segmentedThumb,
+  segmentedTrack,
+  useSegmentedThumb,
+} from '@relay/design-system/primitives';
+import { cn } from '@relay/design-system/utils';
 
 export interface ConnectionsTab {
   readonly value: string;
@@ -50,64 +59,20 @@ export function ConnectionsTabs({
 }: ConnectionsTabsProps): ReactNode {
   const listRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLSpanElement>(null);
-  const itemRefs = useRef(new Map<string, HTMLButtonElement>());
-  const hasPositioned = useRef(false);
-  const motionOk = useMotionOk();
 
-  useGSAP(
-    () => {
-      const list = listRef.current;
-      const thumb = thumbRef.current;
-      const active = itemRefs.current.get(value);
-      if (!list || !thumb || !active) return;
-
-      const shouldAnimate = hasPositioned.current && motionOk;
-      const state = shouldAnimate ? Flip.getState(thumb) : null;
-
-      // Measured, not authored: real bounding rects already reflect the
-      // page's writing direction, so copying them positions the thumb
-      // correctly under LTR and RTL alike without a logical/physical branch.
-      const listRect = list.getBoundingClientRect();
-      const activeRect = active.getBoundingClientRect();
-      thumb.style.left = `${activeRect.left - listRect.left}px`;
-      thumb.style.width = `${activeRect.width}px`;
-      thumb.style.top = `${activeRect.top - listRect.top}px`;
-      thumb.style.height = `${activeRect.height}px`;
-
-      if (state) {
-        Flip.from(state, { duration: DURATION_FAST, ease: EASE_STANDARD });
-      }
-      hasPositioned.current = true;
-    },
-    { scope: listRef, dependencies: [value, motionOk] },
-  );
+  useSegmentedThumb({ trackRef: listRef, thumbRef, value, itemCount: tabs.length });
 
   return (
     <Tabs value={value} onValueChange={onValueChange} className={className}>
       <div className={listWrapperClassName}>
-        <TabsList
-          ref={listRef}
-          aria-label={label}
-          className="border-border-bold bg-surface-sunken relative inline-flex gap-0.5 rounded-md border-2 p-1"
-        >
-          <span
-            ref={thumbRef}
-            aria-hidden="true"
-            className="bg-cta border-border-bold shadow-hard-sm pointer-events-none absolute z-0 rounded-sm border-2"
-          />
+        <TabsList ref={listRef} aria-label={label} className={cn(segmentedTrack, 'inline-flex')}>
+          <span ref={thumbRef} aria-hidden="true" className={segmentedThumb} />
           {tabs.map((tab) => (
             <TabsTrigger
               key={tab.value}
-              ref={(element) => {
-                if (element) itemRefs.current.set(tab.value, element);
-                else itemRefs.current.delete(tab.value);
-              }}
               value={tab.value}
-              className={cn(
-                'relative z-10 flex items-center justify-center rounded-sm border-b-0 px-3 py-1.5',
-                'data-[state=active]:bg-cta data-[state=active]:text-cta-on data-[state=active]:border-b-0',
-                touchTarget,
-              )}
+              data-segment-value={tab.value}
+              className={cn(segmentedItem(), 'mb-0 border-b-0 data-[state=active]:border-b-0')}
             >
               {tab.label}
             </TabsTrigger>

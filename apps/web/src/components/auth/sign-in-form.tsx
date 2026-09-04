@@ -106,7 +106,7 @@ export function SignInForm() {
   return (
     <div className={cn('flex flex-col gap-8', error !== null && 'relay-auth-invalid-pulse')}>
       <div className="flex flex-col gap-1">
-        <h1 className="text-title-lg text-text-primary">{t('auth.signIn.title')}</h1>
+        <h1 className="relay-auth-title text-text-primary">{t('auth.signIn.title')}</h1>
         <p className="text-body-md text-text-secondary">{t('auth.signIn.subtitle')}</p>
       </div>
 

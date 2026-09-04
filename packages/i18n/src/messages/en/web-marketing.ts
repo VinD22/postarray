@@ -1457,6 +1457,12 @@ export const webMarketingMessages = {
     'Diagnosing failures in publishing and in the interface.',
   'web.legal.subprocessors.monitoring.data':
     'Redacted stack traces, request identifiers and workspace identifiers. Post content is stripped.',
+  'web.legal.subprocessors.analytics.label': 'Vercel Analytics',
+  'web.legal.subprocessors.analytics.purpose':
+    'Counting page views on the public site. It sets no cookie and follows nobody between sites.',
+  'web.legal.subprocessors.analytics.data':
+    'Page path, referrer and coarse device type. No IP address is stored and no visitor is identified.',
+
   'web.legal.subprocessors.region.pending': 'Region being confirmed',
   'web.legal.subprocessors.vendorPending': 'Vendor being selected',
 

@@ -40,7 +40,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'Ordnen Sie Beiträge nach',
   'analytics.rankMetric.help':
-    'Im Staffellauf gibt es keine kombinierte Wertung. Wählen Sie eine Metrik aus, deren Definition Sie vertrauen, und die Tabelle wird nur nach dieser Metrik sortiert.',
+    'In Post Array gibt es keine kombinierte Wertung. Wählen Sie eine Metrik aus, deren Definition Sie vertrauen, und die Tabelle wird nur nach dieser Metrik sortiert.',
   'analytics.rankMetric.chosen': 'Geordnet nach {metric}, wie von jedem Kontoanbieter angegeben.',
 
   /* ----------------------------------------------------------------------

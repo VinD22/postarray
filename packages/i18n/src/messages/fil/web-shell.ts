@@ -32,7 +32,7 @@ export const webShellMessages = {
   'shell.demo.body':
     'Ang Post Array API ay hindi maabot mula sa browser na ito, kaya ang mga screen ay puno ng isang seeded na halimbawang workspace. Walang nakakonekta rito sa totoong account at walang makakapag-publish.',
   'shell.demo.howToConnect':
-    'Itakda ang NEXT_PUBLIC_RELAY_API_URL at i-restart ang app para gumamit ng live na data.',
+    'Itakda ang NEXT_PUBLIC_POSTARRAY_API_URL at i-restart ang app para gumamit ng live na data.',
 
   /* -- Connectivity ------------------------------------------------------ */
   'shell.offline.title': 'Offline ka',

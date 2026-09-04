@@ -169,6 +169,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'แผนพื้นฐาน 29 ดอลลาร์รวม 3 โปรเจกต์ที่ใช้งานอยู่ พื้นที่ทำงานสามารถได้รับสิทธิ์สูงสุด 20 โปรเจกต์โดยไม่ต้องสร้างบัญชีอื่น',
   'settings.ui.projects.capacitySummary': '{used} จาก {limit}',
+  'settings.ui.projects.atLimitAction': 'ดูแพ็กเกจ',
   'settings.ui.projects.atLimitTitle': 'พื้นที่ทำงานนี้ใช้ที่ว่างสำหรับโปรเจกต์หมดแล้ว',
   'settings.ui.projects.atLimitBody':
     'เก็บโปรเจกต์ที่ไม่ได้ใช้งานเข้าคลังหรือเปลี่ยนสิทธิ์ของพื้นที่ทำงานก่อนเพิ่มโปรเจกต์อีก ขีดจำกัดปัจจุบันคือ {limit}',

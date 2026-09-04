@@ -2737,6 +2737,9 @@ model WebhookDelivery {
   state             WebhookDeliveryState @default(pending)
   attemptCount      Int                  @default(0) @map("attempt_count")
   payloadHash       String               @map("payload_hash")
+  /// The signed request body. Null for rows created before migration 0079,
+  /// which cannot be delivered because their bytes were never stored.
+  payload           Json?
   signatureVersion  String               @default("v1") @map("signature_version")
   responseStatus    Int?                 @map("response_status")
   responseSnippet   String?              @map("response_snippet")

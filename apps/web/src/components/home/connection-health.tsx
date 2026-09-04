@@ -4,7 +4,6 @@ import { Link } from '@/components/link';
 
 import { EmptyState, ErrorState, LoadingState, SkeletonList } from '@relay/design-system/patterns';
 import { Button, StatusDot } from '@relay/design-system/primitives';
-import { cn } from '@relay/design-system/utils';
 
 import { ApiError, type ConnectionHealth } from '@/lib/api';
 import { useConnections } from '@/lib/api/hooks';
@@ -30,9 +29,8 @@ const HEALTHY_STATES: ReadonlySet<ConnectionHealth> = new Set<ConnectionHealth>(
 /**
  * Connection health.
  *
- * One row per account: the identity dot, the account name, the health word and
- * the last publish. Accounts that need attention sort first, because that is
- * the only reason this block is on Home.
+ * A workspace-level summary followed only by accounts that need attention.
+ * Healthy account detail belongs on Connections; Home stays a decision surface.
  */
 export function ConnectionHealth() {
   const t = useTranslations();
@@ -43,18 +41,16 @@ export function ConnectionHealth() {
   const healthy = connections.filter((connection) => HEALTHY_STATES.has(connection.health)).length;
   const attention = connections.length - healthy;
 
-  const sorted = [...connections].sort((left, right) => {
-    const leftNeeds = HEALTHY_STATES.has(left.health) ? 1 : 0;
-    const rightNeeds = HEALTHY_STATES.has(right.health) ? 1 : 0;
-    return leftNeeds - rightNeeds;
-  });
+  const needsAttention = connections.filter((connection) => !HEALTHY_STATES.has(connection.health));
 
   return (
     <HomeSection
       id="home-connections"
       title={t('home.connections.title')}
-      meta={
-        connections.length === 0 ? undefined : t('home.connections.summary', { healthy, attention })
+      summary={
+        connections.length === 0
+          ? undefined
+          : t('home.v2.connections.summary', { healthy, attention })
       }
       link={{ href: '/connections', label: t('home.connections.viewAll') }}
     >
@@ -74,65 +70,40 @@ export function ConnectionHealth() {
           }}
           retryLabel={t('action.retry')}
         />
-      ) : sorted.length === 0 ? (
+      ) : connections.length === 0 ? (
         <EmptyState
           compact
           title={t('empty.connections.title')}
           description={t('empty.connections.body')}
           action={
-            <Button variant="primary" size="sm" asChild>
+            <Button variant="secondary" size="sm" asChild>
               <Link href="/connections">{t('empty.connections.action')}</Link>
             </Button>
           }
         />
-      ) : (
+      ) : needsAttention.length === 0 ? null : (
         <ul className="border-border-subtle flex flex-col border-t">
-          {sorted.map((connection) => {
+          {needsAttention.map((connection) => {
             const dot = providerDotKey(connection.provider);
-            const needsAttention = !HEALTHY_STATES.has(connection.health);
 
             return (
               <li
                 key={connection.id}
-                className="border-border-subtle flex flex-wrap items-center gap-x-3 gap-y-1 border-b py-2.5"
+                className="border-border-subtle flex flex-wrap items-center gap-x-3 gap-y-1 border-b py-4"
               >
-                {dot === undefined ? null : (
-                  <StatusDot
-                    provider={dot}
-                    aria-hidden="true"
-                    className={cn(!needsAttention && 'relay-dot-settle motion-reduce:animate-none')}
-                  />
-                )}
+                {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
                 <Link
                   href={`/connections/${connection.id}`}
-                  className={cn(
-                    'text-body-md min-w-0 flex-1 truncate hover:underline',
-                    needsAttention
-                      ? 'text-text-primary decoration-warning-border underline underline-offset-2'
-                      : 'text-text-primary',
-                  )}
+                  className="text-body-md text-text-primary decoration-warning-border hover:decoration-warning-fg min-w-0 flex-1 truncate underline underline-offset-2"
                 >
                   {connection.displayName}
                 </Link>
 
-                <span
-                  className={cn(
-                    'text-body-sm',
-                    needsAttention ? 'text-warning-fg font-medium' : 'text-text-secondary',
-                  )}
-                >
+                <span className="text-body-sm text-warning-fg font-medium">
                   {t(HEALTH_LABEL_KEY[connection.health], {
                     relativeTime:
                       connection.expiresAt === null ? '' : format.relative(connection.expiresAt),
                   })}
-                </span>
-
-                <span className="text-body-sm text-text-tertiary">
-                  {connection.lastPublishedAt === null
-                    ? t('connection.lastPublishedNever')
-                    : t('connection.lastPublished', {
-                        relativeTime: format.relative(connection.lastPublishedAt),
-                      })}
                 </span>
               </li>
             );

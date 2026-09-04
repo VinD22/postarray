@@ -170,7 +170,11 @@ export function createApiClient(options: ApiClientOptions): ApiClient {
         'user-agent': options.userAgent ?? 'relay-cli',
       };
       if (options.workspaceId !== null && options.workspaceId !== undefined) {
-        headers['x-postarray-workspace-id'] = options.workspaceId;
+        // The header the API's workspace guard actually reads. It was spelled
+        // `x-postarray-workspace-id` here, which no route looks for, so a
+        // credential bound to more than one workspace could never pin one and
+        // every such call came back as a missing workspace.
+        headers[API_HEADERS.workspaceId] = options.workspaceId;
       }
       if (options.locale !== undefined) {
         headers['accept-language'] = options.locale;

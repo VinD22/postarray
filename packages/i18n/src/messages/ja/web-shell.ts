@@ -22,7 +22,7 @@ export const webShellMessages = {
   'shell.demo.body':
     'このブラウザから Post Array API にアクセスできないため、画面にはシードされたサンプル ワークスペースが表示されます。ここには実際のアカウントに接続されているものはなく、公開できるものはありません。',
   'shell.demo.howToConnect':
-    'NEXT_PUBLIC_RELAY_API_URL を設定し、アプリを再起動してライブ データを使用します。',
+    'NEXT_PUBLIC_POSTARRAY_API_URL を設定し、アプリを再起動してライブ データを使用します。',
   'shell.offline.title': 'あなたはオフラインです',
   'shell.offline.body':
     '下書きはこのデバイスに保存されます。接続が戻ると、スケジュールと公開が再開されます。',

@@ -36,6 +36,7 @@ import { createSchedulingService } from './scheduling';
 import { createServiceAccountService } from './service-accounts';
 import { createShortLinkService } from './short-links';
 import { createValidationService } from './validation';
+import { createDomainEventService } from './domain-events';
 import { createWebhookService } from './webhooks';
 import { createWorkspaceService } from './workspaces';
 import { createWorkerAnalyticsService } from './worker-analytics';
@@ -88,6 +89,7 @@ export function createServices(deps: ServiceDeps): Services {
     actionCenter,
     agentConfirmations,
   });
+  const webhooks = createWebhookService(deps);
 
   return {
     workspaces: createWorkspaceService(deps),
@@ -113,7 +115,13 @@ export function createServices(deps: ServiceDeps): Services {
     rss: createRssService(deps),
     growth,
     assistant,
-    webhooks: createWebhookService(deps),
+    webhooks,
+    domainEvents: createDomainEventService({
+      webhooks,
+      clock: deps.clock,
+      logger: deps.logger,
+      ...(deps.realtime === undefined ? {} : { realtime: deps.realtime }),
+    }),
     credentials: createCredentialVaultService(deps),
     apiKeys: createApiKeyService(deps),
     serviceAccounts: createServiceAccountService(deps),

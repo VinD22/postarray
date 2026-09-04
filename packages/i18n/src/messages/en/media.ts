@@ -102,4 +102,24 @@ export const mediaMessages = {
     'This picture could not be read or written. Nothing was saved and your original is untouched.',
   'error.media_derivative_write_failed.message':
     'This version could not be recorded. Nothing was saved and your original is untouched.',
+
+  // ==================================================== the safety check ====
+  // Every uploaded and imported file is checked before it can be published:
+  // are the bytes the type they claim to be, do they decode, are they within
+  // the size that type allows. These are the sentences a person reads when
+  // one of those answers is no. Each names what was wrong with the file, not
+  // that "an error occurred", because the person can only act on the first.
+  'media.scan.pending': 'Checking this file',
+  'media.scan.mime_mismatch':
+    'This file is not the type its name says it is, so it was not accepted. Save it again in the format you meant and upload it once more.',
+  'media.scan.unrecognized_format':
+    'This file type could not be identified, so it was not accepted. Upload a JPEG, PNG, GIF, WebP or MP4.',
+  'media.scan.decode_failed':
+    'This picture could not be opened, which usually means the upload was cut short. Upload it again.',
+  'media.scan.too_large':
+    'This file is larger than the limit for its type, so it was not accepted.',
+  'media.scan.unreadable':
+    'This file could not be read back from storage, so it has not been checked yet. Try again in a few minutes.',
+  'media.scan.scanner_unavailable':
+    'The safety check could not run, so this file is not ready to publish yet. It will be checked again automatically.',
 } as const;

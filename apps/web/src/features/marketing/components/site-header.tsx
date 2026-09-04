@@ -7,6 +7,7 @@ import { cn } from '@relay/design-system/utils';
 import { useI18n } from '@relay/i18n/react';
 
 import { Link } from '@/components/link';
+import { ProductMark } from '@/components/brand/product-mark';
 import { ThemePicker } from '@/components/theme-picker';
 import { localizedHref } from '@/lib/i18n/routing';
 
@@ -54,30 +55,30 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
   };
 
   return (
-    <header className="border-border-default bg-surface-canvas relative sticky top-0 z-(--z-index-sticky) border-b">
-      {/*
-        The header takes the shared marketing measure with no override. It used
-        to opt out, because the old 80rem cap was right for reading text and
-        wrong for a navigation bar; now the page itself is that width, so the
-        bar and the content below it line up on the same two edges.
-      */}
+    <header className="bg-surface-canvas relative sticky top-0 z-(--z-index-sticky) py-3">
       <Container>
-        <div className="flex h-16 items-stretch justify-between gap-4">
+        <div
+          className={cn(
+            'border-border-default bg-surface-raised flex h-16 items-stretch justify-between gap-3',
+            'rounded-poster shadow-raised border px-3 sm:px-4',
+          )}
+        >
           <div className="flex items-center">
             <Link
               href="/"
               className={cn(
-                'text-text-primary font-serif text-[1.4rem] leading-none tracking-[-0.02em]',
-                'flex min-h-11 items-center pe-4',
+                'text-text-primary text-title-sm leading-none tracking-[-0.025em]',
+                'flex min-h-11 items-center gap-3 pe-3 font-semibold',
                 'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
               )}
             >
-              {brand}
+              <ProductMark />
+              <span>{brand}</span>
             </Link>
           </div>
 
           <nav aria-label={navLabel} className="hidden min-w-0 flex-1 justify-center xl:flex">
-            <ul className="flex min-w-0 items-stretch">
+            <ul className="flex min-w-0 items-center gap-0.5">
               {items.map((item) => {
                 const current = isCurrent(item.href);
                 return (
@@ -86,21 +87,15 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                       href={item.href}
                       aria-current={current ? 'page' : undefined}
                       className={cn(
-                        'text-body-md relative flex items-center px-3 whitespace-nowrap',
-                        'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
-                        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
+                        'text-body-sm relative flex min-h-10 items-center rounded-md px-2.5 whitespace-nowrap',
+                        'transition-[background-color,color] duration-(--duration-fast) ease-(--ease-standard)',
+                        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
                         current
-                          ? 'text-text-primary'
-                          : 'text-text-secondary hover:text-text-primary',
+                          ? 'bg-surface-sunken text-text-primary font-semibold'
+                          : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
                       )}
                     >
                       {item.label}
-                      {current ? (
-                        <span
-                          aria-hidden="true"
-                          className="bg-accent absolute start-3 end-3 bottom-[-1px] h-[2px]"
-                        />
-                      ) : null}
                     </Link>
                   </li>
                 );
@@ -126,10 +121,10 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             <Link
               href={startTrial.href}
               className={cn(
-                'bg-accent flex min-h-11 items-center rounded-md border border-transparent px-4 whitespace-nowrap',
-                'text-body-md text-accent-on font-medium',
-                'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
-                'hover:bg-accent-hover active:bg-accent-active',
+                'bg-accent-action flex min-h-10 items-center rounded-md border border-transparent px-4 whitespace-nowrap',
+                'text-body-md text-accent-action-on shadow-raised font-semibold',
+                'transition-[background-color,transform,box-shadow] duration-(--duration-fast) ease-(--ease-standard)',
+                'hover:bg-accent-action-hover hover:shadow-hard active:bg-accent-action-active active:translate-y-px',
                 'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
               )}
             >
@@ -149,13 +144,13 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
               <Menu aria-hidden="true" className="size-5 group-open:hidden" />
               <X aria-hidden="true" className="hidden size-5 group-open:block" />
               <span className="group-open:hidden">{openMenu}</span>
-              <span className="hidden group-open:inline">{closeMenu}</span>
+              <span className="sr-only">{closeMenu}</span>
             </summary>
 
-            <div className="border-border-default bg-surface-canvas absolute start-0 end-0 top-16 border-b">
+            <div className="border-border-default bg-surface-raised shadow-overlay absolute start-0 end-0 top-full mt-2 border-y">
               <Container>
                 <nav aria-label={navLabel} className="py-2">
-                  <ul className="border-border-subtle border-t">
+                  <ul className="border-border-subtle grid grid-cols-2 gap-x-4 border-t">
                     {items.map((item) => {
                       const current = isCurrent(item.href);
                       return (
@@ -185,7 +180,8 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                     <Link
                       href={startTrial.href}
                       className={cn(
-                        'bg-accent text-body-lg text-accent-on flex min-h-11 items-center rounded-md px-4 font-medium',
+                        'bg-accent-action text-body-lg text-accent-action-on flex min-h-11 items-center rounded-md px-4 font-semibold',
+                        'hover:bg-accent-action-hover active:bg-accent-action-active',
                         'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
                       )}
                     >

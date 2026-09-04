@@ -130,6 +130,11 @@ const TOKEN_TO_CSS: Readonly<Record<string, string>> = {
   'status.destructive.solidActive': 'status-destructive-solid-active',
   'status.destructive.on': 'status-destructive-on',
 
+  'chart.line': 'chart-line',
+  'chart.lineCompare': 'chart-line-compare',
+  'chart.grid': 'chart-grid',
+  'chart.area': 'chart-area',
+
   ...Object.fromEntries(
     PROVIDER_KEYS.map((provider) => [
       `brand.${provider}`,
@@ -345,7 +350,7 @@ describe('theme.css and tokens.ts', () => {
       (name) =>
         !mapped.has(name) &&
         !CSS_ONLY_COLOUR_TOKENS.includes(name) &&
-        /^(surface|border|text|accent|cta|status|brand)-/.test(name),
+        /^(surface|border|text|accent|cta|status|brand|chart)-/.test(name),
     );
 
     // A new semantic colour in theme.css with no `tokens.ts` counterpart is

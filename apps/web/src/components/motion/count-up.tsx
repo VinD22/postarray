@@ -65,7 +65,6 @@ export function CountUp({ value, format, className }: CountUpProps) {
       return () => {
         tween.kill();
       };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
     { scope, dependencies: [motionOk, value] },
   );

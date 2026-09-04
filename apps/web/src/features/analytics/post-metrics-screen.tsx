@@ -3,16 +3,19 @@
 import { useMemo, type ReactElement } from 'react';
 import type { NormalizedMetricName } from '@relay/contracts';
 import { DefinitionList, LoadingState, Notice, SkeletonText } from '@relay/design-system/patterns';
-import { Button, Separator, StatusDot } from '@relay/design-system/primitives';
+import { Button, Separator } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
-import { EvidencePanel } from './components/evidence-panel';
+import { csvFilename, csvNumber, toCsv } from '@/lib/export/csv';
+
+import { ExportButton } from './components/export-button';
 import { MetricDefinitionsPanel } from './components/metric-definition';
 import { MetricFigure } from './components/metric-figure';
 import { QueryErrorState } from './components/query-error-state';
 import { formatLabelKey, providerLabelKey } from './labels';
 import {
   OUTCOME_GROUPS,
+  metricLabelKey,
   outcomeGroupHelpKey,
   outcomeGroupLabelKey,
   outcomeGroupOf,
@@ -60,10 +63,10 @@ export function PostMetricsScreen({
   const format = useValueFormat();
   const query = usePostMetrics(contentItemId);
 
-  const allReadings = useMemo<readonly MetricReading[]>(() => {
-    const primary = query.data?.reading;
-    return primary ? [primary, ...readings] : readings;
-  }, [query.data?.reading, readings]);
+  const allReadings = useMemo<readonly MetricReading[]>(
+    () => [...(query.data?.readings ?? []), ...readings],
+    [query.data?.readings, readings],
+  );
 
   const grouped = useMemo(() => {
     const map = new Map<OutcomeGroup, MetricReading[]>();
@@ -117,49 +120,95 @@ export function PostMetricsScreen({
     );
   }
 
-  const row = query.data;
+  const post = query.data;
+  // One column for the number, named for what the column holds rather than
+  // for any single metric: each row names its own metric already.
+  const metricValueHeader = t('analytics.table.value');
 
   return (
     <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
       <section className="flex flex-col gap-3">
-        <h2 className="text-title-md text-text-primary text-balance">{row.title}</h2>
+        {/*
+          Every field here is nullable and every null renders as the word.
+          The metrics read identifies nothing about the post, so the title and
+          the format come from the content read, which is allowed to fail on
+          its own. Readings without a title are still worth showing; an empty
+          heading over them would read as a post that has no title.
+        */}
+        <h2 className="text-title-md text-text-primary text-balance">
+          {post.title ?? t('analytics.value.unavailable')}
+        </h2>
         <DefinitionList
           layout="columns"
           items={[
             {
-              id: 'account',
-              term: t('analytics.table.account'),
-              definition: (
-                <span className="flex items-center gap-2">
-                  <StatusDot provider={row.account.provider} />
-                  {row.account.displayName}
-                  <span className="text-text-tertiary">
-                    {t(providerLabelKey(row.account.provider))}
-                  </span>
-                </span>
-              ),
-            },
-            {
               id: 'format',
               term: t('analytics.table.format'),
-              definition: t(formatLabelKey(row.format)),
+              definition:
+                post.format === null
+                  ? t('analytics.value.unavailable')
+                  : t(formatLabelKey(post.format)),
             },
             {
               id: 'published',
               term: t('analytics.table.published'),
-              definition: (
-                <time dateTime={row.publishedAt} className="tabular-nums">
-                  {format.dateTime(row.publishedAt)}
-                </time>
-              ),
+              definition:
+                post.publishedAt === null ? (
+                  t('analytics.value.unavailable')
+                ) : (
+                  <time dateTime={post.publishedAt} className="tabular-nums">
+                    {format.dateTime(post.publishedAt)}
+                  </time>
+                ),
             },
           ]}
         />
-        {onOpenReceipt ? (
-          <Button size="sm" variant="secondary" className="self-start" onClick={onOpenReceipt}>
-            {t('action.viewReceipt')}
-          </Button>
-        ) : null}
+        <div className="flex flex-wrap gap-2">
+          {onOpenReceipt ? (
+            <Button size="sm" variant="secondary" onClick={onOpenReceipt}>
+              {t('action.viewReceipt')}
+            </Button>
+          ) : null}
+          <ExportButton
+            build={() =>
+              allReadings.length === 0
+                ? null
+                : {
+                    filename: csvFilename({
+                      project: post.title ?? post.contentItemId,
+                      from: post.publishedAt ?? new Date().toISOString(),
+                      to: post.publishedAt ?? new Date().toISOString(),
+                    }),
+                    content: toCsv(allReadings, [
+                      {
+                        header: t('analytics.definition.term.definition'),
+                        value: (item) => t(metricLabelKey(item.normalizedName)),
+                      },
+                      {
+                        header: t('analytics.table.provider'),
+                        value: (item) => t(providerLabelKey(item.provider)),
+                      },
+                      {
+                        header: t('analytics.definition.term.providerField'),
+                        value: (item) => item.definition.providerField,
+                      },
+                      // Empty when the provider did not return a reading. A
+                      // zero here would be averaged and charted downstream as
+                      // if we had measured it.
+                      { header: metricValueHeader, value: (item) => csvNumber(item.value) },
+                      {
+                        header: t('analytics.definition.term.availability'),
+                        value: (item) => item.availability,
+                      },
+                      {
+                        header: t('analytics.table.observedAt'),
+                        value: (item) => item.observedAt,
+                      },
+                    ]),
+                  }
+            }
+          />
+        </div>
       </section>
 
       <Separator />
@@ -206,13 +255,6 @@ export function PostMetricsScreen({
             ) : null
           }
         />
-      ) : null}
-
-      {row.baseline ? (
-        <>
-          <Separator />
-          <EvidencePanel row={row} baseline={row.baseline} />
-        </>
       ) : null}
 
       <MetricDefinitionsPanel definitions={definitions} />

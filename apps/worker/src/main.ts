@@ -11,12 +11,17 @@ import { createPrismaClient } from '@relay/database';
 import { createLogger, type Logger } from '@relay/observability';
 import {
   createApplicationRuntime,
-  OutboxDispatcher,
+  createDomainEventOutboxDispatcher,
+  createRedisRealtimePublisher,
+  createWorkflowOutboxDispatcher,
+  resolveStoragePort,
   type ConnectorExecutionGateway,
+  type RealtimeRedisClient,
 } from '@relay/runtime';
 import Redis from 'ioredis';
 
 import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
+import { createPassthroughScanner } from './media-scan/passthrough-scanner';
 import { WorkerScheduler } from './outbox-scheduler';
 import {
   createConnectorExecutionActivities,
@@ -84,7 +89,7 @@ type WebhookActivities = Pick<
 
 type BulkImportActivities = Pick<WorkerActivities, 'readBulkImportVerdict' | 'applyBulkImportRows'>;
 
-type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative'>;
+type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative' | 'scanMediaAsset'>;
 
 /** Repeats, feeds, rules and per-post feedback. None of these calls a provider. */
 type AutomationActivities = Pick<
@@ -175,6 +180,39 @@ export async function loadGateway(
   return adoptGateway(
     await Promise.resolve(build({ connectorExecution: options.connectorExecution ?? null })),
   );
+}
+
+/**
+ * The live-update publisher, or nothing.
+ *
+ * Nothing is a supported state. Without Redis the product still publishes,
+ * still delivers webhooks and still writes receipts; screens fall back to
+ * their polling interval, which is exactly what they do today. So a missing
+ * `REDIS_URL` degrades the experience and is never allowed to stop a publish.
+ */
+function createRealtimePublisher(
+  config: RelayConfig,
+  logger: Logger,
+): { publisher: ReturnType<typeof createRedisRealtimePublisher>; close: () => Promise<void> } | null {
+  if (config.redis.url === undefined) {
+    logger.warn({}, 'worker.realtime_disabled');
+    return null;
+  }
+  const client = new Redis(config.redis.url, {
+    lazyConnect: false,
+    enableReadyCheck: true,
+    maxRetriesPerRequest: 3,
+  });
+  // ioredis implements every command this port needs; its overloaded
+  // declarations are wider than the structural type, exactly as they are for
+  // the key value store above.
+  const realtimeClient = client as unknown as RealtimeRedisClient;
+  return {
+    publisher: createRedisRealtimePublisher({ client: realtimeClient, logger }),
+    close: async () => {
+      await client.quit();
+    },
+  };
 }
 
 async function createWorkerKeyValueStore(
@@ -293,6 +331,7 @@ export async function main(): Promise<void> {
   const deferredMediaDerivatives: MediaDerivativeActivities = {
     produceMediaDerivative: (input) =>
       mediaDerivativesReady.then((value) => value.produceMediaDerivative(input)),
+    scanMediaAsset: (input) => mediaDerivativesReady.then((value) => value.scanMediaAsset(input)),
   };
   let resolveSequenceState: ((sink: WorkerSequenceStateSink) => void) | undefined;
   const sequenceStateReady = new Promise<WorkerSequenceStateSink>((resolve) => {
@@ -362,6 +401,7 @@ export async function main(): Promise<void> {
     throw error;
   }
   const scheduler = new WorkerScheduler({ worker, config, clock: systemClock, logger });
+  const realtime = createRealtimePublisher(config, logger);
   let kv: KeyValueStore | null = null;
   let runtime: ReturnType<typeof createApplicationRuntime>;
   try {
@@ -373,6 +413,11 @@ export async function main(): Promise<void> {
         prisma,
         kv,
         scheduler,
+        // Format validation, not malware scanning, and the adapter's own doc
+        // comment says so. It exists because nothing else in the product moved
+        // an asset out of `pending`, so no uploaded image could ever publish.
+        mediaScanner: createPassthroughScanner({ storage: resolveStoragePort(config, systemClock) }),
+        ...(realtime === null ? {} : { realtime: realtime.publisher }),
         credentialStore: connectorRuntime.credentialStore,
         ...(connectorRuntime.credentialVault === null
           ? {}
@@ -422,6 +467,14 @@ export async function main(): Promise<void> {
     // web app, and no generative provider exists to inject in its place.
     const mediaTransform = createSharpMediaTransform();
     resolveMediaDerivatives?.({
+      // Format validation only, and the doc comment on the adapter says so
+      // plainly. It is the difference between an image that publishes and one
+      // that is stuck pending forever, not the difference between safe and
+      // unsafe bytes.
+      scanMediaAsset: (input) =>
+        runtime.services.workerMedia.scanMediaAsset(input.ctx, {
+          mediaAssetId: input.mediaAssetId,
+        }),
       produceMediaDerivative: async (input) => {
         const derivative = await runtime.services.workerMedia.produceDerivative(
           input.ctx,
@@ -461,13 +514,25 @@ export async function main(): Promise<void> {
     await worker.shutdown();
     throw error;
   }
-  const outbox = new OutboxDispatcher({
+  // Two loops, one table, disjoint kinds. The workflow loop hands intents to
+  // Temporal; the domain-event loop fans published facts out to customer
+  // webhook endpoints and, as they land, to notifications and realtime. They
+  // used to be one loop that understood only intents, which is why every
+  // domain event dead-lettered.
+  const outbox = createWorkflowOutboxDispatcher({
     prisma,
     scheduler,
     clock: systemClock,
     logger,
   });
   outbox.start();
+  const domainEventOutbox = createDomainEventOutboxDispatcher({
+    prisma,
+    domainEvents: runtime.services.domainEvents,
+    clock: systemClock,
+    logger,
+  });
+  domainEventOutbox.start();
   const mediaRetention = startMediaRetentionSweep({
     prisma,
     media: runtime.services.media,
@@ -481,7 +546,9 @@ export async function main(): Promise<void> {
       shutdown: async () => {
         await mediaRetention.stop();
         await outbox.stop();
+        await domainEventOutbox.stop();
         await runtime.close();
+        await realtime?.close();
         await scheduler.close();
         connectorRuntime.close();
         await prisma.$disconnect();

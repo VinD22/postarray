@@ -11,6 +11,8 @@ export interface PageHeaderProps {
   description?: ReactNode;
   /** Primary and secondary actions. At most one primary. */
   actions?: ReactNode;
+  /** Display serif by default; `strong` is the oversized sans treatment for key indexes. */
+  titleStyle?: 'display' | 'strong';
   breadcrumb?: BreadcrumbProps;
   /** Filters, a view switcher, tabs. Sits under the title block. */
   toolbar?: ReactNode;
@@ -32,6 +34,7 @@ export function PageHeader({
   title,
   description,
   actions,
+  titleStyle = 'display',
   breadcrumb,
   toolbar,
   sticky = false,
@@ -42,29 +45,38 @@ export function PageHeader({
     <header
       id={id}
       className={cn(
-        'border-border-default bg-surface-canvas flex flex-col gap-3 border-b',
-        'px-4 py-4 md:px-6',
-        sticky && 'sticky top-0 z-(--z-index-sticky)',
+        'border-border-default bg-surface-canvas flex flex-col gap-5 border-b',
+        'px-4 pt-7 pb-6 md:px-6 md:pt-9 md:pb-7',
+        sticky && 'sticky top-[4.75rem] z-(--z-index-sticky)',
         className,
       )}
     >
       {breadcrumb ? <Breadcrumb {...breadcrumb} /> : null}
 
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div className="flex min-w-0 flex-col gap-1">
-          <h1 className="text-title-lg text-text-primary font-display font-bold text-balance">
+      <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+        <div className="flex min-w-0 flex-col gap-2">
+          <h1
+            className={cn(
+              'text-text-primary leading-[0.98] text-balance',
+              titleStyle === 'strong'
+                ? 'font-sans text-[clamp(2.5rem,2.1rem+1.5vw,3.75rem)] font-[750] tracking-[-0.045em]'
+                : 'type-title text-[clamp(2.25rem,1.9rem+1.5vw,3.5rem)] font-bold tracking-[-0.035em]',
+            )}
+          >
             {title}
           </h1>
           {description ? (
-            <p className="text-body-md text-text-secondary max-w-[70ch]">{description}</p>
+            <p className="text-body-lg text-text-secondary max-w-[62ch] text-pretty">
+              {description}
+            </p>
           ) : null}
         </div>
         {actions ? (
-          <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>
+          <div className="flex shrink-0 flex-wrap items-center gap-2 md:pb-0.5">{actions}</div>
         ) : null}
       </div>
 
-      {toolbar ? <div className="min-w-0">{toolbar}</div> : null}
+      {toolbar ? <div className="border-border-subtle min-w-0 border-t pt-4">{toolbar}</div> : null}
     </header>
   );
 }

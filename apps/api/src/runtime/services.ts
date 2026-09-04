@@ -105,11 +105,14 @@ class ApplicationKvAdapter implements ApplicationKeyValueStore {
         details: { field: 'amount', reason: 'positive_integer_required' },
       });
     }
-    let value = 0;
-    for (let index = 0; index < amount; index += 1) {
-      value = await this.edge.increment(key, ttlSeconds === undefined ? undefined : { ttlSeconds });
-    }
-    return value;
+    // One round trip, not one per unit. The rate limiter charges a cost per
+    // request and this used to make that many separate Redis calls, so an
+    // expensive endpoint paid for its own accounting several times over.
+    return this.edge.incrementBy(
+      key,
+      amount,
+      ttlSeconds === undefined ? undefined : { ttlSeconds },
+    );
   }
 
   close(): Promise<void> {

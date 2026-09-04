@@ -26,7 +26,7 @@ function silentLog(): WorkflowLog & { readonly lines: string[] } {
   };
 }
 
-function makeScheduler(isProduction = false): {
+function makeScheduler(permitted = true): {
   scheduler: InlineScheduler;
   simulator: ActivitySimulator;
   log: ReturnType<typeof silentLog>;
@@ -36,15 +36,15 @@ function makeScheduler(isProduction = false): {
   const scheduler = new InlineScheduler({
     activities: simulator,
     log,
-    isProduction,
+    permitted,
     reason: 'TEMPORAL_ADDRESS is not set',
   });
   return { scheduler, simulator, log };
 }
 
 describe('InlineScheduler', () => {
-  it('refuses to exist in production', () => {
-    expect(() => makeScheduler(true)).toThrow(InlineSchedulerNotPermittedError);
+  it('refuses to exist where the caller has not permitted a non-durable scheduler', () => {
+    expect(() => makeScheduler(false)).toThrow(InlineSchedulerNotPermittedError);
   });
 
   it('runs the same workflow body the durable worker runs', async () => {

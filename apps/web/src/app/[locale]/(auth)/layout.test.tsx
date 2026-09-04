@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -8,6 +8,9 @@ const { getStaticIntlMock } = vi.hoisted(() => ({
 }));
 
 vi.mock('@/lib/i18n/server', () => ({ getStaticIntl: getStaticIntlMock }));
+vi.mock('@/components/link', () => ({
+  Link: ({ children, ...props }: ComponentProps<'a'>) => <a {...props}>{children}</a>,
+}));
 
 import AuthLayout from './layout';
 
