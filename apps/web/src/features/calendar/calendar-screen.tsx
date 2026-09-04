@@ -61,6 +61,7 @@ import { EntryDetailSheet } from './entry-detail-sheet';
 import { HoldDialog, type HoldIntent } from './hold-dialog';
 import { RescheduleDialog } from './reschedule-dialog';
 import { computeRange, stepAnchor } from './date-range';
+import { receiptHrefForEntry } from './entry-href';
 import { useCalendarFormat } from './format';
 import {
   applyFilters,
@@ -267,27 +268,25 @@ export function CalendarScreen({
       const step = keyboardStep(event.key, view, direction);
       if (!step) return;
       event.preventDefault();
-      setProposal((current) => {
-        const base = current ?? buildProposal({ entry: grabbed, timeZone: format.timeZone });
-        const next = buildProposal({
-          entry: { ...grabbed, scheduledAt: base.toInstant },
-          timeZone: format.timeZone,
-          ...step,
-        });
-        const merged: RescheduleProposal = {
-          entry: grabbed,
-          fromInstant: grabbed.scheduledAt,
-          toInstant: next.toInstant,
-          keepsLocalTime: next.keepsLocalTime,
-        };
-        announce(t('web.calendar.keyboard.moved', { to: format.dateTime(merged.toInstant) }));
-        return merged;
+      const base = proposal ?? buildProposal({ entry: grabbed, timeZone: format.timeZone });
+      const next = buildProposal({
+        entry: { ...grabbed, scheduledAt: base.toInstant },
+        timeZone: format.timeZone,
+        ...step,
       });
+      const merged: RescheduleProposal = {
+        entry: grabbed,
+        fromInstant: grabbed.scheduledAt,
+        toInstant: next.toInstant,
+        keepsLocalTime: next.keepsLocalTime,
+      };
+      setProposal(merged);
+      announce(t('web.calendar.keyboard.moved', { to: format.dateTime(merged.toInstant) }));
     };
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [grabbed, dialogOpen, view, format, direction, announce, cancelMove, t]);
+  }, [grabbed, dialogOpen, proposal, view, format, direction, announce, cancelMove, t]);
 
   useHotkeys(
     {
@@ -347,8 +346,7 @@ export function CalendarScreen({
   // The receipt lives on the post page. A post with no publish job has no
   // receipt yet, and linking to one that does not exist is worse than no link.
   const hrefForReceipt = useCallback(
-    (entry: CalendarEntry) =>
-      entry.publishJobId ? `${postHrefPattern.replace('{id}', entry.contentItemId)}#receipt` : null,
+    (entry: CalendarEntry) => receiptHrefForEntry(postHrefPattern, entry),
     [postHrefPattern],
   );
   // A chip for something that has published opens the post at its receipt,
@@ -460,6 +458,7 @@ export function CalendarScreen({
           actionCenterHref={actionCenterHref}
           attentionCount={attentionCount}
           filtersActive={countActiveFilters(filters) > 0}
+          isWide={isWide}
           grabbedKey={grabbed ? entryKey(grabbed) : null}
           proposal={grabbed ? proposal : null}
           draggingKey={drag.draggingKey}
@@ -543,6 +542,7 @@ interface CalendarBodyProps {
   actionCenterHref: string;
   attentionCount: number;
   filtersActive: boolean;
+  isWide: boolean;
   grabbedKey: string | null;
   proposal: RescheduleProposal | null;
   draggingKey: string | null;
@@ -726,11 +726,8 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
             onDragStart={props.onDragStart}
             label={t('web.calendar.month.label', { month: props.rangeLabel })}
           />
-        ) : (
-          <>
-            {/* The grid on a real screen, the agenda on a phone. Both render, one
-                is hidden, so no layout shift when the media query settles. */}
-            <div className="hidden md:block">
+        ) : props.isWide ? (
+          <div>
               <CalendarGrid
                 range={props.range}
                 entries={props.entries}
@@ -744,23 +741,23 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
                 onDragStart={props.onDragStart}
                 label={t('web.calendar.grid.label', { range: props.rangeLabel })}
               />
-            </div>
-            <div className="md:hidden">
-              <CalendarAgenda
-                range={props.range}
-                entries={props.entries}
-                timeZone={format.timeZone}
-                hrefForEntry={props.hrefForEntry}
-                grabbedKey={props.grabbedKey}
-                onPickUp={props.onPickUp}
-                proposal={props.proposal}
-                draggingKey={props.draggingKey}
-                settle={props.settle}
-                onDragStart={props.onDragStart}
-                label={t('web.calendar.agenda.label', { range: props.rangeLabel })}
-              />
-            </div>
-          </>
+          </div>
+        ) : (
+          <div>
+            <CalendarAgenda
+              range={props.range}
+              entries={props.entries}
+              timeZone={format.timeZone}
+              hrefForEntry={props.hrefForEntry}
+              grabbedKey={props.grabbedKey}
+              onPickUp={props.onPickUp}
+              proposal={props.proposal}
+              draggingKey={props.draggingKey}
+              settle={props.settle}
+              onDragStart={props.onDragStart}
+              label={t('web.calendar.agenda.label', { range: props.rangeLabel })}
+            />
+          </div>
         )}
       </CalendarViewTransition>
     </>

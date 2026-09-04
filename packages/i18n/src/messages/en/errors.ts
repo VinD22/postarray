@@ -8,6 +8,10 @@
 export const errorMessages = {
   'error.unknown.message': 'Something went wrong and we could not classify it.',
   'error.unknown.action': 'Try again. If it keeps happening, send us the reference below.',
+  'error.demo_unavailable.message':
+    'This action is unavailable while you are viewing demo data.',
+  'error.demo_unavailable.action':
+    'Connect the app to the Post Array API to change real publishing data.',
   'error.internal.message': 'This is a problem on our side, not with your content.',
   'error.internal.action': 'Your work is saved. We have been alerted. Try again in a few minutes.',
   'error.not_implemented.message': 'Post Array has not built this yet.',

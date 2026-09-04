@@ -90,6 +90,8 @@ test.describe('rescheduling a post', () => {
     const beforeTarget = await targetCell.locator('article[data-entry-key]').count();
 
     const handle = sourceCell.locator('[data-move-handle]').first();
+    await handle.scrollIntoViewIfNeeded();
+    await expect(handle).toBeVisible();
     const box = await targetCell.boundingBox();
     if (!box) return;
 

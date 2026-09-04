@@ -138,8 +138,8 @@ export function Heading({
     <Component
       id={id}
       className={cn(
-        'font-display text-[clamp(1.6rem,1.15rem+1.2vw,2.25rem)] leading-[1.12]',
-        'text-text-primary font-medium tracking-[-0.015em] text-pretty',
+        'font-display text-[clamp(1.9rem,1.25rem+1.8vw,3.25rem)] leading-[1.06]',
+        'text-text-primary font-medium tracking-[-0.025em] text-pretty',
         className,
       )}
     >
@@ -234,9 +234,7 @@ export function FactList({
   children: ReactNode;
   className?: string;
 }): ReactNode {
-  return (
-    <dl className={cn('@container border-border-default border-t', className)}>{children}</dl>
-  );
+  return <dl className={cn('border-border-default @container border-t', className)}>{children}</dl>;
 }
 
 export function Fact({

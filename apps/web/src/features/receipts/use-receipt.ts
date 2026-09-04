@@ -3,10 +3,10 @@
 /**
  * Post and receipt data access.
  *
- * The page needs three things that arrive separately: the content item with
- * its targets, the receipt summaries for that item, and the full immutable
- * receipt for the target being inspected. They are composed here so the page
- * never renders a receipt beside a stale target list.
+ * The page composes the content item, the accepted publish job, the receipt
+ * summaries and the full immutable receipt. They arrive separately, so this
+ * query keeps them on one cache key and polls only while a known job can still
+ * produce evidence.
  *
  * There is no optimistic update anywhere in this file. Everything here either
  * describes something that already happened externally or triggers something
@@ -18,10 +18,25 @@ import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 import { api, keys, type ApiError } from '@/lib/api';
 import { useSession, useWorkspaceId } from '@/lib/auth/session-context';
 import type { PublicationReceipt, ReceiptSummaryView } from '@/lib/api/types';
-import type { PostDetail } from './types';
+import type { PostDetail, PublishJob } from './types';
 
 /** How many recent receipts to scan for this content item's targets. */
 const RECEIPT_SCAN_LIMIT = 100;
+const POST_DETAIL_POLL_MS = 2_000;
+
+const FINISHED_WITHOUT_RECEIPT = new Set(['failed_permanently', 'canceled', 'deleted_externally']);
+
+/** Keep a newly accepted job live until evidence arrives or the job stops. */
+export function shouldPollPostDetail(
+  detail:
+    | { readonly receipt: unknown | null; readonly job: Pick<PublishJob, 'state'> | null }
+    | undefined,
+): boolean {
+  if (!detail || detail.receipt !== null || detail.job === null) {
+    return false;
+  }
+  return !FINISHED_WITHOUT_RECEIPT.has(detail.job.state);
+}
 
 /**
  * The content item plus its receipt summaries.
@@ -33,28 +48,38 @@ const RECEIPT_SCAN_LIMIT = 100;
  * TODO(web): switch to `api.receipts.listForJob` once `ContentItemView`
  * carries `publishJobId`.
  */
-export function usePostDetail(contentItemId: string): UseQueryResult<PostDetail, ApiError> {
+export function usePostDetail(
+  contentItemId: string,
+  publishJobId: string | null,
+): UseQueryResult<PostDetail, ApiError> {
   const workspaceId = useWorkspaceId();
   const { workspace } = useSession();
 
   return useQuery({
-    queryKey: keys.contentItem(workspaceId, contentItemId),
+    // This cannot share `keys.contentItem`: that cache contains a
+    // `ContentItemView`, while this query returns the larger `PostDetail`.
+    // Sharing the key made navigation order decide which shape a screen read.
+    queryKey: keys.postDetail(workspaceId, contentItemId, publishJobId),
     staleTime: 15_000,
+    refetchInterval: (query) =>
+      shouldPollPostDetail(query.state.data) ? POST_DETAIL_POLL_MS : false,
     queryFn: async (): Promise<PostDetail> => {
-      const [item, recent] = await Promise.all([
+      const [item, recent, requestedJob] = await Promise.all([
         api.content.get(contentItemId),
         api.receipts.listRecent({ limit: RECEIPT_SCAN_LIMIT }),
+        publishJobId === null ? Promise.resolve(null) : api.publishing.getJob(publishJobId),
       ]);
 
       const summaries = recent.data.filter((summary) => summary.contentItemId === contentItemId);
       const primary = pickPrimarySummary(summaries);
       const receipt = primary ? await api.receipts.get(primary.receiptId) : null;
+      const job = requestedJob?.contentItemId === contentItemId ? requestedJob : null;
 
       return {
         item,
         receiptSummaries: summaries,
         receipt,
-        job: null,
+        job,
         viewerRole: workspace.role,
         approverName: null,
       };

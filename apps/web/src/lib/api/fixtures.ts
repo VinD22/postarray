@@ -30,10 +30,27 @@ import type {
   SessionView,
   UsageView,
 } from './types';
+import type { PublicationReceipt } from '@relay/contracts';
+import type { PublishJobView } from '@relay/application';
 
 /** Anchor everything to the moment the page loads so the demo never goes stale. */
 function at(offsetMinutes: number): string {
   return new Date(Date.now() + offsetMinutes * 60_000).toISOString();
+}
+
+/** ISO-like local wall time for the receipt's recorded IANA zone. */
+function localDateTimeAt(instant: string, timeZone: string): string {
+  return new Intl.DateTimeFormat('sv-SE', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+    .format(new Date(instant))
+    .replace(' ', 'T');
 }
 
 const HOUR = 60;
@@ -286,6 +303,8 @@ export const demoCalendar: readonly CalendarEntryView[] = [
   {
     publishJobId: 'job_demo_calendar_1',
     contentItemId: 'content_demo0000000000002',
+    projectId: 'project_demo00000000000000001',
+    connectionId: 'conn_demo00000000000000001',
     title: 'Scheduled first comments, what shipped',
     scheduledAt: at(3 * HOUR),
     timeZone: 'Europe/Berlin',
@@ -299,6 +318,8 @@ export const demoCalendar: readonly CalendarEntryView[] = [
   {
     publishJobId: 'job_demo_calendar_2',
     contentItemId: 'content_demo0000000000003',
+    projectId: 'project_demo00000000000000001',
+    connectionId: 'conn_demo00000000000000002',
     title: 'Case study, migrating a 40 account workspace',
     scheduledAt: at(7 * HOUR),
     timeZone: 'Europe/Berlin',
@@ -312,6 +333,8 @@ export const demoCalendar: readonly CalendarEntryView[] = [
   {
     publishJobId: 'job_demo_calendar_3',
     contentItemId: 'content_demo0000000000004',
+    projectId: 'project_demo00000000000000001',
+    connectionId: 'conn_demo00000000000000003',
     title: 'Reel, setting up an approval policy',
     scheduledAt: at(13 * HOUR),
     timeZone: 'Europe/Berlin',
@@ -325,6 +348,8 @@ export const demoCalendar: readonly CalendarEntryView[] = [
   {
     publishJobId: null,
     contentItemId: 'content_demo0000000000005',
+    projectId: 'project_demo00000000000000001',
+    connectionId: 'conn_demo00000000000000001',
     title: 'Weekly roundup',
     scheduledAt: at(22 * HOUR),
     timeZone: 'Europe/Berlin',
@@ -336,6 +361,41 @@ export const demoCalendar: readonly CalendarEntryView[] = [
     mediaKind: 'image',
   },
 ];
+
+/** Job records behind calendar rows, used by the honest in-progress post view. */
+export const demoPublishJobs: readonly PublishJobView[] = demoCalendar.flatMap(
+  (entry, index): readonly PublishJobView[] => {
+    if (!entry.publishJobId) return [];
+    const connection = demoConnections.find((candidate) => candidate.provider === entry.provider);
+    if (!connection) return [];
+
+    return [
+      {
+        id: entry.publishJobId,
+        workspaceId: 'ws_demo0000000000000000001',
+        contentItemId: entry.contentItemId,
+        contentVersionId: `cver_demo_calendar_${index + 1}`,
+        postVariantId: `pv_demo_calendar_${index + 1}`,
+        connectionId: connection.id,
+        provider: entry.provider,
+        state: entry.state,
+        scheduledInstant: entry.scheduledAt,
+        ianaTimeZone: entry.timeZone,
+        idempotencyKey: `demo.calendar.${index + 1}`,
+        workflowId: null,
+        approvalRequired: entry.approvalState !== 'not_required',
+        approvalState: entry.approvalState,
+        attemptCount: entry.state === 'preparing_media' ? 1 : 0,
+        lastErrorCode: null,
+        createdVia: 'web',
+        createdAt: at(-DAY),
+        updatedAt: at(-5),
+        canceledAt: null,
+        hold: null,
+      },
+    ];
+  },
+);
 
 export const demoApprovals: readonly ApprovalRequestView[] = [
   {
@@ -389,6 +449,105 @@ export const demoReceipts: readonly ReceiptSummaryView[] = [
     failedItemCount: 0,
   },
 ];
+
+/**
+ * Full immutable records behind the receipt summaries above.
+ *
+ * Demo mode is clearly labelled across the product shell, but its navigation
+ * still has to be internally truthful. A summary that says a publication
+ * partially succeeded must open the matching evidence, not an empty draft.
+ */
+export const demoPublicationReceipts: readonly PublicationReceipt[] = demoReceipts.map(
+  (summary, index) => {
+    const connection =
+      summary.provider === 'x'
+        ? demoConnections[0]
+        : summary.provider === 'linkedin'
+          ? demoConnections[1]
+          : demoConnections[2];
+    const publishedAt = summary.publishedAt ?? at(-(index + 1) * DAY);
+    const dispatchedAt = new Date(new Date(publishedAt).getTime() - 2_000).toISOString();
+    const scheduledInstant = new Date(new Date(publishedAt).getTime() - 10 * 60_000).toISOString();
+    const jobId = `job_demo_receipt_${index + 1}`;
+    const externalPostId = `demo-${summary.provider}-post-${index + 1}`;
+
+    return {
+      id: summary.receiptId,
+      workspaceId: 'ws_demo0000000000000000001',
+      publishJobId: jobId,
+      provider: summary.provider,
+      accountType: connection?.accountType ?? 'personal_profile',
+      connectionId: connection?.id ?? 'conn_demo00000000000000001',
+      externalAccountId: `demo-${summary.provider}-account`,
+      externalPostId,
+      permalink: summary.permalink,
+      contentVersionId: `version_demo_receipt_${index + 1}`,
+      contentVersionChecksum: String(index + 1).repeat(64),
+      capabilityVersion: connection?.capabilitySnapshotVersion ?? '1',
+      scheduledLocalTime: localDateTimeAt(scheduledInstant, 'Europe/Berlin'),
+      ianaTimeZone: 'Europe/Berlin',
+      scheduledInstant,
+      dispatchedAt,
+      publishedAt,
+      creationSurface: 'web',
+      approval: {
+        state: 'not_required',
+        approvalId: null,
+        decidedBy: null,
+        decidedAt: null,
+        policyKey: null,
+      },
+      cost: null,
+      attempts: [
+        {
+          id: `attempt_demo_receipt_${index + 1}`,
+          publishJobId: jobId,
+          attemptNumber: 1,
+          startedAt: dispatchedAt,
+          finishedAt: publishedAt,
+          resultState: 'published',
+          errorClass: null,
+          errorCode: null,
+          retryable: false,
+          nextRetryAt: null,
+          providerRequestId: `demo-request-${index + 1}`,
+          httpStatus: 201,
+          sanitizedResponse: { accepted: true },
+        },
+      ],
+      sanitizedProviderResponse: { accepted: true, externalPostId },
+      root: {
+        kind: 'root',
+        order: 0,
+        threadItemId: null,
+        state: 'published',
+        externalPostId,
+        permalink: summary.permalink,
+        delaySeconds: 0,
+        publishedAt,
+        errorCode: null,
+      },
+      items:
+        summary.failedItemCount > 0
+          ? [
+              {
+                kind: 'comment',
+                order: 0,
+                threadItemId: `comment_demo_receipt_${index + 1}`,
+                state: 'failed_permanently',
+                externalPostId: null,
+                permalink: null,
+                delaySeconds: 300,
+                publishedAt: null,
+                errorCode: 'CONTENT_INVALID',
+              },
+            ]
+          : [],
+      lastAnalyticsSyncAt: null,
+      createdAt: publishedAt,
+    } satisfies PublicationReceipt;
+  },
+);
 
 export const demoBilling: BillingStateView = {
   status: 'none',

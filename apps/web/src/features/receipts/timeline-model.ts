@@ -210,7 +210,7 @@ function followUpStep(item: ReceiptItem, provider: string): TimelineStep {
     return {
       id: `item-${item.order}`,
       messageKey: 'receipt.timeline.commentPublished',
-      values: { position: item.order },
+      values: { position: item.order + 1 },
       at: item.publishedAt,
       outcome: 'completed',
       detail: {
@@ -223,8 +223,8 @@ function followUpStep(item: ReceiptItem, provider: string): TimelineStep {
   if (item.state === 'failed_permanently' || item.errorCode !== null) {
     return {
       id: `item-${item.order}`,
-      messageKey: 'receipt.timeline.failed',
-      values: { attempt: item.order },
+      messageKey: 'receipt.timeline.followUpFailed',
+      values: { position: item.order + 1 },
       at: item.publishedAt,
       outcome: 'warning',
       detail: item.errorCode ? { errorCode: item.errorCode } : {},

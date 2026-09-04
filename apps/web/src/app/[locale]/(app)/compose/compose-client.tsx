@@ -36,12 +36,13 @@ import {
 import { useRouter } from 'next/navigation';
 
 import { useLocalizedRouter } from '@/lib/i18n';
-import { api, newIdempotencyKey } from '@/lib/api';
+import { api } from '@/lib/api';
 import {
   createComposerGateway,
   searchDestinations,
   searchMentions,
 } from '@/features/composer/data/composer-gateway';
+import { createCommitKeyRegistry } from '@/features/composer/data/commit-key-registry';
 import { UNSAVED_DRAFT_ID } from '@/features/composer/types';
 
 export type ComposeStatus = 'ready' | 'loading' | 'error' | 'forbidden' | 'no_connections';
@@ -204,6 +205,7 @@ function ComposeSurface({
   const nextRouter = useRouter();
   const { bootstrap, state, dispatch, summaries, totals, saveNow } = useComposer();
   const [pickerScope, setPickerScope] = useState<string | null | 'closed'>('closed');
+  const commitKeys = useMemo(() => createCommitKeyRegistry(), []);
 
   const uploadTransport = useMemo(
     () => (uploadEnabled ? createUploadTransport(projectId) : undefined),
@@ -245,6 +247,10 @@ function ComposeSurface({
 
   const commit = useCallback(
     async (intent: ScheduleIntent) => {
+      // Keep the operation keys stable for as long as the draft revision is
+      // stable. If the server accepted a request but its response was lost, a
+      // second click replays that request instead of creating a second job.
+      const revision = state.revision;
       // The save is what creates the draft on a lazily created composer, so the
       // id every call below needs comes from it rather than from the state,
       // which may still be holding the local placeholder.
@@ -254,28 +260,32 @@ function ComposeSurface({
       }
       const version = await api.content.freezeVersion(
         contentItemId,
-        newIdempotencyKey('content_version'),
+        commitKeys.keyFor('content_version', revision),
       );
       if (intent === 'approval') {
         await api.approvals.request(
           { contentItemId },
-          newIdempotencyKey('approval_request'),
+          commitKeys.keyFor('approval_request', revision),
         );
       } else if (intent === 'schedule') {
         const schedule = state.master.schedule;
         if (schedule === null) {
           throw new Error('SCHEDULE_REQUIRED');
         }
-        await api.scheduling.schedule(
+        const job = await api.scheduling.schedule(
           {
             contentItemId,
             scheduledAt: schedule.instant,
             timeZone: schedule.ianaTimeZone,
           },
-          newIdempotencyKey('schedule'),
+          commitKeys.keyFor('schedule', revision),
         );
+        router.push(
+          `/posts/${encodeURIComponent(contentItemId)}?job=${encodeURIComponent(job.id)}`,
+        );
+        return;
       } else {
-        await api.publishing.publishNow(
+        const job = await api.publishing.publishNow(
           {
             contentItemId,
             confirmation: {
@@ -284,8 +294,12 @@ function ComposeSurface({
               acknowledgedEscalations: [],
             },
           },
-          newIdempotencyKey('publish'),
+          commitKeys.keyFor('publish', revision),
         );
+        router.push(
+          `/posts/${encodeURIComponent(contentItemId)}?job=${encodeURIComponent(job.id)}`,
+        );
+        return;
       }
       // The receipt page is the confirmation. `/calendar?contentItemId=` was a
       // parameter nothing on the calendar reads, so the user landed on an
@@ -294,7 +308,7 @@ function ComposeSurface({
       // provider receipt. It is also the href the calendar itself links to.
       router.push(`/posts/${encodeURIComponent(contentItemId)}`);
     },
-    [router, saveNow, state.master.schedule, totals.targetCount],
+    [commitKeys, router, saveNow, state.master.schedule, state.revision, totals.targetCount],
   );
 
   const targetLabel =

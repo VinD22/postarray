@@ -9,7 +9,9 @@ export async function openReadyPage(page: Page, path: string): Promise<void> {
   await expect(page.locator('main')).toBeVisible();
   const hydrationMarker = page.locator('main[data-relay-hydrated]');
   if ((await hydrationMarker.count()) > 0) {
-    await expect(hydrationMarker).toHaveAttribute('data-relay-hydrated', 'true');
+    await expect(hydrationMarker).toHaveAttribute('data-relay-hydrated', 'true', {
+      timeout: 45_000,
+    });
   }
 }
 

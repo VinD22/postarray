@@ -104,21 +104,24 @@ export function StatTiles(): ReactNode {
     <section
       aria-label={t('home.v2.tiles.label')}
       data-stagger-item
-      className="grid gap-3 sm:grid-cols-3"
+      className={cn(panelSurface, 'grid overflow-hidden md:grid-cols-12')}
     >
       <Tile
+        className="md:col-span-3"
         label={t('home.v2.tiles.scheduled')}
         hint={t('home.v2.tiles.scheduledHint')}
         unavailable={scheduledReading.kind === 'unavailable'}
         value={<Numeral value={entries.length} format={(n) => format.number(n)} />}
       />
       <Tile
+        className="border-border-subtle border-t md:col-span-3 md:border-s md:border-t-0"
         label={t('home.v2.tiles.accounts')}
         hint={t('home.v2.tiles.accountsHint', { attention })}
         unavailable={accountsReading.kind === 'unavailable'}
         value={<Numeral value={connections.length} format={(n) => format.number(n)} />}
       />
       <Tile
+        className="border-border-subtle border-t md:col-span-6 md:border-s md:border-t-0"
         label={t('home.v2.tiles.nextSlot')}
         hint={
           next === null
@@ -150,24 +153,28 @@ function Tile({
   hint,
   value,
   unavailable,
+  className,
 }: {
   readonly label: string;
   readonly hint: string;
   readonly value: ReactNode;
   readonly unavailable: boolean;
+  readonly className?: string;
 }): ReactNode {
   const t = useTranslations();
   return (
-    <div className={cn(panelSurface, 'flex flex-col gap-1 p-3.5')}>
-      <p className="text-label text-text-tertiary tracking-wide uppercase">{label}</p>
-      <p className="font-display text-title-md text-text-primary font-bold">
+    <div className={cn('flex min-h-32 flex-col justify-between gap-3 p-4 md:p-5', className)}>
+      <p className="text-label text-text-secondary font-medium">{label}</p>
+      <p className="font-display text-text-primary text-[clamp(1.75rem,2.5vw,2.75rem)] leading-none font-bold tracking-[-0.03em]">
         {unavailable ? (
           <span className="text-title-sm text-text-tertiary">{t('common.unavailable')}</span>
         ) : (
           value
         )}
       </p>
-      <p className="text-body-sm text-text-tertiary">{unavailable ? t('home.error.body') : hint}</p>
+      <p className="text-body-sm text-text-tertiary max-w-[38ch] text-pretty">
+        {unavailable ? t('home.error.body') : hint}
+      </p>
     </div>
   );
 }

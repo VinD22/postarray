@@ -490,6 +490,36 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'calendar.drag.handleHint',
   'calendar.drag.overSlot',
   'calendar.drag.dropped',
+  // The post-detail handoff added live job progress, explicit pre-publish
+  // states and an honest demo-mode write error. These sentences tell a person
+  // whether a publish was accepted, paused, canceled, failed or already sent.
+  // Beta locales keep the reviewed English source until a human reviewer can
+  // preserve those distinctions in each language.
+  'error.demo_unavailable.message',
+  'error.demo_unavailable.action',
+  'receipt.timeline.followUpFailed',
+  'web.receipt.notStarted.title',
+  'web.receipt.notStarted.body',
+  'web.receipt.awaitingApproval.title',
+  'web.receipt.awaitingApproval.body',
+  'web.receipt.progress.eyebrow',
+  'web.receipt.progress.queued.title',
+  'web.receipt.progress.queued.body',
+  'web.receipt.progress.working.title',
+  'web.receipt.progress.working.body',
+  'web.receipt.progress.confirming.title',
+  'web.receipt.progress.confirming.body',
+  'web.receipt.progress.held.title',
+  'web.receipt.progress.held.body',
+  'web.receipt.progress.attention.title',
+  'web.receipt.progress.attention.body',
+  'web.receipt.progress.canceled.title',
+  'web.receipt.progress.canceled.body',
+  'web.receipt.progress.recorded',
+  'web.receipt.progress.checked',
+  'web.receipt.progress.sent',
+  'web.receipt.progress.confirmed',
+  'web.receipt.progress.receipt',
   // Pause and resume, Posting Set management and remembered channel selection
   // (A3, A7, A8). All three make precise claims a machine translation is likely
   // to soften: that pausing cannot retract a post that already published, that

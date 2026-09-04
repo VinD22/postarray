@@ -74,16 +74,15 @@ export function PrimaryNav() {
       ref={navRef}
       aria-label={t('nav.primaryLandmark')}
       className={cn(
-        'hidden md:relative md:flex md:flex-col md:gap-0.5',
-        'border-border-subtle bg-surface-sunken border-e',
-        'px-2 py-3 lg:px-3',
+        'border-border-default bg-surface-raised shadow-raised hidden rounded-lg border',
+        'md:relative md:flex md:flex-col md:gap-1 md:px-2 md:py-2.5 lg:px-2.5',
       )}
     >
       <span
         ref={indicatorRef}
         aria-hidden="true"
         className={cn(
-          'bg-accent pointer-events-none absolute start-0 w-0.5 rounded-full',
+          'bg-accent pointer-events-none absolute start-0 w-[3px] rounded-e-full',
           'transition-opacity duration-(--duration-fast)',
           activeItem ? 'opacity-100' : 'opacity-0',
         )}
@@ -106,17 +105,17 @@ export function PrimaryNav() {
             href={item.href}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'relative flex min-h-11 items-center gap-3 rounded-md px-2.5 py-2 lg:min-h-9',
+              'relative flex min-h-11 items-center gap-3 rounded-md px-2.5 py-2 lg:min-h-10',
               'text-body-md transition-[background-color,color,translate] duration-(--duration-fast)',
-              'hover:-translate-x-0.5 rtl:hover:translate-x-0.5',
+              'hover:-translate-y-px',
               active
-                ? 'bg-surface-raised text-text-primary font-medium'
+                ? 'bg-surface-sunken text-text-primary font-semibold'
                 : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
             )}
           >
             <Icon
               aria-hidden="true"
-              className={cn('size-4 shrink-0', active ? 'text-accent' : undefined)}
+              className={cn('size-[1.05rem] shrink-0', active ? 'text-accent' : undefined)}
             />
             {labelsVisible ? (
               <span className="truncate">{label}</span>

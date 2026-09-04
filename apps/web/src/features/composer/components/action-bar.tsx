@@ -47,8 +47,8 @@ export function ActionBar({ onCommit, onShowIssues, barRef }: ActionBarProps): R
       role="toolbar"
       aria-label={t.full('composerWeb.actionBar.label')}
       className={cn(
-        'sticky bottom-0 z-(--z-index-sticky) flex flex-wrap items-center gap-x-4 gap-y-2',
-        'bg-surface-raised border-border-bold shadow-hard border-t-2 px-4 py-2.5',
+        'sticky bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-(--z-index-sticky) mx-1 flex flex-wrap items-center gap-x-4 gap-y-2 md:bottom-2',
+        'bg-surface-raised border-border-default shadow-overlay rounded-lg border px-4 py-2.5',
         'pb-[max(0.625rem,env(safe-area-inset-bottom))]',
       )}
     >
@@ -90,7 +90,14 @@ export function ActionBar({ onCommit, onShowIssues, barRef }: ActionBarProps): R
       </span>
 
       <div className="ms-auto flex flex-wrap items-center gap-2">
-        <Button variant="secondary" size="md" className="scroll-mb-24" onClick={() => void saveNow()}>
+        <Button
+          variant="secondary"
+          size="md"
+          className="scroll-mb-24"
+          onClick={() => {
+            void saveNow().catch(() => undefined);
+          }}
+        >
           {t.full('action.saveDraft')}
         </Button>
         <Button

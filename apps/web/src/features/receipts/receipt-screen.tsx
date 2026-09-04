@@ -52,19 +52,25 @@ import { RetryTargetButton } from './retry-target-button';
 import { ReceiptAttempts } from './receipt-attempts';
 import { ReceiptItems } from './receipt-items';
 import { ReceiptTimeline } from './receipt-timeline';
-import { buildTimeline, dispatchLatencyMs } from './timeline-model';
+import { PublishProgress } from './publish-progress';
+import { buildTimeline, dispatchLatencyMs, hasFailedFollowUp } from './timeline-model';
 import { usePostDetail } from './use-receipt';
 import { buildCampaignTargets, campaignOutcome, canExportReceipt } from './types';
 import type { CampaignTargetView, PostDetail } from './types';
 
 export interface ReceiptScreenProps {
   contentItemId: string;
+  publishJobId: string | null;
   calendarHref: string;
 }
 
-export function ReceiptScreen({ contentItemId, calendarHref }: ReceiptScreenProps): ReactNode {
+export function ReceiptScreen({
+  contentItemId,
+  publishJobId,
+  calendarHref,
+}: ReceiptScreenProps): ReactNode {
   const t = useTranslations();
-  const query = usePostDetail(contentItemId);
+  const query = usePostDetail(contentItemId, publishJobId);
 
   if (query.isPending) {
     return (
@@ -191,7 +197,8 @@ function PostDocument({
   // failed target is partially published even when the receipt on screen is a
   // success. Never label the whole thing by the target you happen to be on.
   const state =
-    isCampaign && outcome === 'partially_published'
+    (isCampaign && outcome === 'partially_published') ||
+    (receipt !== null && hasFailedFollowUp(receipt))
       ? ('partially_published' as const)
       : (receipt?.root.state ?? job?.state ?? item.state);
 
@@ -280,11 +287,21 @@ function PostDocument({
             </div>
           ) : null}
 
-          {!receipt ? (
+          {!receipt && job ? <PublishProgress job={job} /> : null}
+
+          {!receipt && !job ? (
             <Notice
               tone="info"
-              title={t('web.receipt.notFound.title')}
-              description={t('web.receipt.notFound.body')}
+              title={
+                state === 'approval_requested'
+                  ? t('web.receipt.awaitingApproval.title')
+                  : t('web.receipt.notStarted.title')
+              }
+              description={
+                state === 'approval_requested'
+                  ? t('web.receipt.awaitingApproval.body')
+                  : t('web.receipt.notStarted.body')
+              }
             />
           ) : null}
         </section>

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, Viewport } from 'next';
-import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
+import { Fraunces, JetBrains_Mono, Manrope } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import type { ReactNode } from 'react';
 
@@ -12,8 +12,8 @@ import { getStaticIntl } from '@/lib/i18n/server';
 
 import '../globals.css';
 
-/** A precise grotesk for compose, review, and schedule work. */
-const uiFont = Inter({
+/** A friendly geometric grotesk for compose, review, and schedule work. */
+const uiFont = Manrope({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-relay-ui',
   display: 'swap',

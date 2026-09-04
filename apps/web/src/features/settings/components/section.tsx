@@ -26,11 +26,10 @@ export interface SettingsPanelProps {
 /**
  * One block of a settings screen.
  *
- * A panel is a heading, a sentence and its content inside a 2px-outlined
- * card (WP-11's "calm pass" — the loud system's hard-outlined boundary
- * without its hard shadow or any motion). Settings stays a document read
- * top to bottom; the border only tells the eye where one setting's content
- * ends and the next one's begins on a page with a dozen of them.
+ * A panel is a heading, a sentence and its content on one quiet raised
+ * surface. Settings stays a document read top to bottom; the hairline only
+ * tells the eye where one setting ends and the next begins. Destructive work
+ * keeps the heavier semantic boundary because its risk is materially higher.
  */
 export function SettingsPanel({
   title,
@@ -46,8 +45,10 @@ export function SettingsPanel({
     <section
       id={id}
       className={cn(
-        'bg-surface-raised flex flex-col gap-3 rounded-lg border-2 p-4 md:p-6',
-        tone === 'danger' ? 'border-destructive-border' : 'border-border-bold',
+        'bg-surface-raised shadow-raised flex flex-col gap-4 rounded-lg border p-4 md:p-6',
+        tone === 'danger'
+          ? 'border-destructive-border border-2 shadow-none'
+          : 'border-border-default',
         className,
       )}
     >

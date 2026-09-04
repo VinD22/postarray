@@ -55,7 +55,19 @@ describe('counters', () => {
 
 describe('target summaries', () => {
   it('gives each target its own limit and state', () => {
-    const summaries = summarize();
+    const seeded = initialComposerState(SEED_BOOTSTRAP);
+    const summaries = summarize({
+      ...seeded,
+      settings: {
+        ...seeded.settings,
+        [X]: {
+          destination: null,
+          mentions: [],
+          privacyValue: null,
+          disclosure: null,
+        },
+      },
+    });
     const x = summaries.find((summary) => summary.connectionId === X);
     const linkedin = summaries.find((summary) => summary.connectionId === LINKEDIN);
 
@@ -86,7 +98,7 @@ describe('target summaries', () => {
     const totals = totalsFor(summarize());
     expect(totals.targetCount).toBe(2);
     expect(totals.costCurrency).toBe('USD');
-    expect(totals.canSchedule).toBe(false);
+    expect(totals.canSchedule).toBe(true);
   });
 });
 

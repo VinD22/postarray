@@ -43,7 +43,7 @@ export function ForgotPasswordForm() {
   if (sent) {
     return (
       <div className="flex flex-col gap-6">
-        <h1 className="text-title-lg text-text-primary">{t('auth.resetPassword.title')}</h1>
+        <h1 className="relay-auth-title text-text-primary">{t('auth.resetPassword.title')}</h1>
         <Notice tone="info" liveness="status" title={t('auth.resetPassword.sent')} />
         <p className="text-body-md text-text-secondary">
           <Link href="/sign-in" className="text-text-accent font-medium hover:underline">
@@ -57,7 +57,7 @@ export function ForgotPasswordForm() {
   return (
     <form onSubmit={submit} className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-title-lg text-text-primary">{t('auth.resetPassword.title')}</h1>
+        <h1 className="relay-auth-title text-text-primary">{t('auth.resetPassword.title')}</h1>
         <p className="text-body-md text-text-secondary">{t('auth.forgotPassword')}</p>
       </div>
 

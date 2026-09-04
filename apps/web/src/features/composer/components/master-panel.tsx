@@ -10,6 +10,7 @@
  */
 
 import { useState, type ReactNode } from 'react';
+import { ChevronDown } from 'lucide-react';
 import {
   Button,
   Field,
@@ -104,74 +105,87 @@ export function MasterPanel({
         }
       />
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Field
-          label={t.full('composer.contentLocale.label')}
-          description={t.full('composer.contentLocale.help')}
-        >
-          {(control) => (
-            <Select
-              value={state.master.locale}
-              onValueChange={(value) =>
-                dispatch({ type: 'master/patch', patch: { locale: value } })
-              }
-            >
-              <SelectTrigger id={control.id} aria-describedby={control['aria-describedby']}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {contentLocales.map((locale) => (
-                  <SelectItem key={locale} value={locale}>
-                    {contentLocaleLabel(locale)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        </Field>
-
-        <Field label={t.full('composer.campaign.label')}>
-          {(control) => (
-            <Input
-              id={control.id}
-              value={state.master.campaignId ?? ''}
-              placeholder={t.full('composer.campaign.none')}
-              onChange={(event) =>
-                dispatch({
-                  type: 'master/patch',
-                  patch: {
-                    campaignId: event.target.value.length === 0 ? null : event.target.value,
-                  },
-                })
-              }
-            />
-          )}
-        </Field>
-      </div>
-
       <LinkControls />
-      <SequencePanel scope={null} capabilities={null} />
-      <SignaturePanel />
 
-      <section aria-labelledby="composer-sources-heading" className="flex flex-col gap-1.5">
-        <h3 id="composer-sources-heading" className="text-title-sm text-text-primary">
-          {t.full('composer.sources.label')}
-        </h3>
-        {state.master.links.length === 0 ? (
-          <p className="text-body-sm text-text-tertiary">{t.full('composer.sources.empty')}</p>
-        ) : (
-          <ul className="flex flex-col gap-1">
-            {state.master.links.map((link) => (
-              <li
-                key={link.originalUrl}
-                className="text-mono text-text-secondary font-mono break-all"
-              >
-                {link.originalUrl}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <details className="border-border-default bg-surface-sunken group rounded-lg border">
+        <summary className="text-body-md text-text-primary flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 font-semibold marker:content-none [&::-webkit-details-marker]:hidden">
+          <span>{t.full('common.details')}</span>
+          <ChevronDown
+            aria-hidden="true"
+            className="text-text-tertiary size-4 transition-transform duration-(--duration-fast) group-open:rotate-180"
+          />
+        </summary>
+
+        <div className="border-border-subtle flex flex-col gap-6 border-t p-4">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field
+              label={t.full('composer.contentLocale.label')}
+              description={t.full('composer.contentLocale.help')}
+            >
+              {(control) => (
+                <Select
+                  value={state.master.locale}
+                  onValueChange={(value) =>
+                    dispatch({ type: 'master/patch', patch: { locale: value } })
+                  }
+                >
+                  <SelectTrigger id={control.id} aria-describedby={control['aria-describedby']}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {contentLocales.map((locale) => (
+                      <SelectItem key={locale} value={locale}>
+                        {contentLocaleLabel(locale)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </Field>
+
+            <Field label={t.full('composer.campaign.label')}>
+              {(control) => (
+                <Input
+                  id={control.id}
+                  value={state.master.campaignId ?? ''}
+                  placeholder={t.full('composer.campaign.none')}
+                  onChange={(event) =>
+                    dispatch({
+                      type: 'master/patch',
+                      patch: {
+                        campaignId: event.target.value.length === 0 ? null : event.target.value,
+                      },
+                    })
+                  }
+                />
+              )}
+            </Field>
+          </div>
+
+          <SequencePanel scope={null} capabilities={null} />
+          <SignaturePanel />
+
+          <section aria-labelledby="composer-sources-heading" className="flex flex-col gap-1.5">
+            <h3 id="composer-sources-heading" className="text-title-sm text-text-primary">
+              {t.full('composer.sources.label')}
+            </h3>
+            {state.master.links.length === 0 ? (
+              <p className="text-body-sm text-text-tertiary">{t.full('composer.sources.empty')}</p>
+            ) : (
+              <ul className="flex flex-col gap-1">
+                {state.master.links.map((link) => (
+                  <li
+                    key={link.originalUrl}
+                    className="text-mono text-text-secondary font-mono break-all"
+                  >
+                    {link.originalUrl}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
+      </details>
 
       <GlobalEditDialog open={globalEditOpen} onOpenChange={setGlobalEditOpen} />
     </div>

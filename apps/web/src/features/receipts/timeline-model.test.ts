@@ -199,6 +199,8 @@ describe('buildTimeline', () => {
     const failedItem = steps.find((step) => step.id === 'item-2');
     // A follow up failure is a warning, not a failure of the whole receipt.
     expect(failedItem?.outcome).toBe('warning');
+    expect(failedItem?.messageKey).toBe('receipt.timeline.followUpFailed');
+    expect(failedItem?.values).toEqual({ position: 3 });
     expect(failedItem?.detail?.errorCode).toBe('DUPLICATE_CONTENT');
   });
 

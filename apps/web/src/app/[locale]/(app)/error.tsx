@@ -23,9 +23,8 @@ import { ApiError } from '@/lib/api';
  * sees "Something went wrong". Retry is offered only when the failed call
  * cannot have produced an external side effect. The one WP-11-specific
  * choice is presentation: a lucide `Wrench` mark instead of the shared
- * `ErrorState` pattern's tone, and the retry action as the loud system's
- * `cta` (yellow) slab — the shell's one moment of "we know, we're on it"
- * rather than a quiet secondary button.
+ * `ErrorState` pattern's tone. Retry is the screen's single vermilion commit
+ * action, consistent with every other product surface.
  */
 export default function AppRouteError({
   error,
@@ -44,10 +43,10 @@ export default function AppRouteError({
   const canRetry = apiError === null || apiError.retryable;
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col items-start gap-4 px-4 py-10 md:px-6">
+    <div className="border-border-default bg-surface-raised shadow-raised mx-auto my-6 flex w-[calc(100%_-_2rem)] max-w-2xl flex-col items-start gap-5 rounded-lg border p-6 md:my-10 md:p-8">
       <span
         aria-hidden="true"
-        className="border-border-bold bg-surface-sunken flex size-11 items-center justify-center rounded-full border-2"
+        className="border-border-default bg-surface-sunken flex size-11 items-center justify-center rounded-lg border"
       >
         <Wrench aria-hidden="true" className="text-text-secondary size-5" />
       </span>
@@ -68,7 +67,7 @@ export default function AppRouteError({
 
       <div className="flex flex-wrap items-center gap-2 pt-2">
         {canRetry ? (
-          <Button variant="cta" onClick={reset}>
+          <Button variant="primary" onClick={reset}>
             {t('action.retry')}
           </Button>
         ) : null}

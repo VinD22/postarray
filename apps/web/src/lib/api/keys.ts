@@ -26,6 +26,8 @@ export const keys = {
     ['ws', workspaceId, 'content', filter] as const,
   contentItem: (workspaceId: string, contentItemId: string) =>
     ['ws', workspaceId, 'content', contentItemId] as const,
+  postDetail: (workspaceId: string, contentItemId: string, publishJobId: string | null) =>
+    ['ws', workspaceId, 'post-detail', contentItemId, publishJobId ?? 'no-job'] as const,
   validation: (workspaceId: string, contentItemId: string) =>
     ['ws', workspaceId, 'content', contentItemId, 'validation'] as const,
 

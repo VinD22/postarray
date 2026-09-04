@@ -4,7 +4,9 @@ const callMock = vi.hoisted(() => vi.fn());
 
 vi.mock('../call', () => ({ call: callMock }));
 
-import { approvalsApi, contentApi } from './content';
+import { demoReceipts } from '../fixtures';
+import { ApiError } from '../error';
+import { approvalsApi, contentApi, publishingApi, receiptsApi } from './content';
 
 describe('browser content and approval resource contracts', () => {
   beforeEach(() => {
@@ -84,5 +86,60 @@ describe('browser content and approval resource contracts', () => {
       },
       expect.any(Function),
     );
+  });
+
+  it('keeps each demo receipt summary linked to matching content and valid evidence', async () => {
+    const summary = demoReceipts[0];
+    expect(summary).toBeDefined();
+    if (!summary) return;
+
+    await receiptsApi.get(summary.receiptId);
+    const receiptFallback = callMock.mock.calls[0]?.[2] as (() => unknown) | undefined;
+    const receipt = receiptFallback?.() as
+      { readonly id?: unknown; readonly publishJobId?: unknown } | undefined;
+
+    callMock.mockClear();
+    await contentApi.get(summary.contentItemId);
+    const contentFallback = callMock.mock.calls[0]?.[2] as (() => unknown) | undefined;
+    const content = contentFallback?.() as
+      { readonly id?: unknown; readonly state?: unknown; readonly title?: unknown } | undefined;
+
+    expect(receipt).toMatchObject({
+      id: summary.receiptId,
+      publishJobId: expect.stringMatching(/^job_/),
+    });
+    expect(content).toMatchObject({
+      id: summary.contentItemId,
+      state: summary.state,
+      title: summary.title,
+    });
+  });
+
+  it('explains that a demo publish is unavailable instead of reporting success', async () => {
+    await publishingApi.publishNow(
+      {
+        contentItemId: 'content_demo0000000000001',
+        confirmation: {
+          acknowledgedTargetCount: 1,
+          acknowledgedVersionChecksum: '1'.repeat(64),
+          acknowledgedEscalations: [],
+        },
+      },
+      'publish-demo-1',
+    );
+    const fallback = callMock.mock.calls[0]?.[2] as (() => unknown) | undefined;
+
+    let thrown: unknown;
+    try {
+      fallback?.();
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(ApiError.is(thrown)).toBe(true);
+    if (ApiError.is(thrown)) {
+      expect(thrown.messageKey).toBe('error.demo_unavailable.message');
+      expect(thrown.retryable).toBe(false);
+    }
   });
 });

@@ -26,6 +26,7 @@ const UNSAVED: ComposerBootstrap = {
   ...SEED_BOOTSTRAP,
   updatedAt: null,
   selectedConnectionIds: [],
+  settings: {},
   master: { ...SEED_BOOTSTRAP.master, id: UNSAVED_DRAFT_ID, body: '', title: null },
 };
 

@@ -10,6 +10,7 @@ import { Kbd } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
 import { PageTransitionProvider } from '@/components/motion';
+import { ProductMark } from '@/components/brand/product-mark';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 import { RealtimeStatusProvider } from '@/lib/realtime';
 
@@ -90,7 +91,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
     // per screen would open a connection per screen, which is exactly what the
     // per-person cap on the endpoint exists to prevent.
     <RealtimeStatusProvider>
-      <div className="bg-surface-canvas flex min-h-dvh flex-col">
+      <div className="bg-surface-sunken flex min-h-dvh flex-col">
         <a
           className="relay-skip-link"
           href="#main"
@@ -107,16 +108,27 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
           {t('nav.skipToContent')}
         </a>
 
-        <header className="border-border-default bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b">
-          <div className="flex items-center gap-2 px-(--layout-gutter) py-2">
+        <header className="bg-surface-sunken sticky top-0 z-(--z-index-sticky) px-2 pt-2 md:px-3 md:pt-3">
+          <div
+            className={cn(
+              'border-border-default bg-surface-raised shadow-raised flex items-center gap-2 border',
+              'rounded-lg px-2 py-2 md:px-3',
+            )}
+          >
             <Link
               href="/home"
-              className="text-title-sm text-text-primary font-display hidden shrink-0 items-center px-1 font-bold md:flex"
+              className={cn(
+                'text-title-sm text-text-primary hidden shrink-0 items-center gap-2.5 pe-1 font-semibold md:flex',
+                'focus-visible:outline-border-focus rounded-md focus-visible:outline-2 focus-visible:outline-offset-2',
+              )}
             >
-              {t('shell.appName')}
+              <ProductMark className="size-7 p-[6px]" />
+              <span>{t('shell.appName')}</span>
             </Link>
 
-            <WorkspaceSwitcher className="min-w-0 flex-1 md:flex-none" />
+            <span aria-hidden="true" className="bg-border-default hidden h-7 w-px md:block" />
+
+            <WorkspaceSwitcher className="min-w-0 flex-1 border-transparent md:flex-none" />
 
             <button
               type="button"
@@ -124,8 +136,8 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
                 setPaletteOpen(true);
               }}
               className={cn(
-                'border-border-default ms-auto hidden min-h-9 items-center gap-2 rounded-md border',
-                'bg-surface-sunken text-body-sm text-text-tertiary px-2.5 lg:flex lg:w-72',
+                'border-border-subtle ms-auto hidden min-h-9 items-center gap-2 rounded-md border',
+                'bg-surface-sunken text-body-sm text-text-tertiary px-3 lg:flex lg:w-72',
                 'hover:bg-surface-hover hover:text-text-secondary',
                 'focus-visible:border-border-bold lg:focus-visible:w-80',
                 'transition-[background-color,color,border-color,width] duration-(--duration-fast)',
@@ -136,7 +148,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
               <Kbd keys="mod+k" />
             </button>
 
-            <div className="ms-auto flex items-center gap-1 lg:ms-0">
+            <div className="ms-auto flex items-center gap-0.5 lg:ms-0">
               <button
                 type="button"
                 aria-label={t('palette.open')}
@@ -159,11 +171,18 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
             </div>
           </div>
 
-          <DemoNotice />
-          <ConnectivityBanner />
+          <div className="overflow-hidden rounded-b-lg">
+            <DemoNotice />
+            <ConnectivityBanner />
+          </div>
         </header>
 
-        <div className="grid flex-1 grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[13.5rem_1fr]">
+        <div
+          className={cn(
+            'grid flex-1 grid-cols-1 gap-2 px-2 pt-2 pb-2 md:px-3 md:pb-3',
+            'md:grid-cols-[3.75rem_minmax(0,1fr)] lg:grid-cols-[14rem_minmax(0,1fr)]',
+          )}
+        >
           <PrimaryNav />
 
           <main
@@ -171,7 +190,10 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
             aria-label={t('a11y.region.main')}
             data-relay-hydrated={hydrated ? 'true' : 'false'}
             tabIndex={-1}
-            className="min-w-0 pb-20 md:pb-0"
+            className={cn(
+              'border-border-default bg-surface-canvas min-w-0 overflow-clip border pb-20 md:pb-0',
+              'shadow-raised rounded-lg',
+            )}
           >
             <PageTransitionProvider tier="app">{children}</PageTransitionProvider>
           </main>

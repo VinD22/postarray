@@ -196,6 +196,38 @@ export const webCalendarMessages = {
   'web.receipt.error.body':
     'The receipt is immutable and is not affected by this. Nothing was republished.',
 
+  'web.receipt.notStarted.title': 'Publishing has not started',
+  'web.receipt.notStarted.body':
+    'This post is still a draft. Schedule it or publish it when the targets and checks are ready.',
+  'web.receipt.awaitingApproval.title': 'Waiting for approval',
+  'web.receipt.awaitingApproval.body':
+    'Nothing will be sent until the approval policy is satisfied. The approved version will stay fixed for publishing.',
+
+  'web.receipt.progress.eyebrow': 'Live delivery status',
+  'web.receipt.progress.queued.title': 'Accepted and safely queued',
+  'web.receipt.progress.queued.body':
+    'Post Array recorded this job for {time} in {timeZone}. This page checks for updates automatically.',
+  'web.receipt.progress.working.title': 'Publishing is in progress',
+  'web.receipt.progress.working.body':
+    'Post Array is completing the platform handoff. This page checks again automatically, so you do not need to resubmit it.',
+  'web.receipt.progress.confirming.title': 'The platform answered',
+  'web.receipt.progress.confirming.body':
+    'The external result is being attached to the immutable receipt. Do not publish this post again.',
+  'web.receipt.progress.held.title': 'Publishing is paused',
+  'web.receipt.progress.held.body':
+    'The job is still recorded for {time} in {timeZone}. Nothing will be sent until the hold is cleared.',
+  'web.receipt.progress.attention.title': 'This publish needs attention',
+  'web.receipt.progress.attention.body':
+    'The job stopped before a receipt was written. Its status remains attached to this post, and retrying never touches a target that already published.',
+  'web.receipt.progress.canceled.title': 'Publishing was canceled',
+  'web.receipt.progress.canceled.body':
+    'This job stopped before a receipt was written. Nothing on this page will restart it automatically.',
+  'web.receipt.progress.recorded': 'Job recorded',
+  'web.receipt.progress.checked': 'Content and media checked',
+  'web.receipt.progress.sent': 'Sent to the platform',
+  'web.receipt.progress.confirmed': 'Platform answered',
+  'web.receipt.progress.receipt': 'Receipt written',
+
   'web.receipt.section.summary': 'What happened',
   'web.receipt.section.timeline': 'Event timeline',
   'web.receipt.section.items': 'Root post and follow up items',

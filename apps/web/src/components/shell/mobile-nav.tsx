@@ -34,8 +34,8 @@ const SETTINGS_LINKS = [
  * The compact bottom bar, below 768px.
  *
  * Four destinations plus a menu, with Compose raised in the middle as the
- * primary action — a 56px circular yellow slab, physically above the rest of
- * the bar, so it reads as the one thing this bar most wants a thumb to find.
+ * primary action. Its vermilion square repeats the global commit treatment,
+ * physically above the rest of the bar so it is the first thing a thumb finds.
  *
  * The active tab carries a small dot that slides between destinations with
  * GSAP Flip (same technique as `primary-nav.tsx`'s indicator): no animation
@@ -92,9 +92,9 @@ export function MobileNav() {
         ref={navRef}
         aria-label={t('nav.primaryLandmark')}
         className={cn(
-          'fixed inset-x-0 bottom-0 z-(--z-index-sticky) md:hidden',
-          'border-border-default relative grid grid-cols-5 items-end gap-1 border-t',
-          'bg-surface-raised px-2 pt-1',
+          'fixed inset-x-2 bottom-2 z-(--z-index-sticky) md:hidden',
+          'border-border-default bg-surface-raised shadow-overlay grid grid-cols-5 items-end gap-1 border',
+          'rounded-lg px-2 pt-1',
           'pb-[max(0.25rem,env(safe-area-inset-bottom))]',
         )}
       >
@@ -131,13 +131,9 @@ export function MobileNav() {
             href={canPublish ? '/compose' : '/settings/members'}
             aria-disabled={canPublish ? undefined : true}
             className={cn(
-              'relay-pressable flex size-14 -translate-y-3 flex-col items-center justify-center rounded-full',
-              // The commit fill, same recipe as `Button variant="primary"`:
-              // ink in light, paper in dark, with a hairline border and a soft
-              // lift rather than the poster palette's yellow slab behind a 2px
-              // outline and an offset block.
-              'bg-surface-inverted text-text-inverted border-border-strong shadow-raised border',
-              canPublish ? 'hover:bg-text-secondary' : 'pointer-events-none opacity-60',
+              'relay-pressable flex size-14 -translate-y-3 flex-col items-center justify-center rounded-lg',
+              'bg-accent-action text-accent-action-on shadow-raised border border-transparent',
+              canPublish ? 'hover:bg-accent-action-hover' : 'pointer-events-none opacity-60',
             )}
           >
             <PenSquare aria-hidden="true" className="size-5" />

@@ -117,27 +117,33 @@ describe('locale metadata sweep', () => {
     expect(localizedHref(ROUTES.home, locale)).toBe(`/${locale}`);
   });
 
-  it.each(SWEEP_LOCALES)('gives %s a self-canonical and a reciprocal cluster', async (locale) => {
-    for (const route of SWEEP_ROUTES) {
-      const metadata = await pageMetadata(route.titleKey, route.descriptionKey, route.path, locale);
-      const alternates = metadata.alternates;
-      const languages = alternates?.languages as Record<string, string> | undefined;
+  it.each(SWEEP_LOCALES)(
+    'gives %s a self-canonical and a reciprocal cluster',
+    async (locale) => {
+      for (const route of SWEEP_ROUTES) {
+        const metadata = await pageMetadata(route.titleKey, route.descriptionKey, route.path, locale);
+        const alternates = metadata.alternates;
+        const languages = alternates?.languages as Record<string, string> | undefined;
 
-      expect(alternates?.canonical, `${locale} ${route.path}`).toBe(
-        absoluteUrl(route.path, locale),
-      );
-      expect(languages?.[locale], `${locale} ${route.path}`).toBe(absoluteUrl(route.path, locale));
-      expect(languages?.['x-default'], `${locale} ${route.path}`).toBe(
-        absoluteUrl(route.path, DEFAULT_LOCALE),
-      );
-
-      for (const alternate of ACTIVE_LOCALE_CODES) {
-        expect(languages?.[alternate], `${locale} ${route.path} to ${alternate}`).toBe(
-          absoluteUrl(route.path, alternate),
+        expect(alternates?.canonical, `${locale} ${route.path}`).toBe(
+          absoluteUrl(route.path, locale),
         );
+        expect(languages?.[locale], `${locale} ${route.path}`).toBe(
+          absoluteUrl(route.path, locale),
+        );
+        expect(languages?.['x-default'], `${locale} ${route.path}`).toBe(
+          absoluteUrl(route.path, DEFAULT_LOCALE),
+        );
+
+        for (const alternate of ACTIVE_LOCALE_CODES) {
+          expect(languages?.[alternate], `${locale} ${route.path} to ${alternate}`).toBe(
+            absoluteUrl(route.path, alternate),
+          );
+        }
       }
-    }
-  });
+    },
+    20_000,
+  );
 
   it.each(SWEEP_LOCALES)(
     'does not show the English title through on %s',

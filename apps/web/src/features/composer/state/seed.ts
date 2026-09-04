@@ -347,7 +347,28 @@ export const SEED_BOOTSTRAP: ComposerBootstrap = {
   brandedDomains: SEED_DOMAINS,
   selectedConnectionIds: ['conn_seed_x_acme', 'conn_seed_li_acme'],
   overrides: {},
-  settings: {},
+  settings: {
+    conn_seed_x_acme: {
+      destination: {
+        destinationId: 'dest_seed_x_launch_community',
+        externalId: 'x-community-acme-builders',
+        displayLabel: 'Acme Builders',
+      },
+      mentions: [],
+      privacyValue: null,
+      disclosure: null,
+    },
+    conn_seed_li_acme: {
+      destination: {
+        destinationId: 'dest_seed_li_acme_europe',
+        externalId: 'linkedin-org-acme-europe',
+        displayLabel: 'Acme Europe',
+      },
+      mentions: [],
+      privacyValue: 'public',
+      disclosure: null,
+    },
+  },
   approvalPinned: false,
   approverName: 'Dana Ito',
   approvalPolicy: 'Two approvers for project Acme EU',

@@ -7,9 +7,9 @@
  * honest: it names the external posts that already exist instead of collapsing
  * the whole campaign into a single red banner.
  *
- * The post page assembles its view from three reads the API already exposes:
- * the content item with its targets, the receipt summaries for that item, and
- * the full immutable receipt for the target being inspected.
+ * The post page assembles its view from the content item, the accepted job,
+ * the receipt summaries for that item, and the full immutable receipt for the
+ * target being inspected.
  */
 
 import type {
@@ -17,13 +17,14 @@ import type {
   ContentTargetView,
   ProviderId,
   PublicationReceipt,
-  PublishJob,
   PublishState,
   ReceiptSummaryView,
   Role,
 } from '@/lib/api/types';
+import type { PublishJobView } from '@relay/application';
 
-export type { ContentItemView, PublicationReceipt, PublishJob, ReceiptSummaryView };
+export type { ContentItemView, PublicationReceipt, ReceiptSummaryView };
+export type PublishJob = PublishJobView;
 
 /** One target of a campaign, combining what the item knows with its receipt. */
 export interface CampaignTargetView {

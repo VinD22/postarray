@@ -1,46 +1,34 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { AppWindow, Bot, Braces, TerminalSquare, Webhook, X } from 'lucide-react';
+import { AppWindow, Bot, Braces, ChevronDown, TerminalSquare, Webhook, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+
 import { CORE_PROVIDER_IDS, type CoreProviderId } from '@relay/contracts';
 import { cn } from '@relay/design-system/utils';
-import type { Translator } from '@relay/i18n/translate';
 
-import { StaggerList } from '@/components/motion';
-import { HeroDemoSection } from '@/features/demo/hero-demo-section';
-import { buildSnippet } from '@/features/developer/lib/setup-snippets';
-import { JsonLd } from '@/features/marketing/components/json-ld';
 import {
-  AgentToolLedger,
   BentoCell,
   BentoGrid,
   ClosingCta,
-  EditorialBigNumber,
-  EditorialCard,
-  EditorialDisplay,
+  EditorialPricePair,
   EditorialSection,
   EditorialVariantScene,
   HeroHeadline,
   ProviderGrid,
   ProviderLogoRow,
-  TierGrid,
 } from '@/features/marketing/components/editorial';
-import { tierColumns } from '@/features/marketing/components/editorial/tier-columns';
-import { ColorBand, GradientWash, Sticker } from '@/features/marketing/components/scene';
 import {
-  Body,
-  Heading,
-  Lede,
-  Step,
-  Steps,
-  Subheading,
-} from '@/features/marketing/components/layout';
+  HomeHeroStage,
+  type HomeHeroStageRow,
+} from '@/features/marketing/components/home-hero-stage';
+import { HomeJourney, type HomeJourneyStep } from '@/features/marketing/components/home-journey';
+import { JsonLd } from '@/features/marketing/components/json-ld';
+import { Body, Heading, Lede, Subheading } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
-import { AGENT_TOOL_COUNT, AGENT_TOOL_TIERS } from '@/features/marketing/data/agent-tools';
+import { ColorBand, GradientWash } from '@/features/marketing/components/scene';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { offerJsonLd, pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
-import { HeroWebglStage } from '@/lib/motion/webgl/hero-webgl-stage';
 
 export async function generateMetadata({
   params,
@@ -51,189 +39,105 @@ export async function generateMetadata({
   return pageMetadata('web.meta.home.title', 'web.meta.home.description', ROUTES.home, locale);
 }
 
+const CONNECTOR_PROVIDERS: readonly CoreProviderId[] = CORE_PROVIDER_IDS;
+
 const EXAMPLE_ROWS = [
   {
     id: 'x',
+    provider: 'x',
     accountKey: 'web.home.example.x.account',
     variantKey: 'web.home.example.x.variant',
     checkKey: 'web.home.example.x.check',
   },
   {
     id: 'linkedin',
+    provider: 'linkedin',
     accountKey: 'web.home.example.linkedin.account',
     variantKey: 'web.home.example.linkedin.variant',
     checkKey: 'web.home.example.linkedin.check',
   },
   {
     id: 'instagram',
+    provider: 'instagram',
     accountKey: 'web.home.example.instagram.account',
     variantKey: 'web.home.example.instagram.variant',
     checkKey: 'web.home.example.instagram.check',
   },
   {
     id: 'youtube',
+    provider: 'youtube',
     accountKey: 'web.home.example.youtube.account',
     variantKey: 'web.home.example.youtube.variant',
     checkKey: 'web.home.example.youtube.check',
   },
   {
     id: 'bluesky',
+    provider: 'bluesky',
     accountKey: 'web.home.example.bluesky.account',
     variantKey: 'web.home.example.bluesky.variant',
     checkKey: 'web.home.example.bluesky.check',
   },
-] as const;
+] as const satisfies readonly {
+  readonly id: string;
+  readonly provider: CoreProviderId;
+  readonly accountKey: string;
+  readonly variantKey: string;
+  readonly checkKey: string;
+}[];
 
-/**
- * The launch cohort: the hero logo row, the hero's reach figure, the bento
- * band's connector grid and the connector-count sticker.
- *
- * Derived from `CORE_PROVIDER_IDS` rather than typed out. This list used to be
- * eight hand-written ids under a comment claiming it was "every real, shipped
- * connector", which it was not: the cohort in `@relay/contracts` already held
- * ten, so the home page quietly promised a smaller product than the
- * integrations page and the connect dialog did. Deriving it means the page
- * cannot disagree with the cohort again, in either direction — a provider
- * added to or removed from the cohort moves this row with it, on the same
- * commit, with no second edit to remember.
- *
- * That now covers the hero's reach figure too, which is
- * `CONNECTOR_PROVIDERS.length` and never a numeral in this file or in the
- * catalog. `home/home-vocabulary.test.tsx` asserts it stays derived.
- *
- * The type is `CoreProviderId`, not `ProviderId`: `ProviderLogoRow` holds a
- * total record of marks over the cohort, so a provider joining
- * `CORE_PROVIDER_IDS` without a mark fails to compile rather than rendering a
- * gap in the first thing on the page.
- *
- * `features/marketing/data/connectors.ts` (the capability matrix) derives from
- * the same constant, so the two public connector surfaces are two views of one
- * list.
- */
-const CONNECTOR_PROVIDERS: readonly CoreProviderId[] = CORE_PROVIDER_IDS;
-
-/**
- * The MCP clients Post Array ships a reviewed setup for, named the way the product
- * itself names them (`SETUP_CLIENTS` in `features/developer/lib/
- * setup-snippets.ts`, which is what the in-product setup panel renders).
- *
- * `buzz` is omitted: it is a workflow runner calling the REST API, not an MCP
- * client, and this row is specifically about what speaks MCP. `cli` is omitted
- * because the CLI has its own row further down the page.
- */
-const AGENT_CLIENT_KEYS = [
-  'developer.setup.claudeCode',
-  'developer.setup.codex',
-  'developer.setup.hermes',
-  'developer.setup.genericMcp',
-] as const;
-
-/**
- * The Claude Code configuration, generated by the same function the signed-in
- * developer portal generates it with. It is not retyped here, so this block
- * cannot drift from the block a customer actually copies.
- *
- * `relay.example` is the RFC 2606 example domain, and the credential is the
- * environment-variable placeholder the real snippet uses. Nothing here is a
- * live endpoint or a secret.
- */
-const CLAUDE_CODE_SNIPPET = buildSnippet('claude-code', {
-  mcpEndpoint: 'https://mcp.relay.example/mcp',
-  apiBaseUrl: 'https://api.relay.example',
-  serviceAccountName: 'relay-agent',
-});
-
-const CONNECT_STEPS = [
+const JOURNEY_STEPS = [
   {
-    id: 'credential',
-    titleKey: 'web.home.v2.agents.connect.step.credential.title',
-    bodyKey: 'web.home.v2.agents.connect.step.credential.body',
+    id: 'source',
+    titleKey: 'web.product.step.source.title',
+    bodyKey: 'web.product.step.source.body',
   },
   {
-    id: 'authorize',
-    titleKey: 'web.home.v2.agents.connect.step.authorize.title',
-    bodyKey: 'web.home.v2.agents.connect.step.authorize.body',
+    id: 'compose',
+    titleKey: 'web.product.step.compose.title',
+    bodyKey: 'web.product.step.compose.body',
   },
   {
-    id: 'work',
-    titleKey: 'web.home.v2.agents.connect.step.work.title',
-    bodyKey: 'web.home.v2.agents.connect.step.work.body',
-  },
-] as const;
-
-const PILLARS = [
-  {
-    id: 'confidence',
-    titleKey: 'web.home.pillars.confidence.title',
-    bodyKey: 'web.home.pillars.confidence.body',
-    proofKey: 'web.home.pillars.confidence.proof',
+    id: 'validate',
+    titleKey: 'web.product.step.validate.title',
+    bodyKey: 'web.product.step.validate.body',
   },
   {
-    id: 'adapt',
-    titleKey: 'web.home.pillars.adapt.title',
-    bodyKey: 'web.home.pillars.adapt.body',
-    proofKey: 'web.home.pillars.adapt.proof',
+    id: 'approve',
+    titleKey: 'web.product.step.approve.title',
+    bodyKey: 'web.product.step.approve.body',
   },
   {
-    id: 'loop',
-    titleKey: 'web.home.pillars.loop.title',
-    bodyKey: 'web.home.pillars.loop.body',
-    proofKey: 'web.home.pillars.loop.proof',
+    id: 'schedule',
+    titleKey: 'web.product.step.schedule.title',
+    bodyKey: 'web.product.step.schedule.body',
   },
   {
-    id: 'anywhere',
-    titleKey: 'web.home.pillars.anywhere.title',
-    bodyKey: 'web.home.pillars.anywhere.body',
-    proofKey: 'web.home.pillars.anywhere.proof',
+    id: 'publish',
+    titleKey: 'web.product.step.publish.title',
+    bodyKey: 'web.product.step.publish.body',
   },
   {
-    id: 'economics',
-    titleKey: 'web.home.pillars.economics.title',
-    bodyKey: 'web.home.pillars.economics.body',
-    proofKey: 'web.home.pillars.economics.proof',
+    id: 'learn',
+    titleKey: 'web.product.step.learn.title',
+    bodyKey: 'web.product.step.learn.body',
   },
-] as const;
-
-/**
- * The switcher strip above the demonstration. Sample businesses, not claims:
- * the names are the same fictional companies the demonstration composes for,
- * and the counts are the connected accounts each of those projects holds in
- * the walkthrough. The first chip is "selected" so the strip reads as the
- * control it depicts rather than as three badges.
- */
-const SAMPLE_PROJECTS = [
-  { name: 'Northbound Tools', accounts: 6, dotClass: 'bg-accent-warm' },
-  { name: 'Sagafold', accounts: 4, dotClass: 'bg-accent-cool' },
-  { name: 'Timedflow', accounts: 8, dotClass: 'bg-border-strong' },
-] as const;
+] as const satisfies readonly {
+  readonly id: HomeJourneyStep['id'];
+  readonly titleKey: string;
+  readonly bodyKey: string;
+}[];
 
 const SURFACES = [
-  { id: 'web', nameKey: 'web.home.surfaces.web', bodyKey: 'web.home.surfaces.webBody' },
-  { id: 'mcp', nameKey: 'web.home.surfaces.mcp', bodyKey: 'web.home.surfaces.mcpBody' },
-  { id: 'api', nameKey: 'web.home.surfaces.api', bodyKey: 'web.home.surfaces.apiBody' },
-  { id: 'cli', nameKey: 'web.home.surfaces.cli', bodyKey: 'web.home.surfaces.cliBody' },
-  {
-    id: 'webhooks',
-    nameKey: 'web.home.surfaces.webhooks',
-    bodyKey: 'web.home.surfaces.webhooksBody',
-  },
-] as const;
-
-/**
- * One mark per surface.
- *
- * The row exists to be scanned before it is read, and five paragraphs of equal
- * weight cannot be. These are the plainest available signs for each thing —
- * a window, an agent, braces, a prompt, a hook — not decoration standing in
- * for a missing idea.
- */
-const SURFACE_ICONS: Record<(typeof SURFACES)[number]['id'], LucideIcon> = {
-  web: AppWindow,
-  mcp: Bot,
-  api: Braces,
-  cli: TerminalSquare,
-  webhooks: Webhook,
-};
+  { id: 'web', nameKey: 'web.home.surfaces.web', icon: AppWindow },
+  { id: 'mcp', nameKey: 'web.home.surfaces.mcp', icon: Bot },
+  { id: 'api', nameKey: 'web.home.surfaces.api', icon: Braces },
+  { id: 'cli', nameKey: 'web.home.surfaces.cli', icon: TerminalSquare },
+  { id: 'webhooks', nameKey: 'web.home.surfaces.webhooks', icon: Webhook },
+] as const satisfies readonly {
+  readonly id: string;
+  readonly nameKey: string;
+  readonly icon: LucideIcon;
+}[];
 
 const BOUNDARIES = [
   'web.home.honest.noMedia',
@@ -242,53 +146,6 @@ const BOUNDARIES = [
   'web.home.honest.noPromises',
   'web.home.honest.noUnattendedPublishing',
 ] as const;
-
-type Pillar = (typeof PILLARS)[number];
-
-/**
- * One proof row.
- *
- * These rows used to open with a display-scale `01` / `02` / `03`. The
- * numerals are gone: nothing about "publish with confidence" is the first step
- * of anything, so the sequence was decoration wearing the clothes of
- * information, and a reader who scanned it learned only that there were five
- * of something. What is left is the editorial split the rest of the site uses
- * — the claim in the narrow column, the argument and its proof in the wide one.
- *
- * The marigold rule survives the numeral because it was never the numeral's:
- * it is the row's own mark, and it grows from the row's hover/focus state. It
- * is a CSS transform, so the global 1ms reduced-motion override reaches it,
- * there is no GSAP timeline to branch on `useMotionOk`, and nothing is hidden
- * in server HTML.
- */
-function PillarRow({ pillar, t }: { readonly pillar: Pillar; readonly t: Translator }): ReactNode {
-  return (
-    <div
-      data-stagger-item
-      className="border-border-subtle group grid gap-4 border-b py-10 lg:grid-cols-12 lg:items-start lg:gap-12"
-    >
-      <div className="lg:col-span-4">
-        <span
-          aria-hidden="true"
-          className={cn(
-            'bg-accent-warm mb-4 block h-1 w-14 origin-[left_center] rounded-xs rtl:origin-[right_center]',
-            'scale-x-50 transition-transform duration-(--duration-expressive) ease-(--ease-out-expo)',
-            'group-focus-within:scale-x-100 group-hover:scale-x-100',
-          )}
-        />
-        <h3 className="text-title-lg text-text-primary text-pretty">{t.format(pillar.titleKey)}</h3>
-      </div>
-      <div className="space-y-4 lg:col-span-8">
-        <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">
-          {t.format(pillar.bodyKey)}
-        </p>
-        <p className="border-border-default text-body-sm text-text-tertiary border-s ps-4 font-mono leading-[1.6]">
-          {t.format(pillar.proofKey)}
-        </p>
-      </div>
-    </div>
-  );
-}
 
 export default async function HomePage({
   params,
@@ -299,526 +156,211 @@ export default async function HomePage({
   const t = await marketingTranslator(locale);
 
   const providerName = (provider: CoreProviderId): string => t.format(`web.provider.${provider}`);
-
   const variantRows = EXAMPLE_ROWS.map((row) => ({
     id: row.id,
-    provider: row.id,
+    provider: row.provider,
     account: t.format(row.accountKey),
     variant: t.format(row.variantKey),
     check: t.format(row.checkKey),
   }));
-
-  const toolTiers = AGENT_TOOL_TIERS.map((tier) => ({
-    risk: tier.risk,
-    label: t.format(`web.home.v2.agents.tier.${tier.risk}.label`),
-    rule: t.format(`web.home.v2.agents.tier.${tier.risk}.rule`),
-    count: t.format('web.home.v2.agents.tier.count', { count: tier.tools.length }),
-    tools: tier.tools,
+  const heroRows: readonly HomeHeroStageRow[] = EXAMPLE_ROWS.map((row) => ({
+    id: row.id,
+    provider: row.provider,
+    account: t.format(row.accountKey),
+  }));
+  const journeySteps: readonly HomeJourneyStep[] = JOURNEY_STEPS.map((step) => ({
+    id: step.id,
+    title: t.format(step.titleKey),
+    body: t.format(step.bodyKey),
   }));
 
   return (
     <>
-      {/*
-        1. The hero, and now the whole of the first act.
-
-        Order, in the order a stranger reads it: the marks, so the networks
-        land before a word is read; a two line display headline whose second
-        line is the page's one coloured phrase; the sentence that names the
-        clients and the surfaces; one action; the reach figure; and then the
-        product itself, running.
-
-        Three changes from the version this replaces.
-
-        The headline is `HeroHeadline` rather than `EditorialDisplay
-        size="sm"`. It is a full step larger (`--text-display-xl`, up to 88px
-        against the old 60px cap), it is two lines, and the second line is set
-        in `--accent-action-*`. That component's doc comment carries the two
-        rules behind it: the lines are two whole sentences rather than one
-        sentence split around a span, because a translated fragment may never
-        be interpolated into another translated string, and there is exactly
-        one accent phrase on the page.
-
-        There is one button. There used to be two of equal weight, which is a
-        way of admitting you do not know which one matters. The agent tour is
-        still one click away, as a link.
-
-        The demonstration comes back into the hero, below the fold line rather
-        than beside the headline. Beside it, it halved the width of the promise
-        and pushed the action off a 900px screen; underneath, it is the size it
-        deserves and the hero still reads in one glance. It is unchanged
-        functionally: `HeroDemoSection` renders exactly the nine server-rendered
-        panels it always did.
-
-        The wash is the page's warm edge, and the band further down answers it.
-        It is an edge, not a background: it fades to transparent well above the
-        copy, which is rule 1 of the gradient policy in `theme.css`.
-      */}
       <EditorialSection
         reveal={false}
         className="isolate overflow-hidden"
-        containerClassName="py-16 md:py-24 lg:py-28"
+        containerClassName="py-12 md:py-20 lg:py-24"
       >
-        <GradientWash accent="warm" placement="top" />
+        <GradientWash accent="warm" placement="top" className="h-72 opacity-80" />
 
-        <div className="relative">
-          {/*
-            The row runs the full measure of the page rather than the width of
-            the headline column: at desktop widths the whole cohort then reads
-            as one strip in a single pass, which is the entire point of putting
-            it first. It wraps to two or three lines on a phone, which is fine
-            — it still resolves before the headline does.
-          */}
-          <ProviderLogoRow
-            providers={CONNECTOR_PROVIDERS}
-            ariaLabel={t.t('web.home.v2.hero.providersLabel')}
-            name={providerName}
-          />
+        <div className="relative grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <HeroHeadline
+              lead={t.t('web.home.v2.hero.headline')}
+              accent={t.t('web.home.v2.hero.headlineAccent')}
+            />
 
-          <HeroHeadline
-            className="mt-10"
-            lead={t.t('web.home.v2.hero.headline')}
-            accent={t.t('web.home.v2.hero.headlineAccent')}
-          />
+            <Lede className="mt-8 max-w-[56ch]">{t.t('web.home.promise')}</Lede>
 
-          {/*
-            Top aligned, not bottom aligned.
-
-            `items-end` sat the promise and its action on the same baseline as
-            the reach figure's column, and that column is the taller of the two
-            because of the fanout stage at the foot of it — so the sentence the
-            headline is waiting for started roughly 130px below where the
-            headline ends, as a hole in the middle of the fold. Aligning to the
-            top closes it and pulls everything under it, the demonstration
-            included, up by the same amount.
-          */}
-          <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-12">
-            <div className="lg:col-span-7">
-              <Lede className="max-w-[62ch]">{t.t('web.home.v2.hero.subhead')}</Lede>
-
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-                <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
-                <TextLink href={ROUTES.demo}>{t.t('web.demo.hero.viewCta')}</TextLink>
-                <TextLink href="#agents">{t.t('web.home.v2.hero.agentsCta')}</TextLink>
-              </div>
-
-              <p className="text-body-sm text-text-tertiary mt-5">
-                {t.t('web.home.v2.sticker.trial')}
-              </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
+              <TextLink href={ROUTES.demo}>{t.t('web.demo.hero.viewCta')}</TextLink>
             </div>
 
-            {/*
-              The reach, stated as a figure rather than as an adjective. The
-              value is `CONNECTOR_PROVIDERS.length`, so it is the cohort
-              counting itself; the note underneath is what stops the figure
-              overclaiming, because cohort membership is intent and a connector
-              is available account by account as its provider review lands.
-            */}
-            <div className="border-border-default border-t pt-6 lg:col-span-4 lg:col-start-9 lg:border-s lg:border-t-0 lg:ps-8 lg:pt-0">
-              <EditorialBigNumber
-                value={CONNECTOR_PROVIDERS.length}
-                locale={locale}
-                label={t.t('web.home.v2.hero.reachLabel')}
-              />
-              <p className="text-body-sm text-text-tertiary mt-4 max-w-[36ch] leading-[1.6]">
-                {t.t('web.home.v2.hero.reachNote')}
+            <p className="text-body-sm text-text-tertiary mt-4">
+              {t.t('web.home.v2.sticker.trial')}
+            </p>
+
+            <div className="border-border-subtle mt-10 border-t pt-6">
+              <p className="text-body-sm text-text-tertiary mb-4 flex items-baseline gap-2">
+                <span className="font-display text-title-lg text-text-primary" data-numeric>
+                  {CONNECTOR_PROVIDERS.length}
+                </span>
+                {t.t('web.home.v2.hero.reachLabel')}
               </p>
-              {/*
-                The one WebGL element on the site, and the only place it is
-                allowed: a decorative echo of the figure just above it, one
-                draft fanning out to several destinations at once. Server HTML
-                and every first paint are `PublishFanoutFallback` (plain SVG);
-                the canvas only replaces it client-side, after the hero has
-                painted, and only for browsers `HeroWebglStage` clears. Fixed
-                aspect ratio, so its arrival never shifts anything around it.
-              */}
-              <HeroWebglStage className="mt-6 aspect-[4/3] w-full max-w-56" />
+              <ProviderLogoRow
+                providers={CONNECTOR_PROVIDERS}
+                ariaLabel={t.t('web.home.v2.hero.providersLabel')}
+                name={providerName}
+              />
             </div>
           </div>
 
-          {/*
-            `web.home.lede` is the sentence that says what the product is. It
-            belongs immediately in front of the walkthrough that shows it,
-            rather than in front of the headline that has already said it in
-            six words.
-          */}
-          <div className="mt-12 md:mt-14">
-            <Body className="mb-4">{t.t('web.home.lede')}</Body>
-            {/*
-              The sentence the demonstration was missing: this is not a desk
-              for one business. The strip under it shows the model instead of
-              arguing it, as the switcher a customer will actually meet: three
-              sample businesses, each its own project with its own accounts.
-              Sample names, deliberately the same fictional company set the
-              demonstration itself uses.
-            */}
-            <Body className="mb-6">{t.t('web.demo.hero.projectsLine')}</Body>
-            <ul className="mb-8 flex flex-wrap gap-3">
-              {SAMPLE_PROJECTS.map((project, index) => (
-                <li
-                  key={project.name}
-                  className={cn(
-                    'border-border-strong flex min-h-11 items-center gap-3 rounded-md border px-4',
-                    index === 0 && 'bg-surface-raised',
-                  )}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={cn('size-2 rounded-full', project.dotClass)}
-                  />
-                  <span className="text-body-md text-text-primary">{project.name}</span>
-                  <span className="text-body-sm text-text-tertiary font-mono tabular-nums">
-                    {t.format('web.demo.hero.projectsChip', { count: project.accounts })}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <HeroDemoSection locale={locale} />
-            <p className="mt-6">
-              <TextLink href={ROUTES.demo}>{t.t('web.demo.hero.more')}</TextLink>
-            </p>
+          <div className="lg:col-span-5">
+            <HomeHeroStage
+              rows={heroRows}
+              masterLabel={t.t('web.home.v2.variantScene.masterLabel')}
+              caption={t.t('web.home.example.caption')}
+            />
           </div>
         </div>
       </EditorialSection>
 
-      {/*
-        2. The proof band: what actually comes out, as a bento rather than as
-        three sections in a column.
-
-        This one band replaces three that used to run one after another — the
-        five surfaces, the connector grid, and the variant scene — and it is
-        shorter than any two of them were. Nothing here is a benefit sentence
-        in a box: the tall cell is real per-account output with the real check
-        each one runs, the connector cell is the cohort in its own marks, and
-        the surfaces cell is a definition list of five things that exist.
-
-        The cells are asymmetric by construction rather than by discipline:
-        `BentoCell` takes a named role, `lead` is seven columns and two rows,
-        `side` is five and one, and a row of three identical cards has no way
-        to express itself. `home/home-vocabulary.test.tsx` also reads this file
-        and fails if every cell in it ends up the same size.
-
-        This is the second of the page's two budgeted `ColorBand`s
-        (`scene/scene-budget.test.ts`), and the last: marigold here, ultramarine
-        below, and no third band.
-      */}
-      <ColorBand accent="warm" id="proof" texture>
-        <div className="max-w-[46rem]">
-          <EditorialDisplay as="h2" size="sm">
-            {t.t('web.home.example.title')}
-          </EditorialDisplay>
-          <Body className="mt-5">{t.t('web.home.example.body')}</Body>
+      <ColorBand accent="warm" id="workflow" texture containerClassName="py-20 md:py-28 lg:py-32">
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
+          <div className="max-w-[46rem]">
+            <Heading>{t.t('web.product.v2.sequence.title')}</Heading>
+            <Body className="mt-4">{t.t('web.home.lede')}</Body>
+          </div>
+          <TextLink href={ROUTES.product}>{t.t('nav.public.product')}</TextLink>
         </div>
 
-        <BentoGrid className="mt-14">
-          {/*
-            Bare on purpose. The variant scene is nine cards; wrapping them in
-            a tenth would be cards inside a card, which is the failure mode a
-            bento invites.
-          */}
-          <BentoCell span="lead" surface="bare">
+        <HomeJourney steps={journeySteps} label={t.t('web.product.v2.sequence.title')} />
+      </ColorBand>
+
+      <EditorialSection rule id="proof" reveal={false}>
+        <BentoGrid>
+          <BentoCell span="lead" surface="bare" as="section">
+            <Heading>{t.t('web.home.example.title')}</Heading>
+            <Body className="mt-4">{t.t('web.home.example.body')}</Body>
             <EditorialVariantScene
               rows={variantRows}
               masterLabel={t.t('web.home.v2.variantScene.masterLabel')}
+              className="mt-8"
             />
-            <p className="text-body-sm text-text-tertiary mt-6 max-w-[62ch] leading-[1.6]">
-              {t.t('web.home.example.caption')}
-            </p>
           </BentoCell>
 
-          <BentoCell span="side" as="section">
+          <BentoCell span="side" as="section" className="lg:sticky lg:top-28">
             <Subheading as="h3">{t.t('web.home.v2.bento.networks.title')}</Subheading>
-            {/*
-              Two columns, not the grid's default four: this cell is five of
-              twelve, and four columns of platform name inside it truncate
-              every one of them.
-            */}
             <ProviderGrid
               providers={CONNECTOR_PROVIDERS}
               className="mt-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-2"
             />
-            <div className="mt-8">
-              <Sticker
-                fact={t.format('web.home.b3.sticker.connectorsFact', {
-                  count: CONNECTOR_PROVIDERS.length,
-                })}
-                source={t.format('web.home.b3.sticker.connectorsSource')}
-                accent="warm"
-              />
-            </div>
+            <p className="text-body-sm text-text-tertiary mt-6 leading-[1.6]">
+              {t.t('web.home.v2.hero.reachNote')}
+            </p>
+            <p className="mt-5">
+              <TextLink href={ROUTES.integrations}>{t.t('nav.public.integrations')}</TextLink>
+            </p>
           </BentoCell>
 
-          {/*
-            The five surfaces run the full twelve columns rather than sitting
-            in a second `side` cell.
-
-            As a five-of-twelve cell this was a definition list about 200px
-            wide, which wrapped "Scoped keys, idempotency keys on every write"
-            to one or two words a line, and it stacked under the networks cell
-            to roughly twice the height of the scene beside it — so the band
-            carried an empty half-page to its left. Full width fixes both at
-            once: the list becomes a row of five, the void closes, and each
-            surface leads with its own mark so the row can be understood
-            without reading five sentences first.
-          */}
-          <BentoCell span="full" as="section">
-            <div className="flex flex-wrap items-end justify-between gap-6">
-              <div>
+          <BentoCell span="full" as="section" className="mt-2">
+            <div className="grid gap-8 lg:grid-cols-12">
+              <div className="lg:col-span-4">
                 <Subheading as="h3">{t.t('web.home.surfaces.title')}</Subheading>
-                <p className="text-body-md text-text-secondary mt-3 max-w-[62ch] leading-[1.6]">
+                <p className="text-body-md text-text-secondary mt-3 max-w-[42ch] leading-[1.65]">
                   {t.t('web.home.surfaces.body')}
                 </p>
               </div>
-              <EditorialBigNumber
-                value={SURFACES.length}
-                locale={locale}
-                label={t.t('web.home.v2.surfacesStat')}
-              />
+
+              <ul className="grid gap-px sm:grid-cols-2 lg:col-span-8 lg:grid-cols-5">
+                {SURFACES.map((surface) => {
+                  const Icon = surface.icon;
+                  return (
+                    <li
+                      key={surface.id}
+                      className="border-border-subtle flex min-h-28 flex-col justify-between border-s ps-4"
+                    >
+                      <Icon aria-hidden="true" className="text-accent size-6" strokeWidth={1.5} />
+                      <span className="text-body-md text-text-primary mt-6 font-semibold">
+                        {t.format(surface.nameKey)}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
-
-            <ul className="border-border-default mt-8 grid gap-px border-t sm:grid-cols-2 lg:grid-cols-5">
-              {SURFACES.map((surface) => {
-                const Mark = SURFACE_ICONS[surface.id];
-                return (
-                  <li
-                    key={surface.id}
-                    className="border-border-subtle min-w-0 border-b pt-5 pb-6 lg:border-b-0 lg:pe-6"
-                  >
-                    <Mark
-                      aria-hidden="true"
-                      className="text-accent-warm size-6 shrink-0"
-                      strokeWidth={1.5}
-                    />
-                    <h4 className="text-title-sm text-text-primary mt-4">
-                      {t.format(surface.nameKey)}
-                    </h4>
-                    <p className="text-body-sm text-text-secondary mt-2 leading-[1.6]">
-                      {t.format(surface.bodyKey)}
-                    </p>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <p className="mt-8">
-              <TextLink href={ROUTES.developers}>{t.t('nav.public.forDevelopers')}</TextLink>
-            </p>
           </BentoCell>
         </BentoGrid>
-      </ColorBand>
+      </EditorialSection>
 
-      {/*
-        3. The agent story, which this site has never told.
+      <ColorBand accent="cool" id="pricing" texture containerClassName="py-20 md:py-28 lg:py-32">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-20">
+          <div className="lg:col-span-7">
+            <Heading>{t.t('web.home.v2.pricingTeaser.title')}</Heading>
+            <Body className="mt-4">{t.t('web.home.summaryLine')}</Body>
 
-        It is the strongest thing we have and it was invisible: a real remote
-        MCP server, a real CLI, a real REST API and real signed webhooks, all
-        in front of the same application services, mentioned nowhere above the
-        fold and nowhere at all as a story.
+            <EditorialPricePair
+              locale={locale}
+              monthlyPriceDollars={25}
+              annualPriceDollars={250}
+              monthlyLabel={t.t('web.pricing.monthlyLabel')}
+              annualLabel={t.t('web.pricing.annualLabel')}
+              monthlyDetail={t.t('web.pricing.monthlyDetail')}
+              annualDetail={t.t('web.pricing.annualDetail')}
+              annualFraming={t.t('web.pricing.annualFraming')}
+              className="mt-10"
+            />
 
-        Deliberately not three icon-and-heading cards. The ladder from read to
-        consequential is the whole idea, and equal boxes would flatten it: the
-        section reads connect, then what an agent may call, then what it may
-        never do without a person.
-
-        Ultramarine, because the vermilion is spent on the action in the hero
-        and on the one phrase in the headline, and the marigold is spent on the
-        band above.
-      */}
-      <ColorBand accent="cool" id="agents" texture>
-        <div className="max-w-[46rem]">
-          <Heading>{t.t('web.home.v2.agents.title')}</Heading>
-          <Lede className="mt-5">{t.t('web.home.v2.agents.lede')}</Lede>
-        </div>
-
-        <div className="mt-14 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:gap-14">
-          <div>
-            <Subheading as="h3">{t.t('web.home.v2.agents.connect.title')}</Subheading>
-            {/*
-              Numbered, and allowed to be: you cannot authorize a client you
-              have not pointed anywhere, and an agent cannot read accounts
-              before the grant exists. The craft floor bans section numbers
-              whose sequence carries nothing — which is why the proof rows
-              further down lost theirs — not an ordered list that is actually
-              ordered.
-            */}
-            <Steps>
-              {CONNECT_STEPS.map((step, index) => (
-                <Step key={step.id} index={index + 1} title={t.format(step.titleKey)}>
-                  {t.format(step.bodyKey)}
-                </Step>
-              ))}
-            </Steps>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
+              <TextLink href={ROUTES.pricing}>{t.t('web.cta.seePricing')}</TextLink>
+            </div>
           </div>
 
-          <div className="min-w-0">
-            {/*
-              The configuration a customer actually copies, generated by the
-              product's own snippet builder rather than retyped. The block
-              scrolls inside its own container so a long endpoint never makes
-              the page scroll sideways.
-            */}
-            <EditorialCard tone="sunken" interactive={false} flush>
-              <pre className="text-mono relay-scroll-x px-4 py-5 font-mono leading-[1.8]">
-                <code>{CLAUDE_CODE_SNIPPET}</code>
-              </pre>
-            </EditorialCard>
-            <p className="text-body-sm text-text-tertiary mt-3">
-              {t.t('web.home.v2.agents.connect.snippetCaption')}
-            </p>
-
-            <p className="text-body-sm text-text-secondary mt-8">
-              {t.t('web.home.v2.agents.connect.clients')}
-            </p>
-            <ul className="mt-3 flex flex-wrap gap-2">
-              {AGENT_CLIENT_KEYS.map((key) => (
-                <li
-                  key={key}
-                  className="border-border-strong text-body-sm text-text-primary rounded-sm border px-2.5 py-1"
-                >
-                  {t.format(key)}
-                </li>
-              ))}
-            </ul>
-            <p className="text-body-sm text-text-tertiary mt-3 max-w-[46ch] leading-[1.6]">
-              {t.t('web.home.v2.agents.connect.clientsNote')}
-            </p>
+          <div className="lg:col-span-5">
+            <details className="group border-border-strong bg-surface-raised rounded-poster shadow-hard border">
+              <summary
+                className={cn(
+                  'flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-6 py-4',
+                  'text-title-sm text-text-primary marker:content-none [&::-webkit-details-marker]:hidden',
+                  'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
+                )}
+              >
+                {t.t('web.home.honest.title')}
+                <ChevronDown
+                  aria-hidden="true"
+                  className="size-5 shrink-0 transition-transform duration-(--duration-base) group-open:rotate-180"
+                />
+              </summary>
+              <div className="border-border-subtle border-t px-6 py-6">
+                <p className="text-body-sm text-text-secondary leading-[1.6]">
+                  {t.t('web.home.honest.lede')}
+                </p>
+                <ul className="mt-6 space-y-4">
+                  {BOUNDARIES.map((key) => (
+                    <li key={key} className="flex items-start gap-3">
+                      <X aria-hidden="true" className="text-text-tertiary mt-0.5 size-4 shrink-0" />
+                      <p className="text-body-sm text-text-secondary leading-[1.55] text-pretty">
+                        {t.format(key)}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
           </div>
         </div>
-
-        <div className="mt-16">
-          <Subheading as="h3">
-            {t.format('web.home.v2.agents.tools.title', { count: AGENT_TOOL_COUNT })}
-          </Subheading>
-          <Body className="mt-3">{t.t('web.home.v2.agents.tools.body')}</Body>
-          <AgentToolLedger tiers={toolTiers} className="mt-8" />
-        </div>
-
-        {/*
-          The confirmation step gets its own moment rather than a fourth ledger
-          row: it is the one guarantee that makes an agent with publish rights
-          safe to give to a stranger, and it is not a tool, it is what happens
-          instead of one.
-        */}
-        <div className="mt-12 max-w-[52rem]">
-          <EditorialCard interactive={false}>
-            <Subheading as="h3" className="text-title-sm">
-              {t.t('web.home.v2.agents.confirm.title')}
-            </Subheading>
-            <p className="text-body-lg text-text-secondary mt-3 leading-[1.65]">
-              {t.t('web.home.v2.agents.confirm.body')}
-            </p>
-          </EditorialCard>
-        </div>
-
-        <p className="mt-10">
-          <TextLink href={ROUTES.docs}>{t.t('web.home.v2.agents.docsCta')}</TextLink>
-        </p>
       </ColorBand>
 
-      {/*
-        4. The five proof pillars, and the long promise the hero used to set at
-        display size. It reads as a standfirst here, which is what it always
-        was.
-      */}
-      <EditorialSection rule id="pillars" reveal={false}>
-        <Heading className="max-w-[28ch]">{t.t('web.home.pillars.title')}</Heading>
-        <Lede className="mt-5">{t.t('web.home.promise')}</Lede>
-        <StaggerList stagger={0.07} className="border-border-default mt-12 border-t">
-          {PILLARS.map((pillar) => (
-            <PillarRow key={pillar.id} pillar={pillar} t={t} />
-          ))}
-        </StaggerList>
-      </EditorialSection>
-
-      {/*
-        5. The boundaries. The copy is unchanged and stays a quiet disclosure
-        rather than a hero moment: this is a sales page for what the product
-        does, and four screens of "No ..." set in display type reads as
-        apologetic.
-      */}
-      <EditorialSection rule id="boundaries">
-        <Heading as="h2">{t.t('web.home.honest.title')}</Heading>
-        <p className="text-body-md text-text-secondary mt-3 max-w-[62ch]">
-          {t.t('web.home.honest.lede')}
-        </p>
-        <ul className="mt-8 grid gap-x-10 gap-y-3 sm:grid-cols-2">
-          {BOUNDARIES.map((key) => (
-            <li key={key} className="flex items-start gap-2.5">
-              <X aria-hidden="true" className="text-text-tertiary mt-0.5 size-4 shrink-0" />
-              <p className="text-body-sm text-text-secondary leading-[1.5] text-pretty">
-                {t.format(key)}
-              </p>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-8">
-          <TextLink href={ROUTES.changelog}>{t.t('nav.public.changelog')}</TextLink>
-        </p>
-      </EditorialSection>
-
-      {/* 6. Pricing teaser. Both figures shown here are already stated,
-          verbatim, in `billing.plan.monthlyPrice` / `billing.plan.single`. */}
-      <EditorialSection rule id="pricing-teaser">
-        <Heading className="max-w-[24ch]">{t.t('web.home.v2.pricingTeaser.title')}</Heading>
-        {/* The plain-language version of the ladder below it: one price, what
-            it covers, and that the trial needs no card. It used to sit under
-            the hero, where a stranger met a dollar figure before they knew
-            what the product was. */}
-        <Body className="mt-4">{t.t('web.home.summaryLine')}</Body>
-        {/* The three sizes, compact: the same integer minor units and the
-            same interval control as the pricing page, without the delta
-            prose. A visitor who never reaches /pricing should still know the
-            ladder exists and that only Standard is on sale.
-
-            `parityNote` is the sentence that makes the three prices legible.
-            The teaser used to show $25, $50 and $100 under three adjectives,
-            which left the obvious question — what does the extra money buy —
-            unanswered on the page most readers stop at. Each card now states
-            its own project allowance, and this line says that capacity is the
-            entire difference, so nobody has to wonder which features the
-            cheapest column is missing. It is missing none. */}
-        <TierGrid
-          locale={locale}
-          variant="compact"
-          tiers={tierColumns({
-            t,
-            ctaHref: ROUTES.signUp,
-            ctaLabel: t.t('web.cta.startTrial'),
-          })}
-          intervalGroupLabel={t.t('web.pricing.tierGrid.intervalGroup')}
-          monthlyLabel={t.t('web.pricing.monthlyLabel')}
-          annualLabel={t.t('web.pricing.annualLabel')}
-          startHereLabel={t.t('web.pricing.tierGrid.startHere')}
-          parityNote={t.t('billing.tier.everyFeature')}
-          className="mt-12"
-        />
-
-        {/* One presentation of the ladder on this page, not two. This card used
-            to repeat the Standard column's own two numbers a second time,
-            directly beneath the TierGrid that already states them — the exact
-            "two prices for one plan" confusion the pricing page itself was
-            rebuilt to remove. The trial note and the link to the full page
-            are the part worth keeping; the numbers are not, because the grid
-            above already carries them. */}
-        <p className="text-body-md text-text-secondary mt-8 max-w-sm">
-          {t.t('web.home.v2.sticker.trial')}
-        </p>
-        <p className="mt-4">
-          <TextLink href={ROUTES.pricing} className="text-body-md">
-            {t.t('web.cta.seePricing')}
-          </TextLink>
-        </p>
-      </EditorialSection>
-
-      {/* 7. Closing. The page's one inverted band, and the one place the warm
-          wash is allowed to run across a whole edge rather than under a
-          heading. */}
       <ClosingCta
         id="start"
         title={t.t('web.home.closing.title')}
         body={t.t('web.home.closing.body')}
         cta={{ href: ROUTES.signUp, label: t.t('web.cta.startTrial') }}
-        footnote={t.t('web.cta.trialFootnote')}
+        footnote={t.t('web.home.v2.sticker.trial')}
         wash="warm"
+        celebrate
       />
 
       <JsonLd node={await offerJsonLd(locale)} />
