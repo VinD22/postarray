@@ -160,7 +160,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
                 <Search aria-hidden="true" className="size-4" />
               </button>
 
-              <ComposeButton className="hidden md:inline-flex" />
+              {onCompose ? null : <ComposeButton className="hidden md:inline-flex" />}
               <ActionCenterPanel />
               <HelpMenu
                 onOpenShortcuts={() => {
@@ -199,7 +199,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
           </main>
         </div>
 
-        <MobileNav />
+        {onCompose ? null : <MobileNav />}
 
         <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
         <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />

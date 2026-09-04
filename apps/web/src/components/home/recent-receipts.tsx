@@ -1,80 +1,29 @@
 'use client';
 
-import { Check } from 'lucide-react';
-
 import { Link } from '@/components/link';
 
-import {
-  EmptyState,
-  ErrorState,
-  LoadingState,
-  SkeletonList,
-  Timeline,
-  type TimelineEvent,
-} from '@relay/design-system/patterns';
+import { EmptyState, ErrorState, LoadingState, SkeletonList } from '@relay/design-system/patterns';
 import { Button } from '@relay/design-system/primitives';
 
 import { ApiError } from '@/lib/api';
 import { useRecentReceipts } from '@/lib/api/hooks';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 import { EmptyScene } from '@/components/empty';
-import { LiveBadge } from '@/components/motion';
 
 import { HomeSection } from './section';
 
 /**
  * Recent receipts.
  *
- * A timeline rather than a list of cards, because what the reader is doing here
- * is checking a sequence: what published, when, and whether anything inside it
- * failed. A partial publication says so on the row and never reads as a plain
- * success.
+ * A compact sequence of publication evidence. It keeps the title, outcome and
+ * time, while account details live on the receipt itself. A partial publication
+ * still says so in full and never reads as a plain success.
  */
 export function RecentReceipts() {
   const t = useTranslations();
   const format = useFormatters();
-  const query = useRecentReceipts(4);
+  const query = useRecentReceipts(3);
   const receipts = query.data?.data ?? [];
-
-  const events: TimelineEvent[] = receipts.map((receipt) => ({
-    id: receipt.receiptId,
-    title: (
-      <Link href={`/posts/${receipt.contentItemId}`} className="hover:underline">
-        {receipt.title}
-      </Link>
-    ),
-    ...(receipt.publishedAt === null
-      ? {}
-      : { timestamp: format.dateTime(receipt.publishedAt), isoTimestamp: receipt.publishedAt }),
-    actor: t('home.receipts.publishedTo', { account: receipt.accountLabel }),
-    // A published receipt carries the live badge rather than a state word:
-    // this row is reporting an event that happened, and the badge is the
-    // gesture this product uses for that everywhere else. A partial one keeps
-    // its sentence, because "some of it worked" is not something a badge can
-    // say honestly.
-    detail:
-      receipt.failedItemCount > 0 ? (
-        t('state.partially_published.description', {
-          published: 1,
-          failed: receipt.failedItemCount,
-        })
-      ) : receipt.state === 'published' ? (
-        <LiveBadge
-          live
-          label={t('state.published.label')}
-          icon={<Check aria-hidden="true" className="size-3" />}
-          className="px-2 py-0.5"
-        />
-      ) : (
-        t(`state.${receipt.state}.label`)
-      ),
-    outcome:
-      receipt.state === 'published'
-        ? ('completed' as const)
-        : receipt.state === 'partially_published'
-          ? ('warning' as const)
-          : ('failed' as const),
-  }));
 
   return (
     <HomeSection
@@ -98,7 +47,7 @@ export function RecentReceipts() {
           }}
           retryLabel={t('action.retry')}
         />
-      ) : events.length === 0 ? (
+      ) : receipts.length === 0 ? (
         <EmptyState
           compact
           illustration={<EmptyScene scene="receipts" />}
@@ -111,7 +60,34 @@ export function RecentReceipts() {
           }
         />
       ) : (
-        <Timeline label={t('receipt.timeline.title')} events={events} />
+        <ol className="border-border-subtle border-t">
+          {receipts.map((receipt) => (
+            <li
+              key={receipt.receiptId}
+              className="border-border-subtle flex flex-col gap-1.5 border-b py-4"
+            >
+              <Link
+                href={`/posts/${receipt.contentItemId}`}
+                className="text-body-lg text-text-primary w-fit max-w-full truncate font-medium hover:underline"
+              >
+                {receipt.title}
+              </Link>
+              <p className="text-body-sm text-text-tertiary">
+                {receipt.failedItemCount > 0
+                  ? t('state.partially_published.description', {
+                      published: 1,
+                      failed: receipt.failedItemCount,
+                    })
+                  : t(`state.${receipt.state}.label`)}
+              </p>
+              {receipt.publishedAt === null ? null : (
+                <time dateTime={receipt.publishedAt} className="text-label text-text-tertiary">
+                  {format.dateTime(receipt.publishedAt)}
+                </time>
+              )}
+            </li>
+          ))}
+        </ol>
       )}
     </HomeSection>
   );

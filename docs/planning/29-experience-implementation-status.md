@@ -104,6 +104,16 @@ so the gap is a decision rather than an omission somebody quietly fills in.
 - **The custom range uses two native date inputs** behind a `TODO(web)`,
   because the `DateTimeField` primitive in FE section B9 is not built yet.
 
+## Signed-in editorial ledger pass (2026-09-05)
+
+Home and the shared application shell now carry the same editorial system as the public product. Home
+shows the three highest-priority decisions, turns the next 24 hours into a responsive timeline, limits
+recent receipts to three concise evidence rows, and shows only connections that need attention. Shared
+page headers, navigation scale and app gutters now apply the same hierarchy across signed-in routes.
+The pass also fixed duplicate analytics error detail, added a real demo analytics response and set the
+locale layout metadata base from the canonical site origin. The free signup and optional paid-plan trial
+remain separate, truthful states.
+
 ## Known issues, in priority order
 
 1. **The character counter excludes signature text that will publish.**

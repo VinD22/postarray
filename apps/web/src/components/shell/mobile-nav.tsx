@@ -121,7 +121,7 @@ export function MobileNav() {
               }
             }}
           >
-            <item.icon aria-hidden="true" className="size-5" />
+            <item.icon aria-hidden="true" className="size-[1.375rem]" />
             {t(item.labelKey)}
           </BottomLink>
         ))}
@@ -136,7 +136,7 @@ export function MobileNav() {
               canPublish ? 'hover:bg-accent-action-hover' : 'pointer-events-none opacity-60',
             )}
           >
-            <PenSquare aria-hidden="true" className="size-5" />
+            <PenSquare aria-hidden="true" className="size-[1.375rem]" />
             <span className="sr-only">{t('nav.compose')}</span>
           </Link>
         </div>
@@ -154,7 +154,7 @@ export function MobileNav() {
               }
             }}
           >
-            <item.icon aria-hidden="true" className="size-5" />
+            <item.icon aria-hidden="true" className="size-[1.375rem]" />
             {t(item.labelKey)}
           </BottomLink>
         ))}
@@ -169,7 +169,7 @@ export function MobileNav() {
             'text-label text-text-secondary hover:text-text-primary',
           )}
         >
-          <Menu aria-hidden="true" className="size-5" />
+          <Menu aria-hidden="true" className="size-[1.375rem]" />
           {t('shell.nav.more')}
         </button>
       </nav>

@@ -9,7 +9,7 @@ import type {
 } from '@relay/contracts';
 
 import { call } from '../call';
-import { page } from '../fixtures';
+import { demoAnalyticsOverview, page } from '../fixtures';
 import type {
   BusinessProfileView,
   GrowthPlanSummaryView,
@@ -95,7 +95,17 @@ export const analyticsApi = {
           ...(query.contentKind === undefined ? {} : { contentKind: query.contentKind }),
         },
       },
-      () => null,
+      () => ({
+        ...demoAnalyticsOverview,
+        range: { start: query.from, end: query.to, preset: 'custom' as const },
+        rankMetric: query.metric,
+        rows:
+          query.metric === demoAnalyticsOverview.rankMetric
+            ? demoAnalyticsOverview.rows.filter(
+                (row) => query.contentKind === undefined || row.format === query.contentKind,
+              )
+            : [],
+      }),
     ),
 
   /** One metric for one account, as points over the window rather than totals. */

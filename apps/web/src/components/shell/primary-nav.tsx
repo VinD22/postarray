@@ -82,7 +82,7 @@ export function PrimaryNav() {
         ref={indicatorRef}
         aria-hidden="true"
         className={cn(
-          'bg-accent pointer-events-none absolute start-0 w-[3px] rounded-e-full',
+          'bg-accent pointer-events-none absolute start-0 w-0.5 rounded-e-full',
           'transition-opacity duration-(--duration-fast)',
           activeItem ? 'opacity-100' : 'opacity-0',
         )}
@@ -106,7 +106,7 @@ export function PrimaryNav() {
             aria-current={active ? 'page' : undefined}
             className={cn(
               'relative flex min-h-11 items-center gap-3 rounded-md px-2.5 py-2 lg:min-h-10',
-              'text-body-md transition-[background-color,color,translate] duration-(--duration-fast)',
+              'text-body-md lg:text-body-lg transition-[background-color,color,translate] duration-(--duration-fast)',
               'hover:-translate-y-px',
               active
                 ? 'bg-surface-sunken text-text-primary font-semibold'
@@ -115,7 +115,7 @@ export function PrimaryNav() {
           >
             <Icon
               aria-hidden="true"
-              className={cn('size-[1.05rem] shrink-0', active ? 'text-accent' : undefined)}
+              className={cn('size-5 shrink-0', active ? 'text-accent' : undefined)}
             />
             {labelsVisible ? (
               <span className="truncate">{label}</span>

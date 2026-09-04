@@ -21,9 +21,9 @@
  * the three sanctioned expressive moments is here.
  */
 
-import { useMemo, useRef, useState, type ReactNode } from 'react';
+import { useId, useMemo, useRef, useState, type ReactNode } from 'react';
 
-import { cn, panelSurface } from '@relay/design-system/utils';
+import { cn } from '@relay/design-system/utils';
 
 import { useCalendar, useConnections } from '@/lib/api/hooks';
 import { useSession } from '@/lib/auth/session-context';
@@ -104,24 +104,23 @@ export function StatTiles(): ReactNode {
     <section
       aria-label={t('home.v2.tiles.label')}
       data-stagger-item
-      className={cn(panelSurface, 'grid overflow-hidden md:grid-cols-12')}
+      className="border-border-default grid grid-cols-2 border-y md:grid-cols-3"
     >
       <Tile
-        className="md:col-span-3"
+        className="border-border-subtle border-e"
         label={t('home.v2.tiles.scheduled')}
         hint={t('home.v2.tiles.scheduledHint')}
         unavailable={scheduledReading.kind === 'unavailable'}
         value={<Numeral value={entries.length} format={(n) => format.number(n)} />}
       />
       <Tile
-        className="border-border-subtle border-t md:col-span-3 md:border-s md:border-t-0"
         label={t('home.v2.tiles.accounts')}
         hint={t('home.v2.tiles.accountsHint', { attention })}
         unavailable={accountsReading.kind === 'unavailable'}
         value={<Numeral value={connections.length} format={(n) => format.number(n)} />}
       />
       <Tile
-        className="border-border-subtle border-t md:col-span-6 md:border-s md:border-t-0"
+        className="border-border-subtle col-span-2 border-t md:col-span-1 md:border-s md:border-t-0"
         label={t('home.v2.tiles.nextSlot')}
         hint={
           next === null
@@ -132,6 +131,11 @@ export function StatTiles(): ReactNode {
               })
         }
         unavailable={scheduledReading.kind === 'unavailable'}
+        detail={
+          next === null
+            ? undefined
+            : t('home.v2.tiles.nextSlotAccount', { account: next.accountLabel })
+        }
         value={
           next === null ? (
             <span className="text-title-sm text-text-secondary">
@@ -153,28 +157,45 @@ function Tile({
   hint,
   value,
   unavailable,
+  detail,
   className,
 }: {
   readonly label: string;
   readonly hint: string;
   readonly value: ReactNode;
   readonly unavailable: boolean;
+  readonly detail?: string | undefined;
   readonly className?: string;
 }): ReactNode {
   const t = useTranslations();
+  const id = useId();
+  const labelId = `${id}-label`;
+  const descriptionId = `${id}-description`;
   return (
-    <div className={cn('flex min-h-32 flex-col justify-between gap-3 p-4 md:p-5', className)}>
-      <p className="text-label text-text-secondary font-medium">{label}</p>
-      <p className="font-display text-text-primary text-[clamp(1.75rem,2.5vw,2.75rem)] leading-none font-bold tracking-[-0.03em]">
-        {unavailable ? (
-          <span className="text-title-sm text-text-tertiary">{t('common.unavailable')}</span>
-        ) : (
-          value
+    <div
+      role="group"
+      aria-labelledby={labelId}
+      aria-describedby={descriptionId}
+      className={cn('flex min-h-36 flex-col justify-between gap-4 px-4 py-5 md:px-6', className)}
+    >
+      <p id={labelId} className="text-label text-text-tertiary font-medium tracking-wide">
+        {label}
+      </p>
+      <div className="flex min-w-0 flex-col gap-2">
+        <p className="font-display text-display-lg text-text-primary leading-none font-semibold tracking-[-0.035em]">
+          {unavailable ? (
+            <span className="text-title-sm text-text-tertiary">{t('common.unavailable')}</span>
+          ) : (
+            value
+          )}
+        </p>
+        {detail === undefined || unavailable ? null : (
+          <p className="text-body-sm text-text-secondary truncate">{detail}</p>
         )}
-      </p>
-      <p className="text-body-sm text-text-tertiary max-w-[38ch] text-pretty">
+      </div>
+      <span id={descriptionId} className="sr-only">
         {unavailable ? t('home.error.body') : hint}
-      </p>
+      </span>
     </div>
   );
 }

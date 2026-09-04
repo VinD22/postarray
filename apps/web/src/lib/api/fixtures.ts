@@ -30,7 +30,7 @@ import type {
   SessionView,
   UsageView,
 } from './types';
-import type { PublicationReceipt } from '@relay/contracts';
+import type { AnalyticsOverviewViewShape, PublicationReceipt } from '@relay/contracts';
 import type { PublishJobView } from '@relay/application';
 
 /** Anchor everything to the moment the page loads so the demo never goes stale. */
@@ -449,6 +449,174 @@ export const demoReceipts: readonly ReceiptSummaryView[] = [
     failedItemCount: 0,
   },
 ];
+
+/**
+ * Provider-shaped sample observations for the explicitly labelled demo workspace.
+ * They exist so the public demo reaches the analytics product instead of an
+ * error boundary. Values are scoped to the seeded example posts and are never
+ * presented as Post Array performance claims.
+ */
+export const demoAnalyticsOverview = {
+  range: { start: at(-30 * DAY), end: at(0), preset: 'custom' },
+  rankMetric: 'impressions',
+  rows: [
+    {
+      contentItemId: 'content_demo0000000000006',
+      title: 'Connector capability update',
+      account: {
+        connectionId: 'conn_demo00000000000000002',
+        handle: '',
+        displayName: 'Example Studio EU',
+        provider: 'linkedin',
+      },
+      format: 'document',
+      publishedAt: at(-2 * DAY),
+      reading: {
+        normalizedName: 'impressions',
+        provider: 'linkedin',
+        availability: 'available',
+        value: 1840,
+        observedAt: at(-3 * HOUR),
+        freshnessSeconds: 10_800,
+        definition: {
+          normalizedName: 'impressions',
+          provider: 'linkedin',
+          providerField: 'impressionCount',
+          definition: 'The number of times this post was shown.',
+          unit: 'count',
+          denominator: 'none',
+          aggregation: 'sum',
+          historyWindowDays: 90,
+          lastVerifiedAt: null,
+        },
+      },
+      baseline: null,
+      receiptUrl: '/posts/content_demo0000000000006',
+    },
+    {
+      contentItemId: 'content_demo0000000000001',
+      title: 'Launch thread',
+      account: {
+        connectionId: 'conn_demo00000000000000001',
+        handle: 'example_studio',
+        displayName: 'Example Studio',
+        provider: 'x',
+      },
+      format: 'thread',
+      publishedAt: at(-5 * HOUR),
+      reading: {
+        normalizedName: 'impressions',
+        provider: 'x',
+        availability: 'available',
+        value: 962,
+        observedAt: at(-58),
+        freshnessSeconds: 3_480,
+        definition: {
+          normalizedName: 'impressions',
+          provider: 'x',
+          providerField: 'impression_count',
+          definition: 'The number of times this post was viewed.',
+          unit: 'count',
+          denominator: 'none',
+          aggregation: 'sum',
+          historyWindowDays: 30,
+          lastVerifiedAt: null,
+        },
+      },
+      baseline: null,
+      receiptUrl: '/posts/content_demo0000000000001',
+    },
+    {
+      contentItemId: 'content_demo0000000000007',
+      title: 'Behind the schedule, three takes',
+      account: {
+        connectionId: 'conn_demo00000000000000003',
+        handle: 'example.studio',
+        displayName: 'example.studio',
+        provider: 'instagram',
+      },
+      format: 'short_video',
+      publishedAt: at(-DAY),
+      reading: {
+        normalizedName: 'impressions',
+        provider: 'instagram',
+        availability: 'unavailable_permission',
+        value: null,
+        observedAt: at(-9 * HOUR),
+        freshnessSeconds: 32_400,
+        definition: {
+          normalizedName: 'impressions',
+          provider: 'instagram',
+          providerField: 'views',
+          definition: 'The number of times this media was viewed.',
+          unit: 'count',
+          denominator: 'none',
+          aggregation: 'sum',
+          historyWindowDays: 90,
+          lastVerifiedAt: null,
+        },
+      },
+      baseline: null,
+      receiptUrl: '/posts/content_demo0000000000007',
+    },
+  ],
+  freshness: [
+    {
+      account: {
+        connectionId: 'conn_demo00000000000000001',
+        handle: 'example_studio',
+        displayName: 'Example Studio',
+        provider: 'x',
+      },
+      state: 'fresh',
+      lastSuccessAt: at(-58),
+      nextAttemptAt: at(2),
+      providerDelaySeconds: 0,
+    },
+    {
+      account: {
+        connectionId: 'conn_demo00000000000000002',
+        handle: '',
+        displayName: 'Example Studio EU',
+        provider: 'linkedin',
+      },
+      state: 'fresh',
+      lastSuccessAt: at(-3 * HOUR),
+      nextAttemptAt: at(3 * HOUR),
+      providerDelaySeconds: 0,
+    },
+    {
+      account: {
+        connectionId: 'conn_demo00000000000000003',
+        handle: 'example.studio',
+        displayName: 'example.studio',
+        provider: 'instagram',
+      },
+      state: 'aging',
+      lastSuccessAt: at(-9 * HOUR),
+      nextAttemptAt: at(HOUR),
+      providerDelaySeconds: 0,
+    },
+  ],
+  attention: [],
+  observations: [],
+  accountsRequested: 4,
+  accountsWithData: 3,
+  accountsWithoutData: [
+    {
+      account: {
+        connectionId: 'conn_demo00000000000000004',
+        handle: '',
+        displayName: 'Example Studio Channel',
+        provider: 'youtube',
+      },
+      reason: 'no_posts',
+      since: at(-3 * DAY),
+      consecutiveFailures: 0,
+      failureCode: null,
+    },
+  ],
+} satisfies AnalyticsOverviewViewShape;
 
 /**
  * Full immutable records behind the receipt summaries above.

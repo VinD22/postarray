@@ -9,6 +9,7 @@ import { themeBootstrapScript } from '@relay/design-system/theme-bootstrap';
 import { Providers } from '@/components/providers';
 import { STATIC_WEB_LOCALE_CODES, isWebLocale } from '@/lib/i18n/development-pseudo-locales';
 import { getStaticIntl } from '@/lib/i18n/server';
+import { SITE_ORIGIN } from '@/features/marketing/site';
 
 import '../globals.css';
 
@@ -46,6 +47,7 @@ export async function generateMetadata({
   const intl = await getStaticIntl(locale);
   const appName = intl.t.format('shell.appName');
   return {
+    metadataBase: new URL(SITE_ORIGIN),
     title: {
       default: appName,
       template: `%s · ${appName}`,

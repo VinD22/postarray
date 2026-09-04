@@ -1,11 +1,10 @@
 'use client';
 
-import { Link } from '@/components/link';
 import { useEffect, useRef } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { EmptyState, PageHeader } from '@relay/design-system/patterns';
-import { Badge, Button, Separator } from '@relay/design-system/primitives';
+import { Separator } from '@relay/design-system/primitives';
 
 import { ApiError } from '@/lib/api';
 import { useActionCenter, useCalendar } from '@/lib/api/hooks';
@@ -45,7 +44,7 @@ const DAY_MS = 86_400_000;
  */
 export function HomeScreen() {
   const t = useTranslations();
-  const { session, project, canPublish } = useSession();
+  const { project } = useSession();
   const { announce } = useAnnouncer();
 
   const actionQuery = useActionCenter();
@@ -85,37 +84,31 @@ export function HomeScreen() {
     <>
       <PageHeader
         title={t('home.title')}
+        titleStyle="strong"
         description={t('home.subtitle')}
-        actions={
-          canPublish ? (
-            <Button variant="primary" asChild>
-              <Link href="/compose">{t('nav.compose')}</Link>
-            </Button>
-          ) : null
-        }
+        className="px-[var(--layout-gutter)]"
       />
 
-      <StaggerList className="relay-page flex flex-col gap-8 py-6 md:py-8" stagger={0.06} y={16}>
+      <StaggerList className="relay-page flex flex-col gap-10 py-8 md:py-10" stagger={0.06} y={16}>
         <TrialBanner />
 
         <StatTiles />
 
-        <div className="grid items-start gap-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)] xl:gap-10">
-          <div className="flex min-w-0 flex-col gap-8">
+        <div className="grid items-start gap-10 xl:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.5fr)] xl:gap-12">
+          <div className="flex min-w-0 flex-col gap-10">
             <HomeSection
               id="home-needs-you"
               emphasis
               title={t('home.needsYou.title')}
-              meta={
-                actionItems.length > 0 ? (
-                  <Badge tone="accent">
-                    {t('actionCenter.itemCount', { count: actionItems.length })}
-                  </Badge>
-                ) : undefined
-              }
               link={
                 actionItems.length > 0
-                  ? { href: '/action-center', label: t('home.needsYou.viewAll') }
+                  ? {
+                      href: '/action-center',
+                      label:
+                        actionItems.length > 3
+                          ? t('home.v2.needsYou.remaining', { count: actionItems.length - 3 })
+                          : t('home.needsYou.viewAll'),
+                    }
                   : undefined
               }
             >
@@ -127,9 +120,7 @@ export function HomeScreen() {
                   description={t('home.needsYou.emptyQuiet')}
                 />
               ) : (
-                <div
-                  className={actionItems.length > 0 ? 'border-cta border-s-[3px] ps-4' : undefined}
-                >
+                <div className="border-cta border-s-[3px] ps-4 md:ps-6">
                   <ActionCenterList
                     items={actionItems}
                     loading={actionQuery.isPending}
@@ -137,8 +128,9 @@ export function HomeScreen() {
                     onRetry={() => {
                       void actionQuery.refetch();
                     }}
-                    maxItems={5}
+                    maxItems={3}
                     showSnooze={false}
+                    comfortable
                   />
                 </div>
               )}
@@ -149,16 +141,15 @@ export function HomeScreen() {
             <UpcomingQueue />
           </div>
 
-          <div className="border-border-subtle flex min-w-0 flex-col gap-8 xl:border-s xl:ps-8">
+          <aside
+            aria-label={t('home.v2.activity.label')}
+            className="border-border-subtle flex min-w-0 flex-col gap-10 xl:border-s xl:ps-10"
+          >
             <RecentReceipts />
             <Separator />
             <ConnectionHealth />
-          </div>
+          </aside>
         </div>
-
-        <p className="text-body-sm text-text-tertiary">
-          {t('shell.workspace.current', { name: session.workspace.name })}
-        </p>
       </StaggerList>
     </>
   );
