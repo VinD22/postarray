@@ -37,6 +37,11 @@ export const webComposerMessages = {
   // ----------------------------------------------------------- action bar
   'composerWeb.actionBar.label': 'Draft actions',
   'composerWeb.actionBar.toFix': '{count, plural, one {# to fix} other {# to fix}}',
+  'composerWeb.actionBar.publishToCount':
+    '{count, plural, =0 {Publish now} one {Publish to # channel now} other {Publish to # channels now}}',
+  'composerWeb.actionBar.scheduleFor': 'Schedule for {time} ({zone})',
+  'composerWeb.readiness.summary':
+    '{count, plural, =0 {No channels picked yet} other {Ready: {ready} of # channels}}',
   'composerWeb.saveSplit.title':
     '{count, plural, one {# account was not saved} other {# accounts were not saved}}',
   'composerWeb.saveSplit.body':
@@ -341,6 +346,7 @@ export const webComposerMessages = {
   // ==================================================== media library ====
   'mediaLib.view.grid': 'Grid',
   'mediaLib.view.list': 'List',
+  'mediaLib.detail.useInPost': 'Use in post',
   'mediaLib.view.label': 'Layout',
   'mediaLib.sort.label': 'Sort',
   'mediaLib.sort.newest': 'Newest first',

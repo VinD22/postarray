@@ -117,6 +117,20 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // did not. Beta locales keep the reviewed English source until a person
   // translates it.
   'composerWeb.commitFailed.',
+  // The composer's Suggest menu, Review button and posting time hint
+  // (2026-09-23). Each sentence separates a model's proposal from something
+  // that happened, or says a check did not run rather than passed. A machine
+  // translation that blurred "nothing changes until you use it" would leave
+  // somebody believing their draft was rewritten. Beta locales keep the
+  // reviewed English source until a person translates it.
+  'web.suggest.',
+  // Opt-in image analysis (2026-09-23): the settings switch and the pre-check
+  // warnings. Each sentence either states exactly what is sent to a model or
+  // is a consent and rights reminder, and a machine translation that softened
+  // "never creates or edits them" would misstate what the product does. Beta
+  // locales keep the reviewed English source until a person translates it.
+  'settings.ui.ai.',
+  'mediaAnalysis.',
   // Transactional security and invitation mail stays in reviewed English
   // until each beta locale has a human-reviewed delivery template.
   'email.',
@@ -321,6 +335,11 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'composerWeb.media.scanFailed',
   'composerWeb.channels.unavailableTitle',
   'composerWeb.channels.unavailableBody',
+  // Consequence-labelled primary action and readiness summary (2026-09-23).
+  'composerWeb.actionBar.publishToCount',
+  'composerWeb.actionBar.scheduleFor',
+  'composerWeb.readiness.summary',
+  'mediaLib.detail.useInPost',
 
   // Added with the analytics overview rebuild: a working compare-to-previous
   // query, a per-channel rollup table, a series chart and CSV export. Reviewed
@@ -384,6 +403,8 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'settings.projects.disclosureDefaults',
   'settings.projects.localeRules.legal',
   'settings.ui.section.billing',
+  'settings.ui.section.ai',
+  'settings.ui.section.aiSummary',
   'settings.ui.section.billingSummary',
   'nav.projectSwitcher',
   'composerWeb.entity.searchFailed',

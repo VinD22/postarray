@@ -122,4 +122,29 @@ export const mediaMessages = {
     'This file could not be read back from storage, so it has not been checked yet. Try again in a few minutes.',
   'media.scan.scanner_unavailable':
     'The safety check could not run, so this file is not ready to publish yet. It will be checked again automatically.',
+
+  /* Image analysis (opt-in). Warnings only: none of these stops a post. */
+  'mediaAnalysis.blocked.disabled':
+    'Image analysis is off for this workspace. An owner or admin can turn it on in Settings.',
+  'mediaAnalysis.blocked.aiUnavailable':
+    'Image analysis is not available right now. Your post is not affected.',
+  'mediaAnalysis.blocked.notAnImage': 'Only images can be analysed.',
+  'mediaAnalysis.blocked.scanNotClean':
+    'This image has not passed the safety scan yet, so it has not been analysed.',
+  'mediaAnalysis.blocked.rightsUndeclared':
+    'Declare the rights for this image first. Images without declared rights are never analysed.',
+  'mediaAnalysis.blocked.sourceUnavailable':
+    'The stored copy of this image could not be read, so it was not analysed.',
+  'mediaAnalysis.processing': 'Preparing a reduced copy for analysis. Check again in a moment.',
+  'mediaAnalysis.warning.subjectCutOff':
+    'The subject is cut off in a {ratio} crop. Use the suggested crop.',
+  'mediaAnalysis.warning.smallText':
+    'Text in this image may be too small to read at feed size.',
+  'mediaAnalysis.warning.faces':
+    'This image shows recognizable faces. Make sure the people in it agreed to be posted.',
+  'mediaAnalysis.warning.minors':
+    'This image may show a child. Check you have a parent or guardian consent before posting.',
+  'mediaAnalysis.warning.logos':
+    '{count, plural, one {This image shows another brand logo.} other {This image shows # other brand logos.}} Check you have the right to use them.',
+  'mediaAnalysis.warning.label': 'Warning, you can still post',
 } as const;

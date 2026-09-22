@@ -46,6 +46,8 @@ import { webUseCaseMessages } from './web-use-cases';
 import { webComparisonMessages } from './web-comparisons';
 // The hero demonstration and the guided walkthrough at /demo.
 import { webDemoMessages } from './web-demo';
+// Composer suggestions, review and the posting time hint.
+import { webSuggestMessages } from './web-suggest';
 
 /**
  * The English catalog. This is the source of truth for every user visible
@@ -97,6 +99,7 @@ export const en = {
   ...webUseCaseMessages,
   ...webComparisonMessages,
   ...webDemoMessages,
+  ...webSuggestMessages,
 } as const;
 
 /** Every message key in the product. */

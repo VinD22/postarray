@@ -955,15 +955,19 @@ export const webMarketingMessages = {
     'Translation and transcreation into your content languages, against your project glossary.',
   'web.legal.ai.features.feedback':
     'Content feedback in the composer. Generated four week growth plans are not available in prelaunch.',
+  'web.legal.ai.features.imageAnalysis':
+    'Image analysis, only if a workspace owner or admin turns it on. A model looks at an image you already uploaded to draft alt text and to warn about crops, small text, faces and logos. It describes the image. It never creates, edits or extends one.',
   'web.legal.ai.features.provider':
-    'These features call DeepSeek. The model identifiers currently in use are published in the documentation and any change is listed on the changelog.',
+    'These features call DeepSeek by default, or Anthropic where a deployment is configured for it. The model identifiers currently in use are published in the documentation and any change is listed on the changelog.',
   'web.legal.ai.data.title': 'What is sent, and what happens to it',
   'web.legal.ai.data.sent':
     'Only the text you asked us to work on, the instruction, and the project context you chose to attach. Credentials, tokens and other customers content are never in a model context.',
+  'web.legal.ai.data.images':
+    'With image analysis on, we send a reduced copy (at most 1024 pixels on the long side) of an image from your own workspace, and only after it passed the safety scan and you declared its rights. Text inside an image is treated as data, never as an instruction. The analysis is stored with the image and is deleted with it.',
   'web.legal.ai.data.training':
     'Your content is not used to train our models. We configure providers so it is not used to train theirs.',
   'web.legal.ai.data.optOut':
-    'Optional AI features can be turned off per workspace. Publishing, scheduling, approvals and analytics do not depend on them.',
+    'Optional AI features can be turned off per workspace, and image analysis starts off. Publishing, scheduling, approvals and analytics do not depend on them.',
   'web.legal.ai.responsibility.title': 'What stays yours',
   'web.legal.ai.responsibility.body':
     'A model can be confidently wrong. You are responsible for checking facts, claims, names, numbers and tone before you publish, and for any disclosure a platform requires. No AI feature guarantees reach, engagement or ranking, and none is offered as one.',
@@ -978,6 +982,8 @@ export const webMarketingMessages = {
   'web.legal.ai.blocks.unverified':
     'Presenting a model generated URL as a verified opportunity. Opportunity and tool recommendations come only from the curated catalog.',
   'web.legal.ai.noMedia.title': 'Why there is no image or video generation',
+  'web.legal.ai.noMedia.analysisNote':
+    'Analysing an image you own is different from generating one. Post Array reads your picture to help you publish it well. It does not produce new pictures or video.',
   'web.legal.ai.noMedia.body':
     'Post Array has not collected the verified visual system, product detail, asset rights, likeness permissions and campaign context that brand ready output would require, and in app generation would need its own consent, provenance, safety evaluation and cost controls. Media model capability, licensing, pricing and retention also change quickly, which is why our tool recommendations carry dates. You keep creative control by choosing a specialist tool and importing the approved asset. Post Array handles adaptation, approval, publishing and measurement.',
   'web.legal.ai.noMedia.caveat':

@@ -158,6 +158,11 @@ export const webShellMessages = {
      Every tile here is a count we can actually read. A tile whose read
      failed says so with `common.unavailable`; it never falls back to zero,
      because zero is a fact about the workspace and a failed read is not. */
+  'home.v2.drafts.title': 'Continue drafting',
+  'home.v2.drafts.untitled': 'Untitled draft',
+  'home.v2.drafts.edited': 'Edited {time}',
+  'home.v2.drafts.empty': 'No drafts in progress.',
+  'home.v2.drafts.emptyBody': 'Drop an image here or start writing. Drafts save as you type.',
   'home.v2.tiles.label': 'This week, in three numbers',
   'home.v2.tiles.scheduled': 'Scheduled this week',
   'home.v2.tiles.scheduledHint': 'Posts with a time on them, from now to the end of the week.',

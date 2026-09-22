@@ -58,6 +58,24 @@ export const webSettingsMessages = {
   'settings.ui.section.data': 'Data controls',
   'settings.ui.section.dataSummary':
     'Find the correct place to disconnect an account, archive a project or delete content.',
+  'settings.ui.section.ai': 'AI assistance',
+  'settings.ui.section.aiSummary': 'Choose whether a model may look at images you upload.',
+
+  /* ---------------------------------------------------------------- AI */
+
+  'settings.ui.ai.description':
+    'AI assistance only ever proposes. Nothing it suggests is published until a person accepts it.',
+  'settings.ui.ai.imageAnalysis.title': 'Image analysis',
+  'settings.ui.ai.imageAnalysis.label': 'Let a model look at uploaded images',
+  'settings.ui.ai.imageAnalysis.help':
+    'Used to draft alt text and to warn when a crop cuts off the subject, text is too small to read, or an image shows faces or other brands. It describes images. It never creates or edits them.',
+  'settings.ui.ai.imageAnalysis.whatIsSent':
+    'Only images from this workspace that passed the safety scan and have declared rights are sent, as a reduced copy no larger than 1024 pixels on the long side.',
+  'settings.ui.ai.imageAnalysis.on': 'On. Images you attach can be analysed.',
+  'settings.ui.ai.imageAnalysis.off': 'Off. No image is sent to a model.',
+  'settings.ui.ai.imageAnalysis.readOnly':
+    'Only an owner or admin can change this. Ask one of them if you need it.',
+  'settings.ui.ai.imageAnalysis.policyLink': 'Read the AI use policy',
 
   /* ------------------------------------------------------- shared UI states */
 
