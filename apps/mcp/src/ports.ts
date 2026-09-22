@@ -402,6 +402,16 @@ export interface RelayServicePort {
       input: { readonly since?: string; readonly limit: number },
     ): Promise<RecentEventsPage>;
   };
+  /**
+   * Composer suggestions: the same use case the editor's Suggest menu and the
+   * CLI call. Optional so fakes and the sandbox can omit it; a tool that needs
+   * it answers `unavailable` rather than inventing a result.
+   */
+  readonly aiSuggestions?: {
+    suggest(ctx: ActorContextLike, input: unknown): Promise<unknown>;
+    review(ctx: ActorContextLike, input: unknown): Promise<unknown>;
+    bestTime(ctx: ActorContextLike, input: unknown): Promise<unknown>;
+  };
 }
 
 /** One page of live events, plus the id to resume from next turn. */

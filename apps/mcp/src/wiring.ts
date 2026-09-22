@@ -97,6 +97,11 @@ export function toRelayServicePort(
         return { events: page, lastEventId: page[page.length - 1]?.id ?? null };
       },
     },
+    aiSuggestions: {
+      suggest: (ctx, input) => services.aiSuggestions.suggest(ctx, input),
+      review: (ctx, input) => services.aiSuggestions.review(ctx, input),
+      bestTime: (ctx, input) => services.aiSuggestions.bestTime(ctx, input),
+    },
   };
 }
 

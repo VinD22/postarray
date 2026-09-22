@@ -28,6 +28,9 @@ const EXPECTED_READ = [
   'list_recent_receipts',
   'get_receipt',
   'preview_commit',
+  'suggest_copy',
+  'review_draft',
+  'suggest_posting_time',
 ];
 
 const EXPECTED_REVERSIBLE = [

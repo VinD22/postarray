@@ -7,6 +7,7 @@ import type { MetricObservationSummary } from '../ports';
 import { MEDIA_READ_TOOLS } from './read-media';
 import { RECEIPT_READ_TOOLS } from './read-receipts';
 import { COMMIT_PREVIEW_TOOLS } from './read-commit-preview';
+import { SUGGESTION_READ_TOOLS } from './read-suggestions';
 
 /**
  * Read tools.
@@ -535,4 +536,5 @@ export const READ_TOOLS: readonly ToolDefinition[] = [
   ...MEDIA_READ_TOOLS,
   ...RECEIPT_READ_TOOLS,
   ...COMMIT_PREVIEW_TOOLS,
+  ...SUGGESTION_READ_TOOLS,
 ];
