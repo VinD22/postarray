@@ -86,6 +86,7 @@ export const LOCALE_FILLED_PREFIXES = [
 ] as const;
 
 export const BETA_ENGLISH_FALLBACK_PREFIXES = [
+  'scheduler.',
   // Weekly digest copy is translated for every active launch locale. It still
   // remains subject to the normal human review gate, but missing keys are no
   // longer allowed as an English fallback.
@@ -296,6 +297,18 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
 export const BETA_ENGLISH_FALLBACK_KEYS = [
+  // English-first agency navigation and motion controls (2026-09-19). These
+  // exact keys use the normal English fallback until translation review.
+  'shell.context.description',
+  'shell.context.search',
+  'shell.context.results',
+  'shell.context.projectDetail',
+  'shell.context.workspaceDetail',
+  'shell.context.empty',
+  'palette.group.projects',
+  'web.motion.pause',
+  'web.motion.play',
+
   // Added with the analytics overview rebuild: a working compare-to-previous
   // query, a per-channel rollup table, a series chart and CSV export. Reviewed
   // English until a reviewer covers them in each locale.

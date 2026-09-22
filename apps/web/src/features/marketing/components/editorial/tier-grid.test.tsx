@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { en } from '@relay/i18n';
@@ -167,8 +167,11 @@ describe('TierGrid', () => {
     expect(card).not.toBeNull();
     // The headline charge, and the month-to-month comparison in the one
     // supporting line under it. Nothing else in the price block is money.
-    const amounts = (card?.textContent ?? '').match(/\$[\d,]+/g) ?? [];
-    expect(amounts).toEqual(['$250', '$25']);
+    // Polled: under load the count-up can still be mid-tween here.
+    await waitFor(() => {
+      const amounts = (card?.textContent ?? '').match(/\$[\d,]+/g) ?? [];
+      expect(amounts).toEqual(['$250', '$25']);
+    });
 
     // The discount is stated exactly once, on the control.
     expect(screen.getAllByText('2 months free')).toHaveLength(1);

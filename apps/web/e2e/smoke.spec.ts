@@ -24,7 +24,9 @@ test.describe('critical product routes', () => {
   test('the suite is auditing the product, not the error boundary', async ({ page }) => {
     await openReadyPage(page, '/home');
 
-    await expect(page.getByText('You are looking at demo data')).toBeVisible();
+    await expect(
+      page.getByText('Sample workspace. Explore freely. Nothing publishes.'),
+    ).toBeVisible();
   });
 
   for (const route of PRODUCT_ROUTES) {
@@ -89,6 +91,44 @@ test.describe('critical product routes', () => {
     const checkedAfter = expectedAfter;
     expect(checkedAfter).toBe((checkedBefore + 1) % 4);
     await expect(choices.nth(checkedAfter)).toBeFocused();
+  });
+});
+
+test.describe('marketing interactions', () => {
+  test('the expanded custom cursor stays centered on the pointer', async ({ page }) => {
+    await page.setViewportSize({ width: 1600, height: 1000 });
+    await openReadyPage(page, '/for-creators');
+
+    const ring = page.locator('.relay-cursor-ring');
+    await expect(ring).toBeVisible();
+
+    const resources = page.getByRole('link', { name: 'Resources', exact: true }).first();
+    const bounds = await resources.boundingBox();
+    expect(bounds).not.toBeNull();
+    if (!bounds) return;
+
+    const pointer = {
+      x: bounds.x + bounds.width / 2,
+      y: bounds.y + bounds.height / 2,
+    };
+    await page.mouse.move(pointer.x, pointer.y);
+
+    await expect(ring).toHaveAttribute('data-cursor-hover', 'true');
+    // Measure the unscaled track: the ring's hover scale is a transition, so
+    // its own box is mid-animation for a few frames. Both share one centre.
+    const ringTrack = page.locator('.relay-cursor-ring-track');
+    await expect
+      .poll(async () => {
+        const ringBounds = await ringTrack.boundingBox();
+        if (!ringBounds) return Number.POSITIVE_INFINITY;
+
+        const ringCenter = {
+          x: ringBounds.x + ringBounds.width / 2,
+          y: ringBounds.y + ringBounds.height / 2,
+        };
+        return Math.hypot(ringCenter.x - pointer.x, ringCenter.y - pointer.y);
+      })
+      .toBeLessThan(2);
   });
 });
 

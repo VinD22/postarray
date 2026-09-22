@@ -58,12 +58,12 @@ function JourneyMap({
   const ActiveIcon = STEP_ICONS[activeId];
 
   return (
-    <div
-      aria-hidden="true"
-      className="border-border-subtle bg-surface-canvas absolute [inset-block:calc(var(--spacing)*7)] end-7 hidden w-[38%] overflow-hidden rounded-lg border md:block lg:[inset-block:calc(var(--spacing)*10)] lg:end-10"
-    >
+    <div className="border-border-subtle bg-surface-canvas absolute [inset-block:calc(var(--spacing)*7)] end-7 hidden w-[38%] overflow-hidden rounded-lg border md:block lg:[inset-block:calc(var(--spacing)*10)] lg:end-10">
       <span className="border-border-default absolute [inset-block:calc(var(--spacing)*9)] start-[1.9375rem] border-s" />
-      <ol className="absolute [inset-block:calc(var(--spacing)*6)] start-5 z-(--z-index-raised) flex flex-col justify-between">
+      <ol
+        aria-hidden="true"
+        className="absolute [inset-block:calc(var(--spacing)*6)] start-5 z-(--z-index-raised) flex flex-col justify-between"
+      >
         {steps.map((step, index) => (
           <li
             key={step.id}
@@ -83,7 +83,10 @@ function JourneyMap({
       {activeId === 'publish' ? (
         <HeroWebglStage className="absolute [inset-block:calc(var(--spacing)*4)] start-14 end-2" />
       ) : (
-        <div className="absolute [inset-block:calc(var(--spacing)*8)] start-16 end-6 flex items-center justify-center">
+        <div
+          aria-hidden="true"
+          className="absolute [inset-block:calc(var(--spacing)*8)] start-16 end-6 flex items-center justify-center"
+        >
           <span className="border-border-default bg-surface-raised shadow-raised relative flex aspect-square w-[min(72%,12rem)] items-center justify-center rounded-lg border">
             <span className="border-border-subtle absolute -start-3 -top-3 size-full rounded-lg border" />
             <span className="border-border-subtle absolute -end-3 -bottom-3 size-full rounded-lg border" />
@@ -170,7 +173,7 @@ export function HomeJourney({ steps, label }: HomeJourneyProps): ReactNode {
 
                 <div className="relative flex min-h-[24rem] flex-col justify-between lg:min-h-[27rem]">
                   <div className="flex items-start justify-between gap-6">
-                    <span className="bg-accent-action text-accent-action-on shadow-hard flex size-14 items-center justify-center rounded-lg sm:size-16">
+                    <span className="bg-accent-subtle text-text-accent shadow-hard flex size-14 items-center justify-center rounded-lg sm:size-16">
                       <Icon aria-hidden="true" className="size-7 sm:size-8" strokeWidth={1.5} />
                     </span>
                     <span className="font-display text-display-lg text-border-default tabular-nums">
@@ -193,7 +196,7 @@ export function HomeJourney({ steps, label }: HomeJourneyProps): ReactNode {
                         key={item.id}
                         className={cn(
                           'h-1 rounded-full transition-[width,background-color] duration-(--duration-slow)',
-                          itemIndex === index ? 'bg-accent-action w-10' : 'bg-border-default w-3',
+                          itemIndex === index ? 'bg-accent w-10' : 'bg-border-default w-3',
                         )}
                       />
                     ))}

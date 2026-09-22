@@ -26,6 +26,7 @@ export const ROUTES = {
   home: '/',
   product: '/product',
   demo: '/demo',
+  scheduler: '/scheduler',
   integrations: '/integrations',
   capabilities: '/integrations/capabilities',
   creators: '/for-creators',
@@ -213,7 +214,7 @@ export const PRIMARY_NAV: readonly SiteLink[] = [
   { href: ROUTES.product, labelKey: 'nav.public.product' },
   // The walkthrough, one click from anywhere: the demonstration is the
   // fastest honest answer to "what is this", so it does not hide in a footer.
-  { href: ROUTES.demo, labelKey: 'nav.public.demo' },
+  { href: ROUTES.scheduler, labelKey: 'scheduler.demoTitle' },
   { href: ROUTES.integrations, labelKey: 'nav.public.integrations' },
   { href: ROUTES.creators, labelKey: 'nav.public.forCreators' },
   { href: ROUTES.agencies, labelKey: 'nav.public.forAgencies' },

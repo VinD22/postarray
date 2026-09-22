@@ -16,6 +16,11 @@
  *    renders that same key so there is one sentence to review and translate.
  */
 export const webSettingsMessages = {
+  'settings.ui.projects.search': 'Find a client project',
+  'settings.ui.projects.searchCount': '{count} of {total} projects',
+  'settings.ui.projects.noMatches':
+    'No projects match this name. Clear the search to see all projects.',
+
   /* ------------------------------------------------------------------ shell */
 
   'settings.ui.subtitle':

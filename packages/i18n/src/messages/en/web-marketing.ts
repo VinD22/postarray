@@ -18,6 +18,8 @@
  *    `web.legal.counselPending.*` rather than guessed at here.
  */
 export const webMarketingMessages = {
+  'web.motion.pause': 'Pause animation',
+  'web.motion.play': 'Play animation',
   /* ---------------------------------------------------------------------- */
   /* Shared marketing furniture                                              */
   /* ---------------------------------------------------------------------- */

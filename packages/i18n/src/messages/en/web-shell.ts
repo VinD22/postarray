@@ -7,6 +7,15 @@
  * belong to their own files.
  */
 export const webShellMessages = {
+  'shell.context.description': 'Find a client project or move to another workspace.',
+  'shell.context.search': 'Search projects and workspaces',
+  'shell.context.results': '{count, plural, one {# result} other {# results}}',
+  'shell.context.projectDetail':
+    'Project · {count, plural, one {# connected account} other {# connected accounts}}',
+  'shell.context.workspaceDetail': 'Workspace · {timeZone}',
+  'shell.context.empty': 'No projects or workspaces match. Try another name.',
+  'palette.group.projects': 'Projects',
+
   /* -- Document and shell chrome ----------------------------------------- */
   'shell.appName': 'Post Array',
   'shell.documentTitle': '{page} · Post Array',

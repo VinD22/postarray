@@ -77,7 +77,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             </Link>
           </div>
 
-          <nav aria-label={navLabel} className="hidden min-w-0 flex-1 justify-center xl:flex">
+          <nav aria-label={navLabel} className="hidden min-w-0 flex-1 justify-center 2xl:flex">
             <ul className="flex min-w-0 items-center gap-0.5">
               {items.map((item) => {
                 const current = isCurrent(item.href);
@@ -103,7 +103,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             </ul>
           </nav>
 
-          <div className="hidden shrink-0 items-center gap-1 xl:flex">
+          <div className="hidden shrink-0 items-center gap-1 2xl:flex">
             <ThemePicker />
             <Suspense fallback={<LanguagePickerFallback />}>
               <LanguagePicker />
@@ -132,7 +132,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             </Link>
           </div>
 
-          <details key={pathname} className="group flex items-center xl:hidden">
+          <details key={pathname} className="group flex items-center 2xl:hidden">
             <summary
               className={cn(
                 'flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center gap-2',

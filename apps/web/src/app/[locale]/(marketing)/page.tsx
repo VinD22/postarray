@@ -194,7 +194,7 @@ export default async function HomePage({
 
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
               <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
-              <TextLink href={ROUTES.demo}>{t.t('web.demo.hero.viewCta')}</TextLink>
+              <TextLink href={ROUTES.scheduler}>{t.t('scheduler.demoTitle')}</TextLink>
             </div>
 
             <p className="text-body-sm text-text-tertiary mt-4">
@@ -294,7 +294,7 @@ export default async function HomePage({
         </BentoGrid>
       </EditorialSection>
 
-      <ColorBand accent="cool" id="pricing" texture containerClassName="py-20 md:py-28 lg:py-32">
+      <ColorBand accent="warm" id="pricing" texture containerClassName="py-20 md:py-24 lg:py-24">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-7">
             <Heading>{t.t('web.home.v2.pricingTeaser.title')}</Heading>

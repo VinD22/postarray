@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { EmptyState, PageHeader } from '@relay/design-system/patterns';
+import { ArrowUpRight, CalendarDays, Plug } from 'lucide-react';
+import { Link } from '@/components/link';
 import { Separator } from '@relay/design-system/primitives';
 
 import { ApiError } from '@/lib/api';
@@ -22,6 +24,7 @@ import { TrialBanner } from './trial-banner';
 import { UpcomingQueue } from './upcoming-queue';
 
 const DAY_MS = 86_400_000;
+const RANGE_REFRESH_MS = 5 * 60_000;
 
 /**
  * Home.
@@ -51,10 +54,30 @@ export function HomeScreen() {
   const actionItems = actionQuery.data?.data ?? [];
   const needsYouEmpty = !actionQuery.isPending && !actionQuery.error && actionItems.length === 0;
 
-  const now = new Date();
+  const [rangeStart, setRangeStart] = useState(() => Date.now());
+  useEffect(() => {
+    const refresh = () => setRangeStart(Date.now());
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') refresh();
+    };
+    const timer = window.setInterval(refresh, RANGE_REFRESH_MS);
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+    };
+  }, []);
+  const range = useMemo(
+    () => ({
+      from: new Date(rangeStart).toISOString(),
+      to: new Date(rangeStart + DAY_MS).toISOString(),
+    }),
+    [rangeStart],
+  );
   const upcomingQuery = useCalendar({
-    from: now.toISOString(),
-    to: new Date(now.getTime() + DAY_MS).toISOString(),
+    ...range,
     ...(project === null ? {} : { projectId: project.id }),
   });
   const upcomingCount = upcomingQuery.data?.data.length ?? 0;
@@ -63,7 +86,13 @@ export function HomeScreen() {
   // screen reader user does not have to walk the page to find out.
   const announced = useRef(false);
   useEffect(() => {
-    if (announced.current || actionQuery.isPending || upcomingQuery.isPending) {
+    if (
+      announced.current ||
+      actionQuery.isPending ||
+      upcomingQuery.isPending ||
+      actionQuery.isError ||
+      upcomingQuery.isError
+    ) {
       return;
     }
     announced.current = true;
@@ -74,24 +103,42 @@ export function HomeScreen() {
   }, [
     actionItems.length,
     actionQuery.isPending,
+    actionQuery.isError,
     announce,
     t,
     upcomingCount,
     upcomingQuery.isPending,
+    upcomingQuery.isError,
   ]);
 
   return (
     <>
       <PageHeader
-        title={t('home.title')}
+        title={t('scheduler.homeTitle')}
         titleStyle="strong"
-        description={t('home.subtitle')}
-        className="px-[var(--layout-gutter)]"
+        description={t('scheduler.homeDescription')}
+        className="px-[var(--layout-gutter)] [&_h1]:text-[clamp(2rem,3vw,3rem)] [&_h1]:leading-tight"
       />
 
       <StaggerList className="relay-page flex flex-col gap-10 py-8 md:py-10" stagger={0.06} y={16}>
         <TrialBanner />
 
+        <div className="grid gap-4 md:grid-cols-2">
+          {[
+            { href: '/calendar', label: t('scheduler.plan'), Icon: CalendarDays },
+            { href: '/connections', label: t('scheduler.connect'), Icon: Plug },
+          ].map(({ href, label, Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="border-border-default bg-surface-raised text-text-primary hover:border-accent focus-visible:outline-border-focus flex items-center gap-5 rounded-xl border p-6 transition-colors focus-visible:outline-2 md:p-8"
+            >
+              <Icon aria-hidden="true" className="text-text-accent size-8 shrink-0" />
+              <span className="text-title-lg flex-1 font-semibold">{label}</span>
+              <ArrowUpRight aria-hidden="true" className="size-5" />
+            </Link>
+          ))}
+        </div>
         <StatTiles />
 
         <div className="grid items-start gap-10 xl:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.5fr)] xl:gap-12">

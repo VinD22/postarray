@@ -10,6 +10,11 @@ import { describe, expect, it } from 'vitest';
 import { readingFor, soonestEntry } from './stat-tiles';
 
 describe('readingFor', () => {
+  it('does not turn a pending read into a zero count', () => {
+    expect(readingFor({ isError: false, isPending: true, count: 0 })).toEqual({
+      kind: 'unavailable',
+    });
+  });
   it('is a count when the read succeeded, including when the count is zero', () => {
     expect(readingFor({ isError: false, count: 0 })).toEqual({ kind: 'count', count: 0 });
     expect(readingFor({ isError: false, count: 4 })).toEqual({ kind: 'count', count: 4 });

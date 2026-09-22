@@ -4,6 +4,8 @@ import { Fraunces, JetBrains_Mono, Manrope } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import type { ReactNode } from 'react';
 
+import { DEFAULT_LOCALE } from '@relay/i18n/locales';
+
 import { themeBootstrapScript } from '@relay/design-system/theme-bootstrap';
 
 import { Providers } from '@/components/providers';
@@ -64,9 +66,17 @@ export const viewport: Viewport = {
   colorScheme: 'light dark',
 };
 
-/** Generate every active locale from the registry. Never duplicate this list. */
+/**
+ * Prebuild the default locale, then generate and cache other public locales on
+ * first visit. Multiplying every reference page by the whole locale roster made
+ * the standalone build exceed 15 GB. The locale validator, language picker,
+ * alternates and sitemap still expose every active locale. Development keeps
+ * the full roster so the pseudo-locale layout suite exercises both directions.
+ */
 export function generateStaticParams(): readonly { readonly locale: string }[] {
-  return STATIC_WEB_LOCALE_CODES.map((locale) => ({ locale }));
+  const locales =
+    process.env.NODE_ENV === 'production' ? [DEFAULT_LOCALE] : STATIC_WEB_LOCALE_CODES;
+  return locales.map((locale) => ({ locale }));
 }
 
 /**

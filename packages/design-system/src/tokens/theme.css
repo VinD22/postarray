@@ -1565,19 +1565,25 @@
     will-change: transform;
   }
 
-  .relay-cursor-ring {
+  .relay-cursor-ring-track {
     position: absolute;
     inset-block-start: 0;
     inset-inline-start: 0;
     inline-size: 28px;
     block-size: 28px;
+    will-change: transform;
+  }
+
+  .relay-cursor-ring {
+    inline-size: 100%;
+    block-size: 100%;
     border-radius: var(--radius-full);
     border: var(--border-width-emphasis) solid var(--color-text-primary);
     /* Difference blend keeps the ring visible over any brand colour or the
        dark theme's ink surfaces, without a per-surface colour override. */
     mix-blend-mode: difference;
     scale: 1;
-    will-change: transform;
+    will-change: scale;
     transition: scale var(--duration-fast) var(--ease-out-back);
   }
 
