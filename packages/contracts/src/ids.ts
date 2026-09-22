@@ -29,6 +29,7 @@ export const ID_PREFIXES = {
   mention: 'mention',
   media: 'media',
   derivative: 'mder',
+  mediaAnalysis: 'manalysis',
   publishJob: 'job',
   publishAttempt: 'att',
   receipt: 'receipt',

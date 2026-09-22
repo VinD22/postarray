@@ -79,6 +79,8 @@ export const TENANT_MODELS = new Set<string>([
   'onboardingState',
   // The durable record that a human confirmed a consequential agent action.
   'agentConfirmation',
+  // Stored image analyses (0080). Analysis only, cached per checksum.
+  'mediaAnalysis',
   'seoKeywordTarget',
 
   // Automation
