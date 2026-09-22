@@ -23,6 +23,12 @@ import { externalPublicationCount, readDraftFile } from '../draft';
 import type { DraftDocument } from '../draft';
 import { describe, renderPlan, renderSuccess, renderTable } from '../output';
 import type { PlannedExternalAction, RenderInput } from '../output';
+import {
+  assertCommittable,
+  confirmationFrom,
+  escalationCodes,
+  fetchCommitPreview,
+} from './commit-preview';
 
 /**
  * Consequential commands.
@@ -389,6 +395,8 @@ export async function buildPlan(
 export interface ScheduleOptions {
   readonly idempotencyKey?: string | undefined;
   readonly projectId?: string | undefined;
+  /** Acknowledges the escalations the commit preview reported. */
+  readonly confirm?: boolean | undefined;
 }
 
 export async function postsSchedule(
@@ -436,6 +444,16 @@ export async function postsSchedule(
     });
   }
 
+  // The same preflight the web confirm step uses. A schedule that escalates,
+  // for example a first post from a new account, needs `--confirm`, and the
+  // codes acknowledged are the server's own.
+  const commit = await fetchCommitPreview(context, contentItemId, {
+    kind: 'schedule',
+    scheduledAt: draft.schedule.instant,
+    ianaTimeZone: draft.schedule.ianaTimeZone,
+  });
+  assertCommittable(commit.preview, options.confirm === true, commit.correlationId);
+
   const scheduled = await context.api().request({
     method: 'POST',
     path: ROUTES.schedules(),
@@ -448,6 +466,9 @@ export async function postsSchedule(
         ianaTimeZone: draft.schedule.ianaTimeZone,
         repeat: null,
       },
+      ...(commit.preview.requiresConfirmation
+        ? { confirmation: confirmationFrom(commit.preview) }
+        : {}),
     },
   });
 
@@ -552,6 +573,11 @@ export async function postsPublish(
     });
   }
 
+  // `--confirm` acknowledges what the server's preflight reports, not a fixed
+  // list: a first post from a new account escalates as well as publishing now.
+  const commit = await fetchCommitPreview(context, contentItemId ?? '', { kind: 'publish_now' });
+  assertCommittable(commit.preview, true, commit.correlationId);
+
   const published = await context.api().request({
     method: 'POST',
     path: ROUTES.publications(),
@@ -562,7 +588,7 @@ export async function postsPublish(
       confirmation: {
         acknowledgedTargetCount: item.data.variants.length,
         acknowledgedVersionChecksum: item.data.currentChecksum,
-        acknowledgedEscalations: ['immediate_publish'],
+        acknowledgedEscalations: escalationCodes(commit.preview),
       },
     },
   });

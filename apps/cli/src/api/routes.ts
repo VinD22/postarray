@@ -21,6 +21,9 @@ export const ROUTES = {
   /** Read only despite being a POST: deterministic preflight plus a cost estimate. */
   validate: (contentItemId: string) => `/v1/content/${encodeURIComponent(contentItemId)}/validate`,
   preview: (contentItemId: string) => `/v1/content/${encodeURIComponent(contentItemId)}/preview`,
+  /** Read only despite being a POST: what a schedule or publish would take. */
+  commitPreview: (contentItemId: string) =>
+    `/v1/content/${encodeURIComponent(contentItemId)}/commit-preview`,
 
   schedules: () => '/v1/schedules',
   cancelSchedule: (jobId: string) => `/v1/schedules/${encodeURIComponent(jobId)}/cancel`,

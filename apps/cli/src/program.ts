@@ -1,6 +1,6 @@
 import { Command, CommanderError, Option } from 'commander';
 
-import { RelayError } from '@relay/contracts';
+import { RelayError, commitKindSchema } from '@relay/contracts';
 import { createTranslator, en, loadCatalog } from '@relay/i18n';
 import type { Translator } from '@relay/i18n';
 
@@ -12,6 +12,7 @@ import { EXIT_OK, EXIT_USAGE, exitCodeFor } from './exit-codes';
 import { processWriter, renderFailure } from './output';
 import type { RenderInput, Writer } from './output';
 import { localizeHelp } from './help';
+import { postsCommitPreview } from './commands/commit-preview';
 
 import { authLogin, authLogout, authWhoAmI } from './commands/auth';
 import type { LoginFlow } from './commands/auth';
@@ -261,14 +262,43 @@ export function buildProgram(
     .command('preview')
     .description(localizeHelp(helpTranslator, 'postsPreview'))
     .requiredOption('--content-item <id>')
-    .requiredOption('--target <id>', 'connection id of the target');
+    .option('--target <id>', 'connection id of the target')
+    .option('--commit <kind>')
+    .option('--at <instant>')
+    .option('--zone <iana>')
+    .option('--connection <id...>');
   attach(previewCommand, {
     name: 'posts preview',
     run: async (context, render) => {
-      const options = previewCommand.opts<{ contentItem: string; target: string }>();
+      const options = previewCommand.opts<{
+        contentItem: string;
+        target?: string;
+        commit?: string;
+        at?: string;
+        zone?: string;
+        connection?: string[];
+      }>();
+      // `--commit publish_now|schedule` previews what committing would take;
+      // without it, `--target` previews how one target will look.
+      if (options.commit !== undefined) {
+        const kind = commitKindSchema.safeParse(options.commit);
+        if (!kind.success) {
+          throw new RelayError('VALIDATION_FAILED', {
+            messageKey: 'error.request_invalid.message',
+            details: { reason: 'COMMIT_KIND_INVALID', flag: '--commit' },
+          });
+        }
+        await postsCommitPreview(context, render, options.contentItem, {
+          kind: kind.data,
+          scheduledAt: options.at,
+          ianaTimeZone: options.zone,
+          connectionIds: options.connection,
+        });
+        return;
+      }
       await postsPreview(context, render, {
         contentItemId: options.contentItem,
-        targetId: options.target,
+        targetId: options.target ?? '',
       });
     },
   });
@@ -277,12 +307,17 @@ export function buildProgram(
     .command('schedule <file>')
     .description(localizeHelp(helpTranslator, 'postsSchedule'))
     .option('--idempotency-key <key>')
-    .option('--project-id <id>');
+    .option('--project-id <id>')
+    .option('--confirm', localizeHelp(helpTranslator, 'postsConfirm'), false);
   attach(scheduleCommand, {
     name: 'posts schedule',
     run: async (context, render) => {
       const [file] = scheduleCommand.args;
-      const options = scheduleCommand.opts<{ idempotencyKey?: string; projectId?: string }>();
+      const options = scheduleCommand.opts<{
+        idempotencyKey?: string;
+        projectId?: string;
+        confirm?: boolean;
+      }>();
       await postsSchedule(context, render, file ?? '', options);
     },
   });
