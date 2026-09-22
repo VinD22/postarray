@@ -6,6 +6,7 @@ import { I18nProvider } from '@relay/i18n/react';
 
 import { SEED_BOOTSTRAP } from './state/seed';
 import { ComposerProvider, useComposer } from './composer-context';
+import { ComposerSaveConflict } from './state/save-conflict';
 import { UNSAVED_DRAFT_ID, type ComposerBootstrap, type ComposerSaveOutcome } from './types';
 
 /**
@@ -31,10 +32,23 @@ const UNSAVED: ComposerBootstrap = {
 };
 
 function Probe(): ReactNode {
-  const { state, dispatch } = useComposer();
+  const { state, dispatch, saveNow, conflict, autosave } = useComposer();
   return (
     <>
       <p data-testid="draft-id">{state.master.id}</p>
+      <p data-testid="autosave">{autosave}</p>
+      <p data-testid="their-body">{conflict?.theirBody ?? ''}</p>
+      <button
+        type="button"
+        onClick={() => {
+          saveNow().then(
+            () => document.body.setAttribute('data-commit', 'went-on'),
+            () => document.body.setAttribute('data-commit', 'stopped'),
+          );
+        }}
+      >
+        commit
+      </button>
       <button
         type="button"
         onClick={() => dispatch({ type: 'master/patch', patch: { body: `${state.master.body}x` } })}
@@ -134,5 +148,42 @@ describe('ComposerProvider saving', () => {
     await waitFor(() => {
       expect(onSave.mock.calls.length).toBeLessThanOrEqual(2);
     });
+  });
+
+  it('stops a commit when any target failed to save', async () => {
+    const onSave = vi.fn(() =>
+      Promise.resolve({ ...OUTCOME, failedConnectionIds: ['conn_seed_x_acme'] }),
+    );
+    render(mount(onSave));
+
+    act(() => {
+      screen.getByRole('button', { name: 'commit' }).click();
+    });
+
+    await waitFor(() => expect(document.body.getAttribute('data-commit')).toBe('stopped'));
+    document.body.removeAttribute('data-commit');
+  });
+
+  it('shows a refused stale save as a conflict with the saved text, not a failure', async () => {
+    const onSave = vi.fn(() =>
+      Promise.reject(
+        new ComposerSaveConflict({
+          theirBody: 'Their text.',
+          changedAt: '2026-09-02T10:01:00.000Z',
+          serverVersionId: 'ver_02',
+          accept: () => undefined,
+        }),
+      ),
+    );
+    render(mount(onSave));
+
+    act(() => {
+      screen.getByRole('button', { name: 'commit' }).click();
+    });
+
+    await waitFor(() => expect(screen.getByTestId('autosave').textContent).toBe('conflict'));
+    expect(screen.getByTestId('their-body').textContent).toBe('Their text.');
+    expect(document.body.getAttribute('data-commit')).toBe('stopped');
+    document.body.removeAttribute('data-commit');
   });
 });

@@ -21,10 +21,11 @@ import type {
   ReceiptSummaryView,
   Role,
 } from '@/lib/api/types';
-import type { PublishJobView } from '@relay/application';
+import type { ContentPublicationView, PublishJobView } from '@relay/application';
 
 export type { ContentItemView, PublicationReceipt, ReceiptSummaryView };
 export type PublishJob = PublishJobView;
+export type ContentPublication = ContentPublicationView;
 
 /** One target of a campaign, combining what the item knows with its receipt. */
 export interface CampaignTargetView {
@@ -45,6 +46,11 @@ export interface CampaignTargetView {
   readonly publishedAt: string | null;
   /** Follow up items that failed while the root post stayed live. */
   readonly failedItemCount: number;
+  /**
+   * This target's own latest publish job. A retry is aimed at it, never at a
+   * sibling's job: the receipt on screen may belong to a target that worked.
+   */
+  readonly publishJobId: string | null;
 }
 
 /** Everything the post page renders. */
@@ -55,6 +61,10 @@ export interface PostDetail {
   /** The full immutable record for the target being inspected. */
   readonly receipt: PublicationReceipt | null;
   readonly job: PublishJob | null;
+  /** Per-target jobs and evidence. Null in demo mode, which has no jobs. */
+  readonly publication: ContentPublication | null;
+  /** The creator's display name. Null means unavailable; never a user id. */
+  readonly createdByName: string | null;
   readonly viewerRole: Role;
   readonly approverName: string | null;
 }
@@ -69,14 +79,35 @@ export interface PostDetail {
 export function buildCampaignTargets(
   targets: readonly ContentTargetView[],
   summaries: readonly ReceiptSummaryView[],
+  publication: ContentPublication | null = null,
 ): readonly CampaignTargetView[] {
   const byAccount = new Map<string, ReceiptSummaryView>();
   for (const summary of summaries) {
     byAccount.set(`${summary.provider}:${summary.accountLabel}`, summary);
   }
+  const byVariant = new Map(
+    (publication?.targets ?? []).map((entry) => [entry.postVariantId, entry] as const),
+  );
 
   return targets.map((target) => {
     const summary = byAccount.get(`${target.provider}:${target.accountLabel}`);
+    const tracked = byVariant.get(target.variantId);
+    if (tracked !== undefined) {
+      return {
+        variantId: target.variantId,
+        connectionId: target.connectionId,
+        provider: target.provider,
+        accountLabel: target.accountLabel,
+        state: tracked.job.state,
+        hasExternalPost:
+          tracked.receiptId !== null || EXTERNALLY_VISIBLE_STATES.includes(tracked.job.state),
+        receiptId: tracked.receiptId,
+        permalink: tracked.permalink,
+        publishedAt: tracked.publishedAt,
+        failedItemCount: summary?.failedItemCount ?? 0,
+        publishJobId: tracked.job.id,
+      };
+    }
     const state = summary?.state ?? target.state;
     return {
       variantId: target.variantId,
@@ -89,6 +120,7 @@ export function buildCampaignTargets(
       permalink: summary?.permalink ?? null,
       publishedAt: summary?.publishedAt ?? null,
       failedItemCount: summary?.failedItemCount ?? 0,
+      publishJobId: null,
     };
   });
 }

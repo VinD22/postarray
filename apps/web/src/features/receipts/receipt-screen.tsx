@@ -166,8 +166,8 @@ function PostDocument({
 
   const { receipt, job, item } = detail;
   const targets = useMemo(
-    () => buildCampaignTargets(item.targets, detail.receiptSummaries),
-    [item.targets, detail.receiptSummaries],
+    () => buildCampaignTargets(item.targets, detail.receiptSummaries, detail.publication),
+    [item.targets, detail.receiptSummaries, detail.publication],
   );
   const outcome = campaignOutcome(targets);
   const isCampaign = targets.length > 1;
@@ -180,18 +180,21 @@ function PostDocument({
         item.targets[0]?.accountLabel ??
         '');
 
+  // The creator's name, or the honest "unavailable". Never a raw user id.
+  const createdByName = detail.createdByName ?? t('common.unavailable');
+
   const steps = useMemo(() => {
     if (!receipt) return [];
     return buildTimeline({
       receipt,
       provider: providerName(receipt.provider),
-      createdByName: item.createdByName,
+      createdByName: createdByName,
       approverName: detail.approverName,
       preparedMediaCount: null,
       analyticsSyncedAt: receipt.lastAnalyticsSyncAt,
       idempotencyKey: job?.idempotencyKey ?? null,
     });
-  }, [receipt, providerName, item.createdByName, detail.approverName, job]);
+  }, [receipt, providerName, createdByName, detail.approverName, job]);
 
   // The roll-up wins over a single target's state, because a campaign with one
   // failed target is partially published even when the receipt on screen is a
@@ -283,7 +286,7 @@ function PostDocument({
             // in the publishing flow, and it earns the loud poster outline
             // that `Notice` deliberately does not carry everywhere else.
             <div className="border-warning-border overflow-hidden rounded-lg border-2">
-              <PartialSuccess targets={targets} publishJobId={receipt?.publishJobId ?? null} />
+              <PartialSuccess targets={targets} />
             </div>
           ) : null}
 
@@ -351,7 +354,7 @@ function PostDocument({
                   {
                     id: 'author',
                     term: <Term>{t('common.createdBy')}</Term>,
-                    definition: item.createdByName,
+                    definition: createdByName,
                     hint: t('common.createdOn', { date: format.date(item.createdAt) }),
                   },
                   {
@@ -465,14 +468,7 @@ function Term({ children }: { children: ReactNode }): ReactNode {
   return <span className="font-display text-label tracking-wide">{children}</span>;
 }
 
-function PartialSuccess({
-  targets,
-  publishJobId,
-}: {
-  targets: readonly CampaignTargetView[];
-  /** The campaign's publish job. A retry is scoped to a variant inside it. */
-  publishJobId: string | null;
-}): ReactNode {
+function PartialSuccess({ targets }: { targets: readonly CampaignTargetView[] }): ReactNode {
   const t = useTranslations();
   const providerName = useProviderName();
 
@@ -521,7 +517,12 @@ function PartialSuccess({
               A single button beneath a list of failures would look like it
               retried all of them, which is the one thing it must never do.
             */}
-            <RetryTargetButton target={target} publishJobId={publishJobId} />
+            {/*
+              The failed target's own job, never the receipt's. The receipt on
+              screen belongs to a target that worked, and retrying its job
+              would be refused at best and aimed at the wrong account at worst.
+            */}
+            <RetryTargetButton target={target} publishJobId={target.publishJobId} />
           </span>
         ),
       }))}

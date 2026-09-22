@@ -23,6 +23,7 @@ import { api } from './client';
 import { newIdempotencyKey } from './correlation';
 import { ApiError } from './error';
 import { keys } from './keys';
+import { collectAllPages, FOLLOW_PAGE_SIZE } from './paginate';
 import type {
   ActionItemCategory,
   ActionItemView,
@@ -50,7 +51,14 @@ export function useConnections(
   const workspaceId = useWorkspaceId();
   return useQuery({
     queryKey: keys.connections(workspaceId, filter),
-    queryFn: () => api.connections.list(filter),
+    queryFn: () =>
+      collectAllPages((cursor) =>
+        api.connections.list({
+          ...filter,
+          limit: FOLLOW_PAGE_SIZE,
+          ...(cursor === undefined ? {} : { cursor }),
+        }),
+      ),
   });
 }
 
@@ -94,7 +102,17 @@ export function useCalendar(range: {
   const workspaceId = workspace.id;
   return useQuery({
     queryKey: keys.calendar(workspaceId, range),
-    queryFn: () => api.scheduling.getCalendar({ ...range, ianaTimeZone: workspace.timeZone }),
+    // Every entry in the range, not the first page of it: a busy week used to
+    // show its first fifty posts and nothing after them.
+    queryFn: () =>
+      collectAllPages((cursor) =>
+        api.scheduling.getCalendar({
+          ...range,
+          ianaTimeZone: workspace.timeZone,
+          limit: FOLLOW_PAGE_SIZE,
+          ...(cursor === undefined ? {} : { cursor }),
+        }),
+      ),
   });
 }
 

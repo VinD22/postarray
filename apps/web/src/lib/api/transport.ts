@@ -193,12 +193,22 @@ async function performOnce(
   }
 
   const controller = new AbortController();
+  let timedOut = false;
   const timeout = setTimeout(() => {
+    timedOut = true;
     controller.abort();
   }, apiConfig.timeoutMs);
-  options.signal?.addEventListener('abort', () => {
+  // Removed in `finally`: a long-lived caller signal (a React Query cancel
+  // signal, a screen-level controller) would otherwise collect one listener,
+  // and one retained controller, per request for as long as it lives.
+  const forwardAbort = (): void => {
     controller.abort();
-  });
+  };
+  if (options.signal?.aborted === true) {
+    controller.abort();
+  } else {
+    options.signal?.addEventListener('abort', forwardAbort, { once: true });
+  }
 
   try {
     return await fetch(buildUrl(baseUrl, path, options.query), {
@@ -208,9 +218,23 @@ async function performOnce(
       signal: controller.signal,
       ...(options.body === undefined ? {} : { body: JSON.stringify(options.body) }),
     });
+  } catch (error) {
+    throw timedOut ? new RequestTimedOut() : error;
   } finally {
     clearTimeout(timeout);
+    options.signal?.removeEventListener('abort', forwardAbort);
   }
+}
+
+/** Internal marker: our own deadline fired, not the caller or the network. */
+class RequestTimedOut extends Error {}
+
+function transportFailure(error: unknown, correlationId: string): ApiError {
+  if (error instanceof RequestTimedOut) {
+    return ApiError.timeout(correlationId);
+  }
+  const online = typeof navigator === 'undefined' ? true : navigator.onLine;
+  return online ? ApiError.network(correlationId) : ApiError.offline(correlationId);
 }
 
 const STATE_CHANGING_METHODS: ReadonlySet<HttpMethod> = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
@@ -253,9 +277,8 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   let response: Response;
   try {
     response = await performOnce(baseUrl, path, options, correlationId);
-  } catch {
-    const online = typeof navigator === 'undefined' ? true : navigator.onLine;
-    throw online ? ApiError.network(correlationId) : ApiError.offline(correlationId);
+  } catch (error) {
+    throw transportFailure(error, correlationId);
   }
 
   // 401 is a session problem: refresh once, then replay the exact request,
@@ -265,8 +288,8 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     if (refreshed) {
       try {
         response = await performOnce(baseUrl, path, options, correlationId);
-      } catch {
-        throw ApiError.network(correlationId);
+      } catch (error) {
+        throw transportFailure(error, correlationId);
       }
     }
   }
@@ -373,9 +396,8 @@ export async function sendUpload(
       body,
       ...(options.signal === undefined ? {} : { signal: options.signal }),
     });
-  } catch {
-    const online = typeof navigator === 'undefined' ? true : navigator.onLine;
-    throw online ? ApiError.network(correlationId) : ApiError.offline(correlationId);
+  } catch (error) {
+    throw transportFailure(error, correlationId);
   }
 
   if (!response.ok) {

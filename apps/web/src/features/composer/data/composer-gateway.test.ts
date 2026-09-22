@@ -20,6 +20,7 @@ const updateMaster = vi.hoisted(() => vi.fn());
 const setTargets = vi.hoisted(() => vi.fn());
 const overrideVariant = vi.hoisted(() => vi.fn());
 const resetVariantToMaster = vi.hoisted(() => vi.fn());
+const saveComposite = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/api', () => ({
   api: {
@@ -32,6 +33,7 @@ vi.mock('@/lib/api', () => ({
       setTargets,
       overrideVariant,
       resetVariantToMaster,
+      saveComposite,
     },
   },
   newIdempotencyKey: (prefix: string) => `${prefix}_test`,
@@ -41,6 +43,16 @@ import { createComposerGateway, loadComposer } from './composer-gateway';
 import { initialComposerState } from '../state/seed';
 import { composerReducer } from '../state/composer-reducer';
 import type { ComposerState } from '../types';
+import { SEED_BOOTSTRAP } from '../state/seed';
+import { ComposerSaveConflict } from '../state/save-conflict';
+import { ApiError } from '@/lib/api/error';
+
+/** A snapshot that passes the contract's own schema. */
+const SEED_ACCOUNT = SEED_BOOTSTRAP.accounts[0];
+if (SEED_ACCOUNT === undefined) {
+  throw new Error('The seed has no account to borrow a snapshot from.');
+}
+const SNAPSHOT = SEED_ACCOUNT.capabilities;
 
 const INPUT = {
   contentItemId: null,
@@ -156,7 +168,7 @@ describe('loadComposer', () => {
         },
       ]),
     );
-    getCapabilities.mockResolvedValue({ provider: 'x' });
+    getCapabilities.mockResolvedValue(SNAPSHOT);
 
     const bootstrap = await loadComposer(INPUT);
 
@@ -169,13 +181,52 @@ describe('loadComposer', () => {
         avatarUrl: null,
         projectId: 'project_01',
         paused: true,
-        capabilities: { provider: 'x' },
+        capabilities: SNAPSHOT,
       },
     ]);
+    expect(bootstrap.unavailableAccounts).toEqual([]);
     // Opening the composer is not a draft: the row is created by the first
     // edit that has something in it, not by arriving on the screen.
     expect(bootstrap.master.id).toBe('');
     expect(createDraft).not.toHaveBeenCalled();
+  });
+
+  it('degrades only the channel whose capabilities fail, or come back unreadable', async () => {
+    listConnections.mockResolvedValue(
+      page(
+        ['conn_ok', 'conn_down', 'conn_garbled'].map((id) => ({
+          id,
+          provider: 'x',
+          displayName: id,
+          handle: null,
+          avatarUrl: null,
+          health: 'healthy',
+        })),
+      ),
+    );
+    getCapabilities.mockImplementation((id: string) =>
+      id === 'conn_ok'
+        ? Promise.resolve(SNAPSHOT)
+        : id === 'conn_down'
+          ? Promise.reject(new Error('provider timeout'))
+          : Promise.resolve({ provider: 'x' }),
+    );
+
+    const bootstrap = await loadComposer(INPUT);
+
+    expect(bootstrap.accounts.map((account) => account.connectionId)).toEqual(['conn_ok']);
+    expect(bootstrap.unavailableAccounts?.map((account) => account.connectionId)).toEqual([
+      'conn_down',
+      'conn_garbled',
+    ]);
+  });
+
+  it('carries the version the draft was read at, so a save can prove it is current', async () => {
+    getComposite.mockResolvedValue(compositeItem({ currentVersionId: 'ver_07' }));
+
+    const bootstrap = await loadComposer({ ...INPUT, contentItemId: 'content_01' });
+
+    expect(bootstrap.versionId).toBe('ver_07');
   });
 
   it('reads every per-target override and setting back out of a saved draft', async () => {
@@ -310,9 +361,10 @@ describe('createComposerGateway', () => {
     });
     overrideVariant.mockResolvedValue({});
     resetVariantToMaster.mockResolvedValue({});
+    saveComposite.mockResolvedValue(compositeItem({ currentVersionId: 'ver_02' }));
   });
 
-  it('round-trips one override and one setting through save and load', async () => {
+  it('round-trips one override and one setting through one composite save', async () => {
     const start = await bootstrapState();
     const edited = [
       { type: 'target/add', connectionId: 'conn_01' },
@@ -334,26 +386,33 @@ describe('createComposerGateway', () => {
 
     const gateway = createComposerGateway({
       contentItemId: 'content_01',
+      versionId: 'ver_01',
       projectId: 'project_01',
     });
     await gateway.save(edited);
 
-    expect(setTargets).toHaveBeenCalledWith('content_01', {
-      targets: [
-        {
-          connectionId: 'conn_01',
-          destinationId: null,
-          mentions: [],
-          privacyValue: 'public',
-          disclosure: null,
-        },
-      ],
-    });
-    expect(overrideVariant).toHaveBeenCalledWith('content_01', 'variant_01', {
-      patch: { body: 'The version X actually gets.' },
-    });
+    // One request, one version: nothing goes out per target any more.
+    expect(saveComposite).toHaveBeenCalledTimes(1);
+    expect(updateMaster).not.toHaveBeenCalled();
+    expect(setTargets).not.toHaveBeenCalled();
+    expect(overrideVariant).not.toHaveBeenCalled();
+    expect(saveComposite).toHaveBeenCalledWith(
+      'content_01',
+      expect.objectContaining({
+        expectedVersionId: 'ver_01',
+        targets: [
+          {
+            connectionId: 'conn_01',
+            destinationId: null,
+            mentions: [],
+            privacyValue: 'public',
+            disclosure: null,
+          },
+        ],
+        variantOverrides: { conn_01: { body: 'The version X actually gets.' } },
+      }),
+    );
 
-    // What the server now holds, read back the way the composer reads it.
     getComposite.mockResolvedValue(
       compositeItem({
         variants: [
@@ -370,63 +429,57 @@ describe('createComposerGateway', () => {
     expect(reopened.settings.conn_01?.privacyValue).toBe('public');
   });
 
-  it('writes only the targets that changed, in one wave', async () => {
-    setTargets.mockResolvedValue({
-      id: 'content_01',
-      targets: [
-        { variantId: 'variant_01', connectionId: 'conn_01' },
-        { variantId: 'variant_02', connectionId: 'conn_02' },
-      ],
-    });
-    const start = await bootstrapState();
-    const state: ComposerState = {
-      ...start,
-      selectedConnectionIds: ['conn_01', 'conn_02'],
-      overrides: { conn_01: { body: 'One.' }, conn_02: { body: 'Two.' } },
-      dirtyConnectionIds: ['conn_02'],
-    };
-
+  it('builds each save on the version the previous one wrote', async () => {
+    saveComposite
+      .mockResolvedValueOnce(compositeItem({ currentVersionId: 'ver_02' }))
+      .mockResolvedValueOnce(compositeItem({ currentVersionId: 'ver_03' }));
+    const state = await bootstrapState();
     const gateway = createComposerGateway({
       contentItemId: 'content_01',
+      versionId: 'ver_01',
       projectId: 'project_01',
     });
-    const outcome = await gateway.save(state);
 
-    expect(overrideVariant).toHaveBeenCalledTimes(1);
-    expect(overrideVariant).toHaveBeenCalledWith('content_01', 'variant_02', {
-      patch: { body: 'Two.' },
-    });
-    expect(outcome.savedConnectionIds).toEqual(['conn_02']);
+    const outcome = await gateway.save(state);
+    await gateway.save(state);
+
+    expect(saveComposite.mock.calls[0]?.[1]).toMatchObject({ expectedVersionId: 'ver_01' });
+    expect(saveComposite.mock.calls[1]?.[1]).toMatchObject({ expectedVersionId: 'ver_02' });
     expect(outcome.failedConnectionIds).toEqual([]);
     expect(outcome.savedAt).toBe(SAVED_AT);
   });
 
-  it('reports the target whose variant write was rejected, and saves the rest', async () => {
-    setTargets.mockResolvedValue({
-      id: 'content_01',
-      targets: [
-        { variantId: 'variant_01', connectionId: 'conn_01' },
-        { variantId: 'variant_02', connectionId: 'conn_02' },
-      ],
-    });
-    overrideVariant.mockImplementation((_id: string, variantId: string) =>
-      variantId === 'variant_02' ? Promise.reject(new Error('rate limited')) : Promise.resolve({}),
+  it('turns a 409 into a conflict carrying the saved text, and rebases only when accepted', async () => {
+    saveComposite
+      .mockRejectedValueOnce(
+        new ApiError({
+          code: 'CONFLICT',
+          status: 409,
+          messageCode: 'conflict',
+          retryable: false,
+          details: {},
+          correlationId: null,
+          retryAfterSeconds: null,
+        }),
+      )
+      .mockResolvedValueOnce(compositeItem({ currentVersionId: 'ver_09' }));
+    getComposite.mockResolvedValue(
+      compositeItem({ body: 'Their text.', currentVersionId: 'ver_08' }),
     );
-    const start = await bootstrapState();
-    const state: ComposerState = {
-      ...start,
-      selectedConnectionIds: ['conn_01', 'conn_02'],
-      overrides: { conn_01: { body: 'One.' }, conn_02: { body: 'Two.' } },
-      dirtyConnectionIds: ['conn_01', 'conn_02'],
-    };
-
-    const outcome = await createComposerGateway({
+    const state = await bootstrapState();
+    const gateway = createComposerGateway({
       contentItemId: 'content_01',
+      versionId: 'ver_01',
       projectId: 'project_01',
-    }).save(state);
+    });
 
-    expect(outcome.failedConnectionIds).toEqual(['conn_02']);
-    expect(outcome.savedConnectionIds).toEqual(['conn_01']);
+    const conflict = await gateway.save(state).catch((error: unknown) => error);
+
+    expect(conflict).toBeInstanceOf(ComposerSaveConflict);
+    expect((conflict as ComposerSaveConflict).theirBody).toBe('Their text.');
+    (conflict as ComposerSaveConflict).accept();
+    await gateway.save(state);
+    expect(saveComposite.mock.calls[1]?.[1]).toMatchObject({ expectedVersionId: 'ver_08' });
   });
 
   it('creates the draft once, however many saves race for it', async () => {

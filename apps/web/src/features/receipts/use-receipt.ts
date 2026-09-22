@@ -18,35 +18,56 @@ import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 import { api, keys, type ApiError } from '@/lib/api';
 import { useSession, useWorkspaceId } from '@/lib/auth/session-context';
 import type { PublicationReceipt, ReceiptSummaryView } from '@/lib/api/types';
-import type { PostDetail, PublishJob } from './types';
+import type { ContentPublication, PostDetail, PublishJob } from './types';
 
-/** How many recent receipts to scan for this content item's targets. */
+/** Only used in demo mode, where there is no publication read model. */
 const RECEIPT_SCAN_LIMIT = 100;
-const POST_DETAIL_POLL_MS = 2_000;
+/** Poll backoff: fast right after a publish, slower while a provider works. */
+const POLL_BASE_MS = 2_000;
+const POLL_MAX_MS = 15_000;
 
 const FINISHED_WITHOUT_RECEIPT = new Set(['failed_permanently', 'canceled', 'deleted_externally']);
 
-/** Keep a newly accepted job live until evidence arrives or the job stops. */
+/**
+ * Keep the page live until every target has reached a final state.
+ *
+ * With the publication read model that is its own `settled` flag. Without it
+ * (demo mode) the older rule stands: poll a known job until evidence arrives
+ * or the job stops.
+ */
 export function shouldPollPostDetail(
   detail:
-    | { readonly receipt: unknown | null; readonly job: Pick<PublishJob, 'state'> | null }
+    | {
+        readonly receipt: unknown | null;
+        readonly job: Pick<PublishJob, 'state'> | null;
+        readonly publication?: Pick<ContentPublication, 'settled' | 'targets'> | null;
+      }
     | undefined,
 ): boolean {
-  if (!detail || detail.receipt !== null || detail.job === null) {
+  if (!detail) return false;
+  const publication = detail.publication ?? null;
+  if (publication !== null && publication.targets.length > 0) {
+    return !publication.settled;
+  }
+  if (detail.receipt !== null || detail.job === null) {
     return false;
   }
   return !FINISHED_WITHOUT_RECEIPT.has(detail.job.state);
 }
 
+/** 2s, 3s, 4.5s and so on, capped at 15s. */
+export function pollDelayMs(pollsSoFar: number): number {
+  const delay = POLL_BASE_MS * Math.pow(1.5, Math.max(0, pollsSoFar));
+  return Math.min(POLL_MAX_MS, Math.round(delay));
+}
+
 /**
- * The content item plus its receipt summaries.
+ * The content item plus where each of its targets stands.
  *
- * The summaries come from the recent receipts list filtered to this item,
- * because a content item does not carry its publish job id. When the job-scoped
- * read becomes reachable from a content item this collapses to one call.
- *
- * TODO(web): switch to `api.receipts.listForJob` once `ContentItemView`
- * carries `publishJobId`.
+ * One read, `GET /v1/content/:id/publication`, answers per target: the latest
+ * job, the receipt and permalink, the failure. It polls with backoff until
+ * every target is final, and the workspace event stream invalidates it sooner
+ * when a job moves.
  */
 export function usePostDetail(
   contentItemId: string,
@@ -62,29 +83,52 @@ export function usePostDetail(
     queryKey: keys.postDetail(workspaceId, contentItemId, publishJobId),
     staleTime: 15_000,
     refetchInterval: (query) =>
-      shouldPollPostDetail(query.state.data) ? POST_DETAIL_POLL_MS : false,
+      shouldPollPostDetail(query.state.data) ? pollDelayMs(query.state.dataUpdateCount - 1) : false,
     queryFn: async (): Promise<PostDetail> => {
-      const [item, recent, requestedJob] = await Promise.all([
+      const [item, publication, requestedJob] = await Promise.all([
         api.content.get(contentItemId),
-        api.receipts.listRecent({ limit: RECEIPT_SCAN_LIMIT }),
+        api.publishing.getContentPublication(contentItemId),
         publishJobId === null ? Promise.resolve(null) : api.publishing.getJob(publishJobId),
       ]);
 
-      const summaries = recent.data.filter((summary) => summary.contentItemId === contentItemId);
-      const primary = pickPrimarySummary(summaries);
-      const receipt = primary ? await api.receipts.get(primary.receiptId) : null;
-      const job = requestedJob?.contentItemId === contentItemId ? requestedJob : null;
+      const summaries =
+        publication === null
+          ? (await api.receipts.listRecent({ limit: RECEIPT_SCAN_LIMIT })).data.filter(
+              (summary) => summary.contentItemId === contentItemId,
+            )
+          : [];
+      const primaryReceiptId =
+        publication === null
+          ? (pickPrimarySummary(summaries)?.receiptId ?? null)
+          : pickPrimaryReceiptId(publication);
+      const receipt = primaryReceiptId === null ? null : await api.receipts.get(primaryReceiptId);
+      const job =
+        requestedJob?.contentItemId === contentItemId
+          ? requestedJob
+          : (publication?.targets[0]?.job ?? null);
 
       return {
         item,
         receiptSummaries: summaries,
         receipt,
         job,
+        publication,
+        createdByName: publication?.createdByName ?? null,
         viewerRole: workspace.role,
         approverName: null,
       };
     },
   });
+}
+
+/**
+ * Which receipt to open first from the read model: a target that went out
+ * with trouble, then any target that went out. A failed target has no
+ * receipt, and it is named in the partial-success panel instead.
+ */
+export function pickPrimaryReceiptId(publication: ContentPublication): string | null {
+  const withReceipt = publication.targets.filter((target) => target.receiptId !== null);
+  return withReceipt[0]?.receiptId ?? null;
 }
 
 /**
@@ -146,6 +190,7 @@ export function useRetryTarget(): UseMutationResult<unknown, ApiError, RetryTarg
       ),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'content'] });
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'post-detail'] });
       void queryClient.invalidateQueries({ queryKey: keys.receipts(workspaceId) });
     },
   });

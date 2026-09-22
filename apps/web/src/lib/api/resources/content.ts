@@ -1,6 +1,8 @@
 /** Drafts, validation, approvals, scheduling, publishing, receipts and media. */
 
 import type {
+  CommitPreview,
+  CommitPreviewRequest,
   DisclosureFlags,
   MasterDraft,
   MentionRef,
@@ -14,6 +16,7 @@ import type {
   ContentItemView as ApplicationContentItemView,
   ContentVersionView as ApplicationContentVersionView,
   PostVariantView,
+  ContentPublicationView,
   PublishJobView,
   PublishConfirmationEvidence,
 } from '@relay/application';
@@ -177,7 +180,9 @@ function toContentItem(item: ApplicationContentItemView): ContentItemView {
     reapprovalRequired: item.reapprovalRequired,
     currentVersionId: item.currentVersionId,
     createdSurface: item.createdVia,
-    createdByName: item.createdByUserId ?? '',
+    // Never a raw user id. The name is resolved by the publication read model;
+    // until then the screen shows its own unavailable label.
+    createdByName: '',
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
     scheduledAt: item.schedule?.instant ?? null,
@@ -436,6 +441,27 @@ export const contentApi = {
       toContentItem,
     ),
 
+  /**
+   * The composer's whole draft as one version: master, targets and every
+   * target's overrides in one transaction. A stale `expectedVersionId` is
+   * refused with 409 `CONFLICT` instead of overwriting another save.
+   */
+  saveComposite: (
+    contentItemId: string,
+    input: {
+      readonly expectedVersionId: string | null;
+      readonly master: Partial<MasterPatch>;
+      readonly targets: readonly ContentTargetInput[];
+      readonly variantOverrides: Readonly<Record<string, VariantOverrides>>;
+    },
+  ): Promise<ApplicationContentItemView> =>
+    call<ApplicationContentItemView, ApplicationContentItemView>(
+      `/content/${contentItemId}/composite`,
+      { method: 'PUT', body: input, sideEffectFree: true },
+      () => demoCompositeItem(contentItemId),
+      (item) => item,
+    ),
+
   overrideVariant: (
     contentItemId: string,
     variantId: string,
@@ -592,11 +618,21 @@ export type CalendarQuery = {
   readonly projectId?: string;
   readonly connectionId?: string;
   readonly state?: PublishState;
+  readonly cursor?: string;
+  readonly limit?: number;
 };
 
 export const schedulingApi = {
   schedule: (
-    input: { contentItemId: string; scheduledAt: string; timeZone: string },
+    input: {
+      contentItemId: string;
+      scheduledAt: string;
+      timeZone: string;
+      /** Evidence from the commit preview. Required when the preview escalates. */
+      confirmation?: PublishConfirmationEvidence;
+      /** Schedule only these targets. Omitted means every target. */
+      connectionIds?: readonly string[];
+    },
     idempotencyKey: string,
   ): Promise<PublishJobView> =>
     call(
@@ -610,6 +646,8 @@ export const schedulingApi = {
             ianaTimeZone: input.timeZone,
             repeat: null,
           },
+          ...(input.confirmation === undefined ? {} : { confirmation: input.confirmation }),
+          ...(input.connectionIds === undefined ? {} : { connectionIds: input.connectionIds }),
         },
         idempotencyKey,
       },
@@ -727,6 +765,22 @@ export const publishingApi = {
       return demoWriteUnavailable();
     }),
 
+  /**
+   * What a publish or schedule would take, without committing: target count,
+   * version checksum, blockers and the escalations a confirmation must name.
+   * Demo mode has no server preflight, so it answers null and the sheet says
+   * the check is unavailable rather than inventing a clean result.
+   */
+  previewCommit: (
+    contentItemId: string,
+    input: CommitPreviewRequest,
+  ): Promise<CommitPreview | null> =>
+    call(
+      `/content/${contentItemId}/commit-preview`,
+      { method: 'POST', body: input },
+      () => null,
+    ),
+
   getJob: (jobId: string): Promise<PublishJobView | null> =>
     call(`/jobs/${jobId}`, {}, () => demoPublishJobs.find((job) => job.id === jobId) ?? null),
 
@@ -740,6 +794,12 @@ export const publishingApi = {
       { method: 'POST', body: { targetId: variantId }, idempotencyKey },
       () => null,
     ),
+  /**
+   * Per-target job state, receipt, link and failure for one content item.
+   * Demo mode has no jobs, so it answers null and the screen reads the item.
+   */
+  getContentPublication: (contentItemId: string): Promise<ContentPublicationView | null> =>
+    call(`/content/${contentItemId}/publication`, {}, () => null),
 };
 
 export const receiptsApi = {

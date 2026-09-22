@@ -32,9 +32,10 @@ import { UnsavedChangesPrompt } from '@/lib/navigation/unsaved-changes';
 
 import { useDraftMirror } from '../hooks/use-draft-mirror';
 import { PartialSaveNotice } from './partial-save-notice';
+import { UnavailableChannelsNotice } from './unavailable-channels-notice';
 import { RestoreBanner } from './restore-banner';
 import { SavedFlash, useSavedFlash } from './saved-flash';
-import { ScheduleSheet, type ScheduleIntent } from './schedule-sheet';
+import { ScheduleSheet, type ScheduleCommitHandler } from './schedule-sheet';
 import { ShortcutsDialog } from './shortcuts-dialog';
 import { ActionBar, useActionBarReserve } from './action-bar';
 import { TargetRail } from './target-rail';
@@ -52,7 +53,7 @@ export interface ComposerScreenProps {
   readonly onClose: () => void;
   readonly onPickMedia: (scope: string | null) => void;
   readonly onEditMedia: (mediaId: string) => void;
-  readonly onCommit: (intent: ScheduleIntent) => Promise<void>;
+  readonly onCommit: ScheduleCommitHandler;
   readonly searchDestinations: (
     connectionId: string,
     query: string,
@@ -61,12 +62,17 @@ export interface ComposerScreenProps {
     connectionId: string,
     query: string,
   ) => Promise<readonly ResolvedEntity[]>;
-  /** Present when the workspace has hit its write limit for the window. */
+  /**
+   * Present when the workspace has hit its write limit for the window. Usage
+   * is shown only when the server reported it; it is never guessed.
+   */
   readonly rateLimit?: {
     readonly resetAt: string;
-    readonly used: number;
-    readonly limit: number;
-    readonly usageText: string;
+    readonly usage?: {
+      readonly used: number;
+      readonly limit: number;
+      readonly usageText: string;
+    };
   };
   readonly scheduleWarnings?: readonly { id: string; text: string }[];
 }
@@ -196,12 +202,16 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           cause={t.full('composerWeb.page.rateLimitCause')}
           resetAt={props.rateLimit.resetAt}
           resetLabel={t.full('common.time')}
-          usage={{
-            used: props.rateLimit.used,
-            limit: props.rateLimit.limit,
-            text: props.rateLimit.usageText,
-            label: t.full('composerWeb.page.rateLimitTitle'),
-          }}
+          usage={
+            props.rateLimit.usage === undefined
+              ? undefined
+              : {
+                  used: props.rateLimit.usage.used,
+                  limit: props.rateLimit.usage.limit,
+                  text: props.rateLimit.usage.usageText,
+                  label: t.full('composerWeb.page.rateLimitTitle'),
+                }
+          }
           alternative={t.full('composerWeb.page.rateLimitAlternative')}
         />
       ) : null}
@@ -236,6 +246,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
 
         <RestoreBanner />
+        <UnavailableChannelsNotice />
 
         <StepTabs step={step} onStepChange={setStep} />
 
@@ -273,6 +284,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
 
       <RestoreBanner />
+      <UnavailableChannelsNotice />
 
       {/* 768 to 1023: the rail becomes a horizontal strip above the editor. */}
       {isDesktop ? null : (

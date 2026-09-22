@@ -287,11 +287,34 @@ export function ApprovalReviewScreen({
               </div>
             </>
           ) : (
-            <Notice
-              tone={resolved.state === 'approved' ? 'success' : 'warning'}
-              title={t(`state.approval.${resolved.state}.label`)}
-              description={t(successKey)}
-            />
+            <>
+              <Notice
+                tone={resolved.state === 'approved' ? 'success' : 'warning'}
+                title={t(`state.approval.${resolved.state}.label`)}
+                description={t(successKey)}
+              />
+              {/* What happens next. Scheduling lives in the composer, which
+                  reopens this exact post; the server still re-checks the
+                  approved checksum before anything publishes. */}
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href={`/compose?contentItemId=${encodeURIComponent(content.id)}`}
+                  className="text-body-sm text-accent underline-offset-4 hover:underline"
+                >
+                  {t(
+                    resolved.state === 'approved'
+                      ? 'approval.next.scheduleNow'
+                      : 'approval.next.revise',
+                  )}
+                </Link>
+                <Link
+                  href={actionCenterHref}
+                  className="text-body-sm text-text-secondary underline-offset-4 hover:underline"
+                >
+                  {t('home.needsYou.viewAll')}
+                </Link>
+              </div>
+            </>
           )}
         </section>
       </div>

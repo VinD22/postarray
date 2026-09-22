@@ -33,6 +33,7 @@ import {
   type DraftTotals,
   type MediaLookup,
 } from './state/selectors';
+import { ComposerPartialSave, isComposerSaveConflict } from './state/save-conflict';
 import { isUnsavedDraft } from './types';
 import type {
   AutosaveState,
@@ -112,6 +113,9 @@ export function ComposerProvider({
   const stateRef = useRef(state);
   stateRef.current = state;
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Rebases the next save on the server's version once the person has chosen
+  // which one to keep. Set only while a conflict is showing.
+  const acceptServerVersion = useRef<(() => void) | null>(null);
 
   const dispatch = useCallback((action: ComposerAction) => {
     rawDispatch(action);
@@ -182,8 +186,27 @@ export function ComposerProvider({
           : t.full('a11y.announce.saved'),
         outcome.failedConnectionIds.length > 0 ? 'assertive' : 'polite',
       );
+      // A commit awaits this. Freezing a version while a target's edit is
+      // missing from it would approve or publish text nobody sees here, so a
+      // partial save rejects and the commit stops.
+      if (outcome.failedConnectionIds.length > 0) {
+        throw new ComposerPartialSave(outcome.failedConnectionIds);
+      }
       return outcome.contentItemId;
     } catch (error) {
+      if (error instanceof ComposerPartialSave) {
+        throw error;
+      }
+      if (isComposerSaveConflict(error)) {
+        acceptServerVersion.current = error.accept;
+        setConflict({
+          editorName: null,
+          theirBody: error.theirBody,
+          changedAt: error.changedAt,
+        });
+        announce(t.full('composerWeb.autosave.conflictAnonymous'), 'assertive');
+        throw error;
+      }
       setAutosave('failed');
       announce(t.full('a11y.announce.saveFailed'), 'assertive');
       throw error;
@@ -230,6 +253,11 @@ export function ComposerProvider({
       setAutosave('offline');
       return;
     }
+    // While two versions are on screen nothing saves on its own: every attempt
+    // would be refused again, and the person has not chosen yet.
+    if (conflict !== null) {
+      return;
+    }
     if (timer.current !== null) {
       clearTimeout(timer.current);
     }
@@ -241,7 +269,7 @@ export function ComposerProvider({
         clearTimeout(timer.current);
       }
     };
-  }, [online, persist, state]);
+  }, [conflict, online, persist, state]);
 
   const saveNow = useCallback(() => {
     if (timer.current !== null) {
@@ -252,13 +280,21 @@ export function ComposerProvider({
 
   const resolveConflict = useCallback(
     (keep: 'mine' | 'theirs') => {
+      acceptServerVersion.current?.();
+      acceptServerVersion.current = null;
       if (keep === 'theirs' && conflict) {
+        // A new revision, so the autosave writes it on top of their version.
         dispatch({ type: 'master/patch', patch: { body: conflict.theirBody } });
       }
       setConflict(null);
       setAutosave('idle');
+      if (keep === 'mine') {
+        // Nothing changed locally, so nothing would schedule a save: write
+        // this version on top of theirs now, as the person just chose.
+        void persist().catch(() => undefined);
+      }
     },
-    [conflict, dispatch],
+    [conflict, dispatch, persist],
   );
 
   const summaries = useMemo(

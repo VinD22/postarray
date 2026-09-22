@@ -9,6 +9,14 @@ describe('parseOAuthCallbackResult', () => {
     ).toEqual({ status: 'connected', provider: 'linkedin', count: 2 });
   });
 
+  it('accepts every provider the connector registry knows, including later additions', () => {
+    expect(
+      parseOAuthCallbackResult(
+        new URLSearchParams('status=connected&provider=google_business_profile&count=1'),
+      ),
+    ).toEqual({ status: 'connected', provider: 'google_business_profile', count: 1 });
+  });
+
   it('accepts a user cancellation without exposing provider error text', () => {
     expect(
       parseOAuthCallbackResult(new URLSearchParams('status=declined&provider=instagram')),

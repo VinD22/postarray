@@ -32,6 +32,13 @@ export interface TargetAccount {
   readonly capabilities: CapabilitySnapshot;
 }
 
+/** An account the composer could not load the capabilities of. */
+export interface UnavailableAccount {
+  readonly connectionId: string;
+  readonly provider: ProviderId;
+  readonly displayName: string;
+}
+
 /** A saved group of accounts plus reusable defaults. */
 export interface TargetSet {
   readonly id: string;
@@ -157,7 +164,8 @@ export function isUnsavedDraft(master: Pick<MasterDraft, 'id'>): boolean {
 }
 
 export interface ConflictInfo {
-  readonly editorName: string;
+  /** Null when the server does not say who saved the newer version. */
+  readonly editorName: string | null;
   readonly theirBody: string;
   readonly changedAt: string;
 }
@@ -199,7 +207,19 @@ export interface ComposerBootstrap {
    * holds this same version. A newer one means somebody saved elsewhere.
    */
   readonly updatedAt: string | null;
+  /**
+   * The server's `currentVersionId` when this draft was read, or null for a
+   * draft with no row yet. Every save sends it back as `expectedVersionId`, so
+   * a save built on an older version is refused instead of overwriting.
+   */
+  readonly versionId?: string | null;
   readonly accounts: readonly TargetAccount[];
+  /**
+   * Accounts whose capability snapshot could not be read. They stay out of the
+   * rail, because every counter and limit reads that snapshot, but a saved
+   * target on one of them is kept rather than dropped.
+   */
+  readonly unavailableAccounts?: readonly UnavailableAccount[];
   readonly sets: readonly TargetSet[];
   readonly signatures: readonly SignatureOption[];
   readonly brandedDomains: readonly BrandedDomain[];

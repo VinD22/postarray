@@ -1,3 +1,5 @@
+import { PROVIDER_IDS } from '@relay/contracts';
+
 import type { ProviderId } from '@/lib/api/types';
 
 /** The browser-facing status vocabulary emitted by the social OAuth callback. */
@@ -13,26 +15,13 @@ export const OAUTH_CALLBACK_FAILURE_REASONS = [
 ] as const;
 export type OAuthCallbackFailureReason = (typeof OAUTH_CALLBACK_FAILURE_REASONS)[number];
 
-const PROVIDERS: readonly ProviderId[] = [
-  'x',
-  'linkedin',
-  'instagram',
-  'facebook',
-  'youtube',
-  'tiktok',
-  'threads',
-  'bluesky',
-  'mastodon',
-  'telegram',
-  'reddit',
-  'wordpress',
-  'medium',
-  'devto',
-  'pinterest',
-  'discord',
-  'slack',
-  'fake',
-];
+/*
+ * The same provider list the connector registry and the database enum are
+ * built from. A hard-coded copy here silently dropped any provider added
+ * later (Google Business Profile), turning a successful connect into a
+ * generic failure.
+ */
+const PROVIDERS: readonly ProviderId[] = PROVIDER_IDS;
 
 export interface ReadableOAuthCallbackParams {
   get(name: string): string | null;

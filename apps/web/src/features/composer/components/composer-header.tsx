@@ -81,7 +81,11 @@ export function ComposerHeader({ onClose, onShowShortcuts }: ComposerHeaderProps
         <Notice
           tone="warning"
           liveness="alert"
-          title={t.full('composer.autosave.conflict', { name: conflict.editorName })}
+          title={
+            conflict.editorName === null
+              ? t.full('composerWeb.autosave.conflictAnonymous')
+              : t.full('composer.autosave.conflict', { name: conflict.editorName })
+          }
           description={t.full('composerWeb.autosave.conflictHelp')}
           actions={
             <div className="flex flex-wrap gap-2">
@@ -89,7 +93,11 @@ export function ComposerHeader({ onClose, onShowShortcuts }: ComposerHeaderProps
                 {t.full('composerWeb.autosave.conflictKeepMine')}
               </Button>
               <Button variant="secondary" size="sm" onClick={() => resolveConflict('theirs')}>
-                {t.full('composerWeb.autosave.conflictKeepTheirs', { name: conflict.editorName })}
+                {conflict.editorName === null
+                  ? t.full('composerWeb.autosave.conflictKeepServer')
+                  : t.full('composerWeb.autosave.conflictKeepTheirs', {
+                      name: conflict.editorName,
+                    })}
               </Button>
             </div>
           }

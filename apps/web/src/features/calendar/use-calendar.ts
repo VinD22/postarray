@@ -81,13 +81,18 @@ export function useRescheduleEntry(): UseMutationResult<unknown, ApiError, Resch
         input.entry.contentItemId,
         input.toInstant,
         input.publishedMode,
+        input.entry.connectionId ?? undefined,
       );
       if (input.publishedMode === 'schedule_new_post') {
+        // Only the target this calendar entry stands for. Without the filter
+        // the server scheduled every target of the item again, so "schedule as
+        // a new post" on one account posted to all of them.
         return api.scheduling.schedule(
           {
             contentItemId: input.entry.contentItemId,
             scheduledAt: input.toInstant,
             timeZone: input.timeZone,
+            ...(input.entry.connectionId ? { connectionIds: [input.entry.connectionId] } : {}),
           },
           key,
         );
@@ -116,9 +121,15 @@ export function rescheduleIdempotencyKey(
   contentItemId: string,
   toInstant: string,
   mode: PublishedMoveMode | null,
+  connectionId?: string,
 ): string {
   const suffix = mode === 'schedule_new_post' ? 'new' : 'move';
-  return `resched.${contentItemId}.${toInstant.replace(/[:.]/g, '-')}.${suffix}`;
+  const base = `resched.${contentItemId}.${toInstant.replace(/[:.]/g, '-')}.${suffix}`;
+  // A new post is scoped to one target, so two targets of the same item moved
+  // to the same instant are two intents, not a replay of one.
+  return mode === 'schedule_new_post' && connectionId !== undefined
+    ? `${base}.${connectionId}`
+    : base;
 }
 
 /** Cancel a scheduled post. The draft survives, so this is safe to offer. */

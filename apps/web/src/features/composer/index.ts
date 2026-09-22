@@ -11,7 +11,11 @@ export type { ComposerContextValue, ComposerProviderProps } from './composer-con
 
 export { ComposerScreen } from './components/composer-screen';
 export type { ComposerScreenProps } from './components/composer-screen';
-export type { ScheduleIntent } from './components/schedule-sheet';
+export type {
+  CommitAcknowledgement,
+  ScheduleCommitHandler,
+  ScheduleIntent,
+} from './components/schedule-sheet';
 export type { ResolvedEntity } from './components/entity-search-field';
 export { PROVIDER_LABEL, ProviderIdentity } from './components/provider-identity';
 export { CheckRow, RadioRow, SwitchRow } from './components/form-rows';

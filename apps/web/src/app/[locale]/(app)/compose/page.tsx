@@ -13,6 +13,7 @@ import { cookies, headers } from 'next/headers';
 import { api } from '@/lib/api';
 import { isDemoMode } from '@/lib/api/config';
 import { ApiError } from '@/lib/api/error';
+import { collectAllPages, FOLLOW_PAGE_SIZE } from '@/lib/api/paginate';
 import type { ForwardAuth } from '@/lib/api/transport';
 import { SEED_BOOTSTRAP, type ComposerBootstrap } from '@/features/composer';
 import { COMPOSER_CONTENT_LOCALES } from '@/features/composer/content-locale-options';
@@ -61,6 +62,15 @@ export default async function ComposePage({
   let errorMessage: string | undefined;
   let errorReference: string | undefined;
   let activeProjectId: string | null = null;
+  /*
+   * Read from the post's own approval policy (set directly or by applying a
+   * Set), never assumed. The server enforces the same policy in
+   * `assertApproved` before anything publishes, so this only decides whether
+   * the composer offers "Request approval" instead of scheduling directly. A
+   * new draft has no policy until a Set is applied, and a policy applied later
+   * still blocks publishing server side with `APPROVAL_REQUIRED`.
+   */
+  let approvalRequired = false;
 
   if (isDemoMode) {
     bootstrap =
@@ -107,7 +117,7 @@ export default async function ComposePage({
         );
       }
       activeProjectId = selectedProject.id;
-      const [loadedComposer, mediaPage] = await Promise.all([
+      const [loadedComposer, mediaPage, approvalPolicy] = await Promise.all([
         loadComposer({
           contentItemId,
           projectId: selectedProject.id,
@@ -116,9 +126,25 @@ export default async function ComposePage({
           forward,
           ...(quickCreateSchedule === null ? {} : { schedule: quickCreateSchedule }),
         }),
-        api.media.list({ projectId: selectedProject.id }, forward),
+        // Every asset the post could use, not the first page of the library.
+        collectAllPages((cursor) =>
+          api.media.list(
+            {
+              projectId: selectedProject.id,
+              limit: FOLLOW_PAGE_SIZE,
+              ...(cursor === undefined ? {} : { cursor }),
+            },
+            forward,
+          ),
+        ),
+        contentItemId === null
+          ? Promise.resolve('none')
+          : api.content
+              .getComposite(contentItemId, forward)
+              .then((item) => item.approvalPolicy),
       ]);
       bootstrap = loadedComposer;
+      approvalRequired = approvalPolicy !== 'none';
       assets = mediaPage.data.map(mediaAssetFromApi);
       if (bootstrap.accounts.length === 0) {
         status = 'no_connections';
@@ -137,7 +163,7 @@ export default async function ComposePage({
       bootstrap={bootstrap}
       assets={assets}
       contentLocales={COMPOSER_CONTENT_LOCALES}
-      approvalRequired={false}
+      approvalRequired={approvalRequired}
       projectId={activeProjectId}
       uploadEnabled={!isDemoMode && status === 'ready'}
       {...(errorMessage ? { errorMessage } : {})}

@@ -250,6 +250,7 @@ describe('campaignOutcome', () => {
       permalink: null,
       publishedAt: null,
       failedItemCount: 0,
+      publishJobId: null,
       ...overrides,
     };
   }
@@ -331,6 +332,37 @@ describe('buildCampaignTargets', () => {
       ...overrides,
     };
   }
+
+  it('aims each target at its own latest job from the publication read model', () => {
+    const base = contentTarget();
+    const publication = {
+      contentItemId: 'ci_1',
+      state: 'partially_published',
+      settled: true,
+      createdByName: 'Ana Ruiz',
+      targets: [
+        {
+          postVariantId: base.variantId,
+          connectionId: base.connectionId,
+          provider: base.provider,
+          accountLabel: base.accountLabel,
+          job: { id: 'job_failed_target', state: 'failed_permanently' },
+          jobCount: 1,
+          final: true,
+          retryable: true,
+          receiptId: null,
+          externalPostId: null,
+          permalink: null,
+          publishedAt: null,
+          failureCode: 'provider_rejected',
+        },
+      ],
+    } as unknown as Parameters<typeof buildCampaignTargets>[2];
+    const [result] = buildCampaignTargets([base], [summary()], publication);
+    expect(result?.publishJobId).toBe('job_failed_target');
+    expect(result?.state).toBe('failed_permanently');
+    expect(result?.hasExternalPost).toBe(false);
+  });
 
   it('keeps a target that has no receipt yet rather than hiding it', () => {
     const result = buildCampaignTargets(

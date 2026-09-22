@@ -11,12 +11,13 @@ import { api, newIdempotencyKey } from '@/lib/api';
 import type { ContentTargetInput } from '@/lib/api/resources/content';
 import type { ForwardAuth } from '@/lib/api/transport';
 import {
+  capabilitySnapshotSchema,
   type CapabilitySnapshot,
   type MasterDraft,
-  type OverridableVariantField,
   type PostingSetView,
   type VariantOverrides,
 } from '@relay/contracts';
+import { ApiError } from '@/lib/api/error';
 
 import {
   EMPTY_VARIANT_SETTINGS,
@@ -26,8 +27,10 @@ import {
   type ComposerState,
   type TargetAccount,
   type TargetSet,
+  type UnavailableAccount,
   type VariantSettings,
 } from '../types';
+import { ComposerSaveConflict } from '../state/save-conflict';
 import type { ResolvedEntity } from '../components/entity-search-field';
 
 /**
@@ -172,24 +175,42 @@ export async function loadComposer(input: {
     api.postingSets.list({ projectId: input.projectId }, input.forward),
   ]);
 
-  const accounts: TargetAccount[] = await Promise.all(
-    connections.data.map(async (connection) => {
-      const capabilities = (await api.connections.getCapabilities(
-        connection.id,
-        input.forward,
-      )) as CapabilitySnapshot;
-      return {
+  /*
+   * One channel whose capabilities fail to load, or come back in a shape we
+   * cannot read, degrades that channel only. It used to reject the whole
+   * `Promise.all`, so one flaky provider took the composer down for every
+   * other account in the project.
+   */
+  const snapshots = await Promise.allSettled(
+    connections.data.map((connection) =>
+      api.connections.getCapabilities(connection.id, input.forward),
+    ),
+  );
+  const accounts: TargetAccount[] = [];
+  const unavailableAccounts: UnavailableAccount[] = [];
+  connections.data.forEach((connection, index) => {
+    const settled = snapshots[index];
+    const parsed =
+      settled?.status === 'fulfilled' ? capabilitySnapshotSchema.safeParse(settled.value) : null;
+    if (parsed === null || !parsed.success) {
+      unavailableAccounts.push({
         connectionId: connection.id,
         provider: connection.provider,
         displayName: connection.displayName,
-        handle: connection.handle,
-        avatarUrl: connection.avatarUrl,
-        projectId: input.projectId,
-        paused: connection.health === 'paused',
-        capabilities,
-      } satisfies TargetAccount;
-    }),
-  );
+      });
+      return;
+    }
+    accounts.push({
+      connectionId: connection.id,
+      provider: connection.provider,
+      displayName: connection.displayName,
+      handle: connection.handle,
+      avatarUrl: connection.avatarUrl,
+      projectId: input.projectId,
+      paused: connection.health === 'paused',
+      capabilities: parsed.data as CapabilitySnapshot,
+    });
+  });
 
   /*
    * A visit is not a draft.
@@ -219,7 +240,9 @@ export async function loadComposer(input: {
   return {
     master,
     updatedAt: composite?.updatedAt ?? null,
+    versionId: composite?.currentVersionId ?? null,
     accounts,
+    unavailableAccounts,
     /*
      * Sets used to be hardcoded to `[]` here, which meant "apply a Set" was
      * unreachable from the one screen anybody would ever want it on: the
@@ -289,6 +312,8 @@ export interface ComposerGateway {
 export interface ComposerGatewayInput {
   /** Null for a draft that has not been created yet. */
   readonly contentItemId: string | null;
+  /** The `currentVersionId` the composer opened on; null for a new draft. */
+  readonly versionId?: string | null;
   readonly projectId: string;
   /** Called once, when the lazy draft is created, with its new id. */
   readonly onDraftCreated?: (contentItemId: string) => void;
@@ -297,22 +322,23 @@ export interface ComposerGatewayInput {
 /**
  * The composer's writes, as one object with one memoised draft creation.
  *
- * Saving is three waves and never more, whatever the target count:
+ * Saving is at most two requests, whatever the target count:
  *
  *   1. create the draft, but only the first time and only if it is missing;
- *   2. the master and the target list together;
- *   3. every dirty variant at once.
+ *   2. `PUT /content/{id}/composite`: master, targets and every override as
+ *      one version, in one transaction on the server.
  *
- * It used to be one request per target, awaited in a loop, on an 800ms
- * autosave: six targets meant eight round trips in series while somebody was
- * still typing, and the first rejection abandoned every target after it.
- *
- * TODO(owner): depends on api. `PATCH /v1/content/{id}/composer` (BE-3) would
- * collapse waves 2 and 3 into one request. When it exists, `save` below is the
- * only function that changes.
+ * It used to be three waves (master, targets, then one request per variant),
+ * which wrote up to 2 + N versions per autosave, could interleave with another
+ * tab, and could leave some targets saved and others not. The composite write
+ * carries the version it was built on, so a save that lost a race is refused
+ * with 409 and surfaces as a conflict instead of silently overwriting.
  */
 export function createComposerGateway(input: ComposerGatewayInput): ComposerGateway {
   let draftId: string | null = input.contentItemId;
+  // The version every save is built on. A draft created here starts on the
+  // version its creation wrote, so the first save cannot be called stale.
+  let versionId: string | null = input.versionId ?? null;
   let creating: Promise<string> | null = null;
 
   const ensureDraftId = (): Promise<string> => {
@@ -323,6 +349,7 @@ export function createComposerGateway(input: ComposerGatewayInput): ComposerGate
       .createDraft({ projectId: input.projectId }, newIdempotencyKey('draft'))
       .then((created) => {
         draftId = created.id;
+        versionId = created.currentVersionId ?? null;
         input.onDraftCreated?.(created.id);
         return created.id;
       })
@@ -339,57 +366,61 @@ export function createComposerGateway(input: ComposerGatewayInput): ComposerGate
     const contentItemId = await ensureDraftId();
     const master = state.master;
 
-    const [updated, targeted] = await Promise.all([
-      api.content.updateMaster(contentItemId, {
-        title: master.title,
-        body: master.body,
-        contentKind: master.contentKind,
-        locale: master.locale,
-        mediaIds: master.mediaIds,
-        links: master.links,
-        signature: master.signature,
-        threadItems: master.threadItems,
-        schedule: master.schedule,
-        disclosure: master.disclosure,
-        campaignId: master.campaignId,
-      }),
-      api.content.setTargets(contentItemId, { targets: targetInputs(state) }),
-    ]);
+    // Every override the draft holds for a selected target, sent whole: the
+    // server replaces that target's overrides, so an empty object is a
+    // deliberate "inherit everything" rather than "leave it alone".
+    const variantOverrides: Record<string, VariantOverrides> = {};
+    for (const connectionId of state.selectedConnectionIds) {
+      if (
+        state.dirtyConnectionIds.includes(connectionId) ||
+        state.overrides[connectionId] !== undefined
+      ) {
+        variantOverrides[connectionId] = state.overrides[connectionId] ?? {};
+      }
+    }
 
-    const variantByConnection = new Map(
-      targeted.targets.map((target) => [target.connectionId, target.variantId]),
-    );
-
-    // Only the targets whose variant actually changed. A settings-only edit is
-    // already carried by the target list above and needs no variant request.
-    const pending = state.dirtyConnectionIds.filter(
-      (connectionId) =>
-        state.overrides[connectionId] !== undefined && variantByConnection.has(connectionId),
-    );
-
-    const results = await Promise.allSettled(
-      pending.map((connectionId) =>
-        writeVariant(
-          contentItemId,
-          variantByConnection.get(connectionId) as string,
-          state.overrides[connectionId] ?? {},
-        ),
-      ),
-    );
-
-    const failedConnectionIds = pending.filter(
-      (_connectionId, index) => results[index]?.status === 'rejected',
-    );
-    const savedConnectionIds = state.dirtyConnectionIds.filter(
-      (connectionId) => !failedConnectionIds.includes(connectionId),
-    );
-
-    return {
-      contentItemId,
-      savedAt: updated.updatedAt,
-      savedConnectionIds,
-      failedConnectionIds,
-    };
+    try {
+      const saved = await api.content.saveComposite(contentItemId, {
+        expectedVersionId: versionId,
+        master: {
+          title: master.title,
+          body: master.body,
+          contentKind: master.contentKind,
+          locale: master.locale,
+          mediaIds: master.mediaIds,
+          links: master.links,
+          signature: master.signature,
+          threadItems: master.threadItems,
+          schedule: master.schedule,
+          disclosure: master.disclosure,
+          campaignId: master.campaignId,
+        },
+        targets: targetInputs(state),
+        variantOverrides,
+      });
+      versionId = saved.currentVersionId ?? versionId;
+      // One transaction: every target saved or none did, so there is no
+      // partial outcome to report any more.
+      return {
+        contentItemId,
+        savedAt: saved.updatedAt,
+        savedConnectionIds: state.dirtyConnectionIds,
+        failedConnectionIds: [],
+      };
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 409) {
+        const latest = await api.content.getComposite(contentItemId);
+        throw new ComposerSaveConflict({
+          theirBody: latest.body,
+          changedAt: latest.updatedAt,
+          serverVersionId: latest.currentVersionId ?? '',
+          accept: () => {
+            versionId = latest.currentVersionId;
+          },
+        });
+      }
+      throw error;
+    }
   };
 
   return { ensureDraftId, save };
@@ -410,20 +441,6 @@ function targetInputs(state: ComposerState): readonly ContentTargetInput[] {
       disclosure: settings.disclosure,
     } satisfies ContentTargetInput;
   });
-}
-
-function writeVariant(
-  contentItemId: string,
-  variantId: string,
-  overrides: VariantOverrides,
-): Promise<unknown> {
-  const fields = Object.keys(overrides) as readonly OverridableVariantField[];
-  if (fields.length === 0) {
-    // No overrides left on this target: every overridable field goes back to
-    // inheriting the master rather than keeping a stale copy of it.
-    return api.content.resetVariantToMaster(contentItemId, variantId);
-  }
-  return api.content.overrideVariant(contentItemId, variantId, { patch: overrides });
 }
 
 /** Provider-backed destination search. A result without an id never returns. */

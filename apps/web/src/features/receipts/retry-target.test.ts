@@ -17,6 +17,7 @@ function target(overrides: Partial<CampaignTargetView> = {}): CampaignTargetView
     permalink: null,
     publishedAt: null,
     failedItemCount: 0,
+    publishJobId: null,
     ...overrides,
   };
 }

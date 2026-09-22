@@ -19,11 +19,9 @@ import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
 /**
- * A short, honest list of zones plus whatever the device reports.
- *
- * Not every IANA zone: a picker with six hundred entries is a worse experience
- * than eight familiar ones and a detected default, and the full list is
- * available later in Settings.
+ * Familiar zones listed first, after whatever the device reports. Every other
+ * IANA zone the runtime knows follows them, so a person in Kolkata or Nairobi
+ * is never forced to pick somebody else's clock.
  */
 const COMMON_TIME_ZONES = [
   'Europe/London',
@@ -54,6 +52,15 @@ const COMMON_TIME_ZONES = [
  * after the workspace exists, so onboarding does not duplicate that setting or
  * make a new account choose between two sources of truth.
  */
+/** Every IANA zone the runtime supports, or none where it cannot say. */
+function supportedTimeZones(): readonly string[] {
+  try {
+    return Intl.supportedValuesOf('timeZone');
+  } catch {
+    return [];
+  }
+}
+
 export function WorkspaceStep() {
   const t = useTranslations();
   const format = useFormatters();
@@ -70,6 +77,9 @@ export function WorkspaceStep() {
 
   const zones = useMemo(() => {
     const set = new Set<string>([detected, ...COMMON_TIME_ZONES]);
+    for (const zone of supportedTimeZones()) {
+      set.add(zone);
+    }
     return [...set];
   }, [detected]);
 

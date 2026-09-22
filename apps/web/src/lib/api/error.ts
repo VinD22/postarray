@@ -144,6 +144,10 @@ export class ApiError extends Error {
     return this.code === ERROR_CODES.RATE_LIMITED || this.code === ERROR_CODES.CADENCE_EXCEEDED;
   }
 
+  get isTimeout(): boolean {
+    return this.code === ERROR_CODES.UNKNOWN && this.messageCode === 'request_timeout';
+  }
+
   get isOffline(): boolean {
     return this.code === ERROR_CODES.UNKNOWN && this.messageCode === 'offline';
   }
@@ -177,6 +181,23 @@ export class ApiError extends Error {
       code: ERROR_CODES.UNKNOWN,
       status: 0,
       messageCode: 'offline',
+      retryable: true,
+      details: {},
+      correlationId,
+      retryAfterSeconds: null,
+    });
+  }
+
+  /**
+   * Our own deadline expired before the API answered. Kept apart from
+   * `network` because the request may have reached the server: a timed-out
+   * save or publish should be checked, not assumed lost.
+   */
+  static timeout(correlationId: string | null): ApiError {
+    return new ApiError({
+      code: ERROR_CODES.UNKNOWN,
+      status: 0,
+      messageCode: 'request_timeout',
       retryable: true,
       details: {},
       correlationId,

@@ -31,12 +31,14 @@ export function invalidateForEvent(
       invalidate(['ws', workspaceId, 'content']);
       invalidate(['ws', workspaceId, 'calendar']);
       invalidate(keys.receipts(workspaceId));
+      invalidate(['ws', workspaceId, 'post-detail']);
       invalidate(['ws', workspaceId, 'action-center']);
       return;
     }
     case 'receipt.updated': {
       invalidate(keys.receipt(workspaceId, event.data.receiptId));
       invalidate(keys.receipts(workspaceId));
+      invalidate(['ws', workspaceId, 'post-detail']);
       if (event.data.publishJobId !== null) {
         invalidate(keys.publishJob(workspaceId, event.data.publishJobId));
       }

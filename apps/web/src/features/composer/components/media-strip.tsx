@@ -152,6 +152,20 @@ export function MediaStrip({
                         ? t.full('mediaLib.alt.waive')
                         : (asset.altText ?? '')}
                   </span>
+                  {/* A file publishes only once the safety check has passed it. */}
+                  {asset.scanState === 'pending' ? (
+                    <span className="text-label text-text-secondary">
+                      {t.full('library.scan.pending')}
+                    </span>
+                  ) : asset.scanState === 'failed' ? (
+                    <span className="text-label text-warning-fg">
+                      {t.full('composerWeb.media.scanFailed')}
+                    </span>
+                  ) : asset.scanState === 'suspicious' || asset.scanState === 'infected' ? (
+                    <span className="text-label text-destructive-fg">
+                      {t.full('library.scan.rejected')}
+                    </span>
+                  ) : null}
                   {asset.rightsDeclared ? null : (
                     <span className="text-label text-destructive-fg">
                       {t.full('mediaLib.rights.undeclared')}

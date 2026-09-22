@@ -49,6 +49,7 @@ function target(overrides: Partial<CampaignTargetView> = {}): CampaignTargetView
     permalink: null,
     publishedAt: new Date(NOW - 1_000).toISOString(),
     failedItemCount: 0,
+    publishJobId: null,
     ...overrides,
   };
 }
