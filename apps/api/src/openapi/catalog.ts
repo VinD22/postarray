@@ -1,5 +1,6 @@
 import {
   capabilitySnapshotSchema,
+  commitPreviewSchema as commitPreviewResponseSchema,
   contentVersionSchema,
   growthPlanSchema,
   mediaReadUrlsSchema,
@@ -85,6 +86,7 @@ import {
 import {
   createProjectSchema,
   listProjectsQuerySchema,
+  updateProjectConnectionsSchema,
   updateProjectSchema,
 } from '../modules/projects/projects.schemas';
 import {
@@ -127,7 +129,12 @@ import {
   listMediaQuerySchema,
   setAltTextSchema,
 } from '../modules/media/media.schemas';
-import { publishNowSchema, retryTargetSchema } from '../modules/publishing/publishing.schemas';
+import {
+  commitPreviewSchema,
+  publishNowSchema,
+  retryTargetSchema,
+} from '../modules/publishing/publishing.schemas';
+import { contentPublicationSchema } from '../modules/publishing/content-publication.schema';
 import {
   createFeedSchema,
   listFeedsQuerySchema,
@@ -566,6 +573,17 @@ export const OPERATIONS: readonly OperationSpec[] = [
     scopes: ['accounts:write'],
     pathParams: p('id', projectIdSchema),
     body: updateProjectSchema,
+    response: view,
+  },
+  {
+    method: 'patch',
+    path: '/v1/projects/{id}/connections',
+    operationId: 'projects.updateConnections',
+    summary: 'Move connections into a project, or unassign them from it.',
+    tag: 'projects',
+    scopes: ['accounts:write'],
+    pathParams: p('id', projectIdSchema),
+    body: updateProjectConnectionsSchema,
     response: view,
   },
   {
@@ -1307,6 +1325,17 @@ export const OPERATIONS: readonly OperationSpec[] = [
   /* ------------------------------------------------------------ publishing */
   {
     method: 'post',
+    path: '/v1/content/{id}/commit-preview',
+    operationId: 'publishing.previewCommit',
+    summary: 'Preview a publish or schedule: targets, checksum, blockers and escalations.',
+    tag: 'publishing',
+    scopes: ['drafts:read'],
+    pathParams: p('id', contentItemIdSchema),
+    body: commitPreviewSchema,
+    response: commitPreviewResponseSchema,
+  },
+  {
+    method: 'post',
     path: '/v1/publications',
     operationId: 'publishing.publishNow',
     summary: 'Publish immediately. Requires an explicit human confirmation payload.',
@@ -1361,6 +1390,16 @@ export const OPERATIONS: readonly OperationSpec[] = [
     body: retryTargetSchema,
     successStatus: 202,
     response: publishJobSchema,
+  },
+  {
+    method: 'get',
+    path: '/v1/content/{id}/publication',
+    operationId: 'publishing.getContentPublication',
+    summary: 'Per-target job state, receipt, link and failure for one content item.',
+    tag: 'publishing',
+    scopes: ['drafts:read'],
+    pathParams: p('id', contentItemIdSchema),
+    response: contentPublicationSchema,
   },
   {
     method: 'get',

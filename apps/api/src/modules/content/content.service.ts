@@ -11,7 +11,12 @@ import type {
   Services,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { CreateDraftInput, TargetInput, UpdateMasterInput } from './content.schemas';
+import type {
+  CreateDraftInput,
+  SaveCompositeBody,
+  TargetInput,
+  UpdateMasterInput,
+} from './content.schemas';
 
 /**
  * Transport-level delegation for content.
@@ -69,6 +74,14 @@ export class ContentService {
     targets: readonly TargetInput[],
   ): Promise<ContentItemView> {
     return this.services.content.setTargets(ctx, contentItemId, targets);
+  }
+
+  saveComposite(
+    ctx: ActorContext,
+    contentItemId: string,
+    body: SaveCompositeBody,
+  ): Promise<ContentItemView> {
+    return this.services.content.saveComposite(ctx, { contentItemId, ...body });
   }
 
   applySet(ctx: ActorContext, contentItemId: string, setId: string): Promise<ContentItemView> {

@@ -48,6 +48,7 @@ export function createRefusingServices(): Services {
       list: page,
       get: refuse('project'),
       create: refuse('project'),
+      updateConnections: refuse('project'),
       update: refuse('project'),
       archive: refuse('project'),
       delete: refuse('project'),
@@ -88,6 +89,7 @@ export function createRefusingServices(): Services {
       freezeVersion: refuse('content_version'),
       preview: refuse('content'),
       delete: refuse('content'),
+      saveComposite: refuse('content'),
     },
     validation: { validate: refuse('content') },
     approvals: {
@@ -132,10 +134,16 @@ export function createRefusingServices(): Services {
     },
     publishing: {
       publishNow: refuse('content'),
+      previewCommit: refuse('content'),
       getJob: refuse('job'),
       retryTarget: refuse('job'),
     },
-    receipts: { get: refuse('receipt'), listForJob: refuse('job'), listRecent: page },
+    receipts: {
+      get: refuse('receipt'),
+      listForJob: refuse('job'),
+      listRecent: page,
+      getContentPublication: refuse('content_item'),
+    },
     agentConfirmations: {
       request: refuse('agent_confirmation'),
       get: refuse('agent_confirmation'),

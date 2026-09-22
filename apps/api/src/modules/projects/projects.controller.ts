@@ -8,6 +8,7 @@ import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   createProjectSchema,
   listProjectsQuerySchema,
+  updateProjectConnectionsSchema,
   updateProjectSchema,
 } from './projects.schemas';
 import { ProjectsService } from './projects.service';
@@ -48,6 +49,20 @@ export class ProjectsController {
       actor,
       parseParams(projectIdSchema, id),
       parseBody(updateProjectSchema, body),
+    );
+  }
+
+  @Patch(':id/connections')
+  @RequireScope('accounts:write')
+  updateConnections(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<ProjectView> {
+    return this.projects.updateConnections(
+      actor,
+      parseParams(projectIdSchema, id),
+      parseBody(updateProjectConnectionsSchema, body),
     );
   }
 

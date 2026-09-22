@@ -29,6 +29,7 @@ import {
   listContentQuerySchema,
   overrideVariantSchema,
   previewQuerySchema,
+  saveCompositeSchema,
   setTargetsSchema,
   updateMasterSchema,
 } from './content.schemas';
@@ -88,6 +89,24 @@ export class ContentController {
   @HttpCode(204)
   async delete(@Actor() actor: ActorContext, @Param('id') id: string): Promise<void> {
     await this.content.delete(actor, parseParams(contentItemIdSchema, id));
+  }
+
+  /**
+   * Save the whole composer draft as one version, in one transaction. A stale
+   * `expectedVersionId` is refused with 409 `CONFLICT` instead of overwriting.
+   */
+  @Put(':id/composite')
+  @RequireScope('drafts:write')
+  saveComposite(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<ContentItemView> {
+    return this.content.saveComposite(
+      actor,
+      parseParams(contentItemIdSchema, id),
+      parseBody(saveCompositeSchema, body),
+    );
   }
 
   /** Replace the target set. Removing a target does not delete a published post. */

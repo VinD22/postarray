@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import type {
   ActorContext,
+  ContentPublicationView,
   CursorQuery,
   Paginated,
   PublicationReceiptView,
@@ -10,7 +11,9 @@ import type {
   Services,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { PublishNowInput } from './publishing.schemas';
+import type { CommitPreview } from '@relay/contracts';
+
+import type { CommitPreviewInput, PublishNowInput } from './publishing.schemas';
 
 /**
  * Transport-level delegation for publishing and receipts.
@@ -28,6 +31,14 @@ export class PublishingService {
     return this.services.publishing.publishNow(ctx, input);
   }
 
+  previewCommit(
+    ctx: ActorContext,
+    contentItemId: string,
+    input: CommitPreviewInput,
+  ): Promise<CommitPreview> {
+    return this.services.publishing.previewCommit(ctx, { contentItemId, ...input });
+  }
+
   getJob(ctx: ActorContext, jobId: string): Promise<PublishJobView> {
     return this.services.publishing.getJob(ctx, jobId);
   }
@@ -38,6 +49,10 @@ export class PublishingService {
 
   getReceipt(ctx: ActorContext, receiptId: string): Promise<PublicationReceiptView> {
     return this.services.receipts.get(ctx, receiptId);
+  }
+
+  getContentPublication(ctx: ActorContext, contentItemId: string): Promise<ContentPublicationView> {
+    return this.services.receipts.getContentPublication(ctx, contentItemId);
   }
 
   listReceiptsForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]> {

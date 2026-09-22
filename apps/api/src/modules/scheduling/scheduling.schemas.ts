@@ -1,7 +1,9 @@
 import {
+  commitConnectionFilterSchema,
   ianaTimeZoneSchema,
   isoInstantSchema,
   providerIdSchema,
+  publishConfirmationEvidenceSchema,
   publishStateSchema,
   scheduleSpecSchema,
 } from '@relay/contracts';
@@ -31,6 +33,14 @@ export const scheduleRequestSchema = z
   .object({
     contentItemId: contentItemIdSchema,
     scheduleSpec: scheduleSpecSchema,
+    /**
+     * Evidence the person saw the commit preview: the target count, the
+     * version checksum and every escalation it named. Required when the
+     * preview escalates, for example a first post from a new account.
+     */
+    confirmation: publishConfirmationEvidenceSchema.optional(),
+    /** Schedule only these targets of the item. Omitted means every target. */
+    connectionIds: commitConnectionFilterSchema.optional(),
   })
   .strict();
 

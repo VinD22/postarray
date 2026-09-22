@@ -1,6 +1,8 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
+import type { CommitPreview } from '@relay/contracts';
 import type {
   ActorContext,
+  ContentPublicationView,
   Paginated,
   PublicationReceiptView,
   PublishJobView,
@@ -8,9 +10,9 @@ import type {
 } from '../../application/port';
 import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators';
 import { cursorQuerySchema } from '../../common/pagination';
-import { publishJobIdSchema, receiptIdSchema } from '../../common/schemas';
+import { contentItemIdSchema, publishJobIdSchema, receiptIdSchema } from '../../common/schemas';
 import { parseBody, parseParams, parseQuery } from '../../common/zod';
-import { publishNowSchema, retryTargetSchema } from './publishing.schemas';
+import { commitPreviewSchema, publishNowSchema, retryTargetSchema } from './publishing.schemas';
 import { PublishingService } from './publishing.service';
 
 /**
@@ -44,6 +46,27 @@ export class PublishingController {
     return this.publishing.publishNow(actor, parseBody(publishNowSchema, body));
   }
 
+  /**
+   * What committing would take, without committing. The same preflight as
+   * publish and schedule: target count, version checksum, blockers and every
+   * escalation the confirmation must acknowledge. Nothing is frozen, so this is
+   * a read and carries no idempotency key.
+   */
+  @Post('content/:id/commit-preview')
+  @RequireScope('drafts:read')
+  @HttpCode(200)
+  previewCommit(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<CommitPreview> {
+    return this.publishing.previewCommit(
+      actor,
+      parseParams(contentItemIdSchema, id),
+      parseBody(commitPreviewSchema, body),
+    );
+  }
+
   /** Job status, including every attempt and its classified error. */
   @Get('jobs/:id')
   @RequireScope('drafts:read')
@@ -64,6 +87,20 @@ export class PublishingController {
   ): Promise<PublishJobView> {
     const { targetId } = parseBody(retryTargetSchema, body);
     return this.publishing.retryTarget(actor, parseParams(publishJobIdSchema, id), targetId);
+  }
+
+  /**
+   * Where one content item's publication stands, target by target: the latest
+   * job, its receipt and permalink, or its failure code. `settled` is true once
+   * every target is final, which is when a polling client stops.
+   */
+  @Get('content/:id/publication')
+  @RequireScope('drafts:read')
+  getContentPublication(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+  ): Promise<ContentPublicationView> {
+    return this.publishing.getContentPublication(actor, parseParams(contentItemIdSchema, id));
   }
 
   /** Every receipt this job produced, one per external publication. */
