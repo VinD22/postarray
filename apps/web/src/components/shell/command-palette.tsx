@@ -22,7 +22,8 @@ import {
 } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
-import { StaggerList } from '@/components/motion';
+import { confirmLeavingUnsaved } from '@/lib/navigation/unsaved-changes';
+import { useContextSwitch } from '@/lib/auth/use-context-switch';
 import { useSession } from '@/lib/auth/session-context';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
@@ -58,8 +59,10 @@ export function CommandPalette({
 }) {
   const t = useTranslations();
   const router = useLocalizedRouter();
-  const { session, workspace, canPublish } = useSession();
+  const { session, workspace, project, canPublish } = useSession();
+  const switchContext = useContextSwitch();
   const listId = useId();
+  const resultsRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [query, setQuery] = useState('');
@@ -74,7 +77,9 @@ export function CommandPalette({
   const go = useCallback(
     (href: string) => {
       close();
-      router.push(href);
+      void confirmLeavingUnsaved().then((confirmed) => {
+        if (confirmed) router.push(href);
+      });
     },
     [close, router],
   );
@@ -173,6 +178,19 @@ export function CommandPalette({
       }
     }
 
+    for (const candidate of session.projects) {
+      if (candidate.id === project?.id) continue;
+      entries.push({
+        id: `project-${candidate.id}`,
+        label: candidate.name,
+        group: t('palette.group.projects'),
+        run: () => {
+          close();
+          switchContext({ kind: 'project', id: candidate.id });
+        },
+      });
+    }
+
     for (const candidate of session.workspaces) {
       if (candidate.id === workspace.id) {
         continue;
@@ -182,9 +200,8 @@ export function CommandPalette({
         label: candidate.name,
         group: workspaceGroup,
         run: () => {
-          document.cookie = `relay_ws=${candidate.id}; path=/; SameSite=Lax`;
           close();
-          router.refresh();
+          switchContext({ kind: 'workspace', id: candidate.id });
         },
       });
     }
@@ -217,7 +234,18 @@ export function CommandPalette({
     );
 
     return entries;
-  }, [canPublish, close, composeShortcut, go, router, session.workspaces, t, workspace.id]);
+  }, [
+    canPublish,
+    close,
+    composeShortcut,
+    go,
+    project?.id,
+    session.projects,
+    session.workspaces,
+    switchContext,
+    t,
+    workspace.id,
+  ]);
 
   const results = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase();
@@ -241,6 +269,12 @@ export function CommandPalette({
     }
     return undefined;
   }, [open]);
+
+  useEffect(() => {
+    resultsRef.current
+      ?.querySelector('[aria-selected="true"]')
+      ?.scrollIntoView?.({ block: 'nearest' });
+  }, [activeIndex]);
 
   const grouped = useMemo(() => {
     const order: string[] = [];
@@ -311,13 +345,13 @@ export function CommandPalette({
           />
         </div>
 
-        <div className="relay-scrollbar max-h-80 overflow-y-auto p-2">
+        <div ref={resultsRef} className="relay-scrollbar max-h-80 overflow-y-auto p-2">
           {results.length === 0 ? (
             <p className="text-body-md text-text-secondary px-2 py-6 text-center">
               {t('palette.empty', { query })}
             </p>
           ) : (
-            <StaggerList selector="[data-stagger-item]" stagger={0.015} y={8}>
+            <>
               <ul
                 id={listId}
                 role="listbox"
@@ -367,7 +401,7 @@ export function CommandPalette({
                   </li>
                 ))}
               </ul>
-            </StaggerList>
+            </>
           )}
         </div>
 

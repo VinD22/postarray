@@ -82,6 +82,7 @@ export function UnsavedChangesPrompt({ dirty }: UnsavedChangesPromptProps): Reac
   const [open, setOpen] = useState(false);
   const dirtyRef = useRef(dirty);
   dirtyRef.current = dirty;
+  const leaveApproved = useRef(false);
   const decide = useRef<((leave: boolean) => void) | null>(null);
 
   useEffect(
@@ -101,8 +102,9 @@ export function UnsavedChangesPrompt({ dirty }: UnsavedChangesPromptProps): Reac
     if (!dirty) {
       return;
     }
+    leaveApproved.current = false;
     const warn = (event: BeforeUnloadEvent): void => {
-      event.preventDefault();
+      if (!leaveApproved.current) event.preventDefault();
     };
     window.addEventListener('beforeunload', warn);
     return () => {
@@ -132,6 +134,7 @@ export function UnsavedChangesPrompt({ dirty }: UnsavedChangesPromptProps): Reac
       cancelLabel={t.full('web.unsaved.stay')}
       closeLabel={t.full('action.close')}
       onConfirm={() => {
+        leaveApproved.current = true;
         decide.current?.(true);
         decide.current = null;
         setOpen(false);
