@@ -87,6 +87,8 @@ import type { HealthReport, Logger } from '@relay/observability';
 import type { CredentialStorePort } from './ports/credentials';
 import type { OAuthPendingDiscoveryPort } from './ports/oauth-pending';
 import type { OAuthAccountSelectionView } from './ports/oauth-pending';
+import type { AiSuggestionService } from './services/ai-suggestions-types';
+import type { MediaAnalysisService } from './services/media-analysis-types';
 
 import type {
   AnalyticsOverviewView,
@@ -740,9 +742,23 @@ export interface UntrustedSourceInput {
     | 'uploaded_file'
     | 'provider_response'
     | 'catalog_record'
-    | 'user_note';
+    | 'user_note'
+    | 'image';
   readonly label: string;
   readonly text: string;
+  readonly retrievedAt: string;
+}
+
+/**
+ * One image sent for analysis, never for generation. Only a scanned, clean,
+ * rights-declared asset of the calling workspace, as a downscaled JPEG under
+ * 1 MB. The gateway fences it as untrusted data in the user message.
+ */
+export interface AiImageInputPort {
+  readonly id: string;
+  readonly label: string;
+  readonly mediaType: 'image/jpeg' | 'image/png' | 'image/webp';
+  readonly dataBase64: string;
   readonly retrievedAt: string;
 }
 
@@ -759,6 +775,8 @@ export interface AiCallRequest {
     Record<string, string | number | boolean | null | readonly string[]>
   >;
   readonly untrustedSources?: readonly UntrustedSourceInput[];
+  /** Images to analyse. Present only on the media-understanding call. */
+  readonly images?: readonly AiImageInputPort[];
 }
 
 /** What one model call cost and which exact prompt version produced it. */
@@ -2883,6 +2901,10 @@ export interface AssistantService {
   ): Promise<AssistantActionOutput>;
 }
 
+/** The composer's Suggest menu, Review button and posting time hint. */
+export type { AiSuggestionService } from './services/ai-suggestions-types';
+export type { MediaAnalysisService } from './services/media-analysis-types';
+
 export interface Services {
   readonly workspaces: WorkspaceService;
   readonly members: MembershipService;
@@ -2907,6 +2929,9 @@ export interface Services {
   readonly rss: RssService;
   readonly growth: GrowthService;
   readonly assistant: AssistantService;
+  readonly aiSuggestions: AiSuggestionService;
+  /** Opt-in image analysis: settings, stored analyses and pre-check warnings. */
+  readonly mediaAnalysis: MediaAnalysisService;
   readonly webhooks: WebhookService;
   readonly domainEvents: DomainEventService;
   readonly credentials: CredentialVaultService;

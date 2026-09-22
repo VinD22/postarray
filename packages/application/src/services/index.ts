@@ -19,6 +19,8 @@ import { createDataDeletionService } from './data-deletion';
 import { createDataExportService } from './data-exports';
 import { createDataLifecycleService } from './data-lifecycle';
 import { createAssistantService } from './assistant';
+import { createAiSuggestionService } from './ai-suggestions';
+import { createMediaAnalysisService } from './media-analysis';
 import { createGrowthService } from './growth';
 import { createHealthService } from './health';
 import { createIdentityService } from './identity';
@@ -90,6 +92,7 @@ export function createServices(deps: ServiceDeps): Services {
     agentConfirmations,
   });
   const webhooks = createWebhookService(deps);
+  const mediaAnalysis = createMediaAnalysisService(deps);
 
   return {
     workspaces: createWorkspaceService(deps),
@@ -115,6 +118,8 @@ export function createServices(deps: ServiceDeps): Services {
     rss: createRssService(deps),
     growth,
     assistant,
+    aiSuggestions: createAiSuggestionService(deps, { mediaUnderstanding: mediaAnalysis }),
+    mediaAnalysis,
     webhooks,
     domainEvents: createDomainEventService({
       webhooks,

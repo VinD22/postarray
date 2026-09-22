@@ -26,6 +26,8 @@ import { loadAggregate, type AggregateVariant } from '../internal/content-store'
 import { authorized, type Db } from '../internal/runtime';
 import { resolveTarget } from '../internal/stored-content';
 
+import { aspectRatioIssues, hashtagIssues } from './validation-shape-rules';
+
 /**
  * The deterministic preflight.
  *
@@ -217,6 +219,11 @@ function targetIssues(
     );
   }
 
+  issues.push(...hashtagIssues(target.body, snapshot.provider, targetId));
+  issues.push(
+    ...aspectRatioIssues(attached, snapshot.media.aspectRatios, snapshot.provider, targetId),
+  );
+
   // Media counts, types, size and alt text.
   const images = attached.filter((entry) => entry.kind === 'image').length;
   const videos = attached.filter((entry) => entry.kind === 'video').length;
@@ -382,6 +389,8 @@ interface MediaFacts extends MediaLifecycleFacts {
   readonly mimeType: string;
   readonly byteSize: number;
   readonly durationMs: number | null;
+  readonly width: number | null;
+  readonly height: number | null;
   readonly altText: string | null;
   readonly altTextWaived: boolean;
 }
@@ -402,6 +411,8 @@ async function loadMediaFacts(
       mimeType: true,
       byteSize: true,
       durationMs: true,
+      width: true,
+      height: true,
       altText: true,
       altTextWaivedAt: true,
       scanState: true,
@@ -419,6 +430,8 @@ async function loadMediaFacts(
         mimeType: row.mimeType,
         byteSize: Number(row.byteSize),
         durationMs: row.durationMs,
+        width: row.width,
+        height: row.height,
         altText: row.altText,
         altTextWaived: row.altTextWaivedAt !== null,
         scanState: row.scanState,

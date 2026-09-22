@@ -298,3 +298,56 @@ export {
   type StoredMaster,
   type StoredVariantSettings,
 } from './internal/stored-content';
+
+// The composer's Suggest menu, Review button and posting time hint.
+export { SUGGEST_REASON_KEYS, createAiSuggestionService } from './services/ai-suggestions';
+export {
+  MEDIA_ANALYSIS_REASON_KEYS,
+  analysisOperations,
+  createMediaAnalysisService,
+} from './services/media-analysis';
+export { MEDIA_CHECK_MESSAGE_KEYS } from './services/media-analysis-checks';
+export {
+  MEDIA_ANALYSIS_BLOCK_REASONS,
+  MEDIA_UNDERSTANDING_PROMPT_VERSION,
+  aiSettingsUpdateSchema,
+  mediaAnalysisChecksRequestSchema,
+  mediaAnalysisRequestSchema,
+  mediaUnderstandingOutputSchema,
+} from './services/media-analysis-types';
+export type {
+  AiSettingsView,
+  MediaAnalysisOutcome,
+  MediaAnalysisView,
+  MediaCheckWarning,
+  MediaChecksView,
+} from './services/media-analysis-types';
+export type { AiSuggestionServiceOptions } from './services/ai-suggestions';
+export {
+  REVIEW_CHECKS,
+  SUGGESTION_KINDS,
+  SUGGESTION_TONES,
+  acceptSuggestionRequestSchema,
+  bestTimeRequestSchema,
+  reviewRequestSchema,
+  suggestionRequestSchema,
+} from './services/ai-suggestions-types';
+export type {
+  AcceptSuggestionRequest,
+  AcceptedSuggestionView,
+  BestTimeRequest,
+  BestTimeView,
+  MediaUnderstandingReader,
+  ReviewCheck,
+  ReviewCheckStatus,
+  ReviewCheckView,
+  ReviewFinding,
+  ReviewRequest,
+  ReviewView,
+  SuggestionKind,
+  SuggestionProposal,
+  SuggestionProvenance,
+  SuggestionRequest,
+  SuggestionTone,
+  SuggestionView,
+} from './services/ai-suggestions-types';
