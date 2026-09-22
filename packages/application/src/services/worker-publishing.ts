@@ -8,6 +8,7 @@ import type {
   WorkerExternalPublication,
   WorkerPublishingService,
 } from '../types';
+import { isFinalTargetState, settleContentItem } from '../internal/content-lifecycle';
 import { notFound } from '../internal/errors';
 import { toJson } from '../internal/json';
 import { runInWorkspace, type Db } from '../internal/runtime';
@@ -302,6 +303,23 @@ export function createWorkerPublishingService(deps: ServiceDeps): WorkerPublishi
               : {}),
           },
         });
+        // Once this job is final, the content item may be too. Every job
+        // passes through here on its way out, so the last one to finish is
+        // the one that settles the item; earlier ones find a sibling still
+        // moving and write nothing. This runs inside the existing activity,
+        // so the workflow history is unchanged and old runs replay as before.
+        if (isFinalTargetState(input.state)) {
+          const owner = await db.publishJob.findFirst({
+            where: { id: input.publishJobId, workspaceId: input.ctx.workspaceId },
+            select: { contentItemId: true },
+          });
+          if (owner !== null) {
+            await settleContentItem(db, {
+              workspaceId: input.ctx.workspaceId,
+              contentItemId: owner.contentItemId,
+            });
+          }
+        }
         return contentItemOf(deps, db, input.ctx.workspaceId, input.publishJobId);
       });
       await publishStatus(deps, input.ctx.workspaceId, {

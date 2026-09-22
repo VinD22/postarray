@@ -1,4 +1,6 @@
 import type {
+  CommitKind,
+  CommitPreview,
   PlanTierKey,
   AssistantActionOutput,
   AssistantTurnRequest,
@@ -126,6 +128,8 @@ import type {
   ProviderDestinationView,
   PublicationReceiptView,
   PublishJobView,
+  PublishJobsAcceptedView,
+  ContentPublicationView,
   ReceiptSummaryView,
   RssFeedView,
   RulePreview,
@@ -1511,6 +1515,24 @@ export interface MasterDraftPatch {
   readonly releaseOverridesFor?: readonly string[];
 }
 
+/**
+ * The composer's whole draft in one request: master, target list and every
+ * target's overrides, written as exactly one new version in one transaction.
+ *
+ * `expectedVersionId` is the `currentVersionId` the caller last read. When it
+ * no longer matches, somebody else saved in between and the call fails with a
+ * 409 `CONFLICT` (`errors.content_conflict`) instead of silently overwriting.
+ * `variantOverrides` is keyed by connection id and replaces that target's
+ * overrides wholesale; a target absent from it keeps what it had.
+ */
+export interface SaveCompositeInput {
+  readonly contentItemId: string;
+  readonly expectedVersionId?: string | null;
+  readonly master: Omit<MasterDraftPatch, 'releaseOverridesFor'>;
+  readonly targets: readonly TargetSpec[];
+  readonly variantOverrides?: Readonly<Record<string, VariantOverrides>>;
+}
+
 // ---------------------------------------------------------------------------
 // Services
 // ---------------------------------------------------------------------------
@@ -1581,6 +1603,16 @@ export interface ProjectService {
   update(ctx: ActorContext, projectId: string, patch: Partial<ProjectView>): Promise<ProjectView>;
   archive(ctx: ActorContext, projectId: string): Promise<ProjectView>;
   delete(ctx: ActorContext, projectId: string): Promise<void>;
+  /**
+   * Changes which connections belong to one project. `add` moves each
+   * connection here from wherever it was; `remove` unassigns a connection only
+   * if it currently belongs to this project. One transaction, one audit event.
+   */
+  updateConnections(
+    ctx: ActorContext,
+    projectId: string,
+    input: { readonly add: readonly string[]; readonly remove: readonly string[] },
+  ): Promise<ProjectView>;
 }
 
 /**
@@ -1718,6 +1750,7 @@ export interface ContentService {
     input: { readonly contentItemId: string; readonly targetId: string },
   ): Promise<CanonicalPreview>;
   delete(ctx: ActorContext, contentItemId: string): Promise<void>;
+  saveComposite(ctx: ActorContext, input: SaveCompositeInput): Promise<ContentItemView>;
 }
 
 export interface ValidationService {
@@ -1748,8 +1781,15 @@ export interface ApprovalService {
 export interface SchedulingService {
   schedule(
     ctx: ActorContext,
-    input: { readonly contentItemId: string; readonly scheduleSpec: ScheduleSpec },
-  ): Promise<PublishJobView>;
+    input: {
+      readonly contentItemId: string;
+      readonly scheduleSpec: ScheduleSpec;
+      /** Evidence the person saw the commit preview. Required when it escalates. */
+      readonly confirmation?: PublishConfirmationEvidence;
+      /** Schedule only these targets. Omitted means every target. */
+      readonly connectionIds?: readonly string[];
+    },
+  ): Promise<PublishJobsAcceptedView>;
   reschedule(
     ctx: ActorContext,
     input: {
@@ -1905,6 +1945,21 @@ export interface PublishingService {
       readonly confirmation: PublishConfirmationEvidence;
     },
   ): Promise<PublishJobView>;
+  /**
+   * What committing would take, without committing: the target count, the
+   * version checksum, blockers and the escalations a confirmation must name.
+   * Runs the same preflight as `publishNow` and `schedule`; freezes nothing.
+   */
+  previewCommit(
+    ctx: ActorContext,
+    input: {
+      readonly contentItemId: string;
+      readonly kind: CommitKind;
+      readonly scheduledAt?: string;
+      readonly ianaTimeZone?: string;
+      readonly connectionIds?: readonly string[];
+    },
+  ): Promise<CommitPreview>;
   getJob(ctx: ActorContext, jobId: string): Promise<PublishJobView>;
   retryTarget(
     ctx: ActorContext,
@@ -1945,6 +2000,8 @@ export interface ReceiptService {
   get(ctx: ActorContext, receiptId: string): Promise<PublicationReceiptView>;
   listForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]>;
   listRecent(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ReceiptSummaryView>>;
+  /** Per-target job state, receipt, link and failure for one content item. */
+  getContentPublication(ctx: ActorContext, contentItemId: string): Promise<ContentPublicationView>;
 }
 
 export interface ActionCenterService {

@@ -19,6 +19,7 @@ export * from './validation';
 export * from './media-derivatives';
 export * from './media-read';
 export * from './publishing';
+export * from './commit-preview';
 export * from './queue-rules';
 export * from './posting-sets';
 export * from './target-memory';
