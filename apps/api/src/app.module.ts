@@ -37,6 +37,8 @@ import { DataModule } from './modules/data/data.module';
 import { DeveloperAppsModule } from './modules/developer-apps/developer-apps.module';
 import { ServiceAccountsModule } from './modules/service-accounts/service-accounts.module';
 import { AssistantModule } from './modules/assistant/assistant.module';
+import { SuggestionsModule } from './modules/suggestions/suggestions.module';
+import { MediaAnalysisModule } from './modules/media-analysis/media-analysis.module';
 import { GrowthModule } from './modules/growth/growth.module';
 import { HealthModule } from './modules/health/health.module';
 import { MediaModule } from './modules/media/media.module';
@@ -111,6 +113,8 @@ export class AppModule implements NestModule {
         RssModule,
         GrowthModule,
         AssistantModule,
+        SuggestionsModule,
+        MediaAnalysisModule,
         WebhooksModule,
         BillingModule,
         ApiKeysModule,

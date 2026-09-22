@@ -226,6 +226,20 @@ export function createRefusingServices(): Services {
       schedulePost: refuse('assistant'),
       requestApproval: refuse('assistant'),
     },
+    aiSuggestions: {
+      suggest: refuse('suggestion'),
+      review: refuse('suggestion'),
+      accept: refuse('suggestion'),
+      bestTime: refuse('suggestion'),
+    },
+    mediaAnalysis: {
+      settings: () => Promise.resolve({ imageAnalysisEnabled: false, canChange: false }),
+      updateSettings: refuse('media_analysis'),
+      analyze: refuse('media_analysis'),
+      get: () => Promise.resolve(null),
+      checks: refuse('media_analysis'),
+      summariesFor: () => Promise.resolve([]),
+    },
     growth: {
       getBusinessProfile: () => Promise.resolve(null),
       upsertBusinessProfile: refuse('profile'),
