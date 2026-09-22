@@ -25,6 +25,11 @@ export const ROUTES = {
   commitPreview: (contentItemId: string) =>
     `/v1/content/${encodeURIComponent(contentItemId)}/commit-preview`,
 
+  suggestions: () => '/v1/suggestions',
+  suggestionReviews: () => '/v1/suggestions/reviews',
+  suggestionAcceptances: () => '/v1/suggestions/acceptances',
+  suggestionBestTimes: () => '/v1/suggestions/best-times',
+
   schedules: () => '/v1/schedules',
   cancelSchedule: (jobId: string) => `/v1/schedules/${encodeURIComponent(jobId)}/cancel`,
   publications: () => '/v1/publications',

@@ -19,6 +19,7 @@ import type { LoginFlow } from './commands/auth';
 import { configGet, configSet, configUnset } from './commands/config';
 import { eventsWatch } from './commands/events';
 import { linksCreate, linksStats } from './commands/links';
+import { suggestAccept, suggestBestTime, suggestReview, suggestRun } from './commands/suggest';
 import { mediaGet, mediaImport, mediaList, mediaUpload } from './commands/media';
 import {
   postsCancel,
@@ -670,6 +671,76 @@ export function buildProgram(
       const [linkId] = linksStatsCommand.args;
       const options = linksStatsCommand.opts<{ from?: string; to?: string; timeZone?: string }>();
       await linksStats(context, render, linkId ?? '', options);
+    },
+  });
+
+  // ------------------------------------------------------------- suggest ----
+  const suggest = program
+    .command('suggest')
+    .description(localizeHelp(helpTranslator, 'suggestGroup'));
+
+  const suggestRunCommand = suggest
+    .command('run <kind>')
+    .description(localizeHelp(helpTranslator, 'suggestRun'))
+    .option('--body <text>')
+    .option('--brief <text>')
+    .option('--content-item-id <id>')
+    .option('--connection-id <id>')
+    .option('--tone <tone>')
+    .option('--target-language <locale>');
+  attach(suggestRunCommand, {
+    name: 'suggest run',
+    run: async (context, render) => {
+      const [kind] = suggestRunCommand.args;
+      const options = suggestRunCommand.opts<{
+        body?: string;
+        brief?: string;
+        contentItemId?: string;
+        connectionId?: string;
+        tone?: string;
+        targetLanguage?: string;
+      }>();
+      await suggestRun(context, render, kind ?? '', options);
+    },
+  });
+
+  const suggestReviewCommand = suggest
+    .command('review')
+    .description(localizeHelp(helpTranslator, 'suggestReview'))
+    .option('--body <text>')
+    .option('--content-item-id <id>');
+  attach(suggestReviewCommand, {
+    name: 'suggest review',
+    run: async (context, render) => {
+      const options = suggestReviewCommand.opts<{ body?: string; contentItemId?: string }>();
+      await suggestReview(context, render, options);
+    },
+  });
+
+  const suggestAcceptCommand = suggest
+    .command('accept <suggestion-id>')
+    .description(localizeHelp(helpTranslator, 'suggestAccept'))
+    .option('--index <n>', localizeHelp(helpTranslator, 'suggestAccept'), (value: string) =>
+      Number.parseInt(value, 10),
+    )
+    .option('--content-item-id <id>');
+  attach(suggestAcceptCommand, {
+    name: 'suggest accept',
+    run: async (context, render) => {
+      const [suggestionId] = suggestAcceptCommand.args;
+      const options = suggestAcceptCommand.opts<{ index?: number; contentItemId?: string }>();
+      await suggestAccept(context, render, suggestionId ?? '', options);
+    },
+  });
+
+  const suggestBestTimeCommand = suggest
+    .command('best-time <connection-id>')
+    .description(localizeHelp(helpTranslator, 'suggestBestTime'));
+  attach(suggestBestTimeCommand, {
+    name: 'suggest best-time',
+    run: async (context, render) => {
+      const [connectionId] = suggestBestTimeCommand.args;
+      await suggestBestTime(context, render, connectionId ?? '');
     },
   });
 
