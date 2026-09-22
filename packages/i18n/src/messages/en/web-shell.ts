@@ -255,6 +255,7 @@ export const webShellMessages = {
   'onboarding.compose.help':
     'Write the post, then check the preview and the validation before you pick a time.',
   'onboarding.compose.openComposer': 'Open the full composer',
+  'onboarding.compose.fixIssues': 'Fix the issues under the preview, then schedule again.',
   'onboarding.receipt.title': 'Your first post is scheduled',
   'onboarding.receipt.body':
     'Here is the record so far. It keeps updating through dispatch, the provider response and the first analytics sync.',

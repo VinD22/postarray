@@ -139,6 +139,8 @@ export const calendarMessages = {
   'approval.decision.approved': 'Approval recorded. This version can move to scheduling.',
   'approval.decision.changesRequested': 'Changes requested. The post returned to draft.',
   'approval.decision.rejected': 'Rejection recorded. The post returned to draft.',
+  'approval.next.scheduleNow': 'Schedule now',
+  'approval.next.revise': 'Open post to revise',
   'approval.changed.title': 'The post changed after this request',
   'approval.changed.body':
     'This screen is showing a newer version. Do not decide this request. Ask the author to submit it again.',

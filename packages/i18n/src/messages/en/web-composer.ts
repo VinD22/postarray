@@ -263,6 +263,18 @@ export const webComposerMessages = {
   'composerWeb.autosave.conflictHelp':
     'Nothing is merged automatically. Choose per field, then save.',
   'composerWeb.autosave.retry': 'Try saving again',
+  'composerWeb.autosave.conflictAnonymous':
+    'This draft was saved somewhere else while you were writing. Review both versions before saving.',
+  'composerWeb.autosave.conflictKeepServer': 'Use the saved version',
+  'composerWeb.media.detailsTitle': 'Alt text and rights for {name}',
+  'composerWeb.media.detailsBody':
+    'Changes apply to this file everywhere it is used, including other posts.',
+  'composerWeb.media.scanFailed':
+    'The safety check could not finish. This file cannot publish until it passes.',
+  'composerWeb.channels.unavailableTitle':
+    '{count, plural, one {# channel could not be checked} other {# channels could not be checked}}',
+  'composerWeb.channels.unavailableBody':
+    'We could not read what these channels support, so they are left out for now. Anything already saved for them is kept. Reload to try again.',
 
   // ------------------------------------------------------------ shortcuts
   'composerWeb.shortcuts.title': 'Composer shortcuts',
@@ -599,4 +611,46 @@ export const webComposerMessages = {
 
   'composerWeb.preview.thread.overLimit':
     '{provider} accepts {limit, plural, =0 {no follow up parts} one {# follow up part} other {# follow up parts}}. The rest are not sent.',
+  // The commit preview on the confirm step. Each sentence is a warning a
+  // person acknowledges before anything is scheduled or published.
+  'web.commitPreview.heading': 'Before this goes out',
+  'web.commitPreview.loading': 'Checking what this will do.',
+  'web.commitPreview.unavailable':
+    'We could not check this post in advance. You can still continue, and Post Array checks it again when you confirm.',
+  'web.commitPreview.acknowledgeHint': 'Tick each item to confirm you have read it.',
+  'web.commitPreview.publishNowOnly': 'Applies to Publish now.',
+  'web.commitPreview.escalation.immediate_publish':
+    '{count, plural, one {This publishes to # account now.} other {This publishes to # accounts now.}}',
+  'web.commitPreview.escalation.first_use_connection': 'First post from {account} on {provider}.',
+  'web.commitPreview.escalation.bulk_publication_count':
+    'This creates {count, plural, one {# publication} other {# publications}} at once.',
+  'web.commitPreview.escalation.similar_content_across_accounts':
+    'Very similar text goes to {count, plural, one {# account} other {# accounts}}.',
+  'web.commitPreview.escalation.unapproved_link_domain':
+    'A link points to {host}, which is not on your approved list.',
+  'web.commitPreview.escalation.sensitive_content':
+    'This post is marked as commercial, political or otherwise sensitive.',
+  'web.commitPreview.escalation.privacy_change':
+    'The audience for {account} is different from its usual setting.',
+  'web.commitPreview.escalation.changed_after_approval': 'This post changed after it was approved.',
+  'web.commitPreview.escalation.cost_threshold_exceeded':
+    'The estimated provider cost is higher than usual for one post.',
+  'web.commitPreview.escalation.other': 'One more check needs your confirmation.',
+  'web.commitPreview.blockedTitle': 'This cannot go out yet',
+  'web.commitPreview.blocker.no_targets_selected':
+    'No accounts are selected. Choose at least one account.',
+  'web.commitPreview.blocker.content_invalid':
+    'Some targets have problems. Fix the issues marked in the composer.',
+  'web.commitPreview.blocker.schedule_too_far_ahead':
+    'Posts can be scheduled up to 30 days ahead. Pick an earlier time.',
+  'web.commitPreview.blocker.entitlement_required':
+    'Your plan does not include publishing yet. Open Billing to change plans.',
+  'web.commitPreview.blocker.approval_required':
+    'This workspace needs approval first. Use Request approval instead.',
+  'web.commitPreview.blocker.content_changed_after_approval':
+    'This post changed after it was approved. Request approval again.',
+  'web.commitPreview.blocker.other':
+    'A workspace rule blocks this right now. Check your posting rules or ask an admin.',
+  'web.commitPreview.publishNowForbidden':
+    'Your role can schedule posts but not publish them immediately. Schedule it instead, or ask an admin.',
 } as const;

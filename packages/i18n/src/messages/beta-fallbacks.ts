@@ -87,6 +87,10 @@ export const LOCALE_FILLED_PREFIXES = [
 
 export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'scheduler.',
+  // The commit preview's escalation and blocker sentences (2026-09-23). Each
+  // one is a warning a person acknowledges before a post goes out, so beta
+  // locales keep the reviewed English until a person translates it.
+  'web.commitPreview.',
   // Weekly digest copy is translated for every active launch locale. It still
   // remains subject to the normal human review gate, but missing keys are no
   // longer allowed as an English fallback.
@@ -308,6 +312,15 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'palette.group.projects',
   'web.motion.pause',
   'web.motion.play',
+  // Composer composite save, inline media details and degraded channels
+  // (2026-09-23). Reviewed English until translation review.
+  'composerWeb.autosave.conflictAnonymous',
+  'composerWeb.autosave.conflictKeepServer',
+  'composerWeb.media.detailsTitle',
+  'composerWeb.media.detailsBody',
+  'composerWeb.media.scanFailed',
+  'composerWeb.channels.unavailableTitle',
+  'composerWeb.channels.unavailableBody',
 
   // Added with the analytics overview rebuild: a working compare-to-previous
   // query, a per-channel rollup table, a series chart and CSV export. Reviewed
@@ -492,6 +505,11 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'approval.decision.approved',
   'approval.decision.changesRequested',
   'approval.decision.rejected',
+  'approval.next.scheduleNow',
+  'approval.next.revise',
+  'error.request_timeout.message',
+  'error.request_timeout.action',
+  'onboarding.compose.fixIssues',
   // Google Business Profile joined the launch cohort after the current
   // translation batch was cut. Its name and its account-role requirement stay
   // on the reviewed English source until each beta locale picks them up.
