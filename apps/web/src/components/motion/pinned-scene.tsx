@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from 'react';
 
-import { gsap, useGSAP } from '@/lib/motion/gsap';
+import { gsap, useGSAP } from '@/lib/motion/gsap-scroll';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { cn } from '@relay/design-system/utils';
 

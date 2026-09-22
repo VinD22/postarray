@@ -18,6 +18,9 @@ describe('auth layout locale binding', () => {
   beforeEach(() => {
     getStaticIntlMock.mockReset();
     getStaticIntlMock.mockImplementation(async (locale = 'en') => ({
+      locale,
+      timeZone: 'UTC',
+      catalog: {},
       t: { format: (key: string) => `${locale}:${key}` },
     }));
   });

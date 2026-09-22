@@ -3,7 +3,7 @@
 import { useEffect, useImperativeHandle, useRef, useState, type ReactNode, type Ref } from 'react';
 
 import { EXPRESSIVE_MD } from '@/lib/motion/constants';
-import { gsap, useGSAP, type ScrollTrigger } from '@/lib/motion/gsap';
+import { gsap, useGSAP, type ScrollTrigger } from '@/lib/motion/gsap-scroll';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { cn } from '@relay/design-system/utils';
 

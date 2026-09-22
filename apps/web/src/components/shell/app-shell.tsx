@@ -1,5 +1,7 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+
 import { Link } from '@/components/link';
 import { usePathname } from 'next/navigation';
 import { Search } from 'lucide-react';
@@ -9,22 +11,37 @@ import { useHotkeys } from '@relay/design-system/hooks';
 import { Kbd } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
-import { PageTransitionProvider } from '@/components/motion';
 import { ProductMark } from '@/components/brand/product-mark';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
+import { RouteFade } from '@/lib/motion/route-fade';
 import { RealtimeStatusProvider } from '@/lib/realtime';
 
 import { AccountMenu } from './account-menu';
-import { ActionCenterPanel } from './action-center-panel';
-import { CommandPalette } from './command-palette';
 import { ComposeButton } from './compose-button';
 import { ConnectivityBanner } from './connectivity-banner';
 import { DemoNotice } from './demo-notice';
 import { HelpMenu } from './help-menu';
 import { MobileNav } from './mobile-nav';
 import { PrimaryNav } from './primary-nav';
-import { ShortcutsDialog } from './shortcuts-dialog';
 import { WorkspaceSwitcher } from './workspace-switcher';
+
+/*
+ * Split out of the shell's first-load bundle. The palette and the shortcut
+ * sheet are fetched the first time someone opens them; the Action center is
+ * its own chunk, with a same-size placeholder so the header does not shift.
+ */
+const CommandPalette = dynamic(
+  () => import('./command-palette').then((module) => module.CommandPalette),
+  { ssr: false },
+);
+const ShortcutsDialog = dynamic(
+  () => import('./shortcuts-dialog').then((module) => module.ShortcutsDialog),
+  { ssr: false },
+);
+const ActionCenterPanel = dynamic(
+  () => import('./action-center-panel').then((module) => module.ActionCenterPanel),
+  { loading: () => <span aria-hidden="true" className="size-11 md:size-9" /> },
+);
 
 /**
  * The application frame.
@@ -41,6 +58,11 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
   const pathname = usePathname();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  // Mounted on first open, then kept, so the close animation still plays.
+  const [paletteMounted, setPaletteMounted] = useState(false);
+  const [shortcutsMounted, setShortcutsMounted] = useState(false);
+  if (paletteOpen && !paletteMounted) setPaletteMounted(true);
+  if (shortcutsOpen && !shortcutsMounted) setShortcutsMounted(true);
   const [hydrated, setHydrated] = useState(false);
   const router = useLocalizedRouter();
 
@@ -195,14 +217,18 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
               'shadow-raised rounded-lg',
             )}
           >
-            <PageTransitionProvider tier="app">{children}</PageTransitionProvider>
+            <RouteFade>{children}</RouteFade>
           </main>
         </div>
 
         {onCompose ? null : <MobileNav />}
 
-        <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
-        <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+        {paletteMounted ? (
+          <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
+        ) : null}
+        {shortcutsMounted ? (
+          <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+        ) : null}
       </div>
     </RealtimeStatusProvider>
   );

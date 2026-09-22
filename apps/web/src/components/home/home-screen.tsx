@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { EmptyState, PageHeader } from '@relay/design-system/patterns';
@@ -9,22 +9,20 @@ import { Link } from '@/components/link';
 import { Separator } from '@relay/design-system/primitives';
 
 import { ApiError } from '@/lib/api';
-import { useActionCenter, useCalendar } from '@/lib/api/hooks';
-import { useSession } from '@/lib/auth/session-context';
+import { useActionCenter } from '@/lib/api/hooks';
 import { useTranslations } from '@/lib/i18n';
 import { EmptyScene } from '@/components/empty';
 import { StaggerList } from '@/components/motion';
 import { ActionCenterList } from '@/components/shell/action-center-list';
 
 import { ConnectionHealth } from './connection-health';
+import { DraftsList } from './drafts-list';
 import { RecentReceipts } from './recent-receipts';
 import { HomeSection } from './section';
 import { StatTiles } from './stat-tiles';
 import { TrialBanner } from './trial-banner';
 import { UpcomingQueue } from './upcoming-queue';
-
-const DAY_MS = 86_400_000;
-const RANGE_REFRESH_MS = 5 * 60_000;
+import { useHomeCalendar } from './use-home-calendar';
 
 /**
  * Home.
@@ -47,40 +45,14 @@ const RANGE_REFRESH_MS = 5 * 60_000;
  */
 export function HomeScreen() {
   const t = useTranslations();
-  const { project } = useSession();
   const { announce } = useAnnouncer();
 
   const actionQuery = useActionCenter();
   const actionItems = actionQuery.data?.data ?? [];
   const needsYouEmpty = !actionQuery.isPending && !actionQuery.error && actionItems.length === 0;
 
-  const [rangeStart, setRangeStart] = useState(() => Date.now());
-  useEffect(() => {
-    const refresh = () => setRangeStart(Date.now());
-    const refreshWhenVisible = () => {
-      if (document.visibilityState === 'visible') refresh();
-    };
-    const timer = window.setInterval(refresh, RANGE_REFRESH_MS);
-    window.addEventListener('focus', refresh);
-    document.addEventListener('visibilitychange', refreshWhenVisible);
-    return () => {
-      window.clearInterval(timer);
-      window.removeEventListener('focus', refresh);
-      document.removeEventListener('visibilitychange', refreshWhenVisible);
-    };
-  }, []);
-  const range = useMemo(
-    () => ({
-      from: new Date(rangeStart).toISOString(),
-      to: new Date(rangeStart + DAY_MS).toISOString(),
-    }),
-    [rangeStart],
-  );
-  const upcomingQuery = useCalendar({
-    ...range,
-    ...(project === null ? {} : { projectId: project.id }),
-  });
-  const upcomingCount = upcomingQuery.data?.data.length ?? 0;
+  const { query: upcomingQuery, day: upcomingDay } = useHomeCalendar();
+  const upcomingCount = upcomingDay.length;
 
   // Announce the shape of the day once, when both reads have settled, so a
   // screen reader user does not have to walk the page to find out.
@@ -182,6 +154,10 @@ export function HomeScreen() {
                 </div>
               )}
             </HomeSection>
+
+            <Separator />
+
+            <DraftsList />
 
             <Separator />
 

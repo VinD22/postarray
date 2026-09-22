@@ -18,15 +18,14 @@
  * Counts render their actual value immediately, without interpolating data.
  */
 
-import { useId, useMemo, type ReactNode } from 'react';
+import { useId, type ReactNode } from 'react';
 
 import { cn } from '@relay/design-system/utils';
 
-import { useCalendar, useConnections } from '@/lib/api/hooks';
+import { useConnections } from '@/lib/api/hooks';
+import { useHomeCalendar } from './use-home-calendar';
 import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useTranslations } from '@/lib/i18n';
-
-const WEEK_MS = 7 * 86_400_000;
 
 /** Health values that do not need a person to do anything. */
 const HEALTHY = 'healthy';
@@ -73,20 +72,11 @@ export function soonestEntry<T extends { readonly scheduledAt: string }>(
 export function StatTiles(): ReactNode {
   const t = useTranslations();
   const format = useFormatters();
-  const { workspace, project } = useSession();
+  const { workspace } = useSession();
 
-  const range = useMemo(() => {
-    const now = new Date();
-    return { from: now.toISOString(), to: new Date(now.getTime() + WEEK_MS).toISOString() };
-  }, []);
-
-  const calendarQuery = useCalendar({
-    ...range,
-    ...(project === null ? {} : { projectId: project.id }),
-  });
+  const { query: calendarQuery, week: entries } = useHomeCalendar();
   const connectionsQuery = useConnections();
 
-  const entries = calendarQuery.data?.data ?? [];
   const connections = connectionsQuery.data?.data ?? [];
   const attention = connections.filter((entry) => entry.health !== HEALTHY).length;
 

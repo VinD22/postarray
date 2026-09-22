@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
-
 import { Link } from '@/components/link';
 
 import {
@@ -14,15 +12,13 @@ import {
 import { Button, StatusDot } from '@relay/design-system/primitives';
 
 import { ApiError } from '@/lib/api';
-import { useCalendar } from '@/lib/api/hooks';
 import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
 import { providerDotKey } from '@/components/shell/action-center-catalog';
 
 import { HomeSection } from './section';
-
-const DAY_MS = 86_400_000;
+import { useHomeCalendar } from './use-home-calendar';
 
 /**
  * The next 24 hours.
@@ -34,17 +30,9 @@ const DAY_MS = 86_400_000;
 export function UpcomingQueue() {
   const t = useTranslations();
   const format = useFormatters();
-  const { workspace, project } = useSession();
+  const { workspace } = useSession();
 
-  const range = useMemo(() => {
-    const now = new Date();
-    return {
-      from: now.toISOString(),
-      to: new Date(now.getTime() + DAY_MS).toISOString(),
-    };
-  }, []);
-  const query = useCalendar({ ...range, ...(project === null ? {} : { projectId: project.id }) });
-  const entries = query.data?.data ?? [];
+  const { query, day: entries } = useHomeCalendar();
 
   return (
     <HomeSection

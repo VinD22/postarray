@@ -4,7 +4,7 @@ import { createElement, useRef, type ElementType, type Ref, type RefObject } fro
 
 import { useDirectionAttributes } from '@/lib/i18n';
 import { EASE_OUT_EXPO, EXPRESSIVE_MD } from '@/lib/motion/constants';
-import { gsap, SplitText, useGSAP } from '@/lib/motion/gsap';
+import { gsap, SplitText, useGSAP } from '@/lib/motion/gsap-split';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 // Scripts SplitText's `chars` mode cannot safely split (glyph shaping,

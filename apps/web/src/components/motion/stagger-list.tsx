@@ -3,7 +3,7 @@
 import { useRef, type ReactNode } from 'react';
 
 import { EASE_OUT_EXPO, EXPRESSIVE_SM } from '@/lib/motion/constants';
-import { gsap, useGSAP } from '@/lib/motion/gsap';
+import { gsap, useGSAP } from '@/lib/motion/gsap-scroll';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 export interface StaggerListProps {

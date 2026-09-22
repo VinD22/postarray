@@ -12,6 +12,7 @@ import { useSession } from '@/lib/auth/session-context';
 import { AnalyticsOverviewScreen } from './analytics-overview-screen';
 import type { AnalyticsFilters } from './components/analytics-toolbar';
 import { QueryErrorState } from './components/query-error-state';
+import { useAnalyticsOverview } from './queries';
 import type { AccountRef, AnalyticsRange } from './types';
 
 /**
@@ -22,8 +23,14 @@ import type { AccountRef, AnalyticsRange } from './types';
  * only plumbing.
  */
 
+const HOUR_MS = 3_600_000;
+
+/**
+ * The last 30 days, ending at the top of the next hour, so the overview key is
+ * stable for the hour and a revisit hits the cache instead of refetching.
+ */
 function defaultRange(): AnalyticsRange {
-  const end = new Date();
+  const end = new Date(Math.ceil(Date.now() / HOUR_MS) * HOUR_MS);
   const start = new Date(end.getTime() - 30 * 86_400_000);
   return { preset: '30d', start: start.toISOString(), end: end.toISOString() };
 }
@@ -39,12 +46,9 @@ interface ConnectionLike {
 export function AnalyticsOverviewContainer(): ReactElement {
   const t = useTranslations();
   const router = useLocalizedRouter();
-  const { workspace, project } = useSession();
-
-  const projects = useQuery({
-    queryKey: ['ws', workspace.id, 'projects', 'list'],
-    queryFn: async () => api.projects.list({ limit: 100 }),
-  });
+  // Projects come with the session; a second read of them only delayed the
+  // overview behind one more round trip.
+  const { workspace, project, projects } = useSession();
 
   const connections = useQuery({
     queryKey: ['ws', workspace.id, 'connections', 'analytics', project?.id ?? 'none'],
@@ -74,7 +78,17 @@ export function AnalyticsOverviewContainer(): ReactElement {
     [project?.id],
   );
 
-  if (connections.isPending || projects.isPending) {
+  // Start the overview read now, alongside the connections read, instead of
+  // after it: the screen asks for the same key on mount and gets this request.
+  useAnalyticsOverview({
+    projectId: initialFilters.projectId,
+    connectionIds: initialFilters.connectionIds,
+    range: initialFilters.range,
+    rankMetric: initialFilters.rankMetric,
+    format: initialFilters.format,
+  });
+
+  if (connections.isPending) {
     return (
       <div className="px-4 py-6 md:px-6">
         <LoadingState label={t('analytics.state.loading')}>
@@ -112,7 +126,7 @@ export function AnalyticsOverviewContainer(): ReactElement {
 
   return (
     <AnalyticsOverviewScreen
-      projects={(projects.data?.data ?? []) as readonly { id: string; name: string }[]}
+      projects={projects}
       accounts={accounts}
       initialFilters={initialFilters}
       statusHref="/status"

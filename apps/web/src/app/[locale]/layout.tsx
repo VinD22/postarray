@@ -10,6 +10,7 @@ import { themeBootstrapScript } from '@relay/design-system/theme-bootstrap';
 
 import { Providers } from '@/components/providers';
 import { STATIC_WEB_LOCALE_CODES, isWebLocale } from '@/lib/i18n/development-pseudo-locales';
+import { SHELL_KEY_PREFIXES, sliceCatalog } from '@/lib/i18n/catalog-slice';
 import { getStaticIntl } from '@/lib/i18n/server';
 import { SITE_ORIGIN } from '@/features/marketing/site';
 
@@ -20,7 +21,7 @@ const uiFont = Manrope({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-relay-ui',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
+  // Manrope is a variable font: omitting `weight` ships one file for every weight.
 });
 
 /** The editorial serif display face. Carries hierarchy across marketing and
@@ -38,6 +39,8 @@ const monoFont = JetBrains_Mono({
   variable: '--font-relay-mono',
   display: 'swap',
   weight: ['400', '600'],
+  // Mono is a secondary face for timestamps; never on the critical path.
+  preload: false,
 });
 
 export async function generateMetadata({
@@ -115,9 +118,7 @@ export default async function LocaleLayout({
         <Providers
           locale={intl.locale}
           timeZone={intl.timeZone}
-          catalog={intl.catalog}
-          toastRegionLabel={intl.t.format('a11y.region.notifications')}
-          toastCloseLabel={intl.t.format('action.close')}
+          catalog={sliceCatalog(intl.catalog, SHELL_KEY_PREFIXES)}
         >
           {children}
         </Providers>

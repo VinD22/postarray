@@ -6,6 +6,8 @@ import { cn, panelSurface } from '@relay/design-system/utils';
 import { AsideScene, type AsideSceneCard } from '@/components/auth/aside-scene';
 import { ProductMark } from '@/components/brand/product-mark';
 import { Link } from '@/components/link';
+import { DataProviders } from '@/components/providers';
+import { IntlProvider } from '@/lib/i18n/provider';
 import { getStaticIntl } from '@/lib/i18n/server';
 
 /**
@@ -54,53 +56,60 @@ export default async function AuthLayout({
   }));
 
   return (
-    <div className="bg-surface-sunken grid min-h-dvh grid-cols-1 gap-2 p-2 lg:grid-cols-[minmax(0,1.08fr)_minmax(28rem,0.92fr)] lg:p-3">
-      <main
-        id="main"
-        className="bg-surface-canvas flex flex-col justify-center rounded-lg px-4 py-10 md:px-8 lg:px-12"
+    <IntlProvider locale={intl.locale} timeZone={intl.timeZone} catalog={intl.catalog}>
+      <DataProviders
+        toastRegionLabel={intl.t.format('a11y.region.notifications')}
+        toastCloseLabel={intl.t.format('action.close')}
       >
-        <div
-          className={cn(
-            'relay-auth-panel shadow-raised mx-auto flex w-full max-w-[31rem] flex-col gap-7 p-6 md:p-9',
-            panelSurface,
-          )}
-        >
-          <Link
-            href="/"
-            className="text-title-sm text-text-primary flex min-h-11 items-center gap-3 self-start font-semibold"
+        <div className="bg-surface-sunken grid min-h-dvh grid-cols-1 gap-2 p-2 lg:grid-cols-[minmax(0,1.08fr)_minmax(28rem,0.92fr)] lg:p-3">
+          <main
+            id="main"
+            className="bg-surface-canvas flex flex-col justify-center rounded-lg px-4 py-10 md:px-8 lg:px-12"
           >
-            <ProductMark />
-            <span>{intl.t.format('shell.appName')}</span>
-          </Link>
-          {children}
-        </div>
-      </main>
+            <div
+              className={cn(
+                'relay-auth-panel shadow-raised mx-auto flex w-full max-w-[31rem] flex-col gap-7 p-6 md:p-9',
+                panelSurface,
+              )}
+            >
+              <Link
+                href="/"
+                className="text-title-sm text-text-primary flex min-h-11 items-center gap-3 self-start font-semibold"
+              >
+                <ProductMark />
+                <span>{intl.t.format('shell.appName')}</span>
+              </Link>
+              {children}
+            </div>
+          </main>
 
-      <aside className="relay-auth-scene bg-surface-inverted text-text-inverted relative hidden overflow-hidden rounded-lg lg:flex lg:flex-col lg:justify-between lg:gap-10 lg:px-12 lg:py-12">
-        <div className="relative z-10 max-w-[34ch]">
-          <h2 className="font-display text-[clamp(2.5rem,4vw,4.75rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance">
-            {intl.t.format('auth.aside.title')}
-          </h2>
-          <ul className="flex flex-col gap-5 pt-6">
-            {ASIDE_POINTS.map((point) => (
-              <li key={point.key}>
-                <p
-                  className={cn(
-                    'border-border-default bg-surface-raised text-body-md text-text-primary shadow-raised rounded-lg border p-4',
-                    point.rotate,
-                  )}
-                >
-                  {intl.t.format(point.key)}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
+          <aside className="relay-auth-scene bg-surface-inverted text-text-inverted relative hidden overflow-hidden rounded-lg lg:flex lg:flex-col lg:justify-between lg:gap-10 lg:px-12 lg:py-12">
+            <div className="relative z-10 max-w-[34ch]">
+              <h2 className="font-display text-[clamp(2.5rem,4vw,4.75rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance">
+                {intl.t.format('auth.aside.title')}
+              </h2>
+              <ul className="flex flex-col gap-5 pt-6">
+                {ASIDE_POINTS.map((point) => (
+                  <li key={point.key}>
+                    <p
+                      className={cn(
+                        'border-border-default bg-surface-raised text-body-md text-text-primary shadow-raised rounded-lg border p-4',
+                        point.rotate,
+                      )}
+                    >
+                      {intl.t.format(point.key)}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        <div className="relative z-10">
-          <AsideScene cards={sceneCards} />
+            <div className="relative z-10">
+              <AsideScene cards={sceneCards} />
+            </div>
+          </aside>
         </div>
-      </aside>
-    </div>
+      </DataProviders>
+    </IntlProvider>
   );
 }

@@ -2,7 +2,8 @@
 
 /**
  * The GSAP motion core. This is the ONLY file in the codebase that imports
- * `gsap` directly — every animated component under `components/motion/`
+ * `gsap` directly (with its plugin siblings `gsap-scroll.ts` and
+ * `gsap-split.ts`) — every animated component under `components/motion/`
  * imports its primitives from here, never from the `gsap` package itself, so
  * plugin registration only ever happens once.
  *
@@ -25,18 +26,13 @@
  */
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
 import { Flip } from 'gsap/Flip';
 
-// ScrollTrigger owns a browser-global synchronization timer. Registering it in
-// Vitest leaves that timer alive after JSDOM is torn down, where its next tick
-// no longer has requestAnimationFrame. Component tests exercise the accessible
-// finished state, not scroll position, so keep that browser lifecycle out of
-// the test runtime while retaining the same imports and types.
-gsap.registerPlugin(useGSAP, SplitText, Flip);
-if (process.env.NODE_ENV !== 'test') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+// Only the core, the React hook and Flip (the nav indicator and the composer
+// rail use it) are registered here, because this module is reachable from the
+// signed-in app. ScrollTrigger and SplitText are marketing plugins: they are
+// registered by `./gsap-scroll` and `./gsap-split`, which only the scroll- and
+// headline-driven components import, so the app bundle does not carry them.
+gsap.registerPlugin(useGSAP, Flip);
 
-export { gsap, useGSAP, ScrollTrigger, SplitText, Flip };
+export { gsap, useGSAP, Flip };
