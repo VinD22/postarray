@@ -1,5 +1,5 @@
 import type { PromptId } from '../prompts/types';
-import type { AiVariables, UntrustedSource } from '../types';
+import type { AiImageInput, AiVariables, UntrustedSource } from '../types';
 
 /**
  * The evaluation vocabulary.
@@ -54,6 +54,8 @@ export interface EvalCase {
   readonly description: string;
   readonly variables: AiVariables;
   readonly untrustedSources?: readonly UntrustedSource[];
+  /** Image fixtures for analysis prompts. Never generation. */
+  readonly images?: readonly AiImageInput[];
   readonly expectation: EvalExpectation;
 }
 

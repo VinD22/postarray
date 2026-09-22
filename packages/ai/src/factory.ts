@@ -92,5 +92,6 @@ export function createAiGatewayFromConfig(options: AiGatewayFactoryOptions): AiG
     logger: options.logger,
     clock,
     pricing,
+    maxTimeoutMs: options.config.ai.requestTimeoutMs,
   });
 }

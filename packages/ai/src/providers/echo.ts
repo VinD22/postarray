@@ -7,6 +7,7 @@ import type {
   ProviderResponse,
   ProviderStreamChunk,
 } from '../types';
+import { AI_IMAGE_TOKEN_CAP, countImageParts, messageText } from '../types';
 
 /**
  * The offline provider.
@@ -28,11 +29,12 @@ export function promptMarker(promptId: string, fixtureName?: string): string {
 
 function findMarker(request: ProviderRequest): { promptId: string; fixture: string | null } | null {
   for (const message of request.messages) {
-    const index = message.content.indexOf(PROMPT_MARKER);
+    const content = messageText(message.content);
+    const index = content.indexOf(PROMPT_MARKER);
     if (index < 0) {
       continue;
     }
-    const rest = message.content.slice(index + PROMPT_MARKER.length);
+    const rest = content.slice(index + PROMPT_MARKER.length);
     const token = rest.split(/\s/, 1)[0] ?? '';
     const [promptId, fixture] = token.split('#');
     if (promptId !== undefined && promptId.length > 0) {
@@ -93,14 +95,15 @@ export function createEchoProvider(options: EchoProviderOptions = {}): AiProvide
         : JSON.stringify(payload);
 
     const inputCharacters = request.messages.reduce(
-      (total, message) => total + message.content.length,
+      (total, message) => total + messageText(message.content).length,
       0,
     );
 
     return {
       text,
       toolCalls: [],
-      inputTokens: Math.ceil(inputCharacters / 4),
+      inputTokens:
+        Math.ceil(inputCharacters / 4) + countImageParts(request.messages) * AI_IMAGE_TOKEN_CAP,
       outputTokens: Math.ceil(text.length / 4),
       finishReason: 'stop',
       model,
@@ -111,6 +114,7 @@ export function createEchoProvider(options: EchoProviderOptions = {}): AiProvide
     name: 'echo',
     model,
     available: true,
+    supportsImageInput: true,
     async complete(request) {
       return respond(request);
     },

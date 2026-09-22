@@ -34,7 +34,7 @@ describe('loadConfig', () => {
     expect(config.polar.trialDays).toBe(0);
     expect(config.ai.provider).toBe('deepseek');
     expect(config.ai.deepseek.baseUrl).toBe('https://api.deepseek.com');
-    expect(config.ai.deepseek.model).toBe('deepseek-v4-flash');
+    expect(config.ai.deepseek.model).toBe('deepseek-flash');
     expect(config.ai.requestTimeoutMs).toBe(60_000);
     expect(config.ai.maxMonthlyUsdPerWorkspace).toBe(25);
   });

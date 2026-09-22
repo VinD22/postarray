@@ -242,7 +242,7 @@ const aiShape = {
   AI_PROVIDER: z.enum(AI_PROVIDERS).default('deepseek'),
   DEEPSEEK_API_KEY: identifier.optional(),
   DEEPSEEK_BASE_URL: httpUrl.default('https://api.deepseek.com'),
-  DEEPSEEK_MODEL: identifier.default('deepseek-v4-flash'),
+  DEEPSEEK_MODEL: identifier.default('deepseek-flash'),
   ANTHROPIC_API_KEY: identifier.optional(),
   ANTHROPIC_BASE_URL: httpUrl.default('https://api.anthropic.com'),
   ANTHROPIC_MODEL: identifier.default('claude-sonnet-5'),

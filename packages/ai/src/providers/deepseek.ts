@@ -6,17 +6,20 @@ import { AI_MESSAGE_KEYS } from '../errors';
 import type {
   AiProviderAdapter,
   ProviderFinishReason,
+  ProviderMessage,
   ProviderRequest,
   ProviderResponse,
   ProviderStreamChunk,
   ProviderToolCall,
 } from '../types';
+import { messageText } from '../types';
 
 /**
  * DeepSeek adapter, speaking the OpenAI-compatible chat completions shape.
  *
  * This file is the only place in the repository that knows the vendor exists.
- * The model id comes from configuration, defaulting to `deepseek-v4-flash`.
+ * The model id comes from configuration, defaulting to `deepseek-flash`
+ * (V4.1 Flash). `deepseek-v4-flash` is retired and served by `deepseek-flash`.
  * Responses are parsed with Zod, never cast, and provider errors are mapped to
  * the shared taxonomy so callers never see a raw payload.
  */
@@ -27,6 +30,18 @@ export interface DeepSeekOptions {
   readonly model: string;
   /** Injected so tests never touch the network. */
   readonly fetchImpl?: typeof globalThis.fetch;
+  /** Override the model table below, for a deployment that pins another model. */
+  readonly supportsImageInput?: boolean;
+}
+
+/**
+ * Models that accept OpenAI-style `image_url` parts, in user messages only.
+ * `deepseek-v4-pro` does not. Anything unknown is treated as text only.
+ */
+const VISION_MODELS: ReadonlySet<string> = new Set(['deepseek-flash', 'deepseek-v4-flash']);
+
+export function deepSeekModelSupportsImages(model: string): boolean {
+  return VISION_MODELS.has(model);
 }
 
 /**
@@ -55,6 +70,9 @@ const choiceSchema = z.object({
 const usageSchema = z.object({
   prompt_tokens: z.number().int().nonnegative().optional(),
   completion_tokens: z.number().int().nonnegative().optional(),
+  /** DeepSeek's automatic prefix cache. Hits are billed at a fraction of a miss. */
+  prompt_cache_hit_tokens: z.number().int().nonnegative().optional(),
+  prompt_cache_miss_tokens: z.number().int().nonnegative().optional(),
 });
 
 const completionSchema = z.object({
@@ -119,6 +137,38 @@ function providerError(status: number, code: string | number | undefined): Relay
   });
 }
 
+type WireContent =
+  | string
+  | readonly (
+      | { readonly type: 'text'; readonly text: string }
+      | { readonly type: 'image_url'; readonly image_url: { readonly url: string } }
+    )[];
+
+function wireContent(message: ProviderMessage): WireContent {
+  if (typeof message.content === 'string') {
+    return message.content;
+  }
+  if (message.role !== 'user') {
+    // Images are accepted in user messages only; anywhere else they are dropped
+    // rather than sent, and the text parts are joined.
+    return messageText(message.content);
+  }
+  return message.content.map((part) =>
+    part.type === 'text'
+      ? { type: 'text' as const, text: part.text }
+      : {
+          type: 'image_url' as const,
+          image_url: { url: `data:${part.mediaType};base64,${part.dataBase64}` },
+        },
+  );
+}
+
+type Usage = z.infer<typeof usageSchema>;
+
+function cachedTokens(usage: Usage | undefined): number | undefined {
+  return usage?.prompt_cache_hit_tokens;
+}
+
 export function createDeepSeekProvider(options: DeepSeekOptions): AiProviderAdapter {
   const fetchImpl = options.fetchImpl ?? globalThis.fetch;
   const endpoint = `${options.baseUrl.replace(/\/+$/, '')}/chat/completions`;
@@ -128,8 +178,8 @@ export function createDeepSeekProvider(options: DeepSeekOptions): AiProviderAdap
       model: options.model,
       messages: request.messages.map((message) =>
         message.toolCallId === undefined
-          ? { role: message.role, content: message.content }
-          : { role: message.role, content: message.content, tool_call_id: message.toolCallId },
+          ? { role: message.role, content: wireContent(message) }
+          : { role: message.role, content: wireContent(message), tool_call_id: message.toolCallId },
       ),
       max_tokens: request.maxOutputTokens,
       temperature: request.temperature,
@@ -190,6 +240,9 @@ export function createDeepSeekProvider(options: DeepSeekOptions): AiProviderAdap
       toolCalls: message === undefined ? [] : toToolCalls(message),
       inputTokens: parsed.data.usage?.prompt_tokens ?? 0,
       outputTokens: parsed.data.usage?.completion_tokens ?? 0,
+      ...(cachedTokens(parsed.data.usage) === undefined
+        ? {}
+        : { cachedInputTokens: cachedTokens(parsed.data.usage) }),
       finishReason: mapFinishReason(choice?.finish_reason),
       model: parsed.data.model ?? options.model,
     };
@@ -199,6 +252,7 @@ export function createDeepSeekProvider(options: DeepSeekOptions): AiProviderAdap
     name: 'deepseek',
     model: options.model,
     available: options.apiKey !== undefined && options.apiKey.length > 0,
+    supportsImageInput: options.supportsImageInput ?? deepSeekModelSupportsImages(options.model),
 
     async complete(request) {
       const response = await send(request, false);
@@ -217,6 +271,7 @@ export function createDeepSeekProvider(options: DeepSeekOptions): AiProviderAdap
       let text = '';
       let inputTokens = 0;
       let outputTokens = 0;
+      let cachedInputTokens: number | undefined;
       let finishReason: ProviderFinishReason = 'unknown';
       let model = options.model;
 
@@ -245,6 +300,7 @@ export function createDeepSeekProvider(options: DeepSeekOptions): AiProviderAdap
             model = parsed.data.model ?? model;
             inputTokens = parsed.data.usage?.prompt_tokens ?? inputTokens;
             outputTokens = parsed.data.usage?.completion_tokens ?? outputTokens;
+            cachedInputTokens = cachedTokens(parsed.data.usage) ?? cachedInputTokens;
             const choice = parsed.data.choices[0];
             finishReason =
               choice?.finish_reason === undefined || choice.finish_reason === null
@@ -270,6 +326,7 @@ export function createDeepSeekProvider(options: DeepSeekOptions): AiProviderAdap
           toolCalls: [],
           inputTokens,
           outputTokens: outputTokens === 0 ? Math.ceil(text.length / 4) : outputTokens,
+          ...(cachedInputTokens === undefined ? {} : { cachedInputTokens }),
           finishReason,
           model,
         },

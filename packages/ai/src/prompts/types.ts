@@ -20,6 +20,7 @@ export const PROMPT_IDS = [
   'shorten',
   'tone-adjust',
   'alt-text',
+  'media-understanding',
   'hook-options',
   'cta-options',
   'claim-check',

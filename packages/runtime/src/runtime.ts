@@ -1,4 +1,4 @@
-import { createAiGatewayFromConfig } from '@relay/ai';
+import { createAiGatewayFromConfig, createKeyValueCounterStore } from '@relay/ai';
 import {
   InMemoryScheduler,
   LocalFileStorage,
@@ -702,8 +702,20 @@ class DatabaseBillingGateway implements BillingGateway {
   }
 }
 
-function aiAdapter(config: RelayConfig, logger: Logger, clock: Clock): AiGateway {
-  const gateway = createAiGatewayFromConfig({ config, logger, clock });
+function aiAdapter(
+  config: RelayConfig,
+  logger: Logger,
+  clock: Clock,
+  kv: KeyValueStore,
+): AiGateway {
+  // Budget counters live on the shared store (Redis in a deployment), so every
+  // replica sees the same per-workspace spend instead of its own copy.
+  const gateway = createAiGatewayFromConfig({
+    config,
+    logger,
+    clock,
+    counters: createKeyValueCounterStore(kv),
+  });
   return {
     isAvailable: () => gateway.status().availability === 'ready',
     // The assistant's only path from a model to structured data. The gateway
@@ -1040,7 +1052,7 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
     ...(credentialVault === undefined ? {} : { credentialVault }),
     ...(credentialStore === undefined ? {} : { credentialStore }),
     oauthPending,
-    ai: adapters.ai ?? aiAdapter(options.config, options.logger, clock),
+    ai: adapters.ai ?? aiAdapter(options.config, options.logger, clock, kv),
     billing: adapters.billing ?? new DatabaseBillingGateway(prisma, clock, options.config),
     scheduler,
     storage,

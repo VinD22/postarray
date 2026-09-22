@@ -26,6 +26,7 @@ import {
   weeklyDigestPrompt,
 } from './analysis';
 import { assistantRoutePrompt, assistantWeekPlanPrompt } from './assistant';
+import { mediaUnderstandingPrompt } from './media';
 
 /**
  * The prompt registry.
@@ -43,6 +44,7 @@ export const PROMPT_REGISTRY: Readonly<Record<PromptId, PromptModule>> = Object.
   shorten: shortenPrompt,
   'tone-adjust': toneAdjustPrompt,
   'alt-text': altTextPrompt,
+  'media-understanding': mediaUnderstandingPrompt,
   'hook-options': hookOptionsPrompt,
   'cta-options': ctaOptionsPrompt,
   'claim-check': claimCheckPrompt,

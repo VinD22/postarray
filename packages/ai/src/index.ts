@@ -30,11 +30,17 @@ export type { Clock } from './clock';
 export {
   AI_AVAILABILITIES,
   AI_TASK_MODES,
+  AI_IMAGE_MAX_BYTES,
+  AI_IMAGE_MEDIA_TYPES,
+  AI_IMAGE_TOKEN_CAP,
   PROVIDER_FINISH_REASONS,
   PROVIDER_MESSAGE_ROLES,
   UNTRUSTED_SOURCE_ORIGINS,
   aiTaskModeSchema,
+  countImageParts,
+  createKeyValueCounterStore,
   createMemoryCounterStore,
+  messageText,
   untrustedSourceOriginSchema,
   untrustedSourceSchema,
 } from './types';
@@ -44,6 +50,9 @@ export type {
   AiCounterStore,
   AiGateway,
   AiGatewayStatus,
+  AiImageInput,
+  AiImageMediaType,
+  AiKeyValueCounterBackend,
   AiMeta,
   AiProviderAdapter,
   AiRequest,
@@ -55,6 +64,7 @@ export type {
   AiUsage,
   AiVariableValue,
   AiVariables,
+  ProviderContentPart,
   ProviderFinishReason,
   ProviderMessage,
   ProviderMessageRole,
@@ -78,11 +88,13 @@ export type { AiErrorContext } from './errors';
 
 export {
   ASSUMED_PRICING,
+  DEEPSEEK_FLASH_PRICING,
   BUDGET_LIMIT_NAMES,
   DEFAULT_BUDGET_LIMITS,
   centsToMicros,
   createBudgetGuard,
   estimateCostMicros,
+  estimateInputTokens,
   estimateTokens,
 } from './budget';
 export type {

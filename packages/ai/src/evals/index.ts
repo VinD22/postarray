@@ -20,7 +20,7 @@ export {
   voiceScorer,
 } from './scorers';
 
-export { EN_EVAL_CASES, EVAL_DATASETS, casesForLocale } from './dataset';
+export { EN_EVAL_CASES, EVAL_DATASETS, EVAL_IMAGE_FIXTURES, casesForLocale } from './dataset';
 
 export { formatReport, runSuite } from './harness';
 export type { RunSuiteOptions } from './harness';

@@ -26,6 +26,11 @@ export const UNTRUSTED_SOURCE_ORIGINS = [
   'provider_response',
   'catalog_record',
   'user_note',
+  /**
+   * Pixels. Text visible inside an uploaded image can carry an injection as
+   * easily as a web page can, so an image is fenced like any other source.
+   */
+  'image',
 ] as const;
 export const untrustedSourceOriginSchema = z.enum(UNTRUSTED_SOURCE_ORIGINS);
 export type UntrustedSourceOrigin = z.infer<typeof untrustedSourceOriginSchema>;
@@ -44,6 +49,30 @@ export const untrustedSourceSchema = z
   })
   .strict();
 export type UntrustedSource = z.infer<typeof untrustedSourceSchema>;
+
+/** Image formats the gateway will forward. Anything else is refused upstream. */
+export const AI_IMAGE_MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+export type AiImageMediaType = (typeof AI_IMAGE_MEDIA_TYPES)[number];
+
+/**
+ * One image handed to a model for analysis. Never generation: the gateway only
+ * ever sends pixels a user already owns, and only as untrusted data.
+ *
+ * The caller is responsible for sending a downscaled derivative of a scanned,
+ * rights-declared asset from the same workspace. The gateway re-checks size.
+ */
+export interface AiImageInput {
+  readonly id: string;
+  readonly label: string;
+  readonly mediaType: AiImageMediaType;
+  readonly dataBase64: string;
+  readonly retrievedAt: string;
+}
+
+/** Upper bound on the encoded image a single call may carry (1 MB of bytes). */
+export const AI_IMAGE_MAX_BYTES = 1_048_576;
+/** Providers bill at most this many input tokens per image; budgets assume the cap. */
+export const AI_IMAGE_TOKEN_CAP = 1024;
 
 /** Everything the gateway needs to budget, scope and label one call. */
 export interface AiCallContext {
@@ -67,6 +96,8 @@ export interface AiRequest {
   readonly promptVersion?: string;
   readonly variables: AiVariables;
   readonly untrustedSources?: readonly UntrustedSource[];
+  /** Images to analyse. Sent only in the user message, inside the untrusted fence. */
+  readonly images?: readonly AiImageInput[];
   readonly maxOutputTokens?: number;
   readonly timeoutMs?: number;
   readonly budgetCents?: number;
@@ -79,6 +110,10 @@ export interface AiUsage {
   readonly inputTokens: number;
   readonly outputTokens: number;
   readonly costMicros: number;
+  /** Input tokens served from the provider's prefix cache, when it reports them. */
+  readonly cachedInputTokens?: number;
+  /** Images sent with the call. Metered separately as vision input. */
+  readonly imageCount?: number;
 }
 
 export interface AiMeta extends AiUsage {
@@ -161,9 +196,18 @@ export interface AiGateway {
 export const PROVIDER_MESSAGE_ROLES = ['system', 'user', 'assistant', 'tool'] as const;
 export type ProviderMessageRole = (typeof PROVIDER_MESSAGE_ROLES)[number];
 
+export type ProviderContentPart =
+  | { readonly type: 'text'; readonly text: string }
+  | {
+      readonly type: 'image';
+      readonly mediaType: AiImageMediaType;
+      readonly dataBase64: string;
+    };
+
 export interface ProviderMessage {
   readonly role: ProviderMessageRole;
-  readonly content: string;
+  /** A string, or ordered parts. Image parts are only ever placed on user messages. */
+  readonly content: string | readonly ProviderContentPart[];
   /** Present only on `tool` messages, echoing the call being answered. */
   readonly toolCallId?: string;
 }
@@ -205,8 +249,29 @@ export interface ProviderResponse {
   readonly toolCalls: readonly ProviderToolCall[];
   readonly inputTokens: number;
   readonly outputTokens: number;
+  /** Of `inputTokens`, how many were prefix-cache hits. Absent when unreported. */
+  readonly cachedInputTokens?: number;
   readonly finishReason: ProviderFinishReason;
   readonly model: string;
+}
+
+/** The text of a message, with image parts left out. */
+export function messageText(content: ProviderMessage['content']): string {
+  if (typeof content === 'string') {
+    return content;
+  }
+  return content.map((part) => (part.type === 'text' ? part.text : '')).join('');
+}
+
+/** Number of image parts across a message list. */
+export function countImageParts(messages: readonly ProviderMessage[]): number {
+  let count = 0;
+  for (const message of messages) {
+    if (typeof message.content !== 'string') {
+      count += message.content.filter((part) => part.type === 'image').length;
+    }
+  }
+  return count;
 }
 
 export interface ProviderStreamChunk {
@@ -220,6 +285,8 @@ export interface AiProviderAdapter {
   readonly model: string;
   /** False when the adapter has no credentials and must not be called. */
   readonly available: boolean;
+  /** True only when this adapter and its configured model accept image input. */
+  readonly supportsImageInput: boolean;
   complete(request: ProviderRequest): Promise<ProviderResponse>;
   stream(request: ProviderRequest): AsyncIterable<ProviderStreamChunk>;
 }
@@ -249,6 +316,36 @@ export interface AiCounterStore {
   /** Atomically add `amount` and return the new total. */
   increment(key: string, amount: number, ttlSeconds: number): Promise<number>;
   read(key: string): Promise<number>;
+}
+
+/**
+ * The slice of a shared key value store (Redis in production) that budget
+ * counters need. `increment` must be atomic and set the TTL on first write.
+ */
+export interface AiKeyValueCounterBackend {
+  increment(key: string, amount?: number, ttlSeconds?: number): Promise<number>;
+  get(key: string): Promise<string | null>;
+}
+
+/**
+ * Budget counters on the shared store, so every API and worker replica sees the
+ * same per-workspace spend. In-process counters let each replica spend the
+ * full budget on its own.
+ */
+export function createKeyValueCounterStore(backend: AiKeyValueCounterBackend): AiCounterStore {
+  return {
+    async increment(key, amount, ttlSeconds) {
+      return backend.increment(key, amount, ttlSeconds);
+    },
+    async read(key) {
+      const raw = await backend.get(key);
+      if (raw === null) {
+        return 0;
+      }
+      const value = Number(raw);
+      return Number.isFinite(value) ? value : 0;
+    },
+  };
 }
 
 /** In-process counters with expiry. Never share one across a cluster. */

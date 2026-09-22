@@ -12,6 +12,7 @@ import type {
   ProviderStreamChunk,
   ProviderToolCall,
 } from '../types';
+import { messageText } from '../types';
 
 /**
  * Anthropic adapter, speaking the Messages API.
@@ -68,6 +69,7 @@ const contentBlockSchema = z.object({ type: z.string() }).loose();
 const usageSchema = z.object({
   input_tokens: z.number().int().nonnegative().optional(),
   output_tokens: z.number().int().nonnegative().optional(),
+  cache_read_input_tokens: z.number().int().nonnegative().optional(),
 });
 
 const messageSchema = z.object({
@@ -153,6 +155,21 @@ interface WireMessage {
  * conversation turns. A `tool` message becomes a `tool_result` block on a user
  * turn, which is where this API expects an answer to a tool call to appear.
  */
+/** Map neutral parts onto Messages API blocks. Images only ever ride on user turns. */
+function userContent(content: ProviderMessage['content']): unknown {
+  if (typeof content === 'string') {
+    return content;
+  }
+  return content.map((part) =>
+    part.type === 'text'
+      ? { type: 'text', text: part.text }
+      : {
+          type: 'image',
+          source: { type: 'base64', media_type: part.mediaType, data: part.dataBase64 },
+        },
+  );
+}
+
 function splitMessages(messages: readonly ProviderMessage[]): {
   readonly system: string | undefined;
   readonly turns: readonly WireMessage[];
@@ -161,7 +178,7 @@ function splitMessages(messages: readonly ProviderMessage[]): {
   const turns: WireMessage[] = [];
   for (const message of messages) {
     if (message.role === 'system') {
-      systemParts.push(message.content);
+      systemParts.push(messageText(message.content));
       continue;
     }
     if (message.role === 'tool') {
@@ -171,13 +188,17 @@ function splitMessages(messages: readonly ProviderMessage[]): {
           {
             type: 'tool_result',
             tool_use_id: message.toolCallId ?? '',
-            content: message.content,
+            content: messageText(message.content),
           },
         ],
       });
       continue;
     }
-    turns.push({ role: message.role, content: message.content });
+    turns.push({
+      role: message.role,
+      content:
+        message.role === 'user' ? userContent(message.content) : messageText(message.content),
+    });
   }
   return {
     system: systemParts.length === 0 ? undefined : systemParts.join('\n\n'),
@@ -277,6 +298,9 @@ export function createAnthropicProvider(options: AnthropicOptions): AiProviderAd
       toolCalls: toToolCalls(parsed.data.content),
       inputTokens: parsed.data.usage?.input_tokens ?? 0,
       outputTokens: parsed.data.usage?.output_tokens ?? 0,
+      ...(parsed.data.usage?.cache_read_input_tokens === undefined
+        ? {}
+        : { cachedInputTokens: parsed.data.usage.cache_read_input_tokens }),
       finishReason: mapStopReason(parsed.data.stop_reason),
       model: parsed.data.model ?? options.model,
     };
@@ -286,6 +310,7 @@ export function createAnthropicProvider(options: AnthropicOptions): AiProviderAd
     name: 'anthropic',
     model: options.model,
     available: options.apiKey !== undefined && options.apiKey.length > 0,
+    supportsImageInput: true,
 
     async complete(request) {
       const response = await send(request, false);

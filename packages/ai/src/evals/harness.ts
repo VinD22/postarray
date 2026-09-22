@@ -34,6 +34,7 @@ async function runCase(options: RunSuiteOptions, evalCase: EvalCase): Promise<Ca
       ...(evalCase.untrustedSources === undefined
         ? {}
         : { untrustedSources: evalCase.untrustedSources }),
+      ...(evalCase.images === undefined ? {} : { images: evalCase.images }),
     });
 
     if (evalCase.expectation.expectRefusal === true) {
