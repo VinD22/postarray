@@ -88,6 +88,7 @@ export class BillingController {
     const input = parseBody(createCheckoutSchema, body);
     return this.billing.createCheckout(actor, {
       interval: input.interval,
+      ...(input.tier === undefined ? {} : { tier: input.tier }),
       successUrl: this.requireAppOrigin(input.successUrl),
     });
   }

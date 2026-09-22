@@ -1,12 +1,13 @@
 import { z } from 'zod';
+import { planTierKeySchema } from '@relay/contracts';
 
 import { timeRangeShape } from '../../common/pagination';
 
 /**
  * Billing payloads.
  *
- * One public plan, two intervals. There are no feature tiers, so there is no
- * plan identifier in these requests, only the interval the customer chose.
+ * Capacity tiers share features and have two billing intervals. Older clients
+ * may omit the tier, retaining the base plan behavior.
  *
  * The checkout success redirect grants nothing. Entitlements come only from
  * verified Polar webhook state plus periodic reconciliation, and until the
@@ -18,6 +19,7 @@ import { timeRangeShape } from '../../common/pagination';
 export const createCheckoutSchema = z
   .object({
     interval: z.enum(['monthly', 'annual']),
+    tier: planTierKeySchema.optional(),
     /** Must be on the configured app origin. Validated in the controller. */
     successUrl: z.string().trim().min(1).max(2048),
   })

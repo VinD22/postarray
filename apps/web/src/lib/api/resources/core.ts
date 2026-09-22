@@ -10,7 +10,7 @@ import type {
   UsageSummaryView,
   WorkspaceView as ApplicationWorkspaceView,
 } from '@relay/application';
-import type { Paginated as ContractPaginated } from '@relay/contracts';
+import type { Paginated as ContractPaginated, PlanTierKey } from '@relay/contracts';
 import {
   demoAudit,
   demoBilling,
@@ -244,14 +244,18 @@ export const billingApi = {
       (state) => state,
     ),
   createCheckout: (
-    input: { interval: 'monthly' | 'annual'; returnUrl: string },
+    input: { interval: 'monthly' | 'annual'; returnUrl: string; tier?: PlanTierKey },
     idempotencyKey: string,
   ): Promise<{ checkoutUrl: string }> =>
     call(
       '/billing/checkout',
       {
         method: 'POST',
-        body: { interval: input.interval, successUrl: input.returnUrl },
+        body: {
+          interval: input.interval,
+          successUrl: input.returnUrl,
+          ...(input.tier === undefined ? {} : { tier: input.tier }),
+        },
         idempotencyKey,
       },
       () => ({ checkoutUrl: input.returnUrl }),

@@ -416,6 +416,7 @@ class DatabaseBillingGateway implements BillingGateway {
       { client: this.#client(), config: this.#config.polar, clock: this.#clock },
       {
         interval: input.interval === 'monthly' ? 'month' : 'year',
+        ...(input.tier === undefined ? {} : { tier: input.tier }),
         workspaceId: input.workspaceId,
         actorId: input.actorId,
         successUrl: input.successUrl,
@@ -441,6 +442,7 @@ class DatabaseBillingGateway implements BillingGateway {
           metadata: {
             checkoutId: session.checkoutId,
             interval: session.interval,
+            tier: session.tierKey,
             disclosureVersion: session.disclosure.version,
             disclosureChecksum: session.consent.checksum,
           },

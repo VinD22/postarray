@@ -16,6 +16,7 @@ import type { BusinessProfileView } from '@/lib/api/types';
 import type { ServiceAccountApiView } from '@/lib/api/resources/service-accounts';
 import { ERROR_CODES } from '@relay/contracts';
 import type {
+  PlanTierKey,
   GrowthExportFormat,
   GrowthPlan,
   OpportunityRecord,
@@ -825,10 +826,10 @@ export const billingGateway = {
     return result.portalUrl;
   },
 
-  async checkout(interval: 'monthly' | 'annual'): Promise<string> {
+  async checkout(interval: 'monthly' | 'annual', tier: PlanTierKey): Promise<string> {
     const returnUrl = `${window.location.origin}/settings/billing`;
     const result = await api.billing.createCheckout(
-      { interval, returnUrl },
+      { interval, returnUrl, tier },
       newIdempotencyKey('settings'),
     );
     return result.checkoutUrl;

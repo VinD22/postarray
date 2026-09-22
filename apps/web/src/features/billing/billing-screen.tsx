@@ -6,6 +6,7 @@ import { Link } from '@/components/link';
 import { Button, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
 import { EmptyState, MetricValue, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
+import type { PlanTierKey } from '@relay/contracts';
 import { cn, panelSurface } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 
@@ -35,13 +36,14 @@ export function BillingScreen(): ReactNode {
   const usage = useQuery({ queryKey: USAGE_KEY, queryFn: () => billingGateway.usage() });
 
   const [cancelling, setCancelling] = useState(false);
-  const [tier, setTier] = useState<string>(BASE_TIER_KEY);
+  const [interval, setInterval] = useState<'monthly' | 'annual'>('monthly');
+  const [tier, setTier] = useState<PlanTierKey>(BASE_TIER_KEY);
 
   const openPortal = useSettingsMutation({
     section,
     mutationFn: async () => {
       const url = await billingGateway.portalLink();
-      window.open(url, '_blank', 'noopener,noreferrer');
+      window.location.assign(url);
       return url;
     },
     successMessage: t('billing.subscription.portal'),
@@ -50,7 +52,7 @@ export function BillingScreen(): ReactNode {
   const startCheckout = useSettingsMutation({
     section,
     mutationFn: async (interval: 'monthly' | 'annual') => {
-      const url = await billingGateway.checkout(interval);
+      const url = await billingGateway.checkout(interval, tier);
       window.location.assign(url);
       return url;
     },
@@ -59,14 +61,6 @@ export function BillingScreen(): ReactNode {
   const state = billing.data;
 
   function chooseInterval(next: 'monthly' | 'annual'): void {
-    announce(
-      t('billing.ui.intervalChangedAnnouncement', {
-        interval:
-          next === 'annual'
-            ? t('billing.plan.interval.annual')
-            : t('billing.plan.interval.monthly'),
-      }),
-    );
     void startCheckout.run(next);
   }
 
@@ -90,7 +84,24 @@ export function BillingScreen(): ReactNode {
                   title={t('billing.tier.heading')}
                   description={t('billing.tier.subheading')}
                 >
-                  <TierPicker value={tier} onChange={setTier} interval="monthly" />
+                  <TierPicker value={tier} onChange={setTier} interval={interval} />
+                  <RadioGroup
+                    value={interval}
+                    onValueChange={(value) =>
+                      setInterval(value === 'annual' ? 'annual' : 'monthly')
+                    }
+                    aria-label={t('billing.ui.intervalHeading')}
+                    className="mt-4 flex flex-wrap gap-4"
+                  >
+                    <label className="text-body-md flex min-h-11 items-center gap-2">
+                      <RadioGroupItem value="monthly" />
+                      {t('billing.ui.monthlyOption')}
+                    </label>
+                    <label className="text-body-md flex min-h-11 items-center gap-2">
+                      <RadioGroupItem value="annual" />
+                      {t('billing.ui.annualOption')}
+                    </label>
+                  </RadioGroup>
                 </SettingsPanel>
               ) : null}
               <EmptyState
@@ -114,7 +125,7 @@ export function BillingScreen(): ReactNode {
                     <Button
                       variant="primary"
                       loading={startCheckout.isSaving}
-                      onClick={() => chooseInterval('monthly')}
+                      onClick={() => chooseInterval(interval)}
                     >
                       {t('action.upgrade')}
                     </Button>
@@ -235,42 +246,6 @@ export function BillingScreen(): ReactNode {
                   />
                 ) : null}
               </SettingsPanel>
-
-              {state.checkoutAvailable ? (
-                <SettingsPanel
-                  title={t('billing.ui.intervalHeading')}
-                  description={t('billing.ui.intervalChangeHelp')}
-                >
-                  <TierPicker
-                    value={tier}
-                    onChange={setTier}
-                    interval={state.interval === 'annual' ? 'annual' : 'monthly'}
-                  />
-                  <RadioGroup
-                    value={state.interval ?? 'monthly'}
-                    onValueChange={(value) =>
-                      chooseInterval(value === 'annual' ? 'annual' : 'monthly')
-                    }
-                    className="flex flex-col"
-                  >
-                    <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
-                      <RadioGroupItem className="mt-1" value="monthly" />
-                      <span className="flex flex-col">
-                        <span>{t('billing.ui.monthlyOption')}</span>
-                      </span>
-                    </label>
-                    <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
-                      <RadioGroupItem className="mt-1" value="annual" />
-                      <span className="flex flex-col">
-                        <span>{t('billing.ui.annualOption')}</span>
-                        <span className="text-body-sm text-text-secondary">
-                          {t('billing.ui.annualFraming')}
-                        </span>
-                      </span>
-                    </label>
-                  </RadioGroup>
-                </SettingsPanel>
-              ) : null}
 
               <SettingsPanel
                 title={t('billing.ui.usageHeading')}

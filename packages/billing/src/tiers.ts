@@ -1,10 +1,11 @@
-import { z } from 'zod';
-
 import {
   BASE_PROJECT_LIMIT,
   MAX_PROJECT_LIMIT,
   RelayError,
   channelAllowanceForProjects,
+  PLAN_TIER_KEYS,
+  planTierKeySchema,
+  type PlanTierKey,
 } from '@relay/contracts';
 
 import type { BillingInterval } from './intervals';
@@ -56,9 +57,7 @@ import { USD } from './money';
  * the specific presentation this product refuses.
  */
 
-export const PLAN_TIER_KEYS = ['relay_standard', 'relay_growth', 'relay_studio'] as const;
-export const planTierKeySchema = z.enum(PLAN_TIER_KEYS);
-export type PlanTierKey = z.infer<typeof planTierKeySchema>;
+export { PLAN_TIER_KEYS, planTierKeySchema, type PlanTierKey } from '@relay/contracts';
 
 /** The tier every workspace falls back to. Never absent, never pending. */
 export const BASE_TIER_KEY = 'relay_standard' as const satisfies PlanTierKey;

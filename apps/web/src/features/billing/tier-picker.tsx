@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { planTierKeySchema, type PlanTierKey } from '@relay/contracts';
 import { RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
 import { useI18n, useTranslations } from '@relay/i18n/react';
 
@@ -8,8 +9,8 @@ import { pendingTiers, priceUnits, publishableTiers } from './tiers';
 import type { WebPlanTier } from './tiers';
 
 export interface TierPickerProps {
-  readonly value: string;
-  readonly onChange: (tierKey: string) => void;
+  readonly value: PlanTierKey;
+  readonly onChange: (tierKey: PlanTierKey) => void;
   readonly interval: 'monthly' | 'annual';
 }
 
@@ -51,7 +52,10 @@ export function TierPicker({ value, onChange, interval }: TierPickerProps): Reac
       ) : (
         <RadioGroup
           value={value}
-          onValueChange={onChange}
+          onValueChange={(value) => {
+            const tier = planTierKeySchema.safeParse(value);
+            if (tier.success) onChange(tier.data);
+          }}
           aria-label={t('billing.tier.select')}
           className="flex flex-col"
         >

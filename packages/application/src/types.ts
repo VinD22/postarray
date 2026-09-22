@@ -1,4 +1,5 @@
 import type {
+  PlanTierKey,
   AssistantActionOutput,
   AssistantTurnRequest,
   AssistantTurnResponse,
@@ -876,6 +877,7 @@ export interface BillingGateway {
     readonly locale: string;
     readonly idempotencyKey: string;
     readonly interval: 'monthly' | 'annual';
+    readonly tier?: PlanTierKey;
     readonly successUrl: string;
   }): Promise<CheckoutSessionView>;
   createPortalLink(input: {
@@ -2708,7 +2710,11 @@ export interface CustomerBillingService {
   ): Promise<UsageSummaryView>;
   createCheckout(
     ctx: ActorContext,
-    input: { readonly interval: 'monthly' | 'annual'; readonly successUrl: string },
+    input: {
+      readonly interval: 'monthly' | 'annual';
+      readonly successUrl: string;
+      readonly tier?: PlanTierKey;
+    },
   ): Promise<CheckoutSessionView>;
   createPortalLink(
     ctx: ActorContext,

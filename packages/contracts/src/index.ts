@@ -29,6 +29,7 @@ export * from './api';
 export * from './events';
 export * from './scopes';
 export * from './plan-limits';
+export * from './billing';
 export * from './launch-policy';
 
 export * from './assistant';
