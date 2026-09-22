@@ -31,6 +31,8 @@ import { LinkControls } from './link-controls';
 import { MediaStrip } from './media-strip';
 import { SequencePanel } from './sequence-panel';
 import { SignaturePanel } from './signature-panel';
+import { SuggestMenu } from './suggest-menu';
+import { SuggestReviewButton } from './suggest-review';
 import type { MediaAsset } from '../../media/types';
 
 export interface MasterPanelProps {
@@ -84,9 +86,13 @@ export function MasterPanel({
         counters={counters}
         onChange={(value) => dispatch({ type: 'master/patch', patch: { body: value } })}
         toolbar={
-          <Button variant="secondary" size="sm" onClick={() => setGlobalEditOpen(true)}>
-            {t.full('composerWeb.globalEdit.open')}
-          </Button>
+          <>
+            <SuggestMenu connectionId={null} body={state.master.body} />
+            <SuggestReviewButton />
+            <Button variant="secondary" size="sm" onClick={() => setGlobalEditOpen(true)}>
+              {t.full('composerWeb.globalEdit.open')}
+            </Button>
+          </>
         }
       />
 

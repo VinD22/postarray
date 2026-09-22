@@ -49,11 +49,22 @@ describe('ActionBar', () => {
     render(mount(<ActionBar onCommit={() => undefined} onShowIssues={() => undefined} />));
 
     expect(screen.getByRole('toolbar', { name: 'Draft actions' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Publish now' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /^Publish to \d+ channels? now$/ }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Save draft' })).toBeInTheDocument();
   });
 
-  it('says Schedule once the draft has a time, and Publish now while it has none', () => {
+  it('runs the primary action on Command+Enter', async () => {
+    const onCommit = vi.fn();
+    render(mount(<ActionBar onCommit={onCommit} onShowIssues={() => undefined} />));
+
+    await userEvent.keyboard('{Meta>}{Enter}{/Meta}');
+
+    expect(onCommit).toHaveBeenCalledTimes(1);
+  });
+
+  it('names the time and zone once the draft has a time', () => {
     const scheduled: ComposerBootstrap = {
       ...SEED_BOOTSTRAP,
       master: {
@@ -72,8 +83,10 @@ describe('ActionBar', () => {
       }),
     );
 
-    expect(screen.getByRole('button', { name: 'Schedule' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Publish now' })).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /^Schedule for .*10.*\(Europe\/Berlin\)$/ }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^Publish/ })).not.toBeInTheDocument();
   });
 
   it('offers the problem count as a way into the panel that lists them', async () => {

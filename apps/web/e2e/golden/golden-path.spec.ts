@@ -65,7 +65,7 @@ test('publish now to two channels and see both receipts', async ({ page }) => {
   // The draft id lands in the URL once the first save happens, so a reload
   // resumes this post instead of starting a new one.
   await expect(page).toHaveURL(/contentItemId=/);
-  await page.getByRole('button', { name: 'Publish now', exact: true }).click();
+  await page.getByRole('button', { name: /^Publish to \d+ channels? now$/ }).click();
   await page.getByRole('button', { name: /publish now|confirm/i }).last().click();
 
   // Both receipts, from the worker, not the page.

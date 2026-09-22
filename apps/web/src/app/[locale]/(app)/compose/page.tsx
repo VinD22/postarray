@@ -20,6 +20,7 @@ import { COMPOSER_CONTENT_LOCALES } from '@/features/composer/content-locale-opt
 import { SEED_ASSETS, mediaAssetFromApi, type MediaAsset } from '@/features/media';
 import { loadComposer } from '@/features/composer/data/composer-gateway';
 import { scheduleFromQuickCreate } from '@/features/composer/state/quick-create';
+import { attachFromLibrary } from '@/features/composer/state/attach-from-library';
 import { requireSession } from '@/lib/auth/require-session';
 import { ACTIVE_PROJECT_COOKIE, resolveActiveProject } from '@/lib/auth/project-selection';
 import { getRequestIntl } from '@/lib/i18n/server';
@@ -50,6 +51,11 @@ export default async function ComposePage({
   const params = await searchParams;
   const contentItemId = first(params.contentItemId);
   const projectId = first(params.projectId);
+  // From the Library's "Use in post" and a file dropped on the app shell.
+  const mediaParam = params.mediaId;
+  const libraryMediaIds = (Array.isArray(mediaParam) ? mediaParam : [mediaParam]).filter(
+    (value): value is string => typeof value === 'string' && value.length > 0,
+  );
   // From the calendar's empty-slot button. Invalid values seed nothing.
   const quickCreateSchedule = scheduleFromQuickCreate({
     at: first(params.at),
@@ -139,13 +145,11 @@ export default async function ComposePage({
         ),
         contentItemId === null
           ? Promise.resolve('none')
-          : api.content
-              .getComposite(contentItemId, forward)
-              .then((item) => item.approvalPolicy),
+          : api.content.getComposite(contentItemId, forward).then((item) => item.approvalPolicy),
       ]);
-      bootstrap = loadedComposer;
-      approvalRequired = approvalPolicy !== 'none';
       assets = mediaPage.data.map(mediaAssetFromApi);
+      bootstrap = attachFromLibrary(loadedComposer, libraryMediaIds, assets);
+      approvalRequired = approvalPolicy !== 'none';
       if (bootstrap.accounts.length === 0) {
         status = 'no_connections';
       }

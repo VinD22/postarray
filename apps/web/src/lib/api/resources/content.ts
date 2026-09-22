@@ -727,10 +727,13 @@ export const schedulingApi = {
       demoWriteUnavailable,
     ),
 
-  getCalendar: (query: CalendarQuery): Promise<Paginated<CalendarEntryView>> =>
+  getCalendar: (
+    query: CalendarQuery,
+    forward?: ForwardAuth,
+  ): Promise<Paginated<CalendarEntryView>> =>
     call<Paginated<ApplicationCalendarEntry>, Paginated<CalendarEntryView>>(
       '/calendar',
-      { query },
+      { query, ...forward },
       () =>
         page(
           demoCalendar.filter(

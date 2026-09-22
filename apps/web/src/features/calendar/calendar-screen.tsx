@@ -79,6 +79,7 @@ import {
 import { buildProposal, collectWarnings, keyboardStep, KEYBOARD_STEP_MINUTES } from './reschedule';
 import {
   useCalendarEntries,
+  usePrefetchNeighbourWindows,
   usePauseScheduled,
   useRescheduleEntry,
   useResumeScheduled,
@@ -149,6 +150,21 @@ export function CalendarScreen({
     to: range.end,
     projectId: filters.projectId,
   });
+
+  const neighbours = useMemo(
+    () =>
+      ([-1, 1] as const).map((direction) => {
+        const next = computeRange(
+          view,
+          stepAnchor(view, anchor, direction, format.timeZone),
+          format.timeZone,
+          format.weekStartsOn,
+        );
+        return { from: next.start, to: next.end, projectId: filters.projectId };
+      }),
+    [view, anchor, format.timeZone, format.weekStartsOn, filters.projectId],
+  );
+  usePrefetchNeighbourWindows(neighbours, query.isSuccess && !query.isPlaceholderData);
 
   // Recompute the derived list only when the fetched page or the filters
   // change, not on every render of a screen that also holds dialog state.

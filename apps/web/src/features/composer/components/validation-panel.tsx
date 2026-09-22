@@ -19,6 +19,7 @@ import { StaggerList } from '@/components/motion';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { useComposer } from '../composer-context';
 import { PROVIDER_LABEL } from './provider-identity';
+import { SuggestReviewItems } from './suggest-review';
 
 /** A key stable across renders as long as the same issue is still open. */
 function issueKey(connectionId: string, issue: ValidationIssue): string {
@@ -185,6 +186,7 @@ export function ValidationPanel({ focusedIssueIndex }: ValidationPanelProps): Re
           </ul>
         </StaggerList>
       )}
+      <SuggestReviewItems />
     </section>
   );
 }

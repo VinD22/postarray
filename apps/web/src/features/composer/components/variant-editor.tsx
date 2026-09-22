@@ -23,6 +23,8 @@ import { MediaStrip } from './media-strip';
 import { NativeSettings } from './native-settings';
 import { fieldLabel, ResetToMasterDialog } from './reset-to-master-dialog';
 import { SequencePanel } from './sequence-panel';
+import { SuggestBestTime } from './suggest-best-time';
+import { SuggestMenu } from './suggest-menu';
 import { PROVIDER_LABEL } from './provider-identity';
 import type { ResolvedEntity } from './entity-search-field';
 import type { TargetSummary } from '../types';
@@ -133,6 +135,7 @@ export function VariantEditor({
         value={resolved.values.body}
         placeholder={t.full('composer.master.placeholder')}
         onChange={(value) => override('body', value)}
+        toolbar={<SuggestMenu connectionId={summary.connectionId} body={resolved.values.body} />}
         counters={[
           {
             connectionId: summary.connectionId,
@@ -141,6 +144,8 @@ export function VariantEditor({
           },
         ]}
       />
+
+      <SuggestBestTime connectionId={summary.connectionId} />
 
       <details className="border-border-subtle bg-surface-sunken group rounded-md border">
         <summary className="text-label text-text-secondary flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 font-medium marker:content-none [&::-webkit-details-marker]:hidden">

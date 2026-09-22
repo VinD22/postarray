@@ -14,7 +14,8 @@
  * reserves exactly that much padding, so the reservation stays right when the
  * bar wraps to two lines on a narrow screen.
  *
- * No motion here at all. The label swaps between "Schedule" and "Publish now"
+ * No motion here at all. The label states the consequence ("Publish to 2
+ * channels now", "Schedule for Tue 23 Sep, 9:00 AM (Asia/Kolkata)") and swaps
  * the instant the schedule changes: a bar that animates under the cursor while
  * somebody is deciding whether to publish is a bar that gets misclicked.
  */
@@ -40,6 +41,37 @@ export function ActionBar({ onCommit, onShowIssues, barRef }: ActionBarProps): R
   const { bootstrap, state, totals, autosave, saveNow, online } = useComposer();
   const schedule = state.master.schedule;
   const scheduled = schedule !== null;
+  const zone = schedule?.ianaTimeZone ?? bootstrap.workspaceTimeZone;
+  const primaryLabel =
+    schedule === null
+      ? t.full('composerWeb.actionBar.publishToCount', { count: totals.targetCount })
+      : t.full('composerWeb.actionBar.scheduleFor', {
+          time: formatDateTime(t.locale, schedule.instant, {
+            timeZone: zone,
+            dateStyle: 'medium',
+            timeStyle: 'short',
+          }),
+          zone,
+        });
+
+  // Command+Enter (Control+Enter elsewhere) runs the same primary action. It
+  // opens the confirmation step, never commits on its own.
+  useEffect(() => {
+    if (!online) {
+      return;
+    }
+    const onKey = (event: KeyboardEvent): void => {
+      if (event.key !== 'Enter' || !(event.metaKey || event.ctrlKey) || event.isComposing) {
+        return;
+      }
+      event.preventDefault();
+      onCommit();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [online, onCommit]);
 
   return (
     <div
@@ -73,8 +105,11 @@ export function ActionBar({ onCommit, onShowIssues, barRef }: ActionBarProps): R
         </Button>
       ) : null}
 
-      <span className="text-label text-text-secondary tabular-nums">
-        {t.full('composerWeb.summary.targets', { count: totals.targetCount })}
+      <span className="text-label text-text-secondary tabular-nums" role="status">
+        {t.full('composerWeb.readiness.summary', {
+          count: totals.targetCount,
+          ready: totals.targetCount - totals.blockedCount,
+        })}
       </span>
 
       <span className="text-label text-text-secondary tabular-nums">
@@ -106,8 +141,10 @@ export function ActionBar({ onCommit, onShowIssues, barRef }: ActionBarProps): R
           className="scroll-mb-24"
           disabled={!online}
           onClick={onCommit}
+          aria-keyshortcuts="Meta+Enter Control+Enter"
+          data-scheduled={scheduled ? 'true' : 'false'}
         >
-          {scheduled ? t.full('action.schedule') : t.full('action.publishNow')}
+          {primaryLabel}
         </Button>
       </div>
     </div>

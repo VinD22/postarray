@@ -43,6 +43,7 @@ import { formatBytes, formatDateTime } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
 import { EmptyScene } from '@/components/empty';
+import { Link } from '@/components/link';
 
 import { MediaDetail } from './media-detail';
 import { UploadPanel } from './upload-panel';
@@ -254,6 +255,15 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
                 <SheetTitle>{openAsset.name ?? t.full('common.unavailable')}</SheetTitle>
               </SheetHeader>
               <SheetBody>
+                {openAsset.storageAvailable ? (
+                  <div className="mb-4">
+                    <Button variant="secondary" size="sm" asChild>
+                      <Link href={`/compose?mediaId=${encodeURIComponent(openAsset.id)}`}>
+                        {t.full('mediaLib.detail.useInPost')}
+                      </Link>
+                    </Button>
+                  </div>
+                ) : null}
                 <MediaDetail
                   asset={openAsset}
                   rules={props.rules}
