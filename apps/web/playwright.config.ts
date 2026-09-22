@@ -5,6 +5,8 @@ const baseURL = `http://localhost:${e2ePort}`;
 
 export default defineConfig({
   testDir: './e2e',
+  // The real-stack suite has its own config: `playwright.golden.config.ts`.
+  testIgnore: ['golden/**'],
   outputDir: 'test-results/playwright',
   // The suite deliberately starts from an empty Next.js dev cache. Compiling a
   // product route and its client chunks can take longer than Playwright's
