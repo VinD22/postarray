@@ -27,6 +27,7 @@ const EXPECTED_READ = [
   'list_media',
   'list_recent_receipts',
   'get_receipt',
+  'preview_commit',
 ];
 
 const EXPECTED_REVERSIBLE = [

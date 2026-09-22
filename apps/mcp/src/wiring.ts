@@ -60,6 +60,7 @@ export function toRelayServicePort(
     },
     publishing: {
       publishNow: (ctx, input) => services.publishing.publishNow(ctx, input),
+      previewCommit: (ctx, input) => services.publishing.previewCommit(ctx, input),
       getJob: (ctx, jobId) => services.publishing.getJob(ctx, jobId),
     },
     receipts: {

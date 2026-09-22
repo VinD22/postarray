@@ -84,9 +84,15 @@ export const schedulePostTool = defineTool({
     instant: z.string().min(1),
     /** The zone the person actually chose, kept alongside the instant. */
     iana_time_zone: z.string().min(1),
+    /** Schedule only these target accounts of the draft. Omit for every target. */
+    connection_ids: z.array(z.string().min(1)).min(1).max(100).optional(),
     ...idempotencyInputShape,
   }),
   async run(context, input): Promise<ToolResult> {
+    // No confirmation evidence is sent. A schedule that escalates, for example
+    // a first post from a new account, is refused with the escalation codes so
+    // the person can confirm it in Post Array. An agent never acknowledges an
+    // escalation on a person's behalf.
     const job = await context.services.scheduling.schedule(context.actor, {
       contentItemId: input.content_item_id,
       scheduleSpec: {
@@ -94,6 +100,7 @@ export const schedulePostTool = defineTool({
         ianaTimeZone: input.iana_time_zone,
         repeat: null,
       },
+      ...(input.connection_ids === undefined ? {} : { connectionIds: input.connection_ids }),
     });
 
     return {
@@ -178,12 +185,20 @@ export const publishPostTool = defineTool({
       summary,
     });
 
+    // The person approved this exact plan inside Post Array. The escalations
+    // come from the server's own preflight, never from a hard-coded list: a
+    // first post from a new account escalates as well as publishing now, and
+    // acknowledging only `immediate_publish` would always be refused.
+    const preview = await context.services.publishing.previewCommit(context.actor, {
+      contentItemId: input.content_item_id,
+      kind: 'publish_now',
+    });
     const job = await context.services.publishing.publishNow(context.actor, {
       contentItemId: input.content_item_id,
       confirmation: {
         acknowledgedTargetCount: summary.externalPublicationCount,
         acknowledgedVersionChecksum: summary.versionChecksum,
-        acknowledgedEscalations: ['immediate_publish'],
+        acknowledgedEscalations: [...new Set(preview.escalations.map((entry) => entry.code))],
       },
     });
     const receipts = await context.services.receipts.listForJob(context.actor, job.id);

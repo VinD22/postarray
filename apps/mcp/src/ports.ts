@@ -1,4 +1,6 @@
 import type {
+  CommitKind,
+  CommitPreview,
   AccountType,
   ApprovalState,
   CapabilitySnapshot,
@@ -283,7 +285,11 @@ export interface RelayServicePort {
   readonly scheduling: {
     schedule(
       ctx: ActorContextLike,
-      input: { readonly contentItemId: string; readonly scheduleSpec: ScheduleSpecLike },
+      input: {
+        readonly contentItemId: string;
+        readonly scheduleSpec: ScheduleSpecLike;
+        readonly connectionIds?: readonly string[];
+      },
     ): Promise<PublishJobSummary>;
     cancel(
       ctx: ActorContextLike,
@@ -309,6 +315,16 @@ export interface RelayServicePort {
         readonly confirmation: PublishConfirmationEvidenceLike;
       },
     ): Promise<PublishJobSummary>;
+    previewCommit(
+      ctx: ActorContextLike,
+      input: {
+        readonly contentItemId: string;
+        readonly kind: CommitKind;
+        readonly scheduledAt?: string;
+        readonly ianaTimeZone?: string;
+        readonly connectionIds?: readonly string[];
+      },
+    ): Promise<CommitPreview>;
     getJob(ctx: ActorContextLike, jobId: string): Promise<PublishJobSummary>;
   };
 
