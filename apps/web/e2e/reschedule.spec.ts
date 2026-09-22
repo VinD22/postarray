@@ -64,11 +64,14 @@ test.describe('rescheduling a post', () => {
 
     /* The pointer route: the same handle, dropped on the cell beside it. */
     const targetCell = page.locator(`[data-drop-instant="${cells.target}"]`).first();
+    // Keep the horizontal drag away from the viewport edge. Browsers auto-scroll
+    // a pressed pointer near that edge, which would deliberately change the hour
+    // under the pointer and turn this into a different move from the keyboard one.
+    await handle.evaluate((element) => element.scrollIntoView({ block: 'center' }));
+    await handle.hover();
     const box = await targetCell.boundingBox();
     expect(box, 'the drop target should be laid out').not.toBeNull();
     if (!box) return;
-
-    await handle.hover();
     await page.mouse.down();
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 12 });
     await page.mouse.up();
@@ -92,10 +95,10 @@ test.describe('rescheduling a post', () => {
     const handle = sourceCell.locator('[data-move-handle]').first();
     await handle.scrollIntoViewIfNeeded();
     await expect(handle).toBeVisible();
+    await handle.hover();
     const box = await targetCell.boundingBox();
     if (!box) return;
 
-    await handle.hover();
     await page.mouse.down();
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 12 });
     await page.mouse.up();

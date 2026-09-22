@@ -56,6 +56,8 @@ import { CalendarMonth } from './calendar-month';
 import { CalendarTable } from './calendar-table';
 import { CalendarToolbar } from './calendar-toolbar';
 import { CalendarViewTransition } from './calendar-view-transition';
+import { ScheduleSummary } from './schedule-summary';
+import { ScheduleBoard } from './schedule-board';
 import { AttentionBar } from './attention-bar';
 import { EntryDetailSheet } from './entry-detail-sheet';
 import { HoldDialog, type HoldIntent } from './hold-dialog';
@@ -123,10 +125,10 @@ export function CalendarScreen({
   const searchParams = useSearchParams();
   const { announce } = useAnnouncer();
 
-  // Week on a real screen, agenda on a phone. Both are honest defaults rather
-  // than one layout squeezed: the agenda is how a schedule is read on a phone.
+  // The post-first week board stacks by day on phones. The detailed grid
+  // remains available in Day view without becoming the first-run experience.
   const isWide = useBreakpoint('md');
-  const defaultView: CalendarView = isWide ? 'week' : 'list';
+  const defaultView: CalendarView = 'week';
 
   const view = parseView(searchParams, defaultView);
   const anchor = useMemo(() => parseAnchor(searchParams, new Date()), [searchParams]);
@@ -151,9 +153,17 @@ export function CalendarScreen({
   // Recompute the derived list only when the fetched page or the filters
   // change, not on every render of a screen that also holds dialog state.
 
+  const projectNames = useMemo(
+    () => new Map(projects.map((project) => [project.id, project.name])),
+    [projects],
+  );
   const allEntries = useMemo(
-    () => (query.data?.data ?? []) as readonly CalendarEntry[],
-    [query.data],
+    () =>
+      ((query.data?.data ?? []) as readonly CalendarEntry[]).map((entry) => ({
+        ...entry,
+        projectName: entry.projectId ? (projectNames.get(entry.projectId) ?? null) : null,
+      })),
+    [projectNames, query.data],
   );
   const entries = useMemo(() => applyFilters(allEntries, filters), [allEntries, filters]);
   const attentionCount = useMemo(() => allEntries.filter(needsAttention).length, [allEntries]);
@@ -384,8 +394,10 @@ export function CalendarScreen({
   return (
     <div className="flex min-h-full flex-col">
       <PageHeader
-        title={t('calendar.title')}
-        description={t('web.calendar.description')}
+        title={t('scheduler.title')}
+        titleStyle="strong"
+        className="[&_h1]:text-[clamp(2rem,3vw,3rem)] [&_h1]:leading-tight"
+        description={t('scheduler.description')}
         actions={
           <Button
             variant="primary"
@@ -420,7 +432,15 @@ export function CalendarScreen({
       />
 
       <div className="flex flex-1 flex-col gap-4 px-4 py-4 md:px-6">
-        {grabbed ? (
+        {!query.isPending && !query.isError && allEntries.length > 0 ? (
+          <ScheduleSummary
+            entries={allEntries}
+            selected={filters.bucket}
+            onSelect={(bucket) => navigate({ filters: { ...filters, bucket } })}
+          />
+        ) : null}
+
+        {grabbed && drag.draggingKey === null ? (
           <Notice
             tone="info"
             liveness="status"
@@ -726,21 +746,34 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
             onDragStart={props.onDragStart}
             label={t('web.calendar.month.label', { month: props.rangeLabel })}
           />
+        ) : view === 'week' ? (
+          <ScheduleBoard
+            range={props.range}
+            entries={props.entries}
+            timeZone={format.timeZone}
+            grabbedKey={props.grabbedKey}
+            targetInstant={props.proposal?.toInstant ?? null}
+            onMove={props.onReschedule}
+            onPickUp={props.onPickUp}
+            onDragStart={props.onDragStart}
+            hrefForEntry={props.hrefForEntry}
+            composeHref={props.composeHref}
+          />
         ) : props.isWide ? (
           <div>
-              <CalendarGrid
-                range={props.range}
-                entries={props.entries}
-                timeZone={format.timeZone}
-                hrefForEntry={props.hrefForEntry}
-                grabbedKey={props.grabbedKey}
-                onPickUp={props.onPickUp}
-                proposal={props.proposal}
-                draggingKey={props.draggingKey}
-                settle={props.settle}
-                onDragStart={props.onDragStart}
-                label={t('web.calendar.grid.label', { range: props.rangeLabel })}
-              />
+            <CalendarGrid
+              range={props.range}
+              entries={props.entries}
+              timeZone={format.timeZone}
+              hrefForEntry={props.hrefForEntry}
+              grabbedKey={props.grabbedKey}
+              onPickUp={props.onPickUp}
+              proposal={props.proposal}
+              draggingKey={props.draggingKey}
+              settle={props.settle}
+              onDragStart={props.onDragStart}
+              label={t('web.calendar.grid.label', { range: props.rangeLabel })}
+            />
           </div>
         ) : (
           <div>

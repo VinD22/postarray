@@ -201,7 +201,8 @@ export function ConnectionsScreen({
   return (
     <div className="flex min-h-full flex-col">
       <PageHeader
-        title={t('connection.title')}
+        title={t('scheduler.connect')}
+        titleStyle="strong"
         description={t('connection.subtitle')}
         actions={
           <Button
@@ -226,7 +227,6 @@ export function ConnectionsScreen({
           <Notice
             tone="info"
             title={t('web.connection.projectScope.title', { project: project.name })}
-            description={t('web.connection.projectScope.body')}
           />
         )}
         <OAuthReturnPanel />

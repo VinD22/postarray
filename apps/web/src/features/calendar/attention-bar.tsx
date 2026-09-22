@@ -50,7 +50,6 @@ export function AttentionBar({
             {t('web.calendar.attention.title', { count })}
           </span>
         }
-        description={t('web.calendar.attention.body')}
         actions={
           <>
             {showingOnlyAttention ? null : (

@@ -267,7 +267,7 @@ function demoScheduledContentItem(contentItemId: string): ContentItemView | null
   return {
     ...emptyItem,
     id: contentItemId,
-    projectId: 'project_demo00000000000000001',
+    projectId: entry.projectId ?? 'project_demo00000000000000001',
     title: entry.title,
     state: entry.state,
     approvalState: entry.approvalState,
@@ -693,7 +693,17 @@ export const schedulingApi = {
     call<Paginated<ApplicationCalendarEntry>, Paginated<CalendarEntryView>>(
       '/calendar',
       { query },
-      () => page(demoCalendar),
+      () =>
+        page(
+          demoCalendar.filter(
+            (entry) =>
+              Date.parse(entry.scheduledAt) >= Date.parse(query.from) &&
+              Date.parse(entry.scheduledAt) < Date.parse(query.to) &&
+              (!query.projectId || entry.projectId === query.projectId) &&
+              (!query.connectionId || entry.connectionId === query.connectionId) &&
+              (!query.state || entry.state === query.state),
+          ),
+        ),
       (result) => ({ ...result, data: result.data.map(toCalendarEntry) }),
     ),
 
