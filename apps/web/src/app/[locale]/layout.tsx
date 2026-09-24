@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata, Viewport } from 'next';
 import { Fraunces, JetBrains_Mono, Manrope } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { ReactNode } from 'react';
 
 import { DEFAULT_LOCALE } from '@relay/i18n/locales';
@@ -137,6 +138,8 @@ export default async function LocaleLayout({
           have to land in the same change as the swap.
         */}
         <Analytics />
+        {/* Core Web Vitals from real visits. Like Analytics: no cookie, no identifier. */}
+        <SpeedInsights />
       </body>
     </html>
   );
