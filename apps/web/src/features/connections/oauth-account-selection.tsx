@@ -21,6 +21,9 @@ export function OAuthAccountSelectionPanel(): ReactNode {
   const workspaceId = useWorkspaceId();
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState<readonly string[]>([]);
+  // One key per selection screen, reused on retry. A fresh key per click let a
+  // retry after a lost response claim the same accounts twice.
+  const [idempotencyKey] = useState(() => newIdempotencyKey('oauth_claim'));
 
   const transactionId = result?.status === 'select' ? result.transactionId : undefined;
 
@@ -34,7 +37,7 @@ export function OAuthAccountSelectionPanel(): ReactNode {
     mutationFn: () =>
       api.connections.claimOAuth(
         { transactionId: transactionId as string, selectedExternalAccountIds: selected },
-        newIdempotencyKey('oauth_claim'),
+        idempotencyKey,
       ),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'connections'] });
@@ -85,8 +88,8 @@ export function OAuthAccountSelectionPanel(): ReactNode {
             <label key={account.externalAccountId} className="flex items-start gap-2">
               <input
                 type="checkbox"
-                disabled={disabled}
                 checked={checked}
+                disabled={disabled || claim.isPending || claim.isSuccess}
                 onChange={() => {
                   setSelected((current) =>
                     checked
@@ -95,10 +98,16 @@ export function OAuthAccountSelectionPanel(): ReactNode {
                   );
                 }}
               />
-              <span>
-                {account.displayName}
-                {account.handle === null ? null : ` (@${account.handle})`}
-                {disabled ? `: ${t('connection.oauth.accountUnavailable')}` : null}
+              <span className="flex flex-col">
+                <span>{account.displayName}</span>
+                {account.handle === null ? null : (
+                  <span className="text-body-sm text-text-secondary">@{account.handle}</span>
+                )}
+                {disabled ? (
+                  <span className="text-body-sm text-text-secondary">
+                    {t('connection.oauth.accountUnavailable')}
+                  </span>
+                ) : null}
               </span>
             </label>
           );
@@ -110,7 +119,7 @@ export function OAuthAccountSelectionPanel(): ReactNode {
           liveness="alert"
           title={t('connection.oauth.noEligibleAccountsShort', { provider })}
         />
-      ) : (
+      ) : claim.isSuccess ? null : (
         <>
           {claim.isError ? (
             <Notice
