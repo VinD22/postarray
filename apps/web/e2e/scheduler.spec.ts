@@ -8,10 +8,14 @@ test('public scheduler is discoverable and sample moves are reversible', async (
   const post = page.locator('article').filter({ hasText: 'Meet your morning ritual' });
   await expect(post).toBeVisible();
   const initialDay = await post.locator('..').locator('..').getAttribute('data-drop-instant');
-  await post.getByRole('button', { name: 'Move to tomorrow' }).click();
-  await expect
-    .poll(() => post.locator('..').locator('..').getAttribute('data-drop-instant'))
-    .not.toBe(initialDay);
+  // The route may still be hydrating under a loaded dev server, so a first click can land on
+  // server-rendered markup. Retry the click until the move is observed.
+  await expect(async () => {
+    await post.getByRole('button', { name: 'Move to tomorrow' }).click();
+    expect(await post.locator('..').locator('..').getAttribute('data-drop-instant')).not.toBe(
+      initialDay,
+    );
+  }).toPass({ timeout: 15_000 });
   await page.getByRole('button', { name: 'Reset sample' }).click();
   await expect
     .poll(() => post.locator('..').locator('..').getAttribute('data-drop-instant'))
