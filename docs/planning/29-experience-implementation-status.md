@@ -169,3 +169,69 @@ notifications (model, writer, preferences, emails), client reports, the setup
 guide and coachmarks, contextual help, the service worker, error reporting,
 hydration boundaries, Google sign-in, and the recurring and evergreen work.
 Section 3.6 of the plan remains explicitly optional.
+
+## Posting, AI and findability programme (2026-09-24)
+
+Audit of the plan "finish in-flight work, make posting work end to end, then
+make it fast, smart and findable" against commits `f422f4e..4245356` and the
+code at that point. Evidence is the file that proves each line.
+
+### Shipped
+
+- **Phase 0.** In-flight work landed as six commits (`c106d6a` to `ef7eb7b`);
+  cursor rAF loop starts on `pointermove`; `output/` is ignored.
+- **1.1 Commit preview.** `previewCommit` in `services/publishing.ts`, API route,
+  MCP read tool (`e5be2b7`), CLI preview (`fc5718e`); scheduling accepts
+  `confirmation`; the web sends acknowledged escalations.
+- **1.2 Composite save.** `saveComposite` with a row lock and `content_conflict`
+  (`internal/content-store.ts`, lock test).
+- **1.3 Retry and tracking.** `retryTarget` implemented; `jobs[]` returned;
+  `GET /v1/content/:id/publication` read model.
+- **1.4 Lifecycle.** `partially_published` state in the schema and
+  `internal/content-lifecycle.test.ts`; replay suite in
+  `apps/worker/src/testing/replay.test.ts`.
+- **1.5 (part).** Schedule `connectionIds` filter (`contracts/commit-preview.ts`),
+  capabilities via `Promise.allSettled`, abort listeners removed, OAuth
+  provider list from `PROVIDER_IDS`, scan state in the media strip.
+- **1.6 Golden e2e.** `apps/web/playwright.golden.config.ts`, run in CI.
+- **Phase 3.** `deepseek-flash` default with an ADR note in doc 07; cache-hit
+  token parsing; Redis-backed counters; request timeout; `ANTHROPIC_*`
+  placeholders; image content parts for DeepSeek and Anthropic;
+  `ai_image_analysis_enabled` (migration 0080) and `media_analyses` with an RLS
+  test; `ai_vision_input_tokens` meter; `media-understanding` prompt; crop,
+  small-text, face and logo checks in code (`media-analysis-checks.ts`); AI-use
+  copy separates analysis from generation; composer Suggest menu, Review
+  (claim, accessibility, duplicate) and best time from the account's own data.
+- **Phase 4.** `InsightsModule` registered; stored insights and per-post
+  feedback; weekly digest activities, `DigestCard` on home and an email
+  preference; experiments service (`insight-experiments.ts`); What works.
+- **Phase 5 (part).** `getSession` in `cache()`; `HydrationBoundary` on home;
+  `loading.tsx` for app, home and calendar; no GSAP in the signed-in routes;
+  `hero-demo*` removed; locale cookie written only on change; per-route catalog
+  slices (`2905d64`).
+- **Phase 6.** Clustered sitemaps, `llms-full.txt`, AI crawler groups in
+  robots, home journey `forceMount`, `WebSite` and FAQ JSON-LD, web vitals.
+- **Phase 7.** Bundle analyzer, per-route budgets, Lighthouse CI and the golden
+  job in `.github/workflows/ci.yml`.
+
+### Partial or not done
+
+- **H8.** `compose/page.tsx` still passes `approvalRequired={false}` on one
+  branch; confirm the server-side policy is the only source before closing.
+- **M1.** No `useInfiniteQuery` or cursor loop found for calendar and media.
+- **Phase 5.3.** Calendar has no `placeholderData: keepPreviousData` or
+  neighbour prefetch; hydration only on home, not calendar or analytics.
+- **Phase 5.2.** `ApiProvider` and `Toaster` still mount in the root
+  `components/providers.tsx`, so marketing pages still load React Query.
+- **Phase 2.** No drop-anywhere upload in the app shell and no "Continue
+  drafting" list on home were found. The seven states and the five-interaction
+  target have not been measured in a browser pass.
+- **Phase 6.3.** Dedicated surface pages (YouTube thumbnail, Instagram reel
+  cover, TikTok video size) exist only as data in `media-dimensions.ts`.
+- **Analytics observations** are filled client-side by `useAnalyticsOverview`;
+  the mapper still returns `observations: []` by design.
+- **Verification.** Live `deepseek-flash` text and image calls, Neon schema
+  checks after migration 0080, Lighthouse before and after, and the Chrome
+  browser pass are not recorded here.
+- **Disk.** The volume is 98% full with 11 GB free, below the 15 GB the plan
+  set; a production build may hit ENOSPC again.
