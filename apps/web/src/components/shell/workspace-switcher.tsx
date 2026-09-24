@@ -17,7 +17,6 @@ export function WorkspaceSwitcher({ className }: { readonly className?: string }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        aria-label={t('nav.projectSwitcher')}
         className={cn(
           'border-border-default flex min-h-11 max-w-56 items-center gap-3 rounded-md border',
           'bg-surface-raised text-body-md text-text-primary px-3 py-1.5 md:min-h-9',
@@ -33,6 +32,8 @@ export function WorkspaceSwitcher({ className }: { readonly className?: string }
             {workspace.name}
           </span>
         </span>
+        {/* After the visible names, so the accessible name starts with what is shown (WCAG 2.5.3). */}
+        <span className="sr-only">{t('nav.projectSwitcher')}</span>
         <ChevronsUpDown aria-hidden="true" className="text-text-tertiary size-4 shrink-0" />
       </DialogTrigger>
       {open ? <ContextPicker onClose={() => setOpen(false)} /> : null}
