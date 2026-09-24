@@ -71,8 +71,7 @@ export const Notice = forwardRef<HTMLDivElement, NoticeProps>(function Notice(
       role={liveness === 'none' ? undefined : liveness}
       aria-live={liveness === 'status' ? 'polite' : undefined}
       className={cn(
-        'flex flex-col gap-2 rounded-lg border p-3',
-        'sm:flex-row sm:items-start sm:gap-3',
+        'flex flex-wrap items-start gap-x-3 gap-y-2 rounded-lg border p-3',
         toneClasses[tone],
         className,
       )}
@@ -84,7 +83,14 @@ export const Notice = forwardRef<HTMLDivElement, NoticeProps>(function Notice(
         {description ? <div className="text-body-sm text-text-secondary">{description}</div> : null}
         {children}
       </div>
-      {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
+      {/* `sm` is 390px in this theme, so actions beside the title would crush
+          it into a sliver on a phone. They take their own line, aligned with
+          the text, until tablet width. */}
+      {actions ? (
+        <div className="flex w-full flex-wrap items-center gap-2 ps-7 md:w-auto md:shrink-0 md:ps-0">
+          {actions}
+        </div>
+      ) : null}
     </div>
   );
 });
