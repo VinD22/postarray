@@ -52,6 +52,8 @@ type AutomationActivities = Pick<
   | 'executeRuleAction'
   | 'recordRuleRun'
   | 'generatePostFeedback'
+  | 'buildWeeklyDigest'
+  | 'sendWeeklyDigestEmail'
 >;
 
 type UnavailableActivity = (input: unknown) => Promise<never>;

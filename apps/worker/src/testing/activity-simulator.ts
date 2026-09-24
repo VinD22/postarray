@@ -86,6 +86,12 @@ import type {
   WriteReceiptResult,
 } from '../activities/types';
 import { toIsoInstant, parseInstant } from '../runtime/deterministic';
+import type {
+  BuildWeeklyDigestInput,
+  BuildWeeklyDigestResult,
+  SendWeeklyDigestEmailInput,
+  SendWeeklyDigestEmailResult,
+} from '../workflows/core/digest.core';
 
 /**
  * A deterministic stand-in for every activity, plus a model of the provider.
@@ -640,6 +646,22 @@ export class ActivitySimulator implements WorkerActivities {
   recordAnalyticsRun(input: RecordAnalyticsRunInput): Promise<void> {
     this.record('recordAnalyticsRun', input);
     return Promise.resolve();
+  }
+
+  buildWeeklyDigest(input: BuildWeeklyDigestInput): Promise<BuildWeeklyDigestResult> {
+    this.record('buildWeeklyDigest', input);
+    return Promise.resolve({
+      enabled: true,
+      stored: true,
+      rowCount: 1,
+      source: 'deterministic',
+      fallbackReasonKey: null,
+    });
+  }
+
+  sendWeeklyDigestEmail(input: SendWeeklyDigestEmailInput): Promise<SendWeeklyDigestEmailResult> {
+    this.record('sendWeeklyDigestEmail', input);
+    return Promise.resolve({ sent: true, skippedReasonKey: null });
   }
 
   generatePostFeedback(input: GeneratePostFeedbackInput): Promise<GeneratePostFeedbackResult> {

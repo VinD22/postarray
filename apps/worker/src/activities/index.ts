@@ -231,6 +231,12 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
       deps,
       gateway.generatePostFeedback.bind(gateway),
     ),
+    buildWeeklyDigest: wrap('buildWeeklyDigest', deps, gateway.buildWeeklyDigest.bind(gateway)),
+    sendWeeklyDigestEmail: wrap(
+      'sendWeeklyDigestEmail',
+      deps,
+      gateway.sendWeeklyDigestEmail.bind(gateway),
+    ),
     describeCredential: wrap('describeCredential', deps, gateway.describeCredential.bind(gateway)),
     refreshCredential: wrap('refreshCredential', deps, gateway.refreshCredential.bind(gateway)),
     raiseConnectionIncident: wrap(

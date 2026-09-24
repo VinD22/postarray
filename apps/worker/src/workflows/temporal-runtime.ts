@@ -58,6 +58,8 @@ const persistence = wf.proxyActivities<
     | 'beginPublishAttempt'
     | 'recordAnalyticsRun'
     | 'generatePostFeedback'
+    | 'buildWeeklyDigest'
+    | 'sendWeeklyDigestEmail'
     | 'recordFeedPoll'
     | 'recordRuleRun'
     | 'recordWebhookAttempt'
@@ -151,6 +153,8 @@ export const workerActivities: WorkerActivities = {
   fetchAccountMetrics: (input) => metricsProxy.fetchAccountMetrics(input),
   recordAnalyticsRun: (input) => persistence.recordAnalyticsRun(input),
   generatePostFeedback: (input) => persistence.generatePostFeedback(input),
+  buildWeeklyDigest: (input) => persistence.buildWeeklyDigest(input),
+  sendWeeklyDigestEmail: (input) => persistence.sendWeeklyDigestEmail(input),
   describeCredential: (input) => persistence.describeCredential(input),
   refreshCredential: (input) => credentialProxy.refreshCredential(input),
   raiseConnectionIncident: (input) => persistence.raiseConnectionIncident(input),

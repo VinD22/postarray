@@ -106,6 +106,8 @@ type AutomationActivities = Pick<
   | 'executeRuleAction'
   | 'recordRuleRun'
   | 'generatePostFeedback'
+  | 'buildWeeklyDigest'
+  | 'sendWeeklyDigestEmail'
 >;
 
 function requireObject(value: unknown, what: string): object {
@@ -359,6 +361,9 @@ export async function main(): Promise<void> {
     recordRuleRun: (input) => automationReady.then((value) => value.recordRuleRun(input)),
     generatePostFeedback: (input) =>
       automationReady.then((value) => value.generatePostFeedback(input)),
+    buildWeeklyDigest: (input) => automationReady.then((value) => value.buildWeeklyDigest(input)),
+    sendWeeklyDigestEmail: (input) =>
+      automationReady.then((value) => value.sendWeeklyDigestEmail(input)),
   };
   const connectorBridge =
     connectorRuntime.gateway === null
@@ -450,6 +455,8 @@ export async function main(): Promise<void> {
       executeRuleAction: (input) => runtime.services.workerRules.executeRuleAction(input),
       recordRuleRun: (input) => runtime.services.workerRules.recordRuleRun(input),
       generatePostFeedback: (input) => runtime.services.workerInsights.generatePostFeedback(input),
+      buildWeeklyDigest: (input) => runtime.services.workerDigests.buildWeeklyDigest(input),
+      sendWeeklyDigestEmail: (input) => runtime.services.workerDigests.sendWeeklyDigestEmail(input),
     });
     resolveBulkImports?.({
       readBulkImportVerdict: (input) =>
