@@ -2241,6 +2241,7 @@ model MediaAsset {
   analyses    MediaAnalysis[]
 
   @@unique([workspaceId, checksumSha256])
+  @@unique([workspaceId, id], map: "uq_media_assets_workspace_id_id")
   @@index([workspaceId])
   @@index([workspaceId, kind, createdAt(sort: Desc)])
   @@index([retentionExpiresAt, storageDeletedAt])
@@ -2294,11 +2295,11 @@ model MediaAnalysis {
   createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace  Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [workspaceId, mediaAssetId], references: [workspaceId, id], onDelete: Cascade, map: "media_analyses_workspace_media_asset_fkey")
 
   @@unique([workspaceId, assetChecksumSha256, promptVersion], map: "media_analyses_cache_key")
   @@index([workspaceId])
-  @@index([mediaAssetId])
+  @@index([workspaceId, mediaAssetId], map: "media_analyses_workspace_media_asset_idx")
   @@map("media_analyses")
   @@schema("app")
 }

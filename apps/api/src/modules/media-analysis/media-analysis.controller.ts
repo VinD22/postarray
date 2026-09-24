@@ -58,7 +58,7 @@ export class MediaAnalysisController {
   }
 
   @Post('media/:id/analysis/checks')
-  @RequireScope('media:write')
+  @RequireScope('media:read')
   @HttpCode(200)
   checks(
     @Actor() actor: ActorContext,

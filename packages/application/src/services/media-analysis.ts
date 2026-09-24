@@ -407,7 +407,14 @@ export function createMediaAnalysisService(deps: ServiceDeps): MediaAnalysisServ
 
     async checks(ctx, rawInput) {
       const input = mediaAnalysisChecksRequestSchema.parse(rawInput);
-      const outcome = await service.analyze(ctx, { mediaId: input.mediaId });
+      // A stored analysis is a read: any member with media.read sees its
+      // checks. Only a missing analysis falls through to `analyze`, which
+      // keeps its own media.write gate, so a viewer never triggers a call.
+      const stored = await service.get(ctx, input.mediaId);
+      const outcome: MediaAnalysisOutcome =
+        stored === null
+          ? await service.analyze(ctx, { mediaId: input.mediaId })
+          : { status: 'ready', analysis: stored };
       if (outcome.status !== 'ready') {
         return outcome;
       }
