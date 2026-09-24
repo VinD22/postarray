@@ -196,6 +196,8 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // has a human translation.
   'shell.project.',
   'web.connection.project',
+  'web.connection.incident.expiringSoon',
+  'composer.schedule.confirmPublishTitle',
   'error.project_',
   'settings.ui.projects.',
   'growth.ui.ugc.',

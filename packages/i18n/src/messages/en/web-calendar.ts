@@ -484,6 +484,8 @@ export const webCalendarMessages = {
   'web.connection.incident.scheduledOnHold':
     '{count, plural, one {# scheduled post is on hold} other {# scheduled posts are on hold}} for this account.',
   'web.connection.incident.nothingLost': 'Nothing is lost and nothing is duplicated.',
+  'web.connection.incident.expiringSoon':
+    'Access to {account} expires on {date}. Reconnect before then so scheduled posts keep publishing.',
 
   /* ---------------------------------------------------------------------
    * Retrying one failed account.

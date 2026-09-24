@@ -209,6 +209,12 @@ describe('health', () => {
     );
   });
 
+  it('does not tell an expiring account its posts are already on hold', () => {
+    expect(remediationKey('expiring_soon', 'linkedin')).toBe(
+      'web.connection.incident.expiringSoon',
+    );
+  });
+
   it('has no remediation for a healthy account', () => {
     expect(remediationKey('healthy', 'x')).toBeNull();
     expect(remediationAction('healthy')).toBeNull();

@@ -738,8 +738,10 @@ export const webSettingsMessages = {
   'billing.ui.prelaunchTitle': 'Checkout is closed during public prelaunch',
   'billing.ui.prelaunchBody':
     'No payment method is collected and this workspace cannot start a paid subscription yet.',
+  // No amounts here, for the reason given on `web.pricing.lede`: this said
+  // "$29 a month or $300 a year" after the tiers had been repriced.
   'billing.ui.prelaunchTerms':
-    'Planned paid access is $29 a month or $300 a year for 10 active channels and an owner plus 5 teammates.',
+    'Planned prices are on the pricing page. Every feature is included at every price, and starting is free with no card.',
   'billing.ui.statusHeading': 'Current status',
   'billing.ui.planHeading': 'Plan',
   'billing.ui.intervalHeading': 'Billing interval',

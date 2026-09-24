@@ -39,6 +39,7 @@ import { resolveVariant } from '@relay/contracts';
 
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { NextSlotPanel } from '@/features/queue/components/next-slot-panel';
+import { confirmTitleKey } from '../state/confirm-title';
 import { useComposer } from '../composer-context';
 import { describeCommitFailure, type CommitFailure } from '../state/commit-failure';
 import { PROVIDER_LABEL } from './provider-identity';
@@ -211,7 +212,7 @@ export function ScheduleSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="inline-end" closeLabel={t.full('action.close')}>
         <SheetHeader>
-          <SheetTitle>{t.full('composer.schedule.confirmTitle')}</SheetTitle>
+          <SheetTitle>{t.full(confirmTitleKey(instant))}</SheetTitle>
           <SheetDescription>
             {t.full('composer.targets.publishSummary', {
               count: totals.targetCount,
