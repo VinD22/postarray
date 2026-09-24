@@ -2,6 +2,7 @@ import {
   BarChart3,
   MessagesSquare,
   CalendarDays,
+  ClipboardCheck,
   FolderOpen,
   House,
   Layers,
@@ -82,6 +83,15 @@ export const NAV_ITEMS: readonly NavItem[] = [
         // destination and inventing one would be two strings to keep in step.
         labelKey: 'queue.title',
         icon: ListOrdered,
+      },
+      {
+        // Reviews waiting on you are part of what is about to be committed,
+        // so they sit under the calendar rather than beside it. The command
+        // palette lists sub items too, which is how it reaches this page.
+        id: 'approvals',
+        href: '/approvals',
+        labelKey: 'approval.title',
+        icon: ClipboardCheck,
       },
     ],
   },

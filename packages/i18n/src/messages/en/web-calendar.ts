@@ -529,4 +529,38 @@ export const webCalendarMessages = {
     'This account was cancelled rather than failed, so nothing was ever sent to it.',
   'web.receipt.retry.blocked.actionRequired':
     'Something has to be fixed before this can be sent. Retrying now would fail the same way.',
+  'web.approvals.index.description':
+    'Reviews waiting on you. Open one to approve it, ask for changes or reject it.',
+  'web.approvals.index.loading':
+    'Loading approval requests',
+  'web.approvals.index.empty.title':
+    'Nothing is waiting for your review',
+  'web.approvals.index.empty.body':
+    'When someone asks you to approve a post, it shows up here.',
+  'web.approvals.index.error.title':
+    'Approval requests did not load',
+  'web.approvals.index.error.body':
+    'Nothing was changed. Try again in a moment.',
+  'web.approvals.index.offline.title':
+    'You are offline',
+  'web.approvals.index.offline.body':
+    'Approval requests load again when your connection is back. No decision was sent.',
+  'web.approvals.index.denied.body':
+    'Your role cannot see approval requests in this workspace. Ask an owner or admin for access.',
+  'web.approvals.index.rateLimited.cause':
+    'Too many requests reached the server in a short time.',
+  'web.approvals.index.partial.members':
+    'Requester names are unavailable right now. The requests themselves are complete.',
+  'web.approvals.index.partial.more':
+    'Showing the first {count, plural, one {# request} other {# requests}}. More are waiting.',
+  'web.approvals.index.decidedNote':
+    'Decided requests stay on each post, with who decided and when.',
+  'web.approvals.index.review':
+    'Review',
+  'web.approvals.index.reviewLabel':
+    'Review the request from {name}, sent {relativeTime}',
+  'web.approvals.index.due':
+    'Due {date}',
+  'web.approvals.index.homeLink':
+    'All approvals',
 } as const;

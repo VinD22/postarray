@@ -154,6 +154,12 @@ export function HomeScreen() {
                   />
                 </div>
               )}
+              <Link
+                href="/approvals"
+                className="text-body-sm text-text-accent focus-visible:outline-border-focus self-start underline-offset-4 hover:underline focus-visible:outline-2"
+              >
+                {t('web.approvals.index.homeLink')}
+              </Link>
             </HomeSection>
 
             <Separator />
