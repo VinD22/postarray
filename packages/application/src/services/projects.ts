@@ -12,7 +12,7 @@ import type { ProjectView } from '../views';
 import { recordAudit } from '../internal/audit';
 import { notFound } from '../internal/errors';
 import { pageArgs, toPage } from '../internal/pagination';
-import { authorized, type Db } from '../internal/runtime';
+import { authorized, guard, type Db } from '../internal/runtime';
 import { workspaceSlug } from '../internal/workspace-slug';
 
 /** Projects: voice, claims, blocked terms, domains and scheduling defaults. */
@@ -241,12 +241,21 @@ export function createProjectService(deps: ServiceDeps): ProjectService {
           // Workspace-scoped explicitly: RLS is a backstop, not the check.
           const found = await db.socialConnection.findMany({
             where: { id: { in: add }, workspaceId: actor.workspace.id },
-            select: { id: true },
+            select: { id: true, projectId: true },
           });
           const known = new Set(found.map((row) => row.id));
           const missing = add.find((id) => !known.has(id));
           if (missing !== undefined) {
             throw notFound('connection', missing);
+          }
+          // Moving a connection takes it out of the project it is in now, so
+          // the actor must be allowed to write that project too. A key scoped
+          // to this project alone may not pull accounts out of another one.
+          for (const row of found) {
+            guard(actor, 'project.write', {
+              projectId: row.projectId ?? projectId,
+              connectionId: row.id,
+            });
           }
           await db.socialConnection.updateMany({
             where: { id: { in: add }, workspaceId: actor.workspace.id },
@@ -254,6 +263,9 @@ export function createProjectService(deps: ServiceDeps): ProjectService {
           });
         }
         if (remove.length > 0) {
+          for (const id of remove) {
+            guard(actor, 'project.write', { projectId, connectionId: id });
+          }
           await db.socialConnection.updateMany({
             where: { id: { in: remove }, workspaceId: actor.workspace.id, projectId },
             data: { projectId: null },

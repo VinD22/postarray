@@ -12,6 +12,8 @@ type Row = Record<string, unknown>;
 const projects: Row[] = [];
 const connections: Row[] = [];
 const writes: string[] = [];
+/** Projects the fake actor may not write, as a project-scoped key would see it. */
+const outOfScope = new Set<string>();
 
 const actor = {
   userId: 'user_1',
@@ -43,7 +45,9 @@ const fakeDb = {
   },
   socialConnection: {
     findMany: async ({ where }: { where: Row }) =>
-      connections.filter((row) => matches(row, where)).map((row) => ({ id: row.id })),
+      connections
+        .filter((row) => matches(row, where))
+        .map((row) => ({ id: row.id, projectId: row.projectId })),
     updateMany: async ({ where, data }: { where: Row; data: Row }) => {
       for (const row of connections.filter((candidate) => matches(candidate, where))) {
         writes.push(`${String(row.id)}->${String(data.projectId)}`);
@@ -63,6 +67,13 @@ vi.mock('../internal/runtime', async (importOriginal) => ({
     _resource: unknown,
     handler: (db: unknown, actor: unknown) => Promise<unknown>,
   ) => handler(fakeDb, actor),
+  guard: (_actor: unknown, _permission: string, resource?: { projectId?: string | null }) => {
+    if (resource?.projectId !== undefined && resource.projectId !== null) {
+      if (outOfScope.has(resource.projectId)) {
+        throw Object.assign(new Error('forbidden'), { code: 'FORBIDDEN' });
+      }
+    }
+  },
 }));
 
 vi.mock('../internal/audit', () => ({ recordAudit: async () => undefined }));
@@ -95,6 +106,7 @@ function project(id: string, workspaceId: string): Row {
 
 beforeEach(() => {
   writes.length = 0;
+  outOfScope.clear();
   projects.splice(0, projects.length, project('p_a', 'ws_1'), project('p_b', 'ws_1'));
   connections.splice(
     0,
@@ -134,6 +146,17 @@ describe('project connection membership', () => {
         remove: [],
       }),
     ).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    expect(writes).toEqual([]);
+  });
+
+  it('refuses to pull a connection out of a project the actor may not write', async () => {
+    outOfScope.add('p_a');
+    await expect(
+      createProjectService(deps).updateConnections(ctx, 'p_b', {
+        add: ['conn_1'],
+        remove: [],
+      }),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
     expect(writes).toEqual([]);
   });
 });
