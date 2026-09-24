@@ -136,7 +136,9 @@ remain separate, truthful states.
 4. **Signatures have no read endpoint.** The posting-sets screen passes an empty
    list with a `TODO(owner)`; `SetForm` renders signatures and nothing serves
    them.
-5. **Two tests are flaky under parallel load**, not broken:
+5. ~~**Two tests are flaky under parallel load**~~ Made deterministic: the tier
+   grid mocks `useMotionOk` so the count-up lands in one commit, and the
+   locale sweep warms every catalog in `beforeAll`. Previously flaky:
    `features/marketing/components/editorial/tier-grid.test.tsx` and
    `features/marketing/locale-metadata-sweep.test.ts`. Both pass alone and at a
    raised timeout. A failure in either is worth re-running before investigating.
@@ -297,16 +299,17 @@ BreadcrumbList, Organization); canonicals point at `https://postarray.com`.
 
 ## Release readiness (2026-09-24)
 
-Final QA pass on `development`. Commits `6fdd7a0` to `4f171e6`.
+Final QA pass on `development`. Commits `6fdd7a0` to `4f171e6`, then the
+integration pass `1fd86ab` to `2ee7e39` (re-verified below).
 
 ### Passing checks
 
 | Check | Result |
 | --- | --- |
-| `pnpm verify` (typecheck, lint, test, 73 turbo tasks) | Pass. Web 1,539 tests, application 514, design-system 575, billing 301, i18n 267, api 242, worker 211 |
+| `pnpm verify` (typecheck, lint, test, 73 turbo tasks) | Pass. Web 1,550 tests, application 517, design-system 575, billing 301, i18n 270, api 242, worker 211 |
 | Production web build, `NEXT_PUBLIC_SITE_ORIGIN=https://postarray.com` | Pass |
-| Bundle budgets (`pnpm --filter @relay/web budgets`) | Pass on all seven routes. Tightest is `/compose` at 670.6 of 700 KiB |
-| Full web e2e (`pnpm --filter @relay/web test:e2e`, demo mode) | 56 of 56 pass (10.2 min; `accessibility.spec.ts` is 6.2 min of that) |
+| Bundle budgets (`pnpm --filter @relay/web budgets`) | Pass on all seven routes. Tightest is `/compose` at 674.3 of 700 KiB |
+| Full web e2e (`pnpm --filter @relay/web test:e2e`, demo mode) | 56 of 56 pass (5.9 min). The scheduler spec could click before hydration under full-suite load; it now retries the move until observed |
 | Browser walk, Chrome DevTools MCP, demo mode | Home, compose to confirm, calendar, library, connections, analytics, settings, billing, marketing home, pricing, `/specs/x/character-limit`, at 1440px and 390px, light and dark. No horizontal page scroll at 390px after the fixes below. No em dashes in rendered copy |
 
 ### Fixed in this pass (each with a regression test)
@@ -340,18 +343,28 @@ Final QA pass on `development`. Commits `6fdd7a0` to `4f171e6`.
 ### Known limitations at release
 
 - Everything under "Known issues" and "Still open" above that is not struck
-  through, notably: raw privacy values (`public`) in the confirm sheet and the
-  native settings select, no receipt link after Publish now in demo mode,
-  the composer preview column not being a platform preview, the signature
-  counter mismatch (latent), no sourced collapse thresholds, no video posters.
-- Upload limits read "21 MB" and "524.3 MB": the limits are binary (20 MiB,
-  500 MiB) and `formatBytes` is decimal by design. Honest but untidy.
-- On connections, an account needing reconnection shows both a primary
-  Reconnect on the row and a secondary one in its notice, next to the page's
-  primary "Connect an account". More than one vermilion action on screen.
-- There is no `/approvals` index; approvals are reached per item
-  (`/approvals/{id}`) from home, calendar and the action center. Nothing
-  links to the index.
+  through, notably: the signature counter mismatch (latent), no sourced
+  collapse thresholds, no video posters.
+- ~~Raw privacy values, no demo receipt link, preview column not a platform
+  preview.~~ Fixed in the integration pass: audience options carry labels
+  (`privacy-label.ts`), demo Publish now links a sample receipt, and the
+  preview column renders the master post for a picked target
+  (`master-preview.tsx`).
+- ~~Upload limits read "21 MB" and "524.3 MB".~~ Fixed: limits go through
+  `formatByteLimit` and read as whole sizes.
+- Security fixes in the integration pass: a media analysis can only reference
+  an asset in its own workspace (composite FK, migration `0082`), and moving a
+  connection between projects requires write access to the source project.
+- ~~On connections, more than one vermilion action on screen.~~ Fixed: row
+  Reconnect/Resume and the empty-state action are secondary; the header's
+  "Connect an account" is the only primary. Guarded by
+  `features/connections/one-primary-action.test.ts`.
+- ~~There is no `/approvals` index.~~ Fixed: `/approvals` lists pending
+  requests from `GET /approvals/pending` with loading, empty, error, partial,
+  offline, permission-denied and rate-limited states. Linked from the calendar
+  nav sub items (so the command palette too) and from Home's "Needs you". The
+  API serves pending requests only, so decided ones stay on each post and the
+  page says so.
 - Dev-server only: `next dev` restarts itself under memory pressure after a
   long browser session. Not a production concern.
 - The "What is not built" list above still applies.
@@ -376,7 +389,9 @@ Final QA pass on `development`. Commits `6fdd7a0` to `4f171e6`.
    web, api, worker, mcp and links (database URL, Neon Auth, Temporal,
    object storage and malware scanning, Resend, Polar, provider client IDs
    and secrets, signing keys), set `NEXT_PUBLIC_SITE_ORIGIN=https://postarray.com`
-   and `NEXT_PUBLIC_POSTARRAY_DEMO_MODE=false`, run migrations and RLS
+   and `NEXT_PUBLIC_POSTARRAY_DEMO_MODE=false`, run migrations (including
+   `0082_media_analyses_same_workspace_asset.sql`, which fails if any existing
+   analysis points at another workspace's asset, so check first) and RLS
    policies, and point DNS for postarray.com and the short-link domain.
 5. **Commercial launch gates.** Checkout stays closed until Polar products,
    tax settings and legal pages are reviewed and billing is switched on.
