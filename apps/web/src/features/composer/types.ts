@@ -48,6 +48,8 @@ export interface TargetSet {
   /** Text the Set seeds into the master draft. Empty means it seeds nothing. */
   readonly seedBody: string;
   readonly signatureId: string | null;
+  /** The Set's approval policy is anything other than `none`. */
+  readonly requiresApproval: boolean;
 }
 
 export interface SignatureOption {

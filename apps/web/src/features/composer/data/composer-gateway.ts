@@ -10,6 +10,7 @@ import type { ContentItemView as ApplicationContentItemView } from '@relay/appli
 import { api, newIdempotencyKey } from '@/lib/api';
 import type { ContentTargetInput } from '@/lib/api/resources/content';
 import type { ForwardAuth } from '@/lib/api/transport';
+import { collectAllPages, FOLLOW_PAGE_SIZE } from '@/lib/api/paginate';
 import {
   capabilitySnapshotSchema,
   type CapabilitySnapshot,
@@ -50,6 +51,7 @@ function targetSetFromApi(view: PostingSetView): TargetSet {
     connectionIds: view.connectionIds,
     seedBody: '',
     signatureId: view.signatureId,
+    requiresApproval: view.approvalPolicy !== 'none',
   };
 }
 
@@ -171,7 +173,17 @@ export async function loadComposer(input: {
   // they go out together rather than stacking two round trips in front of the
   // one screen where people are waiting to start writing.
   const [connections, sets] = await Promise.all([
-    api.connections.list({ projectId: input.projectId }, input.forward),
+    // Every account the post can go to, not the first page of them.
+    collectAllPages((cursor) =>
+      api.connections.list(
+        {
+          projectId: input.projectId,
+          limit: FOLLOW_PAGE_SIZE,
+          ...(cursor === undefined ? {} : { cursor }),
+        },
+        input.forward,
+      ),
+    ),
     api.postingSets.list({ projectId: input.projectId }, input.forward),
   ]);
 
@@ -340,6 +352,8 @@ export function createComposerGateway(input: ComposerGatewayInput): ComposerGate
   // version its creation wrote, so the first save cannot be called stale.
   let versionId: string | null = input.versionId ?? null;
   let creating: Promise<string> | null = null;
+  // The Set whose approval policy the server already holds for this draft.
+  let appliedSetId: string | null = null;
 
   const ensureDraftId = (): Promise<string> => {
     if (draftId !== null) {
@@ -380,6 +394,18 @@ export function createComposerGateway(input: ComposerGatewayInput): ComposerGate
     }
 
     try {
+      /*
+       * A Set carries an approval policy, and only the server may record it on
+       * the content item: `assertApproved` reads that column before anything
+       * publishes. Applying the Set first means the policy holds even if this
+       * tab closes; the composite write below then replaces the targets with
+       * exactly what the composer shows.
+       */
+      if (state.appliedSetId !== null && state.appliedSetId !== appliedSetId) {
+        const applied = await api.content.applySet(contentItemId, state.appliedSetId);
+        appliedSetId = state.appliedSetId;
+        versionId = applied.currentVersionId ?? versionId;
+      }
       const saved = await api.content.saveComposite(contentItemId, {
         expectedVersionId: versionId,
         master: {

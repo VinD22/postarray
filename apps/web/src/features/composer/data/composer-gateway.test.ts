@@ -21,6 +21,7 @@ const setTargets = vi.hoisted(() => vi.fn());
 const overrideVariant = vi.hoisted(() => vi.fn());
 const resetVariantToMaster = vi.hoisted(() => vi.fn());
 const saveComposite = vi.hoisted(() => vi.fn());
+const applySet = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/api', () => ({
   api: {
@@ -34,6 +35,7 @@ vi.mock('@/lib/api', () => ({
       overrideVariant,
       resetVariantToMaster,
       saveComposite,
+      applySet,
     },
   },
   newIdempotencyKey: (prefix: string) => `${prefix}_test`,
@@ -118,6 +120,7 @@ describe('loadComposer', () => {
         // the server, and the reducer reads empty as "seeds nothing".
         seedBody: '',
         signatureId: 'sig_01',
+        requiresApproval: true,
       },
     ]);
   });
@@ -427,6 +430,24 @@ describe('createComposerGateway', () => {
 
     expect(reopened.overrides).toEqual(edited.overrides);
     expect(reopened.settings.conn_01?.privacyValue).toBe('public');
+  });
+
+  it('records an applied Set on the server once, before the composite write', async () => {
+    applySet.mockResolvedValue(compositeItem({ currentVersionId: 'ver_05' }));
+    saveComposite.mockResolvedValue(compositeItem({ currentVersionId: 'ver_06' }));
+    const state = { ...(await bootstrapState()), appliedSetId: 'set_01' };
+    const gateway = createComposerGateway({
+      contentItemId: 'content_01',
+      versionId: 'ver_01',
+      projectId: 'project_01',
+    });
+
+    await gateway.save(state);
+    await gateway.save(state);
+
+    expect(applySet).toHaveBeenCalledTimes(1);
+    expect(applySet).toHaveBeenCalledWith('content_01', 'set_01');
+    expect(saveComposite.mock.calls[0]?.[1]).toMatchObject({ expectedVersionId: 'ver_05' });
   });
 
   it('builds each save on the version the previous one wrote', async () => {

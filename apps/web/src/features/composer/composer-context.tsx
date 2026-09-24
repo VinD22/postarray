@@ -297,16 +297,21 @@ export function ComposerProvider({
     [conflict, dispatch, persist],
   );
 
+  // A Set applied in this session brings its approval policy with it; the
+  // gateway records it on the server before the next save.
+  const appliedSetRequiresApproval =
+    bootstrap.sets.find((set) => set.id === state.appliedSetId)?.requiresApproval ?? false;
+  const effectiveApprovalRequired = approvalRequired || appliedSetRequiresApproval;
   const summaries = useMemo(
     () =>
       summarizeTargets({
         state,
         accounts: bootstrap.accounts,
         media,
-        approvalRequired,
+        approvalRequired: effectiveApprovalRequired,
         serverIssues,
       }),
-    [approvalRequired, bootstrap.accounts, media, serverIssues, state],
+    [effectiveApprovalRequired, bootstrap.accounts, media, serverIssues, state],
   );
 
   const totals = useMemo(() => totalsFor(summaries), [summaries]);

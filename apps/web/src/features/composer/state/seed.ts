@@ -301,6 +301,7 @@ export const SEED_SETS: readonly TargetSet[] = [
     connectionIds: SEED_ACCOUNTS.map((account) => account.connectionId),
     seedBody: '',
     signatureId: 'sig_seed_eu_footer',
+    requiresApproval: false,
   },
   {
     id: 'set_seed_engineering',
@@ -309,6 +310,7 @@ export const SEED_SETS: readonly TargetSet[] = [
     connectionIds: ['conn_seed_x_acme', 'conn_seed_li_acme'],
     seedBody: '',
     signatureId: null,
+    requiresApproval: false,
   },
 ];
 

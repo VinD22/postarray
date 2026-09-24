@@ -47,6 +47,7 @@ import { useCommitPreview } from '../data/use-commit-preview';
 import { acknowledgedCodes, commitAllowed, type PreviewState } from '../state/commit-preview';
 import { RepeatPanel } from './repeat-panel';
 import { isoDateIn, isoTimeIn, zonedToInstant } from '../state/time';
+import { reZoneInstant, timeZoneOptions } from '../state/time-zones';
 
 export type ScheduleIntent = 'draft' | 'approval' | 'schedule' | 'publish';
 
@@ -94,6 +95,10 @@ export function ScheduleSheet({
 
   const schedule = state.master.schedule;
   const zone = schedule?.ianaTimeZone ?? bootstrap.workspaceTimeZone;
+  const zoneOptions = useMemo(
+    () => timeZoneOptions([bootstrap.workspaceTimeZone, zone]),
+    [bootstrap.workspaceTimeZone, zone],
+  );
   const instant = schedule?.instant ?? null;
   const inPast = instant !== null && Date.parse(instant) < Date.now();
   const dstChange = useMemo(
@@ -273,7 +278,11 @@ export function ScheduleSheet({
                   }
                   dispatch({
                     type: 'schedule/set',
-                    schedule: { instant, ianaTimeZone: value, repeat: schedule?.repeat ?? null },
+                    schedule: {
+                      instant: reZoneInstant(instant, zone, value),
+                      ianaTimeZone: value,
+                      repeat: schedule?.repeat ?? null,
+                    },
                   });
                 }}
               >
@@ -281,10 +290,11 @@ export function ScheduleSheet({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={bootstrap.workspaceTimeZone}>
-                    {bootstrap.workspaceTimeZone}
-                  </SelectItem>
-                  <SelectItem value="UTC">UTC</SelectItem>
+                  {zoneOptions.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             )}
