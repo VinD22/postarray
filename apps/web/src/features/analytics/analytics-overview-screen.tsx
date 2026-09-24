@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState, type ReactElement } from 'react';
+import { useMemo, useState, type ReactElement } from 'react';
 import type { ContentKind } from '@relay/contracts';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import {
@@ -36,6 +36,7 @@ import { metricLabelKey } from './metrics';
 import { previousPeriod } from './period';
 import { useAnalyticsOverview } from './queries';
 import type { AccountRef, MetricDefinitionView } from './types';
+import { useFirstLoadFlag } from './use-first-load-flag';
 import { useOnlineStatus } from './use-online-status';
 
 /**
@@ -163,15 +164,9 @@ export function AnalyticsOverviewScreen({
   }, [query.data?.rows]);
 
   // The comparison table's values count up once, on the very first
-  // successful load of this screen — never on a filter change, which the
-  // `analytics.filter.applied` announcement below already covers. A ref
-  // (not state) is deliberate: it must not force an extra render, or the
-  // count-up would mount already "used up" and never animate at all.
-  const hasAnimatedCountsRef = useRef(false);
-  const animateCounts = query.data !== undefined && !hasAnimatedCountsRef.current;
-  if (query.data !== undefined && !hasAnimatedCountsRef.current) {
-    hasAnimatedCountsRef.current = true;
-  }
+  // successful load of this screen, never on a filter change, which the
+  // `analytics.filter.applied` announcement below already covers.
+  const animateCounts = useFirstLoadFlag(query.data !== undefined);
 
   const handleFilters = (next: AnalyticsFilters): void => {
     setFilters(next);
