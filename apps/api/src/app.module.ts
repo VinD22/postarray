@@ -41,6 +41,7 @@ import { SuggestionsModule } from './modules/suggestions/suggestions.module';
 import { MediaAnalysisModule } from './modules/media-analysis/media-analysis.module';
 import { GrowthModule } from './modules/growth/growth.module';
 import { HealthModule } from './modules/health/health.module';
+import { InsightsModule } from './modules/insights/insights.module';
 import { MediaModule } from './modules/media/media.module';
 import { PublishingModule } from './modules/publishing/publishing.module';
 import { ImportModule } from './modules/import/import.module';
@@ -108,6 +109,7 @@ export class AppModule implements NestModule {
         PublishingModule,
         MediaModule,
         AnalyticsModule,
+        InsightsModule,
         ShortLinksModule,
         AutomationRulesModule,
         RssModule,

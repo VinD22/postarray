@@ -232,6 +232,18 @@ export function createRefusingServices(): Services {
       accept: refuse('suggestion'),
       bestTime: refuse('suggestion'),
     },
+    insights: {
+      latestDigest: () => Promise.resolve(null),
+      generateDigest: refuse('insight'),
+      list: () => Promise.resolve([]),
+      postFeedback: refuse('insight'),
+      whatWorks: refuse('insight'),
+      digestSettings: () => Promise.resolve({ emailEnabled: true, canChange: false }),
+      updateDigestSettings: refuse('insight'),
+      postExperiment: () => Promise.resolve(null),
+      openExperiments: () => Promise.resolve([]),
+      tagExperiment: refuse('insight'),
+    },
     mediaAnalysis: {
       settings: () => Promise.resolve({ imageAnalysisEnabled: false, canChange: false }),
       updateSettings: refuse('media_analysis'),
@@ -406,6 +418,10 @@ export function createRefusingServices(): Services {
     },
     workerInsights: {
       generatePostFeedback: refuse('insight'),
+    },
+    workerDigests: {
+      buildWeeklyDigest: refuse('insight'),
+      sendWeeklyDigestEmail: refuse('insight'),
     },
     health: refuseHealth(),
   };
