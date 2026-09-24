@@ -6,6 +6,7 @@ import { Notice } from '@relay/design-system/patterns';
 import { Body, Heading, List, Section, Split } from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
 import { JsonLd } from '@/features/marketing/components/json-ld';
+import { PageFaq } from '@/features/marketing/components/page-faq';
 import { CorrectionNotice, PageIntro } from '@/features/marketing/components/page-parts';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { breadcrumbJsonLd, pageMetadata } from '@/features/marketing/seo';
@@ -95,6 +96,16 @@ export default async function UseCasePage({
           </p>
         </Split>
       </Section>
+
+      <PageFaq
+        title={t.t('web.pageFaq.title')}
+        locale={locale}
+        entries={(['today', 'official'] as const).map((id) => ({
+          id,
+          question: t.t(`web.pageFaq.useCase.${id}.q`),
+          answer: t.t(`web.pageFaq.useCase.${id}.a`),
+        }))}
+      />
 
       <Section id="corrections">
         <CorrectionNotice locale={locale} />

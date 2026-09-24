@@ -14,6 +14,7 @@ import {
 } from '@/features/marketing/components/layout';
 import { ExternalLink, TextLink } from '@/features/marketing/components/links';
 import { JsonLd } from '@/features/marketing/components/json-ld';
+import { PageFaq } from '@/features/marketing/components/page-faq';
 import {
   CorrectionNotice,
   PageIntro,
@@ -224,6 +225,16 @@ export default async function PlatformSchedulePage({
           </p>
         </Split>
       </Section>
+
+      <PageFaq
+        title={t.t('web.pageFaq.title')}
+        locale={locale}
+        entries={(['today', 'limits', 'official'] as const).map((id) => ({
+          id,
+          question: t.t(`web.pageFaq.schedule.${id}.q`, { platform: name }),
+          answer: t.t(`web.pageFaq.schedule.${id}.a`, { platform: name }),
+        }))}
+      />
 
       <Section id="corrections">
         <CorrectionNotice locale={locale} />
