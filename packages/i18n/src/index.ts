@@ -100,6 +100,7 @@ export type {
 export {
   calendarDayNumber,
   crossesOffsetChange,
+  formatByteLimit,
   formatBytes,
   formatCompactNumber,
   formatCurrency,

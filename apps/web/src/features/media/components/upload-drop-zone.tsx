@@ -13,7 +13,7 @@ import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { Upload } from 'lucide-react';
 import { Button, Progress } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
-import { formatBytes } from '@relay/i18n';
+import { formatByteLimit, formatBytes } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
 import { useUploadQueue, type UploadTransport } from '../hooks/use-upload-queue';
@@ -145,7 +145,7 @@ export function UploadDropZone({ rules, transport, onUploaded }: UploadDropZoneP
                         ? { size: formatBytes(t.locale, item.reason.values.size) }
                         : {}),
                       ...(typeof item.reason.values.limit === 'number'
-                        ? { limit: formatBytes(t.locale, item.reason.values.limit) }
+                        ? { limit: formatByteLimit(t.locale, item.reason.values.limit) }
                         : {}),
                     })}
                   </p>

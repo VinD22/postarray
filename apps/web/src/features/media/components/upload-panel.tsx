@@ -14,7 +14,7 @@ import { Upload } from 'lucide-react';
 import { Button, Progress } from '@relay/design-system/primitives';
 import { OfflineBanner } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
-import { formatBytes } from '@relay/i18n';
+import { formatByteLimit, formatBytes } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
 import { acceptedMimeTypes, type AccountRule } from '../state/media-rules';
@@ -188,7 +188,7 @@ export function UploadPanel({
                         ? { size: formatBytes(t.locale, item.reason.values.size) }
                         : {}),
                       ...(typeof item.reason.values.limit === 'number'
-                        ? { limit: formatBytes(t.locale, item.reason.values.limit) }
+                        ? { limit: formatByteLimit(t.locale, item.reason.values.limit) }
                         : {}),
                     })}
                   </p>

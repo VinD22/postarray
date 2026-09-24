@@ -11,7 +11,7 @@
 
 import type { ReactNode } from 'react';
 import { Notice } from '@relay/design-system/patterns';
-import { formatBytes } from '@relay/i18n';
+import { formatByteLimit } from '@relay/i18n';
 import { useTranslations } from '@relay/i18n/react';
 
 import { mediaPolicyLimits } from '../state/media-policy';
@@ -31,9 +31,13 @@ export function MediaPolicyNotice({ rules }: MediaPolicyNoticeProps): ReactNode 
       <p>
         {t.full('mediaLib.retention.limits', {
           imageSize:
-            imageBytes === null ? t.full('common.unavailable') : formatBytes(t.locale, imageBytes),
+            imageBytes === null
+              ? t.full('common.unavailable')
+              : formatByteLimit(t.locale, imageBytes),
           videoSize:
-            videoBytes === null ? t.full('common.unavailable') : formatBytes(t.locale, videoBytes),
+            videoBytes === null
+              ? t.full('common.unavailable')
+              : formatByteLimit(t.locale, videoBytes),
         })}
       </p>
     </Notice>
