@@ -13,6 +13,7 @@ import { connectionMessages } from './connections';
 import { developerMessages } from './developer';
 import { developerConnectMessages } from './developer-connect';
 import { digestMessages } from './digest';
+import { insightMessages } from './insight';
 import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
@@ -100,6 +101,7 @@ export const en = {
   ...webComparisonMessages,
   ...webDemoMessages,
   ...webSuggestMessages,
+  ...insightMessages,
 } as const;
 
 /** Every message key in the product. */
@@ -123,6 +125,7 @@ export {
   developerConnectMessages,
   digestMessages,
   emailMessages,
+  insightMessages,
   errorMessages,
   growthMessages,
   importMessages,

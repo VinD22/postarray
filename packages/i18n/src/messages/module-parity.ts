@@ -27,6 +27,7 @@ export const BETA_FALLBACK_CATALOG_MODULES = [
   'digest',
   'web-tool-directory',
   'web-suggest',
+  'insight',
 ] as const;
 
 export const BETA_FALLBACK_CATALOG_MODULE_PREFIXES: Readonly<
@@ -38,6 +39,7 @@ export const BETA_FALLBACK_CATALOG_MODULE_PREFIXES: Readonly<
   digest: ['digest.', 'email.digest.'],
   'web-tool-directory': ['web.toolDirectory.', 'web.meta.toolDirectory.'],
   'web-suggest': ['web.suggest.', 'cli.help.suggest.'],
+  insight: ['insight.'],
 };
 
 export type CatalogModuleName = string;

@@ -131,6 +131,12 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // locales keep the reviewed English source until a person translates it.
   'settings.ui.ai.',
   'mediaAnalysis.',
+  // After publishing (2026-09-24): the per-post verdicts, the one next test,
+  // failure explanations, what works for you and the weekly summary email.
+  // Each sentence separates an association from a cause or says a number is
+  // unavailable rather than zero. Beta locales keep the reviewed English
+  // source until a person translates it.
+  'insight.',
   // Transactional security and invitation mail stays in reviewed English
   // until each beta locale has a human-reviewed delivery template.
   'email.',
