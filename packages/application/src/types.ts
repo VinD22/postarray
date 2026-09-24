@@ -89,6 +89,7 @@ import type { OAuthPendingDiscoveryPort } from './ports/oauth-pending';
 import type { OAuthAccountSelectionView } from './ports/oauth-pending';
 import type { AiSuggestionService } from './services/ai-suggestions-types';
 import type { MediaAnalysisService } from './services/media-analysis-types';
+import type { InsightService, WorkerDigestService } from './services/insights-types';
 
 import type {
   AnalyticsOverviewView,
@@ -2904,6 +2905,8 @@ export interface AssistantService {
 /** The composer's Suggest menu, Review button and posting time hint. */
 export type { AiSuggestionService } from './services/ai-suggestions-types';
 export type { MediaAnalysisService } from './services/media-analysis-types';
+/** Weekly digest, per-post feedback and "what works for you". */
+export type { InsightService, WorkerDigestService } from './services/insights-types';
 
 export interface Services {
   readonly workspaces: WorkspaceService;
@@ -2932,6 +2935,8 @@ export interface Services {
   readonly aiSuggestions: AiSuggestionService;
   /** Opt-in image analysis: settings, stored analyses and pre-check warnings. */
   readonly mediaAnalysis: MediaAnalysisService;
+  /** Stored insights: weekly digest, per-post feedback, what works for you. */
+  readonly insights: InsightService;
   readonly webhooks: WebhookService;
   readonly domainEvents: DomainEventService;
   readonly credentials: CredentialVaultService;
@@ -2953,6 +2958,7 @@ export interface Services {
   readonly workerRss: WorkerRssService;
   readonly workerRules: WorkerRuleService;
   readonly workerInsights: WorkerInsightService;
+  readonly workerDigests: WorkerDigestService;
   readonly workerBulkImports: WorkerBulkImportService;
   readonly workerMedia: WorkerMediaService;
   readonly health: HealthService;

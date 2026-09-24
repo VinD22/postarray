@@ -323,6 +323,30 @@ export type {
   MediaChecksView,
 } from './services/media-analysis-types';
 export type { AiSuggestionServiceOptions } from './services/ai-suggestions';
+// Stored insights: weekly digest, per-post "How it did", what works for you.
+export { createInsightService, createWorkerDigestService } from './services/insights';
+export { explainFailure } from './services/insight-failures';
+export {
+  digestSettingsUpdateSchema,
+  generateDigestRequestSchema,
+} from './services/insights-types';
+export type {
+  DigestRowView,
+  DigestSettingsView,
+  DigestView,
+  FailureExplanationView,
+  InsightService,
+  InsightView,
+  NextTestView,
+  OpenExperimentView,
+  PostChannelFeedbackView,
+  PostExperimentView,
+  PostFeedbackReadingView,
+  PostFeedbackView,
+  WhatWorksRowView,
+  WhatWorksView,
+  WorkerDigestService,
+} from './services/insights-types';
 export {
   REVIEW_CHECKS,
   SUGGESTION_KINDS,

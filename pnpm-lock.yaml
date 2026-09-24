@@ -460,6 +460,9 @@ importers:
 
   packages/application:
     dependencies:
+      '@relay/ai':
+        specifier: workspace:*
+        version: link:../ai
       '@relay/analytics-domain':
         specifier: workspace:*
         version: link:../analytics-domain

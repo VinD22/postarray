@@ -44,6 +44,7 @@ import { createWorkspaceService } from './workspaces';
 import { createWorkerAnalyticsService } from './worker-analytics';
 import { createWorkerCredentialService } from './worker-credentials';
 import { createWorkerInsightService } from './worker-insights';
+import { createInsightService, createWorkerDigestService } from './insights';
 import { createWorkerRepeatService } from './worker-repeat';
 import { createWorkerRssService } from './worker-rss';
 import { createWorkerRuleService } from './worker-rules';
@@ -120,6 +121,7 @@ export function createServices(deps: ServiceDeps): Services {
     assistant,
     aiSuggestions: createAiSuggestionService(deps, { mediaUnderstanding: mediaAnalysis }),
     mediaAnalysis,
+    insights: createInsightService(deps),
     webhooks,
     domainEvents: createDomainEventService({
       webhooks,
@@ -147,6 +149,7 @@ export function createServices(deps: ServiceDeps): Services {
     workerRss: createWorkerRssService(deps, content),
     workerRules: createWorkerRuleService(deps, content),
     workerInsights: createWorkerInsightService(deps),
+    workerDigests: createWorkerDigestService(deps),
     workerWebhooks: createWorkerWebhookService(deps),
     workerBulkImports: createWorkerBulkImportService(deps, bulkImports),
     workerMedia: createWorkerMediaService(deps),
