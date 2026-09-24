@@ -23,6 +23,7 @@ import { DemoNotice } from './demo-notice';
 import { HelpMenu } from './help-menu';
 import { MobileNav } from './mobile-nav';
 import { PrimaryNav } from './primary-nav';
+import { ShellDropTarget } from './shell-drop-target';
 import { WorkspaceSwitcher } from './workspace-switcher';
 
 /*
@@ -222,6 +223,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
         </div>
 
         {onCompose ? null : <MobileNav />}
+        <ShellDropTarget />
 
         {paletteMounted ? (
           <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />

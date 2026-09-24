@@ -124,6 +124,10 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // somebody believing their draft was rewritten. Beta locales keep the
   // reviewed English source until a person translates it.
   'web.suggest.',
+  // Visible questions on the schedule and use case pages (2026-09-24). Each
+  // answer says nothing publishes yet and that posting is official API only.
+  // Beta locales keep the reviewed English source until a person translates it.
+  'web.pageFaq.',
   // Opt-in image analysis (2026-09-23): the settings switch and the pre-check
   // warnings. Each sentence either states exactly what is sent to a model or
   // is a consent and rights reminder, and a machine translation that softened
@@ -329,6 +333,12 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'shell.context.projectDetail',
   'shell.context.workspaceDetail',
   'shell.context.empty',
+  // Drop-anywhere upload in the app shell: reviewed English until translated.
+  'shell.drop.title',
+  'shell.drop.body',
+  'shell.drop.uploading',
+  'shell.drop.failed',
+  'shell.drop.unsupported',
   'palette.group.projects',
   'web.motion.pause',
   'web.motion.play',
