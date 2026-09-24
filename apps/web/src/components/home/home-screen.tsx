@@ -16,6 +16,7 @@ import { StaggerList } from '@/components/motion';
 import { ActionCenterList } from '@/components/shell/action-center-list';
 
 import { ConnectionHealth } from './connection-health';
+import { DigestCard } from './digest-card';
 import { DraftsList } from './drafts-list';
 import { RecentReceipts } from './recent-receipts';
 import { HomeSection } from './section';
@@ -168,6 +169,8 @@ export function HomeScreen() {
             aria-label={t('home.v2.activity.label')}
             className="border-border-subtle flex min-w-0 flex-col gap-10 xl:border-s xl:ps-10"
           >
+            <DigestCard />
+            <Separator />
             <RecentReceipts />
             <Separator />
             <ConnectionHealth />

@@ -18,6 +18,9 @@ import {
 
 import { api } from '@/lib/api';
 
+import { insightsGateway } from './insights-queries';
+import { storedObservations } from './stored-observations';
+
 import type {
   AccountAttentionRow,
   AccountFreshnessRow,
@@ -208,9 +211,8 @@ function toOverview(wire: AnalyticsOverviewViewShape): AnalyticsOverview {
     rows,
     freshness: wire.freshness as readonly AccountFreshnessRow[],
     attention: wire.attention as readonly AccountAttentionRow[],
-    // The insight engine is not wired to this read. An empty list renders as
-    // no observations, which is true; anything else here would be a sentence
-    // about the user's numbers that nobody wrote.
+    // Filled from stored insights by `useAnalyticsOverview`. An empty list
+    // renders as no observations, which is true.
     observations: [],
     accountsRequested: wire.accountsRequested,
     accountsWithData: wire.accountsWithData,
@@ -276,7 +278,11 @@ export function useAnalyticsOverview(input: OverviewInput, enabled = true) {
         metric: input.rankMetric,
         ...(input.format === null ? {} : { contentKind: input.format }),
       });
-      return toOverview(analyticsOverviewViewSchema.parse(result));
+      const overview = toOverview(analyticsOverviewViewSchema.parse(result));
+      // Observations are stored insights the worker wrote from real readings.
+      // A failed read leaves the list empty rather than failing the screen.
+      const stored = await insightsGateway.list().catch(() => []);
+      return { ...overview, observations: storedObservations(stored, input.range) };
     },
   });
 }

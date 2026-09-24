@@ -29,6 +29,7 @@ import { FreshnessPanel } from './components/freshness-panel';
 import { MetricDefinitionsPanel } from './components/metric-definition';
 import { MetricSeriesChart } from './components/metric-series-chart';
 import { Observations } from './components/observations';
+import { WhatWorks } from './components/what-works';
 import { QueryErrorState } from './components/query-error-state';
 import { providerLabelKey } from './labels';
 import { metricLabelKey } from './metrics';
@@ -396,6 +397,10 @@ export function AnalyticsOverviewScreen({
         observations={query.data?.observations ?? []}
         onTagExperiment={onTagExperiment}
       />
+
+      <Separator />
+
+      <WhatWorks />
 
       <Separator />
 

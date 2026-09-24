@@ -6,6 +6,7 @@ import { DefinitionList, LoadingState, Notice, SkeletonText } from '@relay/desig
 import { Button, Separator } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
+import { HowItDidPanel } from '@/features/receipts/how-it-did-panel';
 import { csvFilename, csvNumber, toCsv } from '@/lib/export/csv';
 
 import { ExportButton } from './components/export-button';
@@ -210,6 +211,10 @@ export function PostMetricsScreen({
           />
         </div>
       </section>
+
+      <Separator />
+
+      <HowItDidPanel contentItemId={contentItemId} />
 
       <Separator />
 

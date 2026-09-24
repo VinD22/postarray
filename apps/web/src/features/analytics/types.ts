@@ -166,6 +166,12 @@ export interface Observation {
   readonly sampleSize: number;
   /** Values the message key interpolates. */
   readonly values: Readonly<Record<string, string | number>>;
+  /**
+   * Set for an observation read from a stored insight. The component then
+   * formats `percent` (a ratio) and translates `metric` (a normalized name)
+   * itself, and uses this key instead of the kind's default.
+   */
+  readonly storedMessageKey?: 'insight.observation.above' | 'insight.observation.below';
 }
 
 export interface SeriesPoint {

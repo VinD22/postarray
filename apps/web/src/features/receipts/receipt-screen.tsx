@@ -52,6 +52,7 @@ import { RetryTargetButton } from './retry-target-button';
 import { ReceiptAttempts } from './receipt-attempts';
 import { ReceiptItems } from './receipt-items';
 import { ReceiptTimeline } from './receipt-timeline';
+import { HowItDidPanel } from './how-it-did-panel';
 import { PublishProgress } from './publish-progress';
 import { buildTimeline, dispatchLatencyMs, hasFailedFollowUp } from './timeline-model';
 import { usePostDetail } from './use-receipt';
@@ -308,6 +309,9 @@ function PostDocument({
             />
           ) : null}
         </section>
+
+        {/* ---- How it did: delivery, readings, one next test ------------ */}
+        <HowItDidPanel contentItemId={detail.item.id} />
 
         {receipt ? (
           <>
