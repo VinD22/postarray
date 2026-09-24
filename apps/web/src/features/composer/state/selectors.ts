@@ -13,6 +13,7 @@ import {
 
 import { countCharacters, findUrls, mediaLimitFor, resolvePublishedUrl } from './capability-rules';
 import { validateTarget, type DraftFacts } from './validate-draft';
+import { isoDateIn, isoTimeIn, zonedToInstant } from './time';
 import type { MediaFacts } from './capability-rules';
 import type { ComposerState, TargetAccount, TargetRailState, TargetSummary } from '../types';
 
@@ -188,30 +189,52 @@ export function sequenceTimeline(
   });
 }
 
-/** The first N occurrence dates for a repeat, so the sheet can list them. */
+/**
+ * The first N occurrence instants for a repeat, so the sheet can list them.
+ *
+ * Mirrors the worker's planner: the cadence is counted in calendar days in the
+ * schedule's own zone and the wall clock is carried across unchanged, so a
+ * weekly 09:00 post stays at 09:00 after the clocks change. A wall clock the
+ * zone skipped moves to the next hour that exists. The end date is inclusive
+ * and read in that same zone.
+ */
 export function repeatOccurrences(
   startInstant: string,
   cadenceDays: number,
   endDate: string | null,
   count: number | null,
   maximum: number,
+  timeZone = 'UTC',
 ): string[] {
-  const start = Date.parse(startInstant);
-  if (Number.isNaN(start)) {
+  if (Number.isNaN(Date.parse(startInstant))) {
     return [];
   }
-  const limit = count ?? maximum;
-  const end = endDate === null ? null : Date.parse(`${endDate}T23:59:59.999Z`);
-  const dayMs = 86_400_000;
+  const startDate = isoDateIn(startInstant, timeZone);
+  const wallClock = isoTimeIn(startInstant, timeZone);
+  const startDay = Date.parse(`${startDate}T00:00:00Z`);
+  const limit = Math.min(count ?? maximum, maximum);
   const output: string[] = [];
-  for (let index = 0; index < Math.min(limit, maximum); index += 1) {
-    const instant = start + index * cadenceDays * dayMs;
-    if (end !== null && instant > end) {
+  for (let index = 0; index < limit; index += 1) {
+    const day = new Date(startDay + index * cadenceDays * 86_400_000).toISOString().slice(0, 10);
+    if (endDate !== null && day > endDate) {
       break;
     }
-    output.push(new Date(instant).toISOString());
+    output.push(wallClockOn(day, wallClock, timeZone));
   }
   return output;
+}
+
+/** The instant of a local wall clock, moving forward past a skipped hour. */
+function wallClockOn(date: string, time: string, timeZone: string): string {
+  const [hour = 0, minute = 0] = time.split(':').map(Number);
+  for (let probe = 0; probe < 4; probe += 1) {
+    const probed = `${String((hour + probe) % 24).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+    const instant = zonedToInstant(date, probed, timeZone);
+    if (isoTimeIn(instant, timeZone) === probed && isoDateIn(instant, timeZone) === date) {
+      return instant;
+    }
+  }
+  return zonedToInstant(date, time, timeZone);
 }
 
 /**

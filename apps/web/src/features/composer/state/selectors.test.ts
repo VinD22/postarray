@@ -127,4 +127,32 @@ describe('sequence and repeat maths', () => {
     const dates = repeatOccurrences('2026-08-06T07:30:00.000Z', 7, '2026-08-20', null, 52);
     expect(dates).toHaveLength(3);
   });
+
+  it('keeps the wall clock of a repeat across a daylight saving change', () => {
+    // 2026-03-08 is the US spring forward: 09:00 local is 14:00Z before, 13:00Z after.
+    const dates = repeatOccurrences('2026-03-01T14:00:00.000Z', 7, null, 2, 52, 'America/New_York');
+    expect(dates).toEqual(['2026-03-01T14:00:00.000Z', '2026-03-08T13:00:00.000Z']);
+  });
+
+  it('moves a repeat off a wall clock the zone skipped, like the worker', () => {
+    const dates = repeatOccurrences('2026-03-01T07:30:00.000Z', 7, null, 2, 52, 'America/New_York');
+    expect(dates[1]).toBe('2026-03-08T07:30:00.000Z');
+  });
+
+  it('reads the end date in the schedule zone and keeps it inclusive', () => {
+    // 21:00 in New York on 20 Aug is already 21 Aug in UTC.
+    const dates = repeatOccurrences(
+      '2026-08-07T01:00:00.000Z',
+      7,
+      '2026-08-20',
+      null,
+      52,
+      'America/New_York',
+    );
+    expect(dates).toEqual([
+      '2026-08-07T01:00:00.000Z',
+      '2026-08-14T01:00:00.000Z',
+      '2026-08-21T01:00:00.000Z',
+    ]);
+  });
 });
