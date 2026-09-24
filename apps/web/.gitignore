@@ -1,0 +1,2 @@
+# Lighthouse CI keeps its working copy of collected runs here.
+.lighthouseci/

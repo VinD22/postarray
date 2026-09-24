@@ -8,6 +8,9 @@
     "dev:e2e": "next dev --webpack --port ${RELAY_E2E_PORT:-3000}",
     "build": "next build",
     "start": "next start --port 3000",
+    "analyze": "ANALYZE=true next build --webpack",
+    "budgets": "node scripts/check-bundle-budgets.js",
+    "lhci": "lhci autorun",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src e2e scripts playwright.config.ts",
     "test": "vitest run",
@@ -36,6 +39,8 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@lhci/cli": "^0.15.1",
+    "@next/bundle-analyzer": "^16.3.6",
     "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/dom": "^10.4.0",

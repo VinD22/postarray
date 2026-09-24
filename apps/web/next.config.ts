@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url';
 
+import bundleAnalyzer from '@next/bundle-analyzer';
 import type { NextConfig } from 'next';
 
 /**
@@ -74,4 +75,14 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+/**
+ * `ANALYZE=true` writes treemaps to `.next/analyze`. The analyzer hooks
+ * webpack, so `pnpm analyze` builds with `--webpack`; the per-route budgets CI
+ * enforces are read from the Turbopack build by `scripts/check-bundle-budgets.js`.
+ */
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: false,
+});
+
+export default withBundleAnalyzer(nextConfig);
