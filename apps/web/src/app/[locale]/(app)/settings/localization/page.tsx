@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
+import { getRequestIntl } from '@/lib/i18n/server';
 import type { ReactNode } from 'react';
 
 import { LocalizationScreen } from '@/features/settings/localization/localization-screen';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const intl = await getRequestIntl();
+  return { title: intl.t.format('settings.localization.title') };
+}
 
 /**
  * Server component. It renders the screen and nothing else: every string on

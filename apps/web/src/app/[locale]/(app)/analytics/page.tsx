@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { getRequestIntl } from '@/lib/i18n/server';
 import type { ReactElement } from 'react';
 import { cookies } from 'next/headers';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -7,6 +9,11 @@ import { prefetchAnalyticsOverview } from '@/features/analytics/prefetch-analyti
 import { createQueryClient } from '@/lib/api/query-client';
 import { ACTIVE_PROJECT_COOKIE } from '@/lib/auth/project-selection';
 import { getForwardAuth, requireSession } from '@/lib/auth/require-session';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const intl = await getRequestIntl();
+  return { title: intl.t.format('analytics.title') };
+}
 
 /**
  * The session is already resolved by the layout (and cached for the request),
