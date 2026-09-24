@@ -30,7 +30,7 @@ const PRIVATE_PATHS = [
 
 /**
  * AI crawlers named explicitly. A crawler that finds a group for its own
- * user agent ignores the `*` group entirely, so each group repeats the same
+ * user agent ignores the `*` group entirely, so they share the `*` group's
  * private-path list: naming them is a statement that the public site is open
  * to them for search and answers, not a loophole into the app.
  */
@@ -58,8 +58,9 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      { userAgent: '*', allow: '/', disallow },
-      ...AI_CRAWLERS.map((userAgent) => ({ userAgent, allow: '/', disallow })),
+      // One group with every user agent: repeating the list per crawler made
+      // robots.txt about 400 KB, close to the 500 KiB limit Google reads.
+      { userAgent: ['*', ...AI_CRAWLERS], allow: '/', disallow },
     ],
     sitemap: new URL('/sitemap.xml', SITE_ORIGIN).toString(),
   };

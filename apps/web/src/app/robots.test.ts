@@ -28,6 +28,7 @@ describe('robots', () => {
         '/es/confirm/*',
       ]),
     );
+    expect(JSON.stringify(result).length).toBeLessThan(100_000);
     expect(result.sitemap).toMatch(/\/sitemap\.xml$/);
   });
   it('does not block public articles that start with private route names', () => {
@@ -65,7 +66,9 @@ describe('robots AI crawler groups', () => {
       'Google-Extended',
       'Applebot-Extended',
     ]) {
-      const group = list.find((rule) => rule.userAgent === agent);
+      const group = list.find((rule) =>
+        Array.isArray(rule.userAgent) ? rule.userAgent.includes(agent) : rule.userAgent === agent,
+      );
       expect(group, agent).toBeDefined();
       expect(group?.allow).toBe('/');
       expect(group?.disallow).toEqual(base);
