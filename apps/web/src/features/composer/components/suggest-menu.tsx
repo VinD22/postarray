@@ -93,10 +93,10 @@ export function SuggestMenu({ connectionId, body }: SuggestMenuProps): ReactNode
             size="sm"
             disabled={!online}
             title={online ? undefined : t.full('web.suggest.offline')}
+            iconStart={<Sparkles className="size-4" />}
+            iconEnd={<ChevronDown className="size-4" />}
           >
-            <Sparkles aria-hidden className="size-4" />
             {t.full('web.suggest.menu.label')}
-            <ChevronDown aria-hidden className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

@@ -34,8 +34,13 @@ export function ComposeButton({ className }: { readonly className?: string }) {
     return (
       <Tooltip content={reason}>
         <span className={cn('inline-flex', className)}>
-          <Button variant="primary" size="md" disabled aria-describedby="compose-disabled-reason">
-            <PenSquare aria-hidden="true" className="size-4" />
+          <Button
+            variant="primary"
+            size="md"
+            disabled
+            aria-describedby="compose-disabled-reason"
+            iconStart={<PenSquare className="size-4" />}
+          >
             {t('nav.compose')}
           </Button>
           <span id="compose-disabled-reason" className="sr-only">
