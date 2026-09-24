@@ -21,7 +21,12 @@ import {
 import { RowLink } from '@/features/marketing/components/links';
 import { JsonLd } from '@/features/marketing/components/json-ld';
 import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
-import { breadcrumbJsonLd, pageMetadata, websiteJsonLd } from '@/features/marketing/seo';
+import {
+  blogFeedAlternates,
+  breadcrumbJsonLd,
+  pageMetadata,
+  websiteJsonLd,
+} from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
 
 export async function generateMetadata({
@@ -30,7 +35,20 @@ export async function generateMetadata({
   readonly params: Promise<{ readonly locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return pageMetadata('web.blog.meta.title', 'web.blog.meta.description', ROUTES.blog, locale);
+  const metadata = await pageMetadata(
+    'web.blog.meta.title',
+    'web.blog.meta.description',
+    ROUTES.blog,
+    locale,
+  );
+  const t = await marketingTranslator(locale);
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      types: blogFeedAlternates(locale, t.t('web.blog.title')),
+    },
+  };
 }
 
 /**

@@ -49,3 +49,26 @@ describe('robots', () => {
     expect(blocked('/blog/connections')).toBe(false);
   });
 });
+
+describe('robots AI crawler groups', () => {
+  it('names every AI crawler with the same private-path list as the default group', () => {
+    const rules = robots().rules;
+    const list = Array.isArray(rules) ? rules : [rules];
+    const base = list[0]?.disallow;
+    for (const agent of [
+      'GPTBot',
+      'OAI-SearchBot',
+      'ChatGPT-User',
+      'ClaudeBot',
+      'Claude-SearchBot',
+      'PerplexityBot',
+      'Google-Extended',
+      'Applebot-Extended',
+    ]) {
+      const group = list.find((rule) => rule.userAgent === agent);
+      expect(group, agent).toBeDefined();
+      expect(group?.allow).toBe('/');
+      expect(group?.disallow).toEqual(base);
+    }
+  });
+});

@@ -1,6 +1,7 @@
 import { DEFAULT_LOCALE, PUBLIC_LOCALE_CODES } from '@relay/i18n';
 import { describe, expect, it } from 'vitest';
 
+import { routeLocales } from './locale-eligibility';
 import { MARKETING_ROUTES } from './site';
 import {
   absoluteUrl,
@@ -17,6 +18,17 @@ import {
 describe('localeAlternates', () => {
   it('keeps each canonical self-referential and emits a reciprocal cluster for every route', () => {
     for (const path of MARKETING_ROUTES) {
+      if (routeLocales(path) !== PUBLIC_LOCALE_CODES) {
+        // English-only families canonicalize every locale to English.
+        for (const locale of PUBLIC_LOCALE_CODES) {
+          const alternates = localeAlternates(path, locale);
+          expect(alternates.canonical).toBe(absoluteUrl(path, DEFAULT_LOCALE));
+          expect(Object.keys(alternates.languages).sort()).toEqual(
+            [...routeLocales(path), 'x-default'].sort(),
+          );
+        }
+        continue;
+      }
       for (const locale of PUBLIC_LOCALE_CODES) {
         const alternates = localeAlternates(path, locale);
 
@@ -81,11 +93,7 @@ describe('the share card', () => {
   });
 
   it('points at the rendered card at its declared size', async () => {
-    const metadata = await pageMetadata(
-      'web.meta.home.title',
-      'web.meta.home.description',
-      '/',
-    );
+    const metadata = await pageMetadata('web.meta.home.title', 'web.meta.home.description', '/');
     const images = metadata.openGraph?.images;
     const first = Array.isArray(images) ? images[0] : undefined;
 
@@ -120,14 +128,27 @@ describe('page titles', () => {
 describe('localized metadata and structured data', () => {
   it('uses the locale for a self-canonical URL and Open Graph locale', async () => {
     const metadata = await pageMetadata(
+      'web.meta.product.title',
+      'web.meta.product.description',
+      '/product',
+      'de',
+    );
+
+    expect(metadata.alternates?.canonical).toBe(absoluteUrl('/product', 'de'));
+    expect(metadata.openGraph?.locale).toBe('de_DE');
+  });
+
+  it('canonicalizes an English-only route family to English', async () => {
+    const metadata = await pageMetadata(
       'web.meta.pricing.title',
       'web.meta.pricing.description',
       '/pricing',
       'de',
     );
 
-    expect(metadata.alternates?.canonical).toBe(absoluteUrl('/pricing', 'de'));
-    expect(metadata.openGraph?.locale).toBe('de_DE');
+    expect(metadata.alternates?.canonical).toBe(absoluteUrl('/pricing', 'en'));
+    expect(metadata.openGraph?.locale).toBe('en_US');
+    expect(metadata.twitter).toMatchObject({ images: [expect.objectContaining({ width: 1200 })] });
   });
 
   it('does not advertise untranslated content as a localized page', async () => {
@@ -146,9 +167,7 @@ describe('localized metadata and structured data', () => {
       en: absoluteUrl('/compare/platform-native-tools', 'en'),
       'x-default': absoluteUrl('/compare/platform-native-tools', 'en'),
     });
-    expect(metadata.openGraph?.url).toBe(
-      absoluteUrl('/compare/platform-native-tools', 'en'),
-    );
+    expect(metadata.openGraph?.url).toBe(absoluteUrl('/compare/platform-native-tools', 'en'));
     expect(metadata.openGraph?.locale).toBe('en_US');
     expect(metadata.openGraph?.alternateLocale).toBeUndefined();
   });

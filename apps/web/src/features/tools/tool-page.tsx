@@ -78,7 +78,10 @@ export async function ToolPageShell(props: ToolPageShellProps): Promise<ReactNod
       </EditorialSection>
 
       <Section id="tool" ariaLabel={t.format(props.titleKey, values)}>
-        {children}
+        {/* `data-tool-path` lets the marketing measurement island count that
+            this tool was used. It records the page path only, never a
+            keystroke or a value typed into the tool. */}
+        <div data-tool-path={props.path}>{children}</div>
       </Section>
 
       <Section id="how">

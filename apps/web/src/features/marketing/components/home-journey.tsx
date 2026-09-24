@@ -153,7 +153,15 @@ export function HomeJourney({ steps, label }: HomeJourneyProps): ReactNode {
         {steps.map((step, index) => {
           const Icon = STEP_ICONS[step.id];
           return (
-            <TabsContent key={step.id} value={step.id} className="pt-0">
+            // forceMount keeps every step in the server HTML, so crawlers and
+            // readers without JavaScript get the whole story; inactive panels
+            // are hidden with CSS rather than removed from the DOM.
+            <TabsContent
+              key={step.id}
+              value={step.id}
+              forceMount
+              className="pt-0 data-[state=inactive]:hidden"
+            >
               <article
                 className={cn(
                   'home-journey-panel border-border-subtle bg-surface-raised relative isolate',

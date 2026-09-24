@@ -188,6 +188,20 @@ export const webMarketingMessages = {
   'web.home.pillars.economics.proof':
     'There is no image or video generation credit system, because Post Array does not generate media.',
 
+  /* Home FAQ. Visible on the page and mirrored in FAQPage structured data. */
+  'web.home.v2.faq.title': 'Questions people ask first',
+  'web.home.v2.faq.what.q': 'What is Post Array?',
+  'web.home.v2.faq.what.a':
+    'A publishing control plane for social accounts. You write one master version, derive a platform native variant for each account, get it approved, and publish through official platform APIs, with a receipt for every post.',
+  'web.home.v2.faq.media.q': 'Does Post Array generate images or video?',
+  'web.home.v2.faq.media.a':
+    'No. It works with media you upload or import. There is no AI image or video generation of any kind.',
+  'web.home.v2.faq.official.q': 'How does Post Array reach each platform?',
+  'web.home.v2.faq.official.a':
+    'Only through official platform APIs. There is no browser automation, no cookie replay and no unofficial endpoint.',
+  'web.home.v2.faq.agents.q': 'Can an AI agent use Post Array?',
+  'web.home.v2.faq.agents.a':
+    'Yes, through a remote MCP server with OAuth and per tool scopes. Publishing still needs a human confirmation issued by the server.',
   'web.home.honest.title': 'What Post Array does not do',
   'web.home.honest.lede':
     'These are boundaries, not a roadmap tease. If one of them changes, it changes on the changelog first.',

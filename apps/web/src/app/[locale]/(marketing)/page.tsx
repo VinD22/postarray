@@ -27,7 +27,7 @@ import { Body, Heading, Lede, Subheading } from '@/features/marketing/components
 import { Cta, TextLink } from '@/features/marketing/components/links';
 import { ColorBand, GradientWash } from '@/features/marketing/components/scene';
 import { marketingTranslator } from '@/features/marketing/i18n';
-import { offerJsonLd, pageMetadata } from '@/features/marketing/seo';
+import { faqJsonLd, offerJsonLd, pageMetadata, websiteJsonLd } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
 
 export async function generateMetadata({
@@ -138,6 +138,13 @@ const SURFACES = [
   readonly nameKey: string;
   readonly icon: LucideIcon;
 }[];
+
+const FAQ = [
+  { q: 'web.home.v2.faq.what.q', a: 'web.home.v2.faq.what.a' },
+  { q: 'web.home.v2.faq.media.q', a: 'web.home.v2.faq.media.a' },
+  { q: 'web.home.v2.faq.official.q', a: 'web.home.v2.faq.official.a' },
+  { q: 'web.home.v2.faq.agents.q', a: 'web.home.v2.faq.agents.a' },
+] as const;
 
 const BOUNDARIES = [
   'web.home.honest.noMedia',
@@ -353,6 +360,22 @@ export default async function HomePage({
         </div>
       </ColorBand>
 
+      <EditorialSection id="faq">
+        <div className="max-w-[48rem]">
+          <Heading>{t.t('web.home.v2.faq.title')}</Heading>
+          <ul className="border-border-default mt-8 border-t">
+            {FAQ.map((entry) => (
+              <li key={entry.q} className="border-border-subtle border-b py-6">
+                <Subheading as="h3">{t.format(entry.q)}</Subheading>
+                <p className="text-body-md text-text-secondary mt-3 leading-[1.6] text-pretty">
+                  {t.format(entry.a)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </EditorialSection>
+
       <ClosingCta
         id="start"
         title={t.t('web.home.closing.title')}
@@ -364,6 +387,13 @@ export default async function HomePage({
       />
 
       <JsonLd node={await offerJsonLd(locale)} />
+      <JsonLd node={await websiteJsonLd(locale)} />
+      <JsonLd
+        node={faqJsonLd(
+          FAQ.map((entry) => ({ question: t.format(entry.q), answer: t.format(entry.a) })),
+          locale,
+        )}
+      />
     </>
   );
 }

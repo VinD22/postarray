@@ -3,8 +3,17 @@ import { en } from '@relay/i18n';
 import { WEB_PLAN_TIERS, priceUnits } from '@/features/billing/tiers';
 import { BLOG_ARTICLES, blogArticlePath } from '@/features/blog/registry';
 import { articleContent, articleLocales } from '@/features/blog/types';
+import { COMPARISON_PAGES, comparisonPath } from '@/features/comparisons/registry';
 import { absoluteUrl } from '@/features/marketing/seo';
-import { ROUTES, TOOL_LINKS } from '@/features/marketing/site';
+import {
+  ROUTES,
+  TOOL_LINKS,
+  USE_CASE_LINKS,
+  schedulePlatformPath,
+  specsPlatformPath,
+} from '@/features/marketing/site';
+import { PLATFORM_PAGES } from '@/features/platforms/registry';
+import { SPEC_PLATFORMS } from '@/features/specs/registry';
 
 /**
  * A plain-text context file for AI systems (llmstxt.org): what this product is,
@@ -105,6 +114,37 @@ export async function GET(): Promise<Response> {
           : '';
       return `- [${content.title}](${url}): ${content.description}${languageNote}`;
     }),
+    '',
+    '## Reference data',
+    '',
+    line('Post specs, platform by platform', ROUTES.specs),
+    line('Image sizes and dimensions', ROUTES.specsDimensions),
+    ...SPEC_PLATFORMS.map((platform) =>
+      line(`Post specs for ${en[platform.nameKey]}`, specsPlatformPath(platform.slug)),
+    ),
+    line('How we research and verify platform facts', ROUTES.methodology),
+    `- Every value, with its source and verified date, in one file: ${absoluteUrl('/llms-full.txt')}`,
+    '',
+    '## Scheduling by platform',
+    '',
+    line('All platforms', ROUTES.schedule),
+    ...PLATFORM_PAGES.map((page) =>
+      line(
+        `${en[page.nameKey]}: platform rules and scheduling notes`,
+        schedulePlatformPath(page.slug),
+      ),
+    ),
+    '',
+    '## Use cases',
+    '',
+    ...USE_CASE_LINKS.map((link) => line(en[link.labelKey], link.href)),
+    '',
+    '## Comparisons',
+    '',
+    line('All comparisons', ROUTES.compare),
+    ...COMPARISON_PAGES.map(
+      (page) => `- [${page.title}](${absoluteUrl(comparisonPath(page.slug))}): ${page.description}`,
+    ),
     '',
     '## Free tools',
     '',

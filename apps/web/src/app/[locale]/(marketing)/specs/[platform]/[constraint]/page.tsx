@@ -20,7 +20,8 @@ import {
   SourceNote,
 } from '@/features/marketing/components/page-parts';
 import { marketingTranslator } from '@/features/marketing/i18n';
-import { breadcrumbJsonLd } from '@/features/marketing/seo';
+import { breadcrumbJsonLd, faqJsonLd } from '@/features/marketing/seo';
+import { referencePageJsonLd } from '@/features/marketing/structured-data';
 import {
   ROUTES,
   schedulePlatformPath,
@@ -28,7 +29,8 @@ import {
   specsPlatformPath,
 } from '@/features/marketing/site';
 import { formatLimitValue } from '@/features/platforms/format-limit';
-import { templatedPageMetadata } from '@/features/platforms/metadata';
+import { formattedPageMetadata, templatedPageMetadata } from '@/features/platforms/metadata';
+import { specAnswer } from '@/features/specs/answer';
 import { SPEC_PAIRS, findSpecEntry } from '@/features/specs/registry';
 import { preflightPlatformHref } from '@/features/tools/preflight-link';
 
@@ -69,11 +71,29 @@ export async function generateMetadata({
     return {};
   }
   const t = await marketingTranslator(locale);
+  const path = specsConstraintPath(found.platform.slug, found.entry.constraint.slug);
+  const answer = specAnswer({
+    entry: found.entry,
+    platformName: t.format(found.platform.nameKey),
+    readOn: found.platform.source?.readOn,
+    t,
+    locale,
+  });
+  if (answer !== undefined) {
+    // Answer first: the value is in the result title and the description.
+    return formattedPageMetadata({
+      title: answer.title,
+      description: answer.sentence,
+      path,
+      locale,
+      siteName: t.t('web.brand.name'),
+    });
+  }
   return templatedPageMetadata({
     titleKey: found.entry.constraint.titleKey,
     descriptionKey: found.entry.constraint.descriptionKey,
     values: { platform: t.format(found.platform.nameKey) },
-    path: specsConstraintPath(found.platform.slug, found.entry.constraint.slug),
+    path,
     locale,
   });
 }
@@ -100,13 +120,20 @@ export default async function SpecsConstraintPage({
   const siblings = page.entries.filter(
     (candidate) => candidate.constraint.slug !== entry.constraint.slug,
   );
+  const path = specsConstraintPath(page.slug, entry.constraint.slug);
+  const answer = specAnswer({
+    entry,
+    platformName: name,
+    readOn: page.source?.readOn,
+    t,
+    locale,
+  });
+  const lede = t.format(entry.constraint.ledeKey, { platform: name });
+  const title = t.format(entry.constraint.titleKey, { platform: name });
 
   return (
     <>
-      <PageIntro
-        title={t.format(entry.constraint.titleKey, { platform: name })}
-        lede={t.format(entry.constraint.ledeKey, { platform: name })}
-      >
+      <PageIntro title={answer?.title ?? title} lede={answer?.sentence ?? lede}>
         <Notice
           tone="neutral"
           className="mt-8"
@@ -117,6 +144,7 @@ export default async function SpecsConstraintPage({
 
       <Section id="value">
         <Split aside={<Heading>{t.t('web.specs.detail.valueTitle')}</Heading>}>
+          {answer === undefined ? null : <Body className="mb-6">{lede}</Body>}
           <FactList>
             <Fact term={t.format(entry.constraint.nameKey)}>
               {formatLimitValue(entry.value, t, locale)}
@@ -152,6 +180,9 @@ export default async function SpecsConstraintPage({
               {t.t('web.specs.detail.scheduleLink')}
             </TextLink>
           </p>
+          <p className="mt-2">
+            <TextLink href={ROUTES.compare}>{t.t('nav.public.comparisons')}</TextLink>
+          </p>
         </Split>
       </Section>
 
@@ -182,6 +213,21 @@ export default async function SpecsConstraintPage({
         <CorrectionNotice locale={locale} />
       </Section>
 
+      <JsonLd
+        node={referencePageJsonLd({
+          name: answer?.title ?? title,
+          description:
+            answer?.sentence ?? t.format(entry.constraint.descriptionKey, { platform: name }),
+          path,
+          locale: 'en',
+          ...(page.source === null ? {} : { verifiedOn: page.source.readOn }),
+          citationUrls: page.source === null ? [] : [page.source.url],
+          publisherName: t.t('web.brand.name'),
+        })}
+      />
+      {answer === undefined ? null : (
+        <JsonLd node={faqJsonLd([{ question: title, answer: answer.sentence }], 'en')} />
+      )}
       <JsonLd
         node={breadcrumbJsonLd(
           [

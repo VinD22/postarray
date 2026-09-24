@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 
 import { marketingTranslator } from '@/features/marketing/i18n';
+import { routeLocales } from '@/features/marketing/locale-eligibility';
 import {
-  absoluteUrl,
+  canonicalLocaleFor,
   localeAlternates,
   openGraphAlternateLocales,
+  shareCard,
   toOpenGraphLocale,
+  twitterCard,
 } from '@/features/marketing/seo';
 
 /**
@@ -17,6 +20,10 @@ import {
  * hreflang and Open Graph contract with a formatted title. Building it here
  * rather than overriding the result keeps Open Graph and Twitter from drifting
  * away from the document title, which is what a partial override causes.
+ *
+ * The canonical and the Open Graph locales follow `routeLocales`: a route
+ * family kept on the English source (the specs cluster, for one) canonicalizes
+ * every localized request to the English URL.
  */
 export async function templatedPageMetadata(input: {
   readonly titleKey: string;
@@ -26,25 +33,43 @@ export async function templatedPageMetadata(input: {
   readonly locale: string;
 }): Promise<Metadata> {
   const t = await marketingTranslator(input.locale);
-  const title = t.format(input.titleKey, input.values);
-  const description = t.format(input.descriptionKey, input.values);
-  const url = absoluteUrl(input.path, input.locale);
-  const openGraphLocale = toOpenGraphLocale(input.locale);
-  const alternateLocales = openGraphAlternateLocales(input.locale);
+  return formattedPageMetadata({
+    title: t.format(input.titleKey, input.values),
+    description: t.format(input.descriptionKey, input.values),
+    path: input.path,
+    locale: input.locale,
+    siteName: t.t('web.brand.name'),
+  });
+}
+
+/** The same contract for a title and description already formatted by the caller. */
+export function formattedPageMetadata(input: {
+  readonly title: string;
+  readonly description: string;
+  readonly path: string;
+  readonly locale: string;
+  readonly siteName: string;
+}): Metadata {
+  const { title, description } = input;
+  const canonicalLocale = canonicalLocaleFor(input.path, input.locale);
+  const alternates = localeAlternates(input.path, input.locale);
+  const openGraphLocale = toOpenGraphLocale(canonicalLocale);
+  const alternateLocales = openGraphAlternateLocales(canonicalLocale, routeLocales(input.path));
 
   return {
     title,
     description,
-    alternates: localeAlternates(input.path, input.locale),
+    alternates,
     openGraph: {
       type: 'website',
-      url,
+      url: alternates.canonical,
       title,
       description,
-      siteName: t.t('web.brand.name'),
+      images: shareCard(title),
+      siteName: input.siteName,
       ...(openGraphLocale === undefined ? {} : { locale: openGraphLocale }),
       ...(alternateLocales.length === 0 ? {} : { alternateLocale: alternateLocales }),
     },
-    twitter: { card: 'summary_large_image', title, description },
+    twitter: { card: 'summary_large_image', title, description, images: twitterCard(title) },
   };
 }

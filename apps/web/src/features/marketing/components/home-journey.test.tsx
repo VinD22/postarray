@@ -14,12 +14,16 @@ describe('HomeJourney', () => {
     const user = userEvent.setup();
     render(<HomeJourney label="Publishing workflow" steps={STEPS} />);
 
-    expect(screen.getByText('Start from a brief.')).toBeVisible();
-    expect(screen.queryByText('Write one master draft.')).not.toBeInTheDocument();
+    // Every step stays in the DOM (forceMount) so crawlers read the whole
+    // story; only the active panel is shown.
+    const panelOf = (text: string) => screen.getByText(text).closest('[role="tabpanel"]');
+    expect(panelOf('Start from a brief.')).toHaveAttribute('data-state', 'active');
+    expect(panelOf('Write one master draft.')).toHaveAttribute('data-state', 'inactive');
+    expect(panelOf('Write one master draft.')).toHaveClass('data-[state=inactive]:hidden');
 
     await user.click(screen.getByRole('tab', { name: /Compose/u }));
 
-    expect(screen.getByText('Write one master draft.')).toBeVisible();
-    expect(screen.queryByText('Start from a brief.')).not.toBeInTheDocument();
+    expect(panelOf('Write one master draft.')).toHaveAttribute('data-state', 'active');
+    expect(panelOf('Start from a brief.')).toHaveAttribute('data-state', 'inactive');
   });
 });

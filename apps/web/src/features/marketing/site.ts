@@ -3,7 +3,7 @@ import type { MessageKey } from '@relay/i18n/translate';
 import { COMPARISON_SLUGS, comparisonPath } from '@/features/comparisons/slugs';
 import { PLATFORM_SLUGS } from '@/features/platforms/registry';
 import { USE_CASE_PAGES } from '@/features/platforms/use-cases';
-import { DIMENSION_PLATFORM_SLUGS } from '@/features/specs/dimensions';
+import { DIMENSION_PLATFORM_SLUGS, DIMENSION_SURFACE_PAIRS } from '@/features/specs/dimensions';
 import { SPEC_PAIRS, SPEC_PLATFORM_SLUGS } from '@/features/specs/registry';
 import { CHARACTER_COUNTER_SLUGS } from '@/features/tools/character-counter';
 
@@ -122,6 +122,11 @@ export function dimensionsPlatformPath(slug: string): string {
   return `${ROUTES.specsDimensions}/${slug}`;
 }
 
+/** `/specs/dimensions/youtube/video-thumbnail`, for one recorded surface. */
+export function dimensionsSurfacePath(platformSlug: string, surface: string): string {
+  return `${ROUTES.specsDimensions}/${platformSlug}/${surface}`;
+}
+
 /** `/specs/instagram/image-size`, for one recorded value. */
 export function specsConstraintPath(platformSlug: string, constraintSlug: string): string {
   return `${ROUTES.specs}/${platformSlug}/${constraintSlug}`;
@@ -172,6 +177,11 @@ export const SPEC_CONSTRAINT_ROUTES: readonly string[] = SPEC_PAIRS.map((pair) =
 export const DIMENSION_PLATFORM_ROUTES: readonly string[] =
   DIMENSION_PLATFORM_SLUGS.map(dimensionsPlatformPath);
 
+/** One page per recorded surface, derived from the same hand maintained rows. */
+export const DIMENSION_SURFACE_ROUTES: readonly string[] = DIMENSION_SURFACE_PAIRS.map((pair) =>
+  dimensionsSurfacePath(pair.platform, pair.surface),
+);
+
 /**
  * One character counter per platform with a recorded body text ceiling.
  *
@@ -206,6 +216,7 @@ export const MARKETING_ROUTES = [
   ...SPEC_PLATFORM_ROUTES,
   ...SPEC_CONSTRAINT_ROUTES,
   ...DIMENSION_PLATFORM_ROUTES,
+  ...DIMENSION_SURFACE_ROUTES,
   ...CHARACTER_COUNTER_ROUTES,
 ];
 

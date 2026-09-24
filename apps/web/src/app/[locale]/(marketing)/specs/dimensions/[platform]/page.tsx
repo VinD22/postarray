@@ -21,14 +21,25 @@ import {
 } from '@/features/marketing/components/page-parts';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { breadcrumbJsonLd } from '@/features/marketing/seo';
-import { ROUTES, dimensionsPlatformPath, specsPlatformPath } from '@/features/marketing/site';
+import {
+  ROUTES,
+  dimensionsPlatformPath,
+  dimensionsSurfacePath,
+  specsPlatformPath,
+} from '@/features/marketing/site';
 import {
   basisLabelKey,
   formatPixels,
   variantLabelKey,
 } from '@/features/marketing/data/media-dimensions';
 import { templatedPageMetadata } from '@/features/platforms/metadata';
-import { DIMENSION_PLATFORM_SLUGS, findDimensionPlatform } from '@/features/specs/dimensions';
+import {
+  DIMENSION_PLATFORM_SLUGS,
+  findDimensionPlatform,
+  latestReadOn,
+  surfaceSlug,
+} from '@/features/specs/dimensions';
+import { referencePageJsonLd } from '@/features/marketing/structured-data';
 import { findSpecPlatform } from '@/features/specs/registry';
 
 /**
@@ -102,7 +113,14 @@ export default async function DimensionsPlatformPage({
         >
           <FactList>
             {entry.rows.map((row) => (
-              <Fact key={row.variant} term={t.format(variantLabelKey(row.variant))}>
+              <Fact
+                key={row.variant}
+                term={
+                  <TextLink href={dimensionsSurfacePath(entry.slug, surfaceSlug(row.variant))}>
+                    {t.format(variantLabelKey(row.variant))}
+                  </TextLink>
+                }
+              >
                 {formatPixels(row)}
                 <Meta className="mt-1 block">
                   {row.aspectRatio ?? t.t('web.specs.dimensions.platform.ratioUnstated')}
@@ -143,6 +161,16 @@ export default async function DimensionsPlatformPage({
         <CorrectionNotice locale={locale} />
       </Section>
 
+      <JsonLd
+        node={referencePageJsonLd({
+          name: t.t('web.meta.dimensionsPlatform.title', { platform: name }),
+          description: t.t('web.meta.dimensionsPlatform.description', { platform: name }),
+          path: dimensionsPlatformPath(entry.slug),
+          verifiedOn: latestReadOn(entry),
+          citationUrls: [...new Set(entry.rows.map((row) => row.source.url))],
+          publisherName: t.t('web.brand.name'),
+        })}
+      />
       <JsonLd
         node={breadcrumbJsonLd(
           [

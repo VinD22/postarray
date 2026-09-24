@@ -52,6 +52,10 @@ export interface SpecConstraint {
   readonly ledeKey: MessageKey;
   /** Meta description. Takes `{platform}`. */
   readonly descriptionKey: MessageKey;
+  /** Answer-first title: the value in the title. See `answer.ts` for arguments. */
+  readonly answerTitleKey: MessageKey;
+  /** Answer-first sentence with the verified date. Also the meta description. */
+  readonly answerSentenceKey: MessageKey;
   /** The dataset value, or `null` when this platform has none recorded. */
   readonly resolve: (limits: ProviderLimits) => LimitValue | null;
 }
@@ -78,6 +82,8 @@ export const SPEC_CONSTRAINTS: readonly SpecConstraint[] = [
     titleKey: 'web.specs.constraint.characterLimit.title',
     ledeKey: 'web.specs.constraint.characterLimit.lede',
     descriptionKey: 'web.specs.constraint.characterLimit.description',
+    answerTitleKey: 'web.specs.constraint.characterLimit.answerTitle',
+    answerSentenceKey: 'web.specs.constraint.characterLimit.answerSentence',
     resolve: (limits) => characters(limits.text?.maxLength),
   },
   {
@@ -86,6 +92,8 @@ export const SPEC_CONSTRAINTS: readonly SpecConstraint[] = [
     titleKey: 'web.specs.constraint.titleLimit.title',
     ledeKey: 'web.specs.constraint.titleLimit.lede',
     descriptionKey: 'web.specs.constraint.titleLimit.description',
+    answerTitleKey: 'web.specs.constraint.titleLimit.answerTitle',
+    answerSentenceKey: 'web.specs.constraint.titleLimit.answerSentence',
     resolve: (limits) => characters(limits.maxTitleLength),
   },
   {
@@ -94,6 +102,8 @@ export const SPEC_CONSTRAINTS: readonly SpecConstraint[] = [
     titleKey: 'web.specs.constraint.imageSize.title',
     ledeKey: 'web.specs.constraint.imageSize.lede',
     descriptionKey: 'web.specs.constraint.imageSize.description',
+    answerTitleKey: 'web.specs.constraint.imageSize.answerTitle',
+    answerSentenceKey: 'web.specs.constraint.imageSize.answerSentence',
     resolve: (limits) => bytes(limits.media?.maxImageBytes),
   },
   {
@@ -102,6 +112,8 @@ export const SPEC_CONSTRAINTS: readonly SpecConstraint[] = [
     titleKey: 'web.specs.constraint.videoSize.title',
     ledeKey: 'web.specs.constraint.videoSize.lede',
     descriptionKey: 'web.specs.constraint.videoSize.description',
+    answerTitleKey: 'web.specs.constraint.videoSize.answerTitle',
+    answerSentenceKey: 'web.specs.constraint.videoSize.answerSentence',
     resolve: (limits) => bytes(limits.media?.maxVideoBytes),
   },
   {
@@ -110,6 +122,8 @@ export const SPEC_CONSTRAINTS: readonly SpecConstraint[] = [
     titleKey: 'web.specs.constraint.videoLength.title',
     ledeKey: 'web.specs.constraint.videoLength.lede',
     descriptionKey: 'web.specs.constraint.videoLength.description',
+    answerTitleKey: 'web.specs.constraint.videoLength.answerTitle',
+    answerSentenceKey: 'web.specs.constraint.videoLength.answerSentence',
     resolve: (limits) => {
       const media = limits.media;
       if (media === null || media.maxDurationSeconds === null) {
@@ -124,6 +138,8 @@ export const SPEC_CONSTRAINTS: readonly SpecConstraint[] = [
     titleKey: 'web.specs.constraint.imageCount.title',
     ledeKey: 'web.specs.constraint.imageCount.lede',
     descriptionKey: 'web.specs.constraint.imageCount.description',
+    answerTitleKey: 'web.specs.constraint.imageCount.answerTitle',
+    answerSentenceKey: 'web.specs.constraint.imageCount.answerSentence',
     resolve: (limits) => positiveCount(limits.media?.maxImages),
   },
   {
@@ -132,6 +148,8 @@ export const SPEC_CONSTRAINTS: readonly SpecConstraint[] = [
     titleKey: 'web.specs.constraint.altTextLimit.title',
     ledeKey: 'web.specs.constraint.altTextLimit.lede',
     descriptionKey: 'web.specs.constraint.altTextLimit.description',
+    answerTitleKey: 'web.specs.constraint.altTextLimit.answerTitle',
+    answerSentenceKey: 'web.specs.constraint.altTextLimit.answerSentence',
     resolve: (limits) => characters(limits.media?.maxAltTextLength),
   },
   {
@@ -140,6 +158,8 @@ export const SPEC_CONSTRAINTS: readonly SpecConstraint[] = [
     titleKey: 'web.specs.constraint.fileTypes.title',
     ledeKey: 'web.specs.constraint.fileTypes.lede',
     descriptionKey: 'web.specs.constraint.fileTypes.description',
+    answerTitleKey: 'web.specs.constraint.fileTypes.answerTitle',
+    answerSentenceKey: 'web.specs.constraint.fileTypes.answerSentence',
     resolve: (limits) => {
       const types = limits.media?.allowedMimeTypes ?? [];
       return types.length === 0 ? null : { kind: 'list', items: types };
