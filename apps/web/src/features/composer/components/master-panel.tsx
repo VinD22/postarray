@@ -99,7 +99,7 @@ export function MasterPanel({
       <MediaStrip
         assets={assets}
         mediaIds={state.master.mediaIds}
-        inherited={false}
+        inherited={null}
         limit={mediaLimit}
         onPick={onPickMedia}
         onEdit={onEditMedia}

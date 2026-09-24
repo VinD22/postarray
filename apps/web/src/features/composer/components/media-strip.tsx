@@ -61,8 +61,11 @@ function StripThumbnail({ asset }: { readonly asset: MediaAsset }): ReactNode {
 export interface MediaStripProps {
   readonly assets: readonly MediaAsset[];
   readonly mediaIds: readonly string[];
-  /** True when this scope is a target still following the master. */
-  readonly inherited: boolean;
+  /**
+   * True when this scope is a target still following the master, false when
+   * it has its own media, null for the master draft itself (no label).
+   */
+  readonly inherited: boolean | null;
   readonly onPick: () => void;
   readonly onRemove: (mediaId: string) => void;
   readonly onEdit: (mediaId: string) => void;
@@ -103,11 +106,13 @@ export function MediaStrip({
         <h3 id="composer-media-heading" className="text-title-sm text-text-primary">
           {t.full('composer.media.title')}
         </h3>
-        <span className="text-label text-text-tertiary">
-          {inherited
-            ? t.full('composer.media.inheritFromMaster')
-            : t.full('composer.media.overridden')}
-        </span>
+        {inherited === null ? null : (
+          <span className="text-label text-text-tertiary">
+            {inherited
+              ? t.full('composer.media.inheritFromMaster')
+              : t.full('composer.media.overridden')}
+          </span>
+        )}
       </div>
 
       {files.length === 0 ? (
