@@ -290,6 +290,93 @@ BreadcrumbList, Organization); canonicals point at `https://postarray.com`.
   settings select lists raw values too; both need catalog labels.
 - `/compose` heading order: the Media `h3` has no `h2` above it in the master
   panel.
-- The confirm dialog title reads "Confirm before scheduling" for Publish now.
+- ~~The confirm dialog title reads "Confirm before scheduling" for Publish now.~~
+  Fixed in the release readiness pass below.
 - The composer preview column shows validation and cost, not a platform
   preview.
+
+## Release readiness (2026-09-24)
+
+Final QA pass on `development`. Commits `6fdd7a0` to `4f171e6`.
+
+### Passing checks
+
+| Check | Result |
+| --- | --- |
+| `pnpm verify` (typecheck, lint, test, 73 turbo tasks) | Pass. Web 1,539 tests, application 514, design-system 575, billing 301, i18n 267, api 242, worker 211 |
+| Production web build, `NEXT_PUBLIC_SITE_ORIGIN=https://postarray.com` | Pass |
+| Bundle budgets (`pnpm --filter @relay/web budgets`) | Pass on all seven routes. Tightest is `/compose` at 670.6 of 700 KiB |
+| Full web e2e (`pnpm --filter @relay/web test:e2e`, demo mode) | 56 of 56 pass (10.2 min; `accessibility.spec.ts` is 6.2 min of that) |
+| Browser walk, Chrome DevTools MCP, demo mode | Home, compose to confirm, calendar, library, connections, analytics, settings, billing, marketing home, pricing, `/specs/x/character-limit`, at 1440px and 390px, light and dark. No horizontal page scroll at 390px after the fixes below. No em dashes in rendered copy |
+
+### Fixed in this pass (each with a regression test)
+
+- **Settings overflowed every phone.** Below 1024px the settings grid had an
+  implicit `auto` column that sized itself to the nav strip, so `/settings/*`
+  rendered about 1,080px wide and was clipped at 390px. Pinned to
+  `minmax(0,1fr)`.
+- **`Notice` crushed its title at 390px.** The theme's `sm` breakpoint is
+  390px, not Tailwind's 640px, so the `sm:flex-row` layout put the actions
+  beside a one-word-wide title on a phone (visible on the calendar attention
+  bar). Actions now take their own line until `md`.
+- **Library body had no inline gutter**; panels sat flush against the frame
+  while the header above was indented.
+- **Analytics hydration mismatch.** The first-load count-up flag was written
+  to a ref during render, so the server and client disagreed about
+  `CountUp` versus plain text. Now written in an effect (`use-first-load-flag.ts`).
+- **Fourteen signed-in routes had no page title** (WCAG 2.4.2): analytics,
+  automation and every settings page read only "Post Array" in the tab.
+- **Expiring connections said their posts were already on hold** and then
+  repeated "Nothing is lost". `expiring_soon` now has its own sentence with
+  the expiry date.
+- **Publish now was titled "Confirm before scheduling".**
+- **Billing prelaunch copy stated a stale "$29 a month or $300 a year".**
+  The tiers are $25, $50 and $100; prose no longer states amounts.
+- **The composer Suggest trigger stacked its icons above the label**, because
+  `Button` wraps children in a truncating span and an SVG is a block. Icons
+  now go through `iconStart`/`iconEnd`, and a source scan fails if one is
+  passed as a child again.
+
+### Known limitations at release
+
+- Everything under "Known issues" and "Still open" above that is not struck
+  through, notably: raw privacy values (`public`) in the confirm sheet and the
+  native settings select, no receipt link after Publish now in demo mode,
+  the composer preview column not being a platform preview, the signature
+  counter mismatch (latent), no sourced collapse thresholds, no video posters.
+- Upload limits read "21 MB" and "524.3 MB": the limits are binary (20 MiB,
+  500 MiB) and `formatBytes` is decimal by design. Honest but untidy.
+- On connections, an account needing reconnection shows both a primary
+  Reconnect on the row and a secondary one in its notice, next to the page's
+  primary "Connect an account". More than one vermilion action on screen.
+- There is no `/approvals` index; approvals are reached per item
+  (`/approvals/{id}`) from home, calendar and the action center. Nothing
+  links to the index.
+- Dev-server only: `next dev` restarts itself under memory pressure after a
+  long browser session. Not a production concern.
+- The "What is not built" list above still applies.
+
+### Human-only steps before launch
+
+1. **Provider app approvals.** Meta (Facebook and Instagram) app review and
+   business verification, LinkedIn Community Management API access, TikTok
+   Content Posting API audit (unaudited apps post privately), YouTube Data
+   API quota extension and OAuth verification, X API tier, Google Business
+   Profile API access, Pinterest standard access. Until each is granted its
+   connector stays below "supported" per `docs/connectors/definition-of-done.md`.
+2. **CI secrets for the golden path** (`.github/workflows/ci.yml`):
+   `NEON_API_KEY`, `GOLDEN_NEON_AUTH_BASE_URL`,
+   `GOLDEN_NEON_AUTH_COOKIE_SECRET`, `GOLDEN_NEON_AUTH_JWKS_URL`,
+   `GOLDEN_E2E_EMAIL` and `GOLDEN_E2E_PASSWORD` (a dedicated test account),
+   set in the repository by an owner.
+3. **Neon MCP credentials** for agents and operators that inspect or branch
+   the database: a Neon API key scoped to the project, configured per
+   machine, never committed.
+4. **Production environment.** Fill every variable in `.env.example` for
+   web, api, worker, mcp and links (database URL, Neon Auth, Temporal,
+   object storage and malware scanning, Resend, Polar, provider client IDs
+   and secrets, signing keys), set `NEXT_PUBLIC_SITE_ORIGIN=https://postarray.com`
+   and `NEXT_PUBLIC_POSTARRAY_DEMO_MODE=false`, run migrations and RLS
+   policies, and point DNS for postarray.com and the short-link domain.
+5. **Commercial launch gates.** Checkout stays closed until Polar products,
+   tax settings and legal pages are reviewed and billing is switched on.
