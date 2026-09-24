@@ -9,6 +9,7 @@
  */
 
 import { ApiError } from '@/lib/api';
+import { demoReceipts } from '@/lib/api/fixtures';
 
 export type CommitIntent = 'draft' | 'approval' | 'schedule' | 'publish';
 
@@ -34,6 +35,23 @@ export interface CommitFailure {
   readonly actionKey: string;
   readonly values: Readonly<Record<string, string | number>>;
   readonly correlationId: string | null;
+  /**
+   * Demo mode refuses every publish, so the sheet would otherwise end on a
+   * dead end. For a publish or schedule it points at a seeded receipt instead,
+   * labelled as a sample, so the person can still see what comes next. Null
+   * everywhere else, including every live failure.
+   */
+  readonly sampleReceiptHref: string | null;
+}
+
+const DEMO_MESSAGE_KEY = 'error.demo_unavailable.message';
+
+function sampleReceiptHref(intent: CommitIntent, messageKey: string): string | null {
+  if (messageKey !== DEMO_MESSAGE_KEY || (intent !== 'publish' && intent !== 'schedule')) {
+    return null;
+  }
+  const sample = demoReceipts.find((receipt) => receipt.state === 'published') ?? demoReceipts[0];
+  return sample === undefined ? null : `/posts/${encodeURIComponent(sample.contentItemId)}`;
 }
 
 export function describeCommitFailure(intent: CommitIntent, error: unknown): CommitFailure {
@@ -45,5 +63,6 @@ export function describeCommitFailure(intent: CommitIntent, error: unknown): Com
     actionKey: apiError.actionKey,
     values: apiError.messageValues,
     correlationId: apiError.correlationId,
+    sampleReceiptHref: sampleReceiptHref(intent, apiError.messageKey),
   };
 }

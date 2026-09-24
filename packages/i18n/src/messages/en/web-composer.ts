@@ -166,6 +166,19 @@ export const webComposerMessages = {
   'composerWeb.native.privacyChoose': 'Choose an audience',
   'composerWeb.native.privacyExplicit':
     '{provider} does not allow a preselected audience. Choose one before this can be scheduled.',
+  // Audience choices, keyed by the provider's own value in lower case. The
+  // raw value (`PUBLIC`, `SELF_ONLY`) is never shown to a person.
+  // Demo mode refuses every publish; this points at a seeded receipt instead.
+  'composerWeb.commitDemo.sampleReceipt': 'See a sample receipt from the demo workspace',
+  'composerWeb.privacyOption.public': 'Public',
+  'composerWeb.privacyOption.unlisted': 'Unlisted',
+  'composerWeb.privacyOption.private': 'Private',
+  'composerWeb.privacyOption.followers': 'Followers only',
+  'composerWeb.privacyOption.friends': 'Friends',
+  'composerWeb.privacyOption.connections': 'Connections only',
+  'composerWeb.privacyOption.selfOnly': 'Only me',
+  'composerWeb.privacyOption.direct': 'Mentioned people only',
+  'composerWeb.privacyOption.other': 'Other {provider} setting',
   'composerWeb.native.community': 'Community',
   'composerWeb.native.board': 'Board',
   'composerWeb.native.group': 'Group or Page',
@@ -556,6 +569,8 @@ export const webComposerMessages = {
   'composerWeb.preview.device.mobile': 'Mobile',
   'composerWeb.preview.device.desktop': 'Desktop',
   'composerWeb.preview.postedNow': 'Just now',
+  'composerWeb.preview.pickTarget': 'Preview for',
+  'composerWeb.preview.noTargets': 'Choose an account to see how this post will look there.',
   'composerWeb.preview.seeMore': 'See more',
   'composerWeb.preview.seeLess': 'See less',
   'composerWeb.preview.empty': 'Nothing written yet.',

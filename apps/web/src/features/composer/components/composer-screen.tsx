@@ -26,6 +26,7 @@ import { issueCursorList } from '../state/selectors';
 import { ComposerHeader } from './composer-header';
 import { CostPanel } from './cost-panel';
 import { MasterPanel } from './master-panel';
+import { MasterPreview } from './master-preview';
 import { PaneTransition } from './pane-transition';
 import { ProviderPreview } from './provider-preview';
 import { UnsavedChangesPrompt } from '@/lib/navigation/unsaved-changes';
@@ -182,7 +183,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
 
   const reviewPane = (
     <div className="flex flex-col gap-6">
-      {active ? <ProviderPreview summary={active} /> : null}
+      {active ? <ProviderPreview summary={active} /> : <MasterPreview />}
       {/*
         The commit buttons used to live here, at the end of a column that
         scrolls. They are in the sticky bar now, which is the only place a
@@ -254,6 +255,21 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           panelKey={step}
           className="border-border-default bg-surface-canvas flex-1 rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)]"
         >
+          {/*
+            Each step's panels use h3 headings, so the step itself supplies
+            the h2 that sits between them and the page's h1.
+          */}
+          {step === 'targets' ? null : (
+            <h2 className="sr-only">
+              {step === 'write'
+                ? t.full('composerWeb.pane.master')
+                : step === 'variant'
+                  ? active
+                    ? t.full('composerWeb.pane.variant')
+                    : t.full('composerWeb.pane.master')
+                  : t.full('composerWeb.pane.review')}
+            </h2>
+          )}
           {step === 'targets' ? <TargetRail /> : null}
           {step === 'write' ? masterPane : null}
           {step === 'variant' ? editorPane : null}
@@ -311,11 +327,13 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         ) : null}
 
         <section
-          aria-label={
-            active ? t.full('composerWeb.pane.variant') : t.full('composerWeb.pane.master')
-          }
+          aria-labelledby="composer-edit-pane-heading"
           className="border-border-default bg-surface-raised min-w-0 rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)] lg:p-5"
         >
+          {/* The pane's panels are h3, so the pane supplies their h2. */}
+          <h2 id="composer-edit-pane-heading" className="sr-only">
+            {active ? t.full('composerWeb.pane.variant') : t.full('composerWeb.pane.master')}
+          </h2>
           <PaneTransition panelKey={active ? active.connectionId : 'master'}>
             {active ? editorPane : masterPane}
           </PaneTransition>
@@ -323,13 +341,16 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
 
         {showPreview ? (
           <aside
-            aria-label={t.full('composerWeb.pane.review')}
+            aria-labelledby="composer-review-pane-heading"
             className={
               isDesktop
                 ? 'border-border-default bg-surface-canvas hidden rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)] xl:block'
                 : 'border-border-default bg-surface-canvas rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)]'
             }
           >
+            <h2 id="composer-review-pane-heading" className="sr-only">
+              {t.full('composerWeb.pane.review')}
+            </h2>
             <div className="flex justify-end">
               <Button variant="ghost" size="sm" onClick={() => setShowPreview(false)}>
                 {t.full('composerWeb.pane.hidePreview')}
@@ -352,6 +373,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
               : 'hidden'
           }
         >
+          <h2 className="sr-only">{t.full('composerWeb.pane.review')}</h2>
           {reviewPane}
         </div>
       ) : (

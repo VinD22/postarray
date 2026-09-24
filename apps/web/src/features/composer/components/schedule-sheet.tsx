@@ -37,12 +37,14 @@ import { useTranslations } from '@relay/i18n/react';
 import { crossesOffsetChange, formatCurrency, formatDateTime } from '@relay/i18n';
 import { resolveVariant } from '@relay/contracts';
 
+import { Link } from '@/components/link';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { NextSlotPanel } from '@/features/queue/components/next-slot-panel';
 import { confirmTitleKey } from '../state/confirm-title';
 import { useComposer } from '../composer-context';
 import { describeCommitFailure, type CommitFailure } from '../state/commit-failure';
 import { PROVIDER_LABEL } from './provider-identity';
+import { describePrivacy } from '../state/privacy-label';
 import { CommitPreviewPanel } from './commit-preview-panel';
 import { useCommitPreview } from '../data/use-commit-preview';
 import { acknowledgedCodes, commitAllowed, type PreviewState } from '../state/commit-preview';
@@ -393,7 +395,14 @@ export function ScheduleSheet({
                         {
                           id: 'audience',
                           term: t.full('composerWeb.native.privacy'),
-                          definition: settings?.privacyValue ?? t.full('common.notSet'),
+                          definition:
+                            settings?.privacyValue == null
+                              ? t.full('common.notSet')
+                              : describePrivacy(
+                                  settings.privacyValue,
+                                  PROVIDER_LABEL[summary.account.provider],
+                                  t,
+                                ),
                         },
                         {
                           id: 'disclosure',
@@ -474,6 +483,14 @@ export function ScheduleSheet({
                     <span className="text-label text-text-tertiary block">
                       {t.full('error.reference', { correlationId: failure.correlationId })}
                     </span>
+                  )}
+                  {failure.sampleReceiptHref === null ? null : (
+                    <Link
+                      href={failure.sampleReceiptHref}
+                      className="text-body-sm text-text-accent block underline underline-offset-2"
+                    >
+                      {t.full('composerWeb.commitDemo.sampleReceipt')}
+                    </Link>
                   )}
                 </>
               }

@@ -806,6 +806,20 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'composerWeb.remember.reason.gone',
   'composerWeb.remember.reason.unavailable',
   'composerWeb.remember.unknownAccount',
+  // Audience option labels in the composer's native settings and confirm
+  // sheet. Reviewed English until a reviewer covers them in each locale.
+  'composerWeb.privacyOption.public',
+  'composerWeb.privacyOption.unlisted',
+  'composerWeb.privacyOption.private',
+  'composerWeb.privacyOption.followers',
+  'composerWeb.privacyOption.friends',
+  'composerWeb.privacyOption.connections',
+  'composerWeb.privacyOption.selfOnly',
+  'composerWeb.privacyOption.direct',
+  'composerWeb.privacyOption.other',
+  'composerWeb.commitDemo.sampleReceipt',
+  'composerWeb.preview.pickTarget',
+  'composerWeb.preview.noTargets',
 ] as const;
 
 /**

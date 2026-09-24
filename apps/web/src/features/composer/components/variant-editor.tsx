@@ -14,7 +14,7 @@ import { Button } from '@relay/design-system/primitives';
 import { Notice } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
-import { formatBytes, formatDuration, formatRelativeTime } from '@relay/i18n';
+import { formatByteLimit, formatDuration, formatRelativeTime } from '@relay/i18n';
 import { resolveVariant, type OverridableVariantField } from '@relay/contracts';
 
 import { useComposer } from '../composer-context';
@@ -185,7 +185,7 @@ export function VariantEditor({
           {media.maxBytesByKind.image == null ? null : (
             <li className="tabular-nums">
               {t.full('composerWeb.limits.fileSize', {
-                size: formatBytes(t.locale, media.maxBytesByKind.image),
+                size: formatByteLimit(t.locale, media.maxBytesByKind.image),
               })}
             </li>
           )}

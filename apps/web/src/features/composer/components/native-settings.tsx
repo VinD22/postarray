@@ -26,6 +26,7 @@ import { useComposer } from '../composer-context';
 import { EntitySearchField, type ResolvedEntity } from './entity-search-field';
 import { CheckRow } from './form-rows';
 import { PROVIDER_LABEL } from './provider-identity';
+import { describePrivacy } from '../state/privacy-label';
 import type { ComposerDestination, TargetSummary } from '../types';
 
 const DESTINATION_LABEL_KEY: Readonly<Record<DestinationKind, string>> = {
@@ -182,7 +183,7 @@ export function NativeSettings({
               <SelectContent>
                 {snapshot.privacy.options.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
-                    {option.value}
+                    {describePrivacy(option.value, providerName, t)}
                   </SelectItem>
                 ))}
               </SelectContent>
