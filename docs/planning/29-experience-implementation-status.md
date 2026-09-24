@@ -235,3 +235,61 @@ code at that point. Evidence is the file that proves each line.
   browser pass are not recorded here.
 - **Disk.** The volume is 98% full with 11 GB free, below the 15 GB the plan
   set; a production build may hit ENOSPC again.
+
+## Verification: browser pass (2026-09-24)
+
+Dev server in demo mode (`pnpm dev:e2e`, port 3417,
+`NEXT_PUBLIC_SITE_ORIGIN=https://postarray.com`), Chrome DevTools MCP.
+
+**Compose flow.** `/compose` opens with two targets. Attach image (Upload
+media, pick a library file, Choose files), preview, confirm, Publish now: 5
+interactions from a loaded composer, inside the five-interaction target. In
+demo mode the library picker replaces the OS file chooser, so a real upload
+was not exercised. `/home`, `/calendar` and a receipt at
+`/posts/content_demo0000000000001` render. There is no `/posts` index route;
+it returns 404 and nothing links to it.
+
+**Layout.** At 390px in dark: `/home`, `/calendar`, `/compose` and the receipt
+have no horizontal page scroll (`scrollWidth` 390). System dark resolves to
+the dark theme once no stored `relay.theme` exists; a stored `light` wins, as
+designed.
+
+**Lighthouse (mobile, dev build, performance excluded by the tool).**
+
+| Page | A11y | Best practices | SEO | Agentic |
+| --- | --- | --- | --- | --- |
+| `/` | 100 | 100 | 100 | 100 |
+| `/pricing` | 100 | 100 | 100 | 100 |
+| `/specs/x/character-limit` | 100 | 100 | 100 | 100 |
+| `/home` | 100 | 100 | 63 | 100 |
+| `/compose` | 98 | 100 | 63 | 100 |
+
+SEO 63 on app pages is `is-crawlable` (noindex), which is intended. The first
+`/` run scored Agentic 67 because `/llms.txt` timed out while compiling; a warm
+rerun passed.
+
+**Crawl files.** `/sitemap.xml` is an index of `pages.xml` and `specs.xml` on
+`https://postarray.com`. `/llms.txt` (12 KB) and `/llms-full.txt` (103 KB)
+serve with an H1. JSON-LD parses on `/` (SoftwareApplication, WebSite,
+FAQPage, Organization) and on the specs page (WebPage+Dataset, FAQPage,
+BreadcrumbList, Organization); canonicals point at `https://postarray.com`.
+
+**Fixed in this pass.**
+
+- `robots.txt` was 400 KB (15,444 Disallow lines), because each of eight AI
+  crawler groups repeated the full list; Google stops reading at 500 KiB. Now
+  one group names every agent: 44 KB, same rules.
+- The master draft's media header said "This target uses its own media".
+- Workspace switcher and account menu failed WCAG 2.5.3 label-in-name.
+
+**Still open.**
+
+- After Publish now the dialog closes and the composer shows "Saved" with no
+  outcome or link to the receipt, in demo mode at least.
+- The confirm sheet shows the raw privacy value (`public`), and the native
+  settings select lists raw values too; both need catalog labels.
+- `/compose` heading order: the Media `h3` has no `h2` above it in the master
+  panel.
+- The confirm dialog title reads "Confirm before scheduling" for Publish now.
+- The composer preview column shows validation and cost, not a platform
+  preview.
