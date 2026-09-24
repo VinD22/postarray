@@ -13,7 +13,7 @@ import type { PlanTierKey } from './tiers';
  * buys active projects and nothing else, and a per channel price is a named
  * policy violation in `docs/planning/08-billing-entitlements-and-economics.md`
  * section 2.2. What section 2.2 now also says is that capacity may scale with
- * the one number we sell, which is exactly what this row carries: five channels
+ * the one number we sell, which is exactly what this row carries: ten channels
  * per project, pooled across the workspace, floored at the no-entitlement
  * allowance and ceilinged at `MAX_CHANNEL_LIMIT`.
  *
