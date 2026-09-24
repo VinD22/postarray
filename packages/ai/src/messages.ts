@@ -75,6 +75,26 @@ function sanitizeAttribute(value: string): string {
   return value.replace(/["<>\n\r]/g, ' ').slice(0, 200);
 }
 
+/**
+ * The instruction says what to write; without the key set the model guesses
+ * the object's shape and a strict schema rejects it (seen live on DeepSeek
+ * flash: missing `threadParts` and `suggestedHashtags`). The first fixture is
+ * the canonical valid output, so its JSON is shown as a shape reference. It is
+ * identical on every call, so it stays inside the cacheable prefix.
+ */
+function outputShapeLines(prompt: PromptModule): readonly string[] {
+  const example = prompt.outputFormat === 'json' ? prompt.fixtures[0] : undefined;
+  if (example === undefined) {
+    return [];
+  }
+  return [
+    '',
+    'OUTPUT SHAPE: use exactly these keys and value types. The values below are an',
+    'illustration from another request, never content to copy.',
+    JSON.stringify(example.output),
+  ];
+}
+
 export function buildMessages(prompt: PromptModule, request: AiRequest): BuiltMessages {
   const nonce = newNonce();
   const block = buildUntrustedBlock(request.untrustedSources ?? [], nonce);
@@ -85,6 +105,7 @@ export function buildMessages(prompt: PromptModule, request: AiRequest): BuiltMe
     stableUntrustedDataPolicy(),
     '',
     prompt.instruction,
+    ...outputShapeLines(prompt),
     '',
     `[${promptMarker(prompt.id)} v${prompt.version}]`,
     `Interface locale: ${request.context.locale}.`,

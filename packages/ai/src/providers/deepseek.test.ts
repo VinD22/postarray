@@ -62,6 +62,25 @@ describe('deepseek adapter', () => {
     expect(calls).toHaveLength(0);
   });
 
+  it('turns reasoning off for fast prompts and on for thinking prompts', async () => {
+    const { fetchImpl, calls } = jsonFetch(OK_BODY);
+    const provider = createDeepSeekProvider({
+      apiKey: 'test-key-value',
+      baseUrl: 'https://api.deepseek.test/',
+      model: 'deepseek-v4-flash',
+      fetchImpl,
+    });
+
+    await provider.complete({ ...request(), reasoning: false });
+    await provider.complete({ ...request(), reasoning: true });
+    await provider.complete(request());
+
+    const bodies = calls.map((call) => JSON.parse(String(call.init?.body)));
+    expect(bodies[0]?.thinking).toEqual({ type: 'disabled' });
+    expect(bodies[1]?.thinking).toEqual({ type: 'enabled' });
+    expect(bodies[2]?.thinking).toBeUndefined();
+  });
+
   it('posts the OpenAI compatible shape with the configured model', async () => {
     const { fetchImpl, calls } = jsonFetch(OK_BODY);
     const provider = createDeepSeekProvider({

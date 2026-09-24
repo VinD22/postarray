@@ -185,6 +185,11 @@ export function createDeepSeekProvider(options: DeepSeekOptions): AiProviderAdap
       temperature: request.temperature,
       stream,
       ...(request.jsonMode ? { response_format: { type: 'json_object' } } : {}),
+      // DeepSeek flash reasons by default, and reasoning tokens count against
+      // max_tokens. Left on, a fast JSON prompt can end with empty content.
+      ...(request.reasoning === undefined
+        ? {}
+        : { thinking: { type: request.reasoning ? 'enabled' : 'disabled' } }),
       ...(request.tools === undefined || request.tools.length === 0
         ? {}
         : {

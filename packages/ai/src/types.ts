@@ -239,6 +239,12 @@ export interface ProviderRequest {
   readonly temperature: number;
   /** Ask the provider for a strict JSON object rather than prose. */
   readonly jsonMode: boolean;
+  /**
+   * Whether the model may spend tokens reasoning before it answers. Fast prompts
+   * turn it off: a reasoning model otherwise spends the output budget thinking
+   * and returns an empty answer. Absent means the provider default.
+   */
+  readonly reasoning?: boolean;
   readonly timeoutMs: number;
   readonly signal: AbortSignal;
   readonly tools?: readonly ProviderToolDefinition[];

@@ -219,6 +219,7 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
         maxOutputTokens,
         temperature: prompt.mode === 'thinking' ? 0.3 : 0.7,
         jsonMode: prompt.outputFormat === 'json',
+        reasoning: prompt.mode === 'thinking',
         timeoutMs,
         signal: controller.signal,
       };
@@ -392,6 +393,7 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
         maxOutputTokens,
         temperature: prompt.mode === 'thinking' ? 0.3 : 0.7,
         jsonMode: prompt.outputFormat === 'json',
+        reasoning: prompt.mode === 'thinking',
         timeoutMs,
         signal: controller.signal,
       })) {
