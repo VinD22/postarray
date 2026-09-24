@@ -9,6 +9,7 @@ import type {
 } from '@relay/contracts';
 
 import { call } from '../call';
+import type { ForwardAuth } from '../transport';
 import { demoAnalyticsOverview, page } from '../fixtures';
 import type {
   BusinessProfileView,
@@ -81,10 +82,11 @@ export const analyticsApi = {
    * analytics query DTOs: the shape belongs to the analytics feature, which
    * this layer must not import, so the caller narrows it once at its boundary.
    */
-  getOverview: (query: AnalyticsOverviewQuery): Promise<unknown> =>
+  getOverview: (query: AnalyticsOverviewQuery, forward?: ForwardAuth): Promise<unknown> =>
     call(
       '/analytics/overview',
       {
+        ...forward,
         query: {
           ...(query.projectId === undefined ? {} : { projectId: query.projectId }),
           // Repeated ids travel as one comma separated parameter.

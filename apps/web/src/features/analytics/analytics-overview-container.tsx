@@ -13,7 +13,8 @@ import { AnalyticsOverviewScreen } from './analytics-overview-screen';
 import type { AnalyticsFilters } from './components/analytics-toolbar';
 import { QueryErrorState } from './components/query-error-state';
 import { useAnalyticsOverview } from './queries';
-import type { AccountRef, AnalyticsRange } from './types';
+import { analyticsConnectionsKey, defaultOverviewRange } from './overview-defaults';
+import type { AccountRef } from './types';
 
 /**
  * Loads the two lists the analytics filters need, then hands over.
@@ -22,18 +23,6 @@ import type { AccountRef, AnalyticsRange } from './types';
  * props and no network. The screen is where the design decisions live; this is
  * only plumbing.
  */
-
-const HOUR_MS = 3_600_000;
-
-/**
- * The last 30 days, ending at the top of the next hour, so the overview key is
- * stable for the hour and a revisit hits the cache instead of refetching.
- */
-function defaultRange(): AnalyticsRange {
-  const end = new Date(Math.ceil(Date.now() / HOUR_MS) * HOUR_MS);
-  const start = new Date(end.getTime() - 30 * 86_400_000);
-  return { preset: '30d', start: start.toISOString(), end: end.toISOString() };
-}
 
 interface ConnectionLike {
   readonly id: string;
@@ -51,7 +40,7 @@ export function AnalyticsOverviewContainer(): ReactElement {
   const { workspace, project, projects } = useSession();
 
   const connections = useQuery({
-    queryKey: ['ws', workspace.id, 'connections', 'analytics', project?.id ?? 'none'],
+    queryKey: analyticsConnectionsKey(workspace.id, project?.id ?? null),
     queryFn: async () =>
       api.connections.list({ limit: 100, ...(project === null ? {} : { projectId: project.id }) }),
   });
@@ -70,7 +59,7 @@ export function AnalyticsOverviewContainer(): ReactElement {
     () => ({
       projectId: project?.id ?? null,
       connectionIds: [],
-      range: defaultRange(),
+      range: defaultOverviewRange(),
       rankMetric: 'impressions',
       format: null,
       comparePrevious: false,

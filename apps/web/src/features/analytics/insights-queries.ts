@@ -1,11 +1,14 @@
-'use client';
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { newIdempotencyKey } from '@/lib/api';
 import { call } from '@/lib/api/call';
+import type { ForwardAuth } from '@/lib/api/transport';
 
 /**
+ * No `'use client'` directive: the server render of the analytics overview
+ * reads stored insights through `insightsGateway.list`. The hooks below are
+ * still only called from client components.
+ *
  * Reads for stored insights: per-post "How it did", what works for you, the
  * weekly digest and its email preference.
  *
@@ -372,8 +375,11 @@ export const insightsGateway = {
     ),
   latestDigest: async (): Promise<Digest | null> =>
     parseDigest(await call<unknown>('/insights/digest/latest', {}, () => null)),
-  list: async (): Promise<readonly StoredInsight[]> => {
-    return parseStoredInsights(await call<unknown>('/insights', {}, () => ({ data: [] })));
+  /** `forward` is set only by the server render, which has no browser cookie. */
+  list: async (forward?: ForwardAuth): Promise<readonly StoredInsight[]> => {
+    return parseStoredInsights(
+      await call<unknown>('/insights', { ...forward }, () => ({ data: [] })),
+    );
   },
   postExperiment: async (contentItemId: string): Promise<PostExperiment | null> =>
     parsePostExperiment(

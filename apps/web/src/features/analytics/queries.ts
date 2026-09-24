@@ -1,5 +1,3 @@
-'use client';
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   analyticsOverviewViewSchema,
@@ -17,6 +15,7 @@ import {
 } from '@relay/contracts';
 
 import { api } from '@/lib/api';
+import type { ForwardAuth } from '@/lib/api/transport';
 
 import { insightsGateway } from './insights-queries';
 import { storedObservations } from './stored-observations';
@@ -38,6 +37,9 @@ import type {
 } from './types';
 
 /**
+ * No `'use client'` directive: `fetchAnalyticsOverview` also runs in the
+ * server render. The hooks are still only called from client components.
+ *
  * Reads for the analytics screens.
  *
  * Analytics is read only, so there is exactly one mutation here: creating an
@@ -269,22 +271,34 @@ export function useAnalyticsOverview(input: OverviewInput, enabled = true) {
     queryKey: analyticsKeys.overview(input),
     enabled,
     staleTime: FIVE_MINUTES,
-    queryFn: async (): Promise<AnalyticsOverview> => {
-      const result = await api.analytics.getOverview({
-        ...(input.projectId === null ? {} : { projectId: input.projectId }),
-        connectionIds: input.connectionIds,
-        from: input.range.start,
-        to: input.range.end,
-        metric: input.rankMetric,
-        ...(input.format === null ? {} : { contentKind: input.format }),
-      });
-      const overview = toOverview(analyticsOverviewViewSchema.parse(result));
-      // Observations are stored insights the worker wrote from real readings.
-      // A failed read leaves the list empty rather than failing the screen.
-      const stored = await insightsGateway.list().catch(() => []);
-      return { ...overview, observations: storedObservations(stored, input.range) };
-    },
+    queryFn: () => fetchAnalyticsOverview(input),
   });
+}
+
+/**
+ * The overview read, shared by the hook and the server render so both fill the
+ * same key with the same shape. `forward` is set only on the server.
+ */
+export async function fetchAnalyticsOverview(
+  input: OverviewInput,
+  forward?: ForwardAuth,
+): Promise<AnalyticsOverview> {
+  const result = await api.analytics.getOverview(
+    {
+      ...(input.projectId === null ? {} : { projectId: input.projectId }),
+      connectionIds: input.connectionIds,
+      from: input.range.start,
+      to: input.range.end,
+      metric: input.rankMetric,
+      ...(input.format === null ? {} : { contentKind: input.format }),
+    },
+    forward,
+  );
+  const overview = toOverview(analyticsOverviewViewSchema.parse(result));
+  // Observations are stored insights the worker wrote from real readings.
+  // A failed read leaves the list empty rather than failing the screen.
+  const stored = await insightsGateway.list(forward).catch(() => []);
+  return { ...overview, observations: storedObservations(stored, input.range) };
 }
 
 /**
