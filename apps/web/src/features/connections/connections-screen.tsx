@@ -541,7 +541,7 @@ function ConnectionsBody(props: ConnectionsBodyProps): ReactNode {
             description={t('empty.connections.body')}
             example={t('web.connection.empty.example')}
             action={
-              <Button variant="cta" onClick={props.onConnect}>
+              <Button variant="secondary" onClick={props.onConnect}>
                 {t('empty.connections.action')}
               </Button>
             }
