@@ -311,7 +311,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'Een bijgehouden link is een korte URL waar Post Array doorheen verwijst, zodat u klikken kunt zien, zelfs als een platform geen klikken rapporteert. De oorspronkelijke bestemming wordt nooit gewijzigd zonder een auditinvoer.',
   'analytics.links.emptyExample':
-    'Voorbeeld: relay.to/a7Kq2 verwijst door naar acme.com/blog/launch met campagne q3-launch.',
+    'Voorbeeld: pa.link/a7Kq2 verwijst door naar acme.com/blog/launch met campagne q3-launch.',
   'analytics.links.table.caption':
     'Bijgehouden links in deze werkruimte en het aantal eerste klikken van partijen.',
   'analytics.links.campaign': 'Campagne',

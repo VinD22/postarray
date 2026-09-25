@@ -178,20 +178,18 @@ export function ConnectionRow({
         </div>
 
         <div className="flex shrink-0 flex-wrap items-center gap-2">
-          {/* The needs-a-person action reads as a slab, not a quiet button:
-              this is the one thing standing between the account and its
-              scheduled posts. Several can be on screen at once because each
-              names a different account, unlike a page-level primary action —
-              see `attention-bar.tsx` for the aggregate-banner case, which
-              deliberately keeps its own actions quiet for the same reason
-              in reverse. */}
+          {/* One vermilion action per screen: the page header owns it
+              ("Connect an account"). Row actions stay secondary even when
+              the account needs a person, so several rows needing
+              reconnection never stack up competing primary buttons. The
+              status badge and notice carry the urgency. */}
           {action === 'reconnect' ? (
-            <Button variant="cta" size="sm" onClick={() => onReconnect(row)}>
+            <Button variant="secondary" size="sm" onClick={() => onReconnect(row)}>
               {t('action.reconnect')}
             </Button>
           ) : null}
           {action === 'resume' ? (
-            <Button variant="cta" size="sm" onClick={() => onResume(row)}>
+            <Button variant="secondary" size="sm" onClick={() => onResume(row)}>
               {t('action.resume')}
             </Button>
           ) : null}

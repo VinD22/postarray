@@ -116,7 +116,7 @@ export default async function IntegrationsPage({
             </div>
           </BentoCell>
           <BentoCell span="side" as="section">
-            <Subheading as="h3">{t.t('web.capabilities.title')}</Subheading>
+            <Subheading as="h2">{t.t('web.capabilities.title')}</Subheading>
             <p className="text-body-md text-text-secondary mt-4 leading-[1.6]">
               {t.t('web.capabilities.lede')}
             </p>

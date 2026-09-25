@@ -1,6 +1,6 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { en } from '@relay/i18n';
 import { I18nProvider } from '@relay/i18n/react';
 import { createTranslator } from '@relay/i18n/translate';
@@ -25,6 +25,13 @@ import { TierGrid, type TierGridColumn } from './tier-grid';
  *    was hiding;
  *  - there is exactly one primary action, and no column that cannot be bought.
  */
+// The headline numeral counts up on a 900ms GSAP tween. Under a loaded test
+// run that tween can outlast `findByText`'s default wait, which made this file
+// flaky. What is under test is the figure the count lands on, not the tween,
+// so the reduced-motion path renders the final value in the same commit and
+// every assertion below is deterministic.
+vi.mock('@/lib/motion/use-motion-ok', () => ({ useMotionOk: () => false }));
+
 const ENV_WITHOUT_LARGER_TIERS = {} as const;
 const ENV_WITH_EVERY_TIER = {
   POLAR_MONTHLY_PRODUCT_ID: 'prod_m',
@@ -167,8 +174,11 @@ describe('TierGrid', () => {
     expect(card).not.toBeNull();
     // The headline charge, and the month-to-month comparison in the one
     // supporting line under it. Nothing else in the price block is money.
-    const amounts = (card?.textContent ?? '').match(/\$[\d,]+/g) ?? [];
-    expect(amounts).toEqual(['$250', '$25']);
+    // Polled: under load the count-up can still be mid-tween here.
+    await waitFor(() => {
+      const amounts = (card?.textContent ?? '').match(/\$[\d,]+/g) ?? [];
+      expect(amounts).toEqual(['$250', '$25']);
+    });
 
     // The discount is stated exactly once, on the control.
     expect(screen.getAllByText('2 months free')).toHaveLength(1);

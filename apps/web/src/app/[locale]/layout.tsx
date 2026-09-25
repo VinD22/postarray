@@ -1,22 +1,28 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, Viewport } from 'next';
-import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
+import { Fraunces, JetBrains_Mono, Manrope } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { ReactNode } from 'react';
+
+import { DEFAULT_LOCALE } from '@relay/i18n/locales';
 
 import { themeBootstrapScript } from '@relay/design-system/theme-bootstrap';
 
 import { Providers } from '@/components/providers';
 import { STATIC_WEB_LOCALE_CODES, isWebLocale } from '@/lib/i18n/development-pseudo-locales';
+import { SHELL_KEY_PREFIXES, sliceCatalog } from '@/lib/i18n/catalog-slice';
 import { getStaticIntl } from '@/lib/i18n/server';
+import { SITE_ORIGIN } from '@/features/marketing/site';
 
 import '../globals.css';
 
-/** A precise grotesk for compose, review, and schedule work. */
-const uiFont = Inter({
+/** A friendly geometric grotesk for compose, review, and schedule work. */
+const uiFont = Manrope({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-relay-ui',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
+  // Manrope is a variable font: omitting `weight` ships one file for every weight.
 });
 
 /** The editorial serif display face. Carries hierarchy across marketing and
@@ -34,6 +40,8 @@ const monoFont = JetBrains_Mono({
   variable: '--font-relay-mono',
   display: 'swap',
   weight: ['400', '600'],
+  // Mono is a secondary face for timestamps; never on the critical path.
+  preload: false,
 });
 
 export async function generateMetadata({
@@ -45,6 +53,7 @@ export async function generateMetadata({
   const intl = await getStaticIntl(locale);
   const appName = intl.t.format('shell.appName');
   return {
+    metadataBase: new URL(SITE_ORIGIN),
     title: {
       default: appName,
       template: `%s · ${appName}`,
@@ -61,9 +70,17 @@ export const viewport: Viewport = {
   colorScheme: 'light dark',
 };
 
-/** Generate every active locale from the registry. Never duplicate this list. */
+/**
+ * Prebuild the default locale, then generate and cache other public locales on
+ * first visit. Multiplying every reference page by the whole locale roster made
+ * the standalone build exceed 15 GB. The locale validator, language picker,
+ * alternates and sitemap still expose every active locale. Development keeps
+ * the full roster so the pseudo-locale layout suite exercises both directions.
+ */
 export function generateStaticParams(): readonly { readonly locale: string }[] {
-  return STATIC_WEB_LOCALE_CODES.map((locale) => ({ locale }));
+  const locales =
+    process.env.NODE_ENV === 'production' ? [DEFAULT_LOCALE] : STATIC_WEB_LOCALE_CODES;
+  return locales.map((locale) => ({ locale }));
 }
 
 /**
@@ -102,12 +119,27 @@ export default async function LocaleLayout({
         <Providers
           locale={intl.locale}
           timeZone={intl.timeZone}
-          catalog={intl.catalog}
-          toastRegionLabel={intl.t.format('a11y.region.notifications')}
-          toastCloseLabel={intl.t.format('action.close')}
+          catalog={sliceCatalog(intl.catalog, SHELL_KEY_PREFIXES)}
         >
           {children}
         </Providers>
+        {/*
+          Page views, and nothing else.
+
+          Vercel Analytics sets no cookie, stores no IP address and follows
+          nobody between sites, which is why it sits here unconditionally rather
+          than behind a consent gate: there is no consent to collect for a
+          measurement that identifies no one. It is disclosed in the
+          subprocessor table like every other vendor, because a legal page that
+          omits a vendor is worse than not having the page.
+
+          If this is ever swapped for something that does identify a visitor,
+          it needs a consent gate and a different row in that table, and both
+          have to land in the same change as the swap.
+        */}
+        <Analytics />
+        {/* Core Web Vitals from real visits. Like Analytics: no cookie, no identifier. */}
+        <SpeedInsights />
       </body>
     </html>
   );

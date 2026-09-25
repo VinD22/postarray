@@ -58,6 +58,8 @@ const persistence = wf.proxyActivities<
     | 'beginPublishAttempt'
     | 'recordAnalyticsRun'
     | 'generatePostFeedback'
+    | 'buildWeeklyDigest'
+    | 'sendWeeklyDigestEmail'
     | 'recordFeedPoll'
     | 'recordRuleRun'
     | 'recordWebhookAttempt'
@@ -89,7 +91,9 @@ const persistence = wf.proxyActivities<
   >
 >(toTemporalActivityOptions(ACTIVITY_OPTIONS.persistence));
 
-const mediaProxy = wf.proxyActivities<Group<'prepareTargetMedia' | 'produceMediaDerivative'>>(
+const mediaProxy = wf.proxyActivities<
+  Group<'prepareTargetMedia' | 'produceMediaDerivative' | 'scanMediaAsset'>
+>(
   toTemporalActivityOptions(ACTIVITY_OPTIONS.prepareMedia),
 );
 
@@ -149,6 +153,8 @@ export const workerActivities: WorkerActivities = {
   fetchAccountMetrics: (input) => metricsProxy.fetchAccountMetrics(input),
   recordAnalyticsRun: (input) => persistence.recordAnalyticsRun(input),
   generatePostFeedback: (input) => persistence.generatePostFeedback(input),
+  buildWeeklyDigest: (input) => persistence.buildWeeklyDigest(input),
+  sendWeeklyDigestEmail: (input) => persistence.sendWeeklyDigestEmail(input),
   describeCredential: (input) => persistence.describeCredential(input),
   refreshCredential: (input) => credentialProxy.refreshCredential(input),
   raiseConnectionIncident: (input) => persistence.raiseConnectionIncident(input),
@@ -177,6 +183,7 @@ export const workerActivities: WorkerActivities = {
   readBulkImportVerdict: (input) => persistence.readBulkImportVerdict(input),
   applyBulkImportRows: (input) => persistence.applyBulkImportRows(input),
   produceMediaDerivative: (input) => mediaProxy.produceMediaDerivative(input),
+  scanMediaAsset: (input) => mediaProxy.scanMediaAsset(input),
 };
 
 // ---------------------------------------------------------------------------

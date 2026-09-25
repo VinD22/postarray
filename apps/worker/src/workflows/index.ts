@@ -19,11 +19,13 @@ export { analyticsSyncWorkflow } from './analytics-sync.workflow';
 export { tokenRefreshWorkflow } from './token-refresh.workflow';
 export { rssPollWorkflow } from './rss-poll.workflow';
 export { automationRuleWorkflow } from './automation-rule.workflow';
+export { mediaScanWorkflow } from './media-scan.workflow';
 export { webhookDeliveryWorkflow } from './webhook-delivery.workflow';
 export { dataDeletionWorkflow } from './data-deletion.workflow';
 export { dataExportWorkflow } from './data-export.workflow';
 export { bulkImportWorkflow } from './bulk-import.workflow';
 export { mediaDerivativeWorkflow } from './media-derivative.workflow';
+export { weeklyDigestWorkflow } from './digest.workflow';
 
 export {
   cancelSignal,

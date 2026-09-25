@@ -4,6 +4,10 @@ export const growthMessages = {
   'growth.subtitle':
     'Um plano guiado construído a partir de fatos que você confirma. Propõe trabalho. Nunca publica por conta própria.',
 
+  'growth.profile.noProject':
+
+    'Escolha um projeto antes de salvar o perfil. Um perfil de negócio pertence a um único projeto.',
+
   'growth.profile.title': 'Perfil comercial',
   'growth.profile.intro':
     'Responda uma vez. Tudo o que o orientador propõe é baseado no que você confirma aqui.',

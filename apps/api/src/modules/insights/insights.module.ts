@@ -1,15 +1,27 @@
 import { Module } from '@nestjs/common';
 
+import type { Services } from '../../application/port';
+import { SERVICES } from '../../application/tokens';
 import { InsightsController } from './insights.controller';
+import { INSIGHTS_PORT, type InsightsPort } from './insights.port';
 import { InsightsService } from './insights.service';
 
 /**
- * The digest routes.
+ * Weekly digest, per-post "How it did", and "what works for you".
  *
- * The `INSIGHTS_PORT` provider is supplied by whichever composition root
- * registers this module, the same way `SERVICES` is supplied today. Registering
- * the module without it fails at boot, loudly, rather than at the first
- * request.
+ * `INSIGHTS_PORT` is bound to `services.insights`, so every route goes through
+ * the same application service, authorization and tenancy as every other
+ * surface.
  */
-@Module({ controllers: [InsightsController], providers: [InsightsService] })
+@Module({
+  controllers: [InsightsController],
+  providers: [
+    InsightsService,
+    {
+      provide: INSIGHTS_PORT,
+      useFactory: (services: Services): InsightsPort => services.insights,
+      inject: [SERVICES],
+    },
+  ],
+})
 export class InsightsModule {}

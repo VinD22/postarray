@@ -1,27 +1,19 @@
-import { evaluateAgentAction, type AgentActionKind, type AgentTarget } from '@relay/authz';
-import {
-  ApprovalRequiredError,
-  EntitlementRequiredError,
-  MAX_SCHEDULE_HORIZON_DAYS,
-  PolicyBlockedError,
-  hasErrors,
-  publishHoldReasonSchema,
-  type PublishHold,
-  type ScheduleSpec,
-  type ValidationResult,
-} from '@relay/contracts';
+import { publishHoldReasonSchema, type PublishHold } from '@relay/contracts';
 
 import type { ActorContext, PublishConfirmationEvidence, ServiceDeps } from '../types';
 import type { PublishJobView } from '../views';
 
 import { recordAudit } from './audit';
 import { enqueueWorkflowOutbox } from './enqueue-outbox';
-import { containsUrl, linkHosts, loadCapabilitiesFor } from './capabilities';
-import { loadAggregate, type ContentAggregate } from './content-store';
-import { invalid } from './errors';
+import { containsUrl } from './capabilities';
 import { publishJobIdempotencyKey } from './idempotency';
 import { toLocalDateTime, toProviderId, toStoredSurface } from './mappers';
-import { confirmationMatchesEscalations } from './publish-confirmation';
+import {
+  assertConfirmed,
+  assertNoBlockers,
+  runPublishPreflight,
+  type PublishPreflightInput,
+} from './publish-preflight';
 import type { ActorSnapshot, Db } from './runtime';
 import { toApprovalPolicy } from './storage-enums';
 import { resolveTarget } from './stored-content';
@@ -37,12 +29,8 @@ import { publishWorkflowId } from '../ports/scheduler';
  * the two cannot drift apart.
  */
 
-export interface PublishPathInput {
-  readonly contentItemId: string;
-  readonly scheduleSpec: ScheduleSpec;
-  readonly kind: Extract<AgentActionKind, 'schedule' | 'publish_now'>;
+export interface PublishPathInput extends PublishPreflightInput {
   readonly confirmation: PublishConfirmationEvidence | false;
-  readonly validate: () => Promise<ValidationResult>;
 }
 
 export interface PublishPathResult {
@@ -199,32 +187,6 @@ export const PUBLISH_JOB_SELECT = {
   approvalRequest: { select: { state: true } },
 } as const;
 
-/**
- * Approval policy. The workspace's own policy is checked first, then the
- * autonomy ladder. Both must be satisfied; neither substitutes for the other.
- */
-function assertApproved(aggregate: ContentAggregate): void {
-  if (aggregate.approvalPolicy === 'none') {
-    return;
-  }
-  if (aggregate.approvedVersionId === null) {
-    throw new ApprovalRequiredError({
-      messageKey: 'errors.approval_required',
-      details: { contentItemId: aggregate.itemId },
-    });
-  }
-  if (aggregate.approvedChecksum !== aggregate.checksum) {
-    throw new ApprovalRequiredError({
-      messageKey: 'errors.content_changed_after_approval',
-      details: {
-        contentItemId: aggregate.itemId,
-        approvedChecksum: aggregate.approvedChecksum,
-        currentChecksum: aggregate.checksum,
-      },
-    });
-  }
-}
-
 export async function runPublishPath(
   db: Db,
   deps: ServiceDeps,
@@ -232,138 +194,11 @@ export async function runPublishPath(
   actor: ActorSnapshot,
   input: PublishPathInput,
 ): Promise<PublishPathResult> {
-  const aggregate = await loadAggregate(db, input.contentItemId);
-
-  if (aggregate.variants.length === 0) {
-    throw invalid('errors.no_targets_selected', { contentItemId: aggregate.itemId });
-  }
-
-  // 1. Deterministic preflight. A content error stops the request here rather
-  //    than at the provider.
-  const validation = await input.validate();
-  if (hasErrors(validation.issues)) {
-    throw invalid('errors.content_invalid', {
-      issueCodes: validation.issues
-        .filter((issue) => issue.severity === 'error')
-        .map((issue) => issue.code),
-    });
-  }
-
-  // 1b. The schedule horizon, before anything is frozen. Thirty days, the
-  //     same window media is retained for, so a scheduled post can never
-  //     outlive its own attachments. `publishNow` passes the current instant
-  //     and sails through.
-  const horizonMs = MAX_SCHEDULE_HORIZON_DAYS * 24 * 60 * 60 * 1000;
-  const requestedInstant = new Date(input.scheduleSpec.instant).getTime();
-  if (requestedInstant > deps.clock.now().getTime() + horizonMs) {
-    throw invalid('validation.schedule_too_far_ahead.message', {
-      limit: `${MAX_SCHEDULE_HORIZON_DAYS} days`,
-      instant: input.scheduleSpec.instant,
-    });
-  }
-
-  // 2. Entitlement. Publishing beyond the plan is refused before anything is
-  //    frozen, so the user is not left with a version they cannot send.
-  const entitlement = await deps.billing.checkEntitlement({
-    workspaceId: ctx.workspaceId,
-    key: 'publishing.enabled',
-  });
-  if (!entitlement.allowed) {
-    throw new EntitlementRequiredError({
-      messageKey: entitlement.reasonKey ?? 'errors.entitlement_missing',
-      details: { limit: entitlement.limit, used: entitlement.used },
-    });
-  }
-
-  // 3. Workspace approval policy.
-  assertApproved(aggregate);
-
-  // 4. The autonomy ladder, identical on every surface.
-  const capabilities = await loadCapabilitiesFor(
-    db,
-    deps,
-    aggregate.variants.map((variant) => variant.connectionId),
-  );
-
-  const now = deps.clock.now();
-  const agentTargets: AgentTarget[] = aggregate.variants.map((variant) => {
-    const resolved = resolveTarget(aggregate.master, variant.settings.overrides);
-    const schedule = resolved.values.schedule ?? input.scheduleSpec;
-    return {
-      connectionId: variant.connectionId,
-      provider: toProviderId(variant.provider),
-      projectId: aggregate.projectId,
-      locale: resolved.values.locale,
-      body: resolved.values.body,
-      scheduledInstant: schedule.instant,
-      external: true,
-      privacyChanged: variant.settings.privacyValue !== null,
-      linkHosts: linkHosts(resolved.values.body),
-    };
-  });
-
-  const publishedToday = await db.publicationReceipt.count({
-    where: { publishedAt: { gte: startOfUtcDay(now) } },
-  });
-
-  const firstUse: string[] = [];
-  for (const variant of aggregate.variants) {
-    const seen = await db.publicationReceipt.count({
-      where: { connectionId: variant.connectionId },
-    });
-    if (seen === 0) {
-      firstUse.push(variant.connectionId);
-    }
-  }
-
-  const decision = evaluateAgentAction({
-    kind: input.kind,
-    approvalLevel: actor.policyActor.approvalLevel,
-    restrictions: actor.restrictions,
-    targets: agentTargets,
-    firstUseConnectionIds: firstUse,
-    publishedTodayCount: publishedToday,
-    now,
-    ...(validation.estimatedCostMinor === undefined
-      ? {}
-      : { estimatedCostMinor: validation.estimatedCostMinor }),
-    ...(validation.currency === undefined ? {} : { costCurrency: validation.currency }),
-    // Confirmation evidence is checked against the decision below. Passing a
-    // non-empty object must never collapse into a trusted boolean here.
-    humanConfirmed: false,
-  });
-
-  if (!decision.allowed) {
-    throw new PolicyBlockedError({
-      messageKey: decision.blockers[0]?.messageKey ?? 'errors.policy_blocked',
-      details: {
-        blockers: decision.blockers.map((blocker) => blocker.code),
-        externalPublicationCount: decision.externalPublicationCount,
-      },
-    });
-  }
-  if (decision.requiresHumanConfirmation && ctx.humanConfirmed !== true) {
-    const requiredEscalations = [
-      ...new Set(decision.escalations.map((escalation) => escalation.code)),
-    ].sort();
-    const acknowledgedEscalations =
-      input.confirmation === false ? [] : input.confirmation.acknowledgedEscalations;
-    const evidenceMatches =
-      input.confirmation !== false &&
-      confirmationMatchesEscalations(input.confirmation, requiredEscalations);
-
-    if (!evidenceMatches) {
-      throw new ApprovalRequiredError({
-        messageKey: 'errors.human_confirmation_required',
-        details: {
-          escalations: requiredEscalations,
-          acknowledgedEscalations,
-          externalPublicationCount: decision.externalPublicationCount,
-          similarAccountCount: decision.similarAccountCount,
-        },
-      });
-    }
-  }
+  const preflight = await runPublishPreflight(db, deps, ctx, actor, input);
+  assertNoBlockers(preflight);
+  assertConfirmed(preflight, ctx, input.confirmation);
+  const { aggregate, validation, capabilities } = preflight;
+  const variants = preflight.variants;
 
   // 5. Freeze. The version is already immutable; binding the job to it by id is
   //    what makes the receipt able to prove what was sent.
@@ -380,7 +215,7 @@ export async function runPublishPath(
 
   const jobs: PublishJobView[] = [];
 
-  for (const variant of aggregate.variants) {
+  for (const variant of variants) {
     const resolved = resolveTarget(aggregate.master, variant.settings.overrides);
     const schedule = resolved.values.schedule ?? input.scheduleSpec;
     const executeAt = new Date(schedule.instant);
@@ -527,15 +362,15 @@ export async function runPublishPath(
   await deps.billing.recordUsage({
     workspaceId: ctx.workspaceId,
     key: 'publications.monthly',
-    quantity: aggregate.variants.length,
-    idempotencyKey: `${aggregate.currentVersionId}:${input.kind}`,
+    quantity: variants.length,
+    idempotencyKey:
+      input.connectionIds === undefined
+        ? `${aggregate.currentVersionId}:${input.kind}`
+        : `${aggregate.currentVersionId}:${input.kind}:${variants
+            .map((variant) => variant.connectionId)
+            .sort()
+            .join(',')}`,
   });
 
   return { jobs, checksum: aggregate.checksum };
-}
-
-function startOfUtcDay(instant: Date): Date {
-  const start = new Date(instant.getTime());
-  start.setUTCHours(0, 0, 0, 0);
-  return start;
 }

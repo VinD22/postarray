@@ -1,9 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useRef } from 'react';
+import { useMediaQuery } from '@relay/design-system/hooks';
 import { Canvas, useFrame, type RootState } from '@react-three/fiber';
 import {
   BufferGeometry,
+  MathUtils,
+  type Group,
   Line,
   LineBasicMaterial,
   Vector3,
@@ -22,8 +25,8 @@ import {
  * icosahedron so it reads as a faceted document rather than a glowing ball)
  * with a fixed number of spokes, one per destination, each carrying its own
  * small pulse that travels outward and fades — a publish event landing.
- * There is no whole-scene rotation and no camera movement; the only motion is
- * the thing the product actually does.
+ * Fine-pointer movement adds a small damped perspective tilt. The camera stays
+ * fixed and touch scrolling remains native.
  *
  * Geometry is procedural only (icosahedron, octahedron, a `BufferGeometry`
  * built from two points) — there is no asset pipeline for 3D models in this
@@ -186,9 +189,28 @@ function PublishPulse({
 
 function PublishFanoutGraph({ colors }: { readonly colors: PublishSceneColors }) {
   const destinations = useMemo(buildDestinations, []);
+  const group = useRef<Group>(null);
+  const finePointer = useMediaQuery('(pointer: fine)', false);
+  useFrame((state, delta) => {
+    if (!group.current) return;
+    const x = finePointer ? MathUtils.clamp(state.pointer.y, -1, 1) * 0.12 : 0;
+    const y = finePointer ? MathUtils.clamp(state.pointer.x, -1, 1) * 0.18 : 0;
+    group.current.rotation.x = MathUtils.damp(
+      group.current.rotation.x,
+      x,
+      6,
+      Math.min(delta, 0.05),
+    );
+    group.current.rotation.y = MathUtils.damp(
+      group.current.rotation.y,
+      y,
+      6,
+      Math.min(delta, 0.05),
+    );
+  });
 
   return (
-    <group>
+    <group ref={group}>
       <DraftNode color={colors.node} />
       {destinations.map((d) => (
         <SpokeLine key={d.id} to={d.position} color={colors.line} />

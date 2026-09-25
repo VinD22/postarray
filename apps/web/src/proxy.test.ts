@@ -40,6 +40,14 @@ describe('locale proxy', () => {
     expect(response.cookies.get(LOCALE_COOKIE)?.value).toBe('ar');
   });
 
+  it('does not rewrite the locale cookie when it already matches, so the page stays cacheable', () => {
+    const request = new NextRequest('https://relay.test/ar/pricing', {
+      headers: { cookie: `${LOCALE_COOKIE}=ar` },
+    });
+    const response = proxy(request);
+    expect(response.headers.get('set-cookie')).toBeNull();
+  });
+
   it('keeps active locale prefixes including es-419, cs, sv, fil and zh-Hant', () => {
     for (const locale of ['es-419', 'cs', 'sv', 'fil', 'zh-Hant']) {
       const request = new NextRequest(`https://relay.test/${locale}/pricing?source=legacy`);

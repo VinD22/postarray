@@ -53,6 +53,10 @@ export const ACTION_KIND_DEFINITIONS: Readonly<Record<ActionItemKind, ActionKind
     messageKey: 'actionCenter.item.rssStalled',
     actionKey: 'actionCenter.action.checkFeed',
   },
+  media_scan_stuck: {
+    messageKey: 'actionCenter.item.mediaScanStuck',
+    actionKey: 'actionCenter.action.openLibrary',
+  },
   webhook_failing: {
     messageKey: 'actionCenter.item.webhookFailing',
     actionKey: 'actionCenter.action.inspectDeliveries',

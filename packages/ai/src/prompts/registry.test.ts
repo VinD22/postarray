@@ -36,7 +36,9 @@ describe('prompt registry', () => {
     // The conversational assistant: one routing prompt, one planning prompt.
     expect(PROMPT_IDS).toContain('assistant-route');
     expect(PROMPT_IDS).toContain('assistant-week-plan');
-    expect(PROMPT_IDS).toHaveLength(19);
+    // Image analysis for an existing, user-owned asset. Analysis only, never generation.
+    expect(PROMPT_IDS).toContain('media-understanding');
+    expect(PROMPT_IDS).toHaveLength(20);
   });
 
   it('versions every prompt as YYYY-MM-DD.N', () => {

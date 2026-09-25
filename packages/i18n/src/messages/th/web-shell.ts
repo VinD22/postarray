@@ -21,7 +21,7 @@ export const webShellMessages = {
   'shell.demo.title': 'คุณกำลังดูข้อมูลสาธิต',
   'shell.demo.body':
     'ไม่สามารถเข้าถึงได้ Post Array API จากเบราว์เซอร์นี้ ดังนั้นหน้าจอจึงเต็มไปด้วยพื้นที่ทำงานตัวอย่างที่เริ่มต้น ไม่มีสิ่งใดที่นี่เชื่อมโยงกับบัญชีจริงและไม่มีอะไรสามารถเผยแพร่ได้',
-  'shell.demo.howToConnect': 'ตั้งค่า NEXT_PUBLIC_RELAY_API_URL และรีสตาร์ทแอปเพื่อใช้ข้อมูลสด',
+  'shell.demo.howToConnect': 'ตั้งค่า NEXT_PUBLIC_POSTARRAY_API_URL และรีสตาร์ทแอปเพื่อใช้ข้อมูลสด',
   'shell.offline.title': 'คุณออฟไลน์อยู่',
   'shell.offline.body':
     'ฉบับร่างจะถูกเก็บไว้ในอุปกรณ์นี้ การจัดกำหนดการและการเผยแพร่ต่อเมื่อการเชื่อมต่อกลับมา',

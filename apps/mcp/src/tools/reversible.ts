@@ -21,7 +21,8 @@ export const draftPostTool = defineTool({
   name: 'draft_post',
   risk: 'reversible',
   summary: 'Create an unpublished draft with one master body and one entry per target account.',
-  sideEffects: 'creates a draft inside Post Array. Nothing is scheduled and nothing reaches a platform',
+  sideEffects:
+    'creates a draft inside Post Array. Nothing is scheduled and nothing reaches a platform',
   scopes: ['drafts:write'],
   approvalLevel: 'level_1_draft',
   requiresIdempotencyKey: false,

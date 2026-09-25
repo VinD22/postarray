@@ -74,6 +74,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Inga konton på denna {provider}-inloggning kan anslutas. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'Inget konto från den här {provider}-inloggningen kan anslutas.',
+  'connection.oauth.claimFailed': 'De kontona kunde inte anslutas',
+  'connection.oauth.claimFailedAction':
+    'Ingenting ändrades på plattformen. Försök igen, och börja om anslutningen om det fortsätter att misslyckas.',
   'connection.oauth.canceled': 'Anslutningen avbröts den {provider}. Ingenting förändrades.',
   'connection.oauth.alreadyConnected': '{account} är redan ansluten till den här arbetsytan.',
   'connection.oauth.connectedToAnotherWorkspace':

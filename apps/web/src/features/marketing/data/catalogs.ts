@@ -287,6 +287,15 @@ export const SUBPROCESSORS: readonly Subprocessor[] = [
     vendorPending: true,
   },
   {
+    id: 'analytics',
+    nameKey: 'web.legal.subprocessors.analytics.label',
+    purposeKey: 'web.legal.subprocessors.analytics.purpose',
+    dataKey: 'web.legal.subprocessors.analytics.data',
+    region: null,
+    // Chosen and live, unlike the rows above it that are still placeholders.
+    vendorPending: false,
+  },
+  {
     id: 'monitoring',
     nameKey: 'web.legal.subprocessors.monitoring.label',
     purposeKey: 'web.legal.subprocessors.monitoring.purpose',

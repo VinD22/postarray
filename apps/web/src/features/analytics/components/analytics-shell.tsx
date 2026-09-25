@@ -7,6 +7,8 @@ import { PageHeader } from '@relay/design-system/patterns';
 import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 
+import { isPathActive } from '@/lib/i18n/active-path';
+
 /**
  * The header and section navigation shared by every analytics screen.
  *
@@ -47,9 +49,10 @@ export function AnalyticsShell({ children }: AnalyticsShellProps): ReactElement 
           <nav aria-label={t('analytics.tab.label')}>
             <ul className="-mb-4 flex flex-wrap gap-x-1">
               {SECTIONS.map((section) => {
-                const active = section.exact
-                  ? pathname === section.href
-                  : pathname.startsWith(section.href);
+                // Through the shared helper, because `usePathname()` carries
+                // the locale prefix and these hrefs do not: comparing them
+                // directly left every tab unlit outside the default locale.
+                const active = isPathActive(pathname, section.href, section.exact);
                 return (
                   <li key={section.href}>
                     <Link

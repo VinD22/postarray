@@ -194,6 +194,7 @@ export const composerMessages = {
     'The clocks change in {timeZone} on this date. This post runs at {local}, which is {utc} UTC.',
   'composer.schedule.pastWarning': 'That time has passed. Choose a later time.',
   'composer.schedule.confirmTitle': 'Confirm before scheduling',
+  'composer.schedule.confirmPublishTitle': 'Confirm before publishing',
   'composer.schedule.confirmPublishNow': 'Confirm before publishing now',
   'composer.schedule.approverLabel': 'Approver',
   'composer.schedule.policyLabel': 'Approval policy',

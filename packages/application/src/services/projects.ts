@@ -12,7 +12,7 @@ import type { ProjectView } from '../views';
 import { recordAudit } from '../internal/audit';
 import { notFound } from '../internal/errors';
 import { pageArgs, toPage } from '../internal/pagination';
-import { authorized, type Db } from '../internal/runtime';
+import { authorized, guard, type Db } from '../internal/runtime';
 import { workspaceSlug } from '../internal/workspace-slug';
 
 /** Projects: voice, claims, blocked terms, domains and scheduling defaults. */
@@ -217,6 +217,73 @@ export function createProjectService(deps: ServiceDeps): ProjectService {
           targetId: projectId,
           before: toView(before),
           after: toView(after),
+        });
+        return toView(after);
+      });
+    },
+
+    async updateConnections(
+      ctx: ActorContext,
+      projectId: string,
+      input: { readonly add: readonly string[]; readonly remove: readonly string[] },
+    ): Promise<ProjectView> {
+      return authorized(deps, ctx, 'project.write', { projectId }, async (db, actor) => {
+        const before = await db.project.findFirst({
+          where: { id: projectId, workspaceId: actor.workspace.id, archivedAt: null },
+          select: PROJECT_SELECT,
+        });
+        if (before === null) {
+          throw notFound('project', projectId);
+        }
+        const add = [...new Set(input.add)];
+        const remove = [...new Set(input.remove)].filter((id) => !add.includes(id));
+        if (add.length > 0) {
+          // Workspace-scoped explicitly: RLS is a backstop, not the check.
+          const found = await db.socialConnection.findMany({
+            where: { id: { in: add }, workspaceId: actor.workspace.id },
+            select: { id: true, projectId: true },
+          });
+          const known = new Set(found.map((row) => row.id));
+          const missing = add.find((id) => !known.has(id));
+          if (missing !== undefined) {
+            throw notFound('connection', missing);
+          }
+          // Moving a connection takes it out of the project it is in now, so
+          // the actor must be allowed to write that project too. A key scoped
+          // to this project alone may not pull accounts out of another one.
+          for (const row of found) {
+            guard(actor, 'project.write', {
+              projectId: row.projectId ?? projectId,
+              connectionId: row.id,
+            });
+          }
+          await db.socialConnection.updateMany({
+            where: { id: { in: add }, workspaceId: actor.workspace.id },
+            data: { projectId },
+          });
+        }
+        if (remove.length > 0) {
+          for (const id of remove) {
+            guard(actor, 'project.write', { projectId, connectionId: id });
+          }
+          await db.socialConnection.updateMany({
+            where: { id: { in: remove }, workspaceId: actor.workspace.id, projectId },
+            data: { projectId: null },
+          });
+        }
+        const after = await db.project.findFirst({
+          where: { id: projectId, workspaceId: actor.workspace.id },
+          select: PROJECT_SELECT,
+        });
+        if (after === null) {
+          throw notFound('project', projectId);
+        }
+        await recordAudit(db, actor, {
+          action: 'workspace.updated',
+          targetType: 'project',
+          targetId: projectId,
+          before: { connectionIds: toView(before).connectionIds },
+          after: { connectionIds: toView(after).connectionIds },
         });
         return toView(after);
       });

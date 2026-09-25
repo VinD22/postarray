@@ -9,6 +9,7 @@
     ".": "./src/index.ts",
     "./prompts": "./src/prompts/index.ts",
     "./growth": "./src/growth/index.ts",
+    "./digest": "./src/digest/index.ts",
     "./evals": "./src/evals/index.ts"
   },
   "scripts": {

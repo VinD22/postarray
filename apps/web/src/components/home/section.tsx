@@ -21,6 +21,7 @@ export function HomeSection({
   id,
   title,
   meta,
+  summary,
   link,
   children,
   className,
@@ -29,26 +30,36 @@ export function HomeSection({
   readonly id: string;
   readonly title: string;
   readonly meta?: ReactNode;
+  /** One short sentence that helps interpret the section before its rows. */
+  readonly summary?: ReactNode;
   readonly link?: { readonly href: string; readonly label: string } | undefined;
   readonly children: ReactNode;
   readonly className?: string;
-  /** Renders the heading in the display face for the one section Home wants loudest. */
+  /** Adds a stronger scale to the first decision block without changing its semantics. */
   readonly emphasis?: boolean;
 }) {
   return (
     <section
       aria-labelledby={id}
       data-stagger-item
-      className={cn('flex flex-col gap-3', className)}
+      className={cn('flex flex-col gap-6', className)}
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h2
-          id={id}
-          className={cn('text-title-sm text-text-primary', emphasis && 'font-display font-bold')}
-        >
-          {title}
-        </h2>
-        {meta === undefined ? null : <p className="text-body-sm text-text-tertiary">{meta}</p>}
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <h2
+            id={id}
+            className={cn(
+              'font-display text-title-lg text-text-primary tracking-[-0.025em]',
+              emphasis && 'text-[clamp(1.9rem,1.6rem+1vw,2.5rem)] leading-tight',
+            )}
+          >
+            {title}
+          </h2>
+          {meta === undefined ? null : <p className="text-body-sm text-text-tertiary">{meta}</p>}
+        </div>
+        {summary === undefined ? null : (
+          <p className="text-body-md text-text-secondary max-w-[62ch] text-pretty">{summary}</p>
+        )}
       </div>
 
       {children}

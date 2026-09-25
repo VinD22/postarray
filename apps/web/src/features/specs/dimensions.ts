@@ -61,3 +61,26 @@ export function latestReadOn(entry: DimensionPlatform): string {
     entry.rows[0]?.source.readOn ?? '',
   );
 }
+
+/** `videoThumbnail` becomes `video-thumbnail`, the URL segment for one surface. */
+export function surfaceSlug(variant: string): string {
+  return variant.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+}
+
+/** Every `(platform, surface)` pair with a recorded row: one page each. */
+export const DIMENSION_SURFACE_PAIRS: readonly {
+  readonly platform: string;
+  readonly surface: string;
+}[] = PLATFORMS.flatMap((entry) =>
+  entry.rows.map((row) => ({ platform: entry.slug, surface: surfaceSlug(row.variant) })),
+);
+
+/** The one row a surface page renders, or `undefined` for a 404. */
+export function findDimensionSurface(
+  platformSlug: string,
+  surface: string,
+): { readonly platform: DimensionPlatform; readonly row: MediaDimensionRow } | undefined {
+  const platform = BY_SLUG.get(platformSlug);
+  const row = platform?.rows.find((candidate) => surfaceSlug(candidate.variant) === surface);
+  return platform === undefined || row === undefined ? undefined : { platform, row };
+}

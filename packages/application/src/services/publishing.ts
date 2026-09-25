@@ -1,6 +1,6 @@
 import {
-  CapabilityNotImplementedError,
   scheduleSpecSchema,
+  type CommitPreview,
   type ValidationResult,
 } from '@relay/contracts';
 
@@ -11,13 +11,15 @@ import type {
   ServiceDeps,
   ValidationService,
 } from '../types';
-import type { PublishJobView } from '../views';
+import type { PublishJobView, PublishJobsAcceptedView } from '../views';
 
 import { loadAggregate } from '../internal/content-store';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { confirmationMatchesContent } from '../internal/publish-confirmation';
 import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path';
+import { runPublishPreflight, toCommitPreview } from '../internal/publish-preflight';
+import { runRetryTarget } from '../internal/retry-target';
 import { authorized, guard } from '../internal/runtime';
 
 /**
@@ -39,7 +41,7 @@ export function createPublishingService(
     async publishNow(
       ctx: ActorContext,
       input: { contentItemId: string; confirmation: PublishConfirmationEvidence },
-    ): Promise<PublishJobView> {
+    ): Promise<PublishJobsAcceptedView> {
       return withIdempotency(deps.kv, ctx, {
         operation: 'publishing.publishNow',
         body: { contentItemId: input.contentItemId, confirmation: input.confirmation },
@@ -96,11 +98,48 @@ export function createPublishingService(
                   contentItemId: input.contentItemId,
                 });
               }
-              return first;
+              return { ...first, jobs: result.jobs };
             },
             { timeoutMs: 30_000 },
           ),
       });
+    },
+
+    async previewCommit(ctx, input): Promise<CommitPreview> {
+      const permission = input.kind === 'publish_now' ? 'post.publish_now' : 'post.schedule';
+      return authorized(
+        deps,
+        ctx,
+        permission,
+        undefined,
+        async (db, actor) => {
+          const instant =
+            input.kind === 'publish_now' || input.scheduledAt === undefined
+              ? new Date(deps.clock.now().getTime() + IMMEDIATE_LEAD_SECONDS * 1000).toISOString()
+              : input.scheduledAt;
+          const spec = scheduleSpecSchema.parse({
+            instant,
+            ianaTimeZone: input.ianaTimeZone ?? actor.workspace.defaultTimeZone,
+            repeat: null,
+          });
+          const preflight = await runPublishPreflight(db, deps, ctx, actor, {
+            contentItemId: input.contentItemId,
+            scheduleSpec: spec,
+            kind: input.kind,
+            connectionIds: input.connectionIds,
+            validate: async (): Promise<ValidationResult> =>
+              validation.validate(ctx, { contentItemId: input.contentItemId }),
+          });
+          for (const variant of preflight.variants) {
+            guard(actor, permission, {
+              projectId: preflight.aggregate.projectId,
+              connectionId: variant.connectionId,
+            });
+          }
+          return toCommitPreview(preflight, input.kind);
+        },
+        { timeoutMs: 30_000 },
+      );
     },
 
     async getJob(ctx: ActorContext, jobId: string): Promise<PublishJobView> {
@@ -120,31 +159,29 @@ export function createPublishingService(
       ctx: ActorContext,
       input: { jobId: string; targetId: string },
     ): Promise<PublishJobView> {
-      return authorized(deps, ctx, 'post.retry', undefined, async (db, actor) => {
-        const job = await db.publishJob.findFirst({
-          where: { id: input.jobId },
-          select: { ...PUBLISH_JOB_SELECT, receipt: { select: { id: true } } },
-        });
-        if (job === null) {
-          throw notFound('publish_job', input.jobId);
-        }
-        guard(actor, 'post.retry', { connectionId: job.connectionId });
-
-        // A target that already produced an external post is never retried.
-        // Retrying it would be the duplicate publication this whole system
-        // exists to prevent.
-        if (job.receipt !== null || job.state === 'published') {
-          throw invalid('errors.job_already_published', { jobId: job.id });
-        }
-        if (job.state !== 'action_required' && job.state !== 'failed_permanently') {
-          throw invalid('errors.job_not_retryable', { state: job.state });
-        }
-        if (job.postVariantId !== input.targetId) {
-          throw notFound('post_variant', input.targetId);
-        }
-        throw new CapabilityNotImplementedError({
-          details: { capability: 'single_target_retry', reason: 'duplicate_safety_pending' },
-        });
+      return withIdempotency(deps.kv, ctx, {
+        operation: 'publishing.retryTarget',
+        body: { jobId: input.jobId, targetId: input.targetId },
+        resourceIdOf: (view) => view.id,
+        run: async () =>
+          authorized(
+            deps,
+            ctx,
+            'post.retry',
+            undefined,
+            async (db, actor) => {
+              const job = await db.publishJob.findFirst({
+                where: { id: input.jobId },
+                select: { connectionId: true },
+              });
+              if (job === null) {
+                throw notFound('publish_job', input.jobId);
+              }
+              guard(actor, 'post.retry', { connectionId: job.connectionId });
+              return runRetryTarget(db, deps, ctx, actor, input);
+            },
+            { timeoutMs: 30_000 },
+          ),
       });
     },
   };

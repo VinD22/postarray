@@ -21,10 +21,24 @@ export interface OutboxDispatchResult {
   readonly publishJobId: string | null;
 }
 
+/**
+ * Thrown for a kind no dispatcher understands. The dispatcher retires such a
+ * row immediately instead of retrying it, because no number of attempts will
+ * teach it a new kind. Before the outbox was split by kind, every domain
+ * event reached this path and spent ten attempts over twenty-four hours
+ * proving it.
+ */
+export class UnknownOutboxKindError extends RelayError {
+  constructor(kind: string) {
+    super(ERROR_CODES.VALIDATION_FAILED, {
+      details: { field: 'kind', reason: 'unknown_outbox_kind', kind },
+    });
+    this.name = 'UnknownOutboxKindError';
+  }
+}
+
 function unsupportedKind(kind: string): never {
-  throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
-    details: { field: 'kind', reason: 'unknown_outbox_kind', kind },
-  });
+  throw new UnknownOutboxKindError(kind);
 }
 
 /** Dispatch one validated workflow intent. Every scheduler operation is idempotent. */

@@ -3,7 +3,7 @@
 import { createElement, useRef, type ElementType, type ReactNode, type Ref } from 'react';
 
 import { EASE_OUT_EXPO, EXPRESSIVE_SM } from '@/lib/motion/constants';
-import { gsap, useGSAP, type ScrollTrigger } from '@/lib/motion/gsap';
+import { gsap, useGSAP, type ScrollTrigger } from '@/lib/motion/gsap-scroll';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 export interface RevealProps {

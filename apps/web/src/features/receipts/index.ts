@@ -33,3 +33,4 @@ export {
   type CampaignTargetView,
   type PostDetail,
 } from './types';
+export { HowItDidPanel, type HowItDidPanelProps } from './how-it-did-panel';

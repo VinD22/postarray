@@ -177,6 +177,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'El plan base de $29 incluye 3 proyectos activos. Un espacio de trabajo puede tener acceso a hasta 20 sin crear otra cuenta.',
   'settings.ui.projects.capacitySummary': '{used} de {limit}',
+  'settings.ui.projects.atLimitAction': 'Ver planes',
   'settings.ui.projects.atLimitTitle':
     'Este espacio de trabajo ya usó todos los espacios de proyecto',
   'settings.ui.projects.atLimitBody':

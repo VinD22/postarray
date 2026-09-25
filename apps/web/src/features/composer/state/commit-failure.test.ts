@@ -46,4 +46,25 @@ describe('describeCommitFailure', () => {
     const failure = describeCommitFailure('publish', new Error('DB password is hunter2'));
     expect(JSON.stringify(failure)).not.toContain('hunter2');
   });
+
+  it('offers a sample receipt when demo mode refuses a publish', () => {
+    const demo = new ApiError({
+      code: 'PROVIDER_UNAVAILABLE',
+      status: 503,
+      messageCode: 'demo_unavailable',
+      retryable: false,
+      details: {},
+      correlationId: null,
+      retryAfterSeconds: null,
+    });
+    expect(describeCommitFailure('publish', demo).sampleReceiptHref).toMatch(
+      /^\/posts\/content_demo/,
+    );
+    expect(describeCommitFailure('schedule', demo).sampleReceiptHref).not.toBeNull();
+    expect(describeCommitFailure('draft', demo).sampleReceiptHref).toBeNull();
+  });
+
+  it('never offers a sample receipt for a live failure', () => {
+    expect(describeCommitFailure('publish', new Error('boom')).sampleReceiptHref).toBeNull();
+  });
 });

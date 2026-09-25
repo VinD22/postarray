@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 
 import { EASE_OUT_EXPO, EXPRESSIVE_LG } from '@/lib/motion/constants';
-import { gsap, useGSAP } from '@/lib/motion/gsap';
+import { gsap, useGSAP } from '@/lib/motion/gsap-scroll';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 export interface CountUpProps {
@@ -65,7 +65,6 @@ export function CountUp({ value, format, className }: CountUpProps) {
       return () => {
         tween.kill();
       };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
     { scope, dependencies: [motionOk, value] },
   );

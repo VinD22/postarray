@@ -219,13 +219,18 @@ describe('spend controls', () => {
 });
 
 describe('no media generation meter exists', () => {
-  it('declares only post creates and AI text tokens', () => {
+  it('declares only post creates, AI text tokens and vision analysis input', () => {
     expect([...METERED_OPERATIONS]).toEqual([
       'post_create',
       'post_create_with_url',
       'ai_text_input_tokens',
       'ai_text_output_tokens',
+      'ai_vision_input_tokens',
     ]);
+  });
+
+  it('keeps the vision analysis meter clear of every forbidden generation name', () => {
+    expect(() => assertMeterAllowed(usageMeterName('ai_vision_input_tokens'))).not.toThrow();
   });
 
   it('refuses to build a meter name for image or video generation', () => {

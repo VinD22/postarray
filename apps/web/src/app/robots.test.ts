@@ -10,24 +10,68 @@ describe('robots', () => {
     expect(rule?.allow).toBe('/');
     expect(rule?.disallow).toEqual(
       expect.arrayContaining([
-        '/sign-in',
+        '/sign-in$',
         '/sign-in/*',
-        '/*/sign-in',
-        '/*/sign-in/*',
-        '/settings',
+        '/es/sign-in$',
+        '/es/sign-in/*',
+        '/settings$',
         '/settings/*',
-        '/*/settings',
-        '/*/settings/*',
-        '/consent',
+        '/es/settings$',
+        '/es/settings/*',
+        '/consent$',
         '/consent/*',
-        '/*/consent',
-        '/*/consent/*',
-        '/confirm',
+        '/es/consent$',
+        '/es/consent/*',
+        '/confirm$',
         '/confirm/*',
-        '/*/confirm',
-        '/*/confirm/*',
+        '/es/confirm$',
+        '/es/confirm/*',
       ]),
     );
+    expect(JSON.stringify(result).length).toBeLessThan(100_000);
     expect(result.sitemap).toMatch(/\/sitemap\.xml$/);
+  });
+  it('does not block public articles that start with private route names', () => {
+    const rules = robots().rules;
+    const rule = Array.isArray(rules) ? rules[0] : rules;
+    const patterns = rule?.disallow;
+    const disallow = Array.isArray(patterns) ? patterns : [patterns ?? ''];
+    const blocked = (path: string) =>
+      disallow.some((pattern) => {
+        const escaped = pattern.replace(/[.+?^{}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+        return new RegExp(`^${escaped}`).test(path);
+      });
+    expect(blocked('/blog/connections-expire-before-you-notice')).toBe(false);
+    expect(blocked('/en/blog/connections-expire-before-you-notice')).toBe(false);
+    expect(blocked('/connections')).toBe(true);
+    expect(blocked('/en/connections')).toBe(true);
+    expect(blocked('/en/connections?filter=expired')).toBe(true);
+    expect(blocked('/en/connections/conn_one')).toBe(true);
+    expect(blocked('/blog/connections')).toBe(false);
+  });
+});
+
+describe('robots AI crawler groups', () => {
+  it('names every AI crawler with the same private-path list as the default group', () => {
+    const rules = robots().rules;
+    const list = Array.isArray(rules) ? rules : [rules];
+    const base = list[0]?.disallow;
+    for (const agent of [
+      'GPTBot',
+      'OAI-SearchBot',
+      'ChatGPT-User',
+      'ClaudeBot',
+      'Claude-SearchBot',
+      'PerplexityBot',
+      'Google-Extended',
+      'Applebot-Extended',
+    ]) {
+      const group = list.find((rule) =>
+        Array.isArray(rule.userAgent) ? rule.userAgent.includes(agent) : rule.userAgent === agent,
+      );
+      expect(group, agent).toBeDefined();
+      expect(group?.allow).toBe('/');
+      expect(group?.disallow).toEqual(base);
+    }
   });
 });

@@ -62,6 +62,10 @@ export type ComposerAction =
   | { type: 'links/sync'; urls: readonly string[] }
   | { type: 'signature/set'; signature: SignatureRef | null }
   | { type: 'approval/unpin' }
+  /** The server row now exists. Carries the id every later request needs. */
+  | { type: 'master/assign-id'; contentItemId: string }
+  /** One save round finished. Only the targets it actually wrote go clean. */
+  | { type: 'save/settled'; savedConnectionIds: readonly string[] }
   | { type: 'state/replace'; state: ComposerState };
 
 /** A fresh, empty thread item ready to be edited. */
@@ -80,6 +84,20 @@ export function newThreadItem(order: number, kind: ThreadItem['kind']): ThreadIt
 
 function bumpRevision(state: ComposerState): ComposerState {
   return { ...state, revision: state.revision + 1, approvalPinned: false };
+}
+
+/**
+ * Record that one target's variant no longer matches the server.
+ *
+ * The list is the whole of what autosave writes. Adding a target does not
+ * belong here: the target list itself is sent on every save, and a target with
+ * no edits of its own has nothing for a variant request to carry.
+ */
+function markDirty(state: ComposerState, connectionId: string): ComposerState {
+  if (state.dirtyConnectionIds.includes(connectionId)) {
+    return state;
+  }
+  return { ...state, dirtyConnectionIds: [...state.dirtyConnectionIds, connectionId] };
 }
 
 /** Read the sequence that a scope (master or one target) currently shows. */
@@ -103,16 +121,21 @@ function writeSequence(
   if (connectionId === null) {
     return bumpRevision({ ...state, master: { ...state.master, threadItems: ordered } });
   }
-  return bumpRevision({
-    ...state,
-    overrides: {
-      ...state.overrides,
-      [connectionId]: {
-        ...(state.overrides[connectionId] ?? {}),
-        threadItems: ordered,
+  return bumpRevision(
+    markDirty(
+      {
+        ...state,
+        overrides: {
+          ...state.overrides,
+          [connectionId]: {
+            ...(state.overrides[connectionId] ?? {}),
+            threadItems: ordered,
+          },
+        },
       },
-    },
-  });
+      connectionId,
+    ),
+  );
 }
 
 function settingsFor(state: ComposerState, connectionId: string): VariantSettings {
@@ -152,10 +175,13 @@ export function composerReducer(state: ComposerState, action: ComposerAction): C
       if (state.selectedConnectionIds.includes(action.connectionId)) {
         return state;
       }
-      return {
+      // Choosing a channel is an edit. It used to leave the revision alone, so
+      // a selection was only ever written by the next keystroke that happened
+      // to follow it, and a draft where nothing else changed kept the old list.
+      return bumpRevision({
         ...state,
         selectedConnectionIds: [...state.selectedConnectionIds, action.connectionId],
-      };
+      });
     }
 
     case 'target/remove': {
@@ -163,16 +189,17 @@ export function composerReducer(state: ComposerState, action: ComposerAction): C
       const { [action.connectionId]: removedSettings, ...settings } = state.settings;
       void removedOverride;
       void removedSettings;
-      return {
+      return bumpRevision({
         ...state,
         selectedConnectionIds: state.selectedConnectionIds.filter(
           (id) => id !== action.connectionId,
         ),
         overrides,
         settings,
+        dirtyConnectionIds: state.dirtyConnectionIds.filter((id) => id !== action.connectionId),
         activeConnectionId:
           state.activeConnectionId === action.connectionId ? null : state.activeConnectionId,
-      };
+      });
     }
 
     case 'target/open':
@@ -209,13 +236,18 @@ export function composerReducer(state: ComposerState, action: ComposerAction): C
     case 'variant/override': {
       const current = state.overrides[action.connectionId] ?? {};
       const next = { ...current, [action.field]: action.value } as VariantOverrides;
-      return bumpRevision({
-        ...state,
-        overrides: {
-          ...state.overrides,
-          [action.connectionId]: pruneRedundantOverrides(state.master, next),
-        },
-      });
+      return bumpRevision(
+        markDirty(
+          {
+            ...state,
+            overrides: {
+              ...state.overrides,
+              [action.connectionId]: pruneRedundantOverrides(state.master, next),
+            },
+          },
+          action.connectionId,
+        ),
+      );
     }
 
     case 'variant/resetField': {
@@ -223,36 +255,48 @@ export function composerReducer(state: ComposerState, action: ComposerAction): C
       if (!current) {
         return state;
       }
-      return bumpRevision({
-        ...state,
-        overrides: {
-          ...state.overrides,
-          [action.connectionId]: resetFieldToMaster(current, action.field),
-        },
-      });
+      return bumpRevision(
+        markDirty(
+          {
+            ...state,
+            overrides: {
+              ...state.overrides,
+              [action.connectionId]: resetFieldToMaster(current, action.field),
+            },
+          },
+          action.connectionId,
+        ),
+      );
     }
 
     case 'variant/resetAll': {
       if (!state.overrides[action.connectionId]) {
         return state;
       }
-      return bumpRevision({
-        ...state,
-        overrides: { ...state.overrides, [action.connectionId]: {} },
-      });
+      return bumpRevision(
+        markDirty(
+          { ...state, overrides: { ...state.overrides, [action.connectionId]: {} } },
+          action.connectionId,
+        ),
+      );
     }
 
     case 'variant/settings':
-      return bumpRevision({
-        ...state,
-        settings: {
-          ...state.settings,
-          [action.connectionId]: {
-            ...settingsFor(state, action.connectionId),
-            ...action.patch,
+      return bumpRevision(
+        markDirty(
+          {
+            ...state,
+            settings: {
+              ...state.settings,
+              [action.connectionId]: {
+                ...settingsFor(state, action.connectionId),
+                ...action.patch,
+              },
+            },
           },
-        },
-      });
+          action.connectionId,
+        ),
+      );
 
     case 'sequence/add':
       return writeSequence(state, action.connectionId, [
@@ -335,6 +379,30 @@ export function composerReducer(state: ComposerState, action: ComposerAction): C
 
     case 'approval/unpin':
       return { ...state, approvalPinned: false };
+
+    /**
+     * The draft was created lazily and now has a real id. This is not an edit:
+     * it must not bump the revision, or assigning the id would immediately
+     * request another save of the state that just saved.
+     */
+    case 'master/assign-id':
+      return { ...state, master: { ...state.master, id: action.contentItemId } };
+
+    /**
+     * Targets the last save actually wrote go clean. A target whose variant
+     * write was rejected is absent from this list and therefore stays dirty,
+     * so the next save retries it rather than dropping the edit.
+     */
+    case 'save/settled': {
+      if (action.savedConnectionIds.length === 0) {
+        return state;
+      }
+      const saved = new Set(action.savedConnectionIds);
+      return {
+        ...state,
+        dirtyConnectionIds: state.dirtyConnectionIds.filter((id) => !saved.has(id)),
+      };
+    }
 
     default:
       return state;

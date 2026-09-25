@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   calendarDayNumber,
   crossesOffsetChange,
+  formatByteLimit,
   formatBytes,
   formatCompactNumber,
   formatCurrency,
@@ -229,6 +230,24 @@ describe('formatBytes', () => {
     expect(formatBytes('en', 1500)).toBe('1.5 kB');
     expect(formatBytes('en', 5_000_000)).toBe('5 MB');
     expect(formatBytes('en', 2_100_000_000)).toBe('2.1 GB');
+  });
+});
+
+describe('formatByteLimit', () => {
+  it('shows a binary ceiling in the units it was set in', () => {
+    expect(formatByteLimit('en', 20 * 1024 * 1024)).toBe('20\u00a0MiB');
+    expect(formatByteLimit('en', 500 * 1024 * 1024)).toBe('500\u00a0MiB');
+    expect(formatByteLimit('en', 128 * 1024 * 1024 * 1024)).toBe('128\u00a0GiB');
+    expect(formatByteLimit('en', 1536 * 1024 * 1024)).toBe('1.5\u00a0GiB');
+  });
+
+  it('leaves a decimal provider limit in decimal units', () => {
+    expect(formatByteLimit('en', 5_000_000)).toBe(formatBytes('en', 5_000_000));
+    expect(formatByteLimit('en', 8_000_000)).toBe('8 MB');
+  });
+
+  it('formats the number for the locale', () => {
+    expect(formatByteLimit('de', 1536 * 1024 * 1024)).toBe('1,5\u00a0GiB');
   });
 });
 

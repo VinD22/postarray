@@ -1,0 +1,397 @@
+# Experience programme: what is built, what is not, and what to watch
+
+Written 2026-09-03, at the end of the first implementation session against
+`docs/planning/28-experience-master-plan.md`. This is the handoff: read it
+before picking up any remaining phase, because several things in the plan
+turned out to be wrong and are corrected here rather than there.
+
+## Phase 0 is complete
+
+Every launch blocker in the plan is fixed and on `development`.
+
+| Blocker | Fix |
+| --- | --- |
+| Uploaded images could never publish | Scan pipeline. Assets leave `pending` through `mediaScanWorkflow`; the first adapter validates format, not malware, and says so in its own doc comment |
+| Outbound webhooks and notifications silently dead | Outbox split by kind into two dispatchers; delivery bodies stored rather than only hashed; contract header names; replay tool |
+| A non-production deploy swallowed every scheduled post | `POSTARRAY_RUNTIME_PROFILE` plus a local-database check gates the non-durable scheduler; `/readyz` fails when a process comes up degraded |
+| CI never ran on `development` | Push trigger fixed; `turbo.json` globalEnv completed |
+| 42 accessibility audits were auditing error pages | Playwright demo-mode variable renamed to the one the app reads, with a smoke test that fails if they diverge again |
+| The publish path had no workspace scoping | Connector execution activities run inside `withWorkspaceContext`, one context per contiguous block, never spanning a provider call |
+
+## Corrections to the plan and to the repository's own documents
+
+- **`AGENTS.md` said the primary button is ink.** It is vermilion, one per
+  screen. The design-system README is authoritative and was already right.
+- **`AGENTS.md` said tenancy is enforced three times.** Three layers exist, but
+  application traffic runs as `service_role` and every policy is
+  `is_service_role() OR membership`, so for those queries the membership branch
+  never decides. Write repository code as if row level security were not there.
+- **Google Business Profile was left in the launch cohort deliberately.** The
+  audit flagged it as advertised with no adapter. It is not offered for
+  connection: `listAvailableProviders` filters the cohort by
+  `connectors.has(provider)`. Its marketing page renders `adapterPresent:
+  false` as unavailable, which is a designed behaviour with seven tests. Removing
+  it deletes the only instance of that behaviour and makes the product less
+  honest, not more.
+- **Two of the four segmented controls are tabs, not radiogroups.** Connections
+  and the growth plan render real tab panels and own an `aria-controls`
+  relationship. They keep `Tabs` and share only the thumb.
+- **The calendar chip link was described backwards.** The chip linked to the
+  post correctly; the dead `#receipt` anchor was in the calendar table and the
+  entry sheet.
+
+## Three silent data-loss bugs that were already shipping
+
+Found while fixing the variant persistence the plan described. All three are
+fixed, but they are recorded because each one destroyed a person's work with no
+error anywhere, and because the shape of the mistake will recur.
+
+1. **Reopening a draft dropped most of the master, not just the variants.**
+   `api.content.get` returns a narrowed list view, and the composer cast it to
+   `MasterDraft`. Links, thread items, the schedule, disclosure flags and the
+   campaign id were all absent, and the next autosave wrote that emptiness back
+   over the stored draft. A cast at a boundary produced silent data loss,
+   exactly as AGENTS.md's parse-do-not-cast rule predicts.
+2. **Selecting a channel was only saved if a keystroke happened to follow it.**
+   `target/add` never bumped the revision the autosave watches, so a person who
+   picked their accounts and walked away had picked nothing.
+3. **Any save carrying a destination was rejected.** The composer built a
+   destination id as `dest_${externalId}`, but the column is a foreign key to
+   `provider_destinations.id`. The search now carries the stored row id, and a
+   destination with no row stays local rather than inventing one.
+
+## Three constraints the realtime design got wrong
+
+Recorded because each would be rediscovered the hard way by anyone extending
+the event stream.
+
+1. **`EventSource` cannot be used.** It cannot set a request header, and every
+   route pins its tenant with `x-relay-workspace-id`. Anyone in two workspaces
+   would have received a 404 for the workspace. The web client reads the
+   response body with `fetch` instead, which also sends `Last-Event-ID` on
+   every reconnect rather than only when the browser chooses to.
+2. **Express `compression()` silently swallows a stream.** It is mounted
+   globally. The events response sets `cache-control: no-cache, no-transform`,
+   and `no-transform` is the directive compression honours. Without it frames
+   sit in the compressor until its window fills, which for a few hundred bytes
+   of JSON never happens.
+3. **MCP tools do not call HTTP.** They go through `RelayServicePort` against
+   the application services. Events live in Redis and are not part of
+   `Services`, so the composition root supplies a reader on its own connection
+   and the sandbox supplies none.
+
+Also fixed along the way: the CLI was sending `x-postarray-workspace-id`, a
+header no route reads. Any credential bound to more than one workspace could
+never pin one, and every such call returned a missing workspace.
+
+## What the analytics work could not honestly build
+
+The overview screen was specified with columns the API does not serve. Recorded
+so the gap is a decision rather than an omission somebody quietly fills in.
+
+- **No followers, reach or engagement rate.** The plan asks for a per-channel
+  table carrying those three, from a `channels` field on the overview response.
+  That field does not exist and neither do the numbers. An engagement rate
+  computed here would be a figure the screen invented, so the table shows posts
+  measured, the ranked metric where it is legitimately addable, the unavailable
+  count and freshness. The columns follow when the backend ships the field.
+- **No 28-day preset.** `AnalyticsRange['preset']` accepts `7d`, `30d`, `90d`
+  and `custom`, and the server echoes the same enum, so the 28 the plan asked
+  for would fail the client's own response parse. Shipped as 7, 30, 90, custom.
+- **`ExperimentView` declared five fields the API has never returned.** The
+  experiments screen now says per-variant readings are not reported, rather
+  than rendering an empty list that reads as "no variants".
+- **The custom range uses two native date inputs** behind a `TODO(web)`,
+  because the `DateTimeField` primitive in FE section B9 is not built yet.
+
+## Signed-in editorial ledger pass (2026-09-05)
+
+Home and the shared application shell now carry the same editorial system as the public product. Home
+shows the three highest-priority decisions, turns the next 24 hours into a responsive timeline, limits
+recent receipts to three concise evidence rows, and shows only connections that need attention. Shared
+page headers, navigation scale and app gutters now apply the same hierarchy across signed-in routes.
+The pass also fixed duplicate analytics error detail, added a real demo analytics response and set the
+locale layout metadata base from the canonical site origin. The free signup and optional paid-plan trial
+remain separate, truthful states.
+
+## Known issues, in priority order
+
+1. **The character counter excludes signature text that will publish.**
+   `validate-draft.ts` and `summarizeTargets` count `values.body` alone, while
+   the preview correctly renders body plus signature. Nobody can hit this today
+   because the composer gateway serves an empty signature list, so it is latent.
+   It becomes a real "we said you were within the limit and the platform
+   truncated you" bug the moment signatures ship. Fix the counter and the
+   preview together; `previews/build-preview-model.test.ts` pins the current
+   agreement deliberately.
+2. **No preview collapse thresholds are sourced.** Every `collapse` rule in
+   `previews/presentation-rules.ts` is null. Several platforms truncate long
+   captions in their own clients but none publishes the threshold in developer
+   documentation. `collapseText` and the "See more" control are built and
+   tested; one sourced number turns each on. Do not guess one.
+3. **Video posters do not exist.** `GET /v1/media/{id}/read-urls` always returns
+   `poster: null` because the derivative pipeline generates no video stills. The
+   preview renders an honest placeholder and will start working with no client
+   change once the pipeline produces them.
+4. **Signatures have no read endpoint.** The posting-sets screen passes an empty
+   list with a `TODO(owner)`; `SetForm` renders signatures and nothing serves
+   them.
+5. ~~**Two tests are flaky under parallel load**~~ Made deterministic: the tier
+   grid mocks `useMotionOk` so the count-up lands in one commit, and the
+   locale sweep warms every catalog in `beforeAll`. Previously flaky:
+   `features/marketing/components/editorial/tier-grid.test.tsx` and
+   `features/marketing/locale-metadata-sweep.test.ts`. Both pass alone and at a
+   raised timeout. A failure in either is worth re-running before investigating.
+6. **`packages/runtime/src/resend-mailer.test.ts`** times out at five seconds
+   under load for the same reason.
+
+## Traps that cost time in this session
+
+- **Adding one English key fails 26 i18n tests.** Every new key is a missing
+  key in all 25 locale catalogs until it is registered in
+  `BETA_ENGLISH_FALLBACK_KEYS` in `packages/i18n/src/messages/beta-fallbacks.ts`.
+  Namespaces listed in `LOCALE_FILLED_PREFIXES`, including `queue.` and `set.`,
+  cannot be registered at all; new copy there goes under a `web.` prefix, which
+  is what `web.receipt.*` already does.
+- **RLS claims are validated as real identifiers.** A fixture workspace id of
+  `ws_1` is rejected once a code path opens a workspace context. Use
+  `newIdFor('workspace')`.
+- **A Prisma double needs `$transaction` and `$executeRaw`** as soon as the code
+  under test opens a workspace context, and it must hand back the finished
+  double rather than the base one, or a model added by an override is invisible
+  inside the transaction body.
+- **Never put a Next navigation hook in `components/link.tsx`.** It is rendered
+  by many tests that mount without an App Router, and doing so breaks them in
+  bulk with failures that look unrelated.
+
+## What is not built
+
+Phases 2 and 3 of the master plan are only partly started. Notably absent:
+notifications (model, writer, preferences, emails), client reports, the setup
+guide and coachmarks, contextual help, the service worker, error reporting,
+hydration boundaries, Google sign-in, and the recurring and evergreen work.
+Section 3.6 of the plan remains explicitly optional.
+
+## Posting, AI and findability programme (2026-09-24)
+
+Audit of the plan "finish in-flight work, make posting work end to end, then
+make it fast, smart and findable" against commits `f422f4e..4245356` and the
+code at that point. Evidence is the file that proves each line.
+
+### Shipped
+
+- **Phase 0.** In-flight work landed as six commits (`c106d6a` to `ef7eb7b`);
+  cursor rAF loop starts on `pointermove`; `output/` is ignored.
+- **1.1 Commit preview.** `previewCommit` in `services/publishing.ts`, API route,
+  MCP read tool (`e5be2b7`), CLI preview (`fc5718e`); scheduling accepts
+  `confirmation`; the web sends acknowledged escalations.
+- **1.2 Composite save.** `saveComposite` with a row lock and `content_conflict`
+  (`internal/content-store.ts`, lock test).
+- **1.3 Retry and tracking.** `retryTarget` implemented; `jobs[]` returned;
+  `GET /v1/content/:id/publication` read model.
+- **1.4 Lifecycle.** `partially_published` state in the schema and
+  `internal/content-lifecycle.test.ts`; replay suite in
+  `apps/worker/src/testing/replay.test.ts`.
+- **1.5 (part).** Schedule `connectionIds` filter (`contracts/commit-preview.ts`),
+  capabilities via `Promise.allSettled`, abort listeners removed, OAuth
+  provider list from `PROVIDER_IDS`, scan state in the media strip.
+- **1.6 Golden e2e.** `apps/web/playwright.golden.config.ts`, run in CI.
+- **Phase 3.** `deepseek-flash` default with an ADR note in doc 07; cache-hit
+  token parsing; Redis-backed counters; request timeout; `ANTHROPIC_*`
+  placeholders; image content parts for DeepSeek and Anthropic;
+  `ai_image_analysis_enabled` (migration 0080) and `media_analyses` with an RLS
+  test; `ai_vision_input_tokens` meter; `media-understanding` prompt; crop,
+  small-text, face and logo checks in code (`media-analysis-checks.ts`); AI-use
+  copy separates analysis from generation; composer Suggest menu, Review
+  (claim, accessibility, duplicate) and best time from the account's own data.
+- **Phase 4.** `InsightsModule` registered; stored insights and per-post
+  feedback; weekly digest activities, `DigestCard` on home and an email
+  preference; experiments service (`insight-experiments.ts`); What works.
+- **Phase 5 (part).** `getSession` in `cache()`; `HydrationBoundary` on home;
+  `loading.tsx` for app, home and calendar; no GSAP in the signed-in routes;
+  `hero-demo*` removed; locale cookie written only on change; per-route catalog
+  slices (`2905d64`).
+- **Phase 6.** Clustered sitemaps, `llms-full.txt`, AI crawler groups in
+  robots, home journey `forceMount`, `WebSite` and FAQ JSON-LD, web vitals.
+- **Phase 7.** Bundle analyzer, per-route budgets, Lighthouse CI and the golden
+  job in `.github/workflows/ci.yml`.
+
+### Partial or not done
+
+- **H8.** `compose/page.tsx` still passes `approvalRequired={false}` on one
+  branch; confirm the server-side policy is the only source before closing.
+- **M1.** No `useInfiniteQuery` or cursor loop found for calendar and media.
+- **Phase 5.3.** Calendar has no `placeholderData: keepPreviousData` or
+  neighbour prefetch; hydration only on home, not calendar or analytics.
+- **Phase 5.2.** `ApiProvider` and `Toaster` still mount in the root
+  `components/providers.tsx`, so marketing pages still load React Query.
+- **Phase 2.** No drop-anywhere upload in the app shell and no "Continue
+  drafting" list on home were found. The seven states and the five-interaction
+  target have not been measured in a browser pass.
+- **Phase 6.3.** Dedicated surface pages (YouTube thumbnail, Instagram reel
+  cover, TikTok video size) exist only as data in `media-dimensions.ts`.
+- **Analytics observations** are filled client-side by `useAnalyticsOverview`;
+  the mapper still returns `observations: []` by design.
+- **Verification.** Live `deepseek-flash` text and image calls, Neon schema
+  checks after migration 0080, Lighthouse before and after, and the Chrome
+  browser pass are not recorded here.
+- **Disk.** The volume is 98% full with 11 GB free, below the 15 GB the plan
+  set; a production build may hit ENOSPC again.
+
+## Verification: browser pass (2026-09-24)
+
+Dev server in demo mode (`pnpm dev:e2e`, port 3417,
+`NEXT_PUBLIC_SITE_ORIGIN=https://postarray.com`), Chrome DevTools MCP.
+
+**Compose flow.** `/compose` opens with two targets. Attach image (Upload
+media, pick a library file, Choose files), preview, confirm, Publish now: 5
+interactions from a loaded composer, inside the five-interaction target. In
+demo mode the library picker replaces the OS file chooser, so a real upload
+was not exercised. `/home`, `/calendar` and a receipt at
+`/posts/content_demo0000000000001` render. There is no `/posts` index route;
+it returns 404 and nothing links to it.
+
+**Layout.** At 390px in dark: `/home`, `/calendar`, `/compose` and the receipt
+have no horizontal page scroll (`scrollWidth` 390). System dark resolves to
+the dark theme once no stored `relay.theme` exists; a stored `light` wins, as
+designed.
+
+**Lighthouse (mobile, dev build, performance excluded by the tool).**
+
+| Page | A11y | Best practices | SEO | Agentic |
+| --- | --- | --- | --- | --- |
+| `/` | 100 | 100 | 100 | 100 |
+| `/pricing` | 100 | 100 | 100 | 100 |
+| `/specs/x/character-limit` | 100 | 100 | 100 | 100 |
+| `/home` | 100 | 100 | 63 | 100 |
+| `/compose` | 98 | 100 | 63 | 100 |
+
+SEO 63 on app pages is `is-crawlable` (noindex), which is intended. The first
+`/` run scored Agentic 67 because `/llms.txt` timed out while compiling; a warm
+rerun passed.
+
+**Crawl files.** `/sitemap.xml` is an index of `pages.xml` and `specs.xml` on
+`https://postarray.com`. `/llms.txt` (12 KB) and `/llms-full.txt` (103 KB)
+serve with an H1. JSON-LD parses on `/` (SoftwareApplication, WebSite,
+FAQPage, Organization) and on the specs page (WebPage+Dataset, FAQPage,
+BreadcrumbList, Organization); canonicals point at `https://postarray.com`.
+
+**Fixed in this pass.**
+
+- `robots.txt` was 400 KB (15,444 Disallow lines), because each of eight AI
+  crawler groups repeated the full list; Google stops reading at 500 KiB. Now
+  one group names every agent: 44 KB, same rules.
+- The master draft's media header said "This target uses its own media".
+- Workspace switcher and account menu failed WCAG 2.5.3 label-in-name.
+
+**Still open.**
+
+- After Publish now the dialog closes and the composer shows "Saved" with no
+  outcome or link to the receipt, in demo mode at least.
+- The confirm sheet shows the raw privacy value (`public`), and the native
+  settings select lists raw values too; both need catalog labels.
+- `/compose` heading order: the Media `h3` has no `h2` above it in the master
+  panel.
+- ~~The confirm dialog title reads "Confirm before scheduling" for Publish now.~~
+  Fixed in the release readiness pass below.
+- The composer preview column shows validation and cost, not a platform
+  preview.
+
+## Release readiness (2026-09-24)
+
+Final QA pass on `development`. Commits `6fdd7a0` to `4f171e6`, then the
+integration pass `1fd86ab` to `2ee7e39` (re-verified below).
+
+### Passing checks
+
+| Check | Result |
+| --- | --- |
+| `pnpm verify` (typecheck, lint, test, 73 turbo tasks) | Pass. Web 1,550 tests, application 517, design-system 575, billing 301, i18n 270, api 242, worker 211 |
+| Production web build, `NEXT_PUBLIC_SITE_ORIGIN=https://postarray.com` | Pass |
+| Bundle budgets (`pnpm --filter @relay/web budgets`) | Pass on all seven routes. Tightest is `/compose` at 674.3 of 700 KiB |
+| Full web e2e (`pnpm --filter @relay/web test:e2e`, demo mode) | 56 of 56 pass (5.9 min). The scheduler spec could click before hydration under full-suite load; it now retries the move until observed |
+| Browser walk, Chrome DevTools MCP, demo mode | Home, compose to confirm, calendar, library, connections, analytics, settings, billing, marketing home, pricing, `/specs/x/character-limit`, at 1440px and 390px, light and dark. No horizontal page scroll at 390px after the fixes below. No em dashes in rendered copy |
+
+### Fixed in this pass (each with a regression test)
+
+- **Settings overflowed every phone.** Below 1024px the settings grid had an
+  implicit `auto` column that sized itself to the nav strip, so `/settings/*`
+  rendered about 1,080px wide and was clipped at 390px. Pinned to
+  `minmax(0,1fr)`.
+- **`Notice` crushed its title at 390px.** The theme's `sm` breakpoint is
+  390px, not Tailwind's 640px, so the `sm:flex-row` layout put the actions
+  beside a one-word-wide title on a phone (visible on the calendar attention
+  bar). Actions now take their own line until `md`.
+- **Library body had no inline gutter**; panels sat flush against the frame
+  while the header above was indented.
+- **Analytics hydration mismatch.** The first-load count-up flag was written
+  to a ref during render, so the server and client disagreed about
+  `CountUp` versus plain text. Now written in an effect (`use-first-load-flag.ts`).
+- **Fourteen signed-in routes had no page title** (WCAG 2.4.2): analytics,
+  automation and every settings page read only "Post Array" in the tab.
+- **Expiring connections said their posts were already on hold** and then
+  repeated "Nothing is lost". `expiring_soon` now has its own sentence with
+  the expiry date.
+- **Publish now was titled "Confirm before scheduling".**
+- **Billing prelaunch copy stated a stale "$29 a month or $300 a year".**
+  The tiers are $25, $50 and $100; prose no longer states amounts.
+- **The composer Suggest trigger stacked its icons above the label**, because
+  `Button` wraps children in a truncating span and an SVG is a block. Icons
+  now go through `iconStart`/`iconEnd`, and a source scan fails if one is
+  passed as a child again.
+
+### Known limitations at release
+
+- Everything under "Known issues" and "Still open" above that is not struck
+  through, notably: the signature counter mismatch (latent), no sourced
+  collapse thresholds, no video posters.
+- ~~Raw privacy values, no demo receipt link, preview column not a platform
+  preview.~~ Fixed in the integration pass: audience options carry labels
+  (`privacy-label.ts`), demo Publish now links a sample receipt, and the
+  preview column renders the master post for a picked target
+  (`master-preview.tsx`).
+- ~~Upload limits read "21 MB" and "524.3 MB".~~ Fixed: limits go through
+  `formatByteLimit` and read as whole sizes.
+- Security fixes in the integration pass: a media analysis can only reference
+  an asset in its own workspace (composite FK, migration `0082`), and moving a
+  connection between projects requires write access to the source project.
+- ~~On connections, more than one vermilion action on screen.~~ Fixed: row
+  Reconnect/Resume and the empty-state action are secondary; the header's
+  "Connect an account" is the only primary. Guarded by
+  `features/connections/one-primary-action.test.ts`.
+- ~~There is no `/approvals` index.~~ Fixed: `/approvals` lists pending
+  requests from `GET /approvals/pending` with loading, empty, error, partial,
+  offline, permission-denied and rate-limited states. Linked from the calendar
+  nav sub items (so the command palette too) and from Home's "Needs you". The
+  API serves pending requests only, so decided ones stay on each post and the
+  page says so.
+- Dev-server only: `next dev` restarts itself under memory pressure after a
+  long browser session. Not a production concern.
+- The "What is not built" list above still applies.
+
+### Human-only steps before launch
+
+1. **Provider app approvals.** Meta (Facebook and Instagram) app review and
+   business verification, LinkedIn Community Management API access, TikTok
+   Content Posting API audit (unaudited apps post privately), YouTube Data
+   API quota extension and OAuth verification, X API tier, Google Business
+   Profile API access, Pinterest standard access. Until each is granted its
+   connector stays below "supported" per `docs/connectors/definition-of-done.md`.
+2. **CI secrets for the golden path** (`.github/workflows/ci.yml`):
+   `NEON_API_KEY`, `GOLDEN_NEON_AUTH_BASE_URL`,
+   `GOLDEN_NEON_AUTH_COOKIE_SECRET`, `GOLDEN_NEON_AUTH_JWKS_URL`,
+   `GOLDEN_E2E_EMAIL` and `GOLDEN_E2E_PASSWORD` (a dedicated test account),
+   set in the repository by an owner.
+3. **Neon MCP credentials** for agents and operators that inspect or branch
+   the database: a Neon API key scoped to the project, configured per
+   machine, never committed.
+4. **Production environment.** Fill every variable in `.env.example` for
+   web, api, worker, mcp and links (database URL, Neon Auth, Temporal,
+   object storage and malware scanning, Resend, Polar, provider client IDs
+   and secrets, signing keys), set `NEXT_PUBLIC_SITE_ORIGIN=https://postarray.com`
+   and `NEXT_PUBLIC_POSTARRAY_DEMO_MODE=false`, run migrations (including
+   `0082_media_analyses_same_workspace_asset.sql`, which fails if any existing
+   analysis points at another workspace's asset, so check first) and RLS
+   policies, and point DNS for postarray.com and the short-link domain.
+5. **Commercial launch gates.** Checkout stays closed until Polar products,
+   tax settings and legal pages are reviewed and billing is switched on.

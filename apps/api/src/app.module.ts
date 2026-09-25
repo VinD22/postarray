@@ -25,6 +25,7 @@ import { AgentConfirmationsModule } from './modules/agent-confirmations/agent-co
 import { ApiKeysModule } from './modules/api-keys/api-keys.module';
 import { ApprovalsModule } from './modules/approvals/approvals.module';
 import { AuditModule } from './modules/audit/audit.module';
+import { EventsModule } from './modules/events/events.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AutomationRulesModule } from './modules/automation-rules/automation-rules.module';
 import { BillingModule } from './modules/billing/billing.module';
@@ -36,8 +37,11 @@ import { DataModule } from './modules/data/data.module';
 import { DeveloperAppsModule } from './modules/developer-apps/developer-apps.module';
 import { ServiceAccountsModule } from './modules/service-accounts/service-accounts.module';
 import { AssistantModule } from './modules/assistant/assistant.module';
+import { SuggestionsModule } from './modules/suggestions/suggestions.module';
+import { MediaAnalysisModule } from './modules/media-analysis/media-analysis.module';
 import { GrowthModule } from './modules/growth/growth.module';
 import { HealthModule } from './modules/health/health.module';
+import { InsightsModule } from './modules/insights/insights.module';
 import { MediaModule } from './modules/media/media.module';
 import { PublishingModule } from './modules/publishing/publishing.module';
 import { ImportModule } from './modules/import/import.module';
@@ -97,6 +101,7 @@ export class AppModule implements NestModule {
         ApprovalsModule,
         AgentConfirmationsModule,
         ActionCenterModule,
+        EventsModule,
         SchedulingModule,
         ImportModule,
         QueueRulesModule,
@@ -104,11 +109,14 @@ export class AppModule implements NestModule {
         PublishingModule,
         MediaModule,
         AnalyticsModule,
+        InsightsModule,
         ShortLinksModule,
         AutomationRulesModule,
         RssModule,
         GrowthModule,
         AssistantModule,
+        SuggestionsModule,
+        MediaAnalysisModule,
         WebhooksModule,
         BillingModule,
         ApiKeysModule,

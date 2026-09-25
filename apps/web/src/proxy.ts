@@ -35,9 +35,7 @@ export function proxy(request: NextRequest): NextResponse {
   // Retired locales remain in the catalog registry for compatibility, but
   // must not leave crawlable duplicate URLs behind. Preserve the route and
   // query string while sending old navigational URLs to English.
-  if (
-    RETIRED_LOCALE_CODES.some((code) => code.toLowerCase() === firstSegment.toLowerCase())
-  ) {
+  if (RETIRED_LOCALE_CODES.some((code) => code.toLowerCase() === firstSegment.toLowerCase())) {
     const redirectUrl = request.nextUrl.clone();
     const remainder = segments.slice(2).join('/');
     redirectUrl.pathname = remainder.length === 0 ? '/' : `/${remainder}`;
@@ -46,6 +44,11 @@ export function proxy(request: NextRequest): NextResponse {
 
   if (isWebLocale(firstSegment)) {
     const response = withLocaleRewrite(request, firstSegment, pathname);
+    // Only write the cookie when it changes. A Set-Cookie on every response
+    // makes each localized page uncacheable at the CDN.
+    if (request.cookies.get(LOCALE_COOKIE)?.value === firstSegment) {
+      return response;
+    }
     response.cookies.set(LOCALE_COOKIE, firstSegment, {
       path: '/',
       sameSite: 'lax',

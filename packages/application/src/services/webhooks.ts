@@ -1,5 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 
+import type { Prisma } from '@relay/database';
+
 import {
   WEBHOOK_SCHEMA_VERSION,
   API_VERSION,
@@ -10,7 +12,13 @@ import {
   type WebhookEventName,
 } from '@relay/contracts';
 
-import type { ActorContext, PageQuery, ServiceDeps, WebhookService } from '../types';
+import type {
+  ActorContext,
+  PageQuery,
+  ServiceDeps,
+  WebhookService,
+  WorkflowActorContext,
+} from '../types';
 import type { WebhookDeliveryView, WebhookEndpointView } from '../views';
 
 import { recordAudit } from '../internal/audit';
@@ -122,6 +130,29 @@ function toDeliveryView(row: DeliveryRow): WebhookDeliveryView {
     nextAttemptAt: row.nextAttemptAt?.toISOString() ?? null,
     deliveredAt: row.deliveredAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
+  };
+}
+
+/**
+ * How many times the delivery workflow tries before giving up. Mirrors
+ * DEFAULT_MAX_ATTEMPTS in the workflow body; stated here because the caller
+ * has to put a number in the workflow input.
+ */
+const WEBHOOK_DELIVERY_MAX_ATTEMPTS = 8;
+
+/**
+ * Delivery runs as the system: it is the product honouring a subscription the
+ * workspace already consented to, not an action a person is taking now.
+ */
+function webhookWorkflowContext(workspaceId: string, correlationId: string): WorkflowActorContext {
+  return {
+    workspaceId,
+    correlationId,
+    actorId: 'webhook-dispatcher',
+    actorType: 'system',
+    surface: 'automation_rule',
+    approvalLevel: 'level_3_confirm',
+    locale: 'en',
   };
 }
 
@@ -371,6 +402,7 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
             eventType: 'connection.connected',
             state: 'pending',
             payloadHash: payloadHash(payload),
+            payload: payload as Prisma.InputJsonValue,
             nextAttemptAt: deps.clock.now(),
           },
           select: DELIVERY_SELECT,
@@ -428,6 +460,22 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
           targetId: deliveryId,
           after: { redelivered: true, attempt: updated.attemptCount },
         });
+        // Same reason as `emit`: marking a row pending is not sending it.
+        await deps.scheduler.scheduleWebhookDelivery?.({
+          workspaceId: actor.workspace.id,
+          deliveryId,
+          workflowInput: {
+            ctx: webhookWorkflowContext(
+              actor.workspace.id,
+              ctx.correlationId ?? existing.eventId,
+            ),
+            deliveryId,
+            endpointId: existing.webhookEndpointId,
+            eventName: existing.eventType as WebhookEventName,
+            isRedelivery: true,
+            maxAttempts: WEBHOOK_DELIVERY_MAX_ATTEMPTS,
+          },
+        });
         return toDeliveryView(updated);
       });
     },
@@ -459,6 +507,14 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
         data: payload,
       });
 
+      const body = {
+        schemaVersion: WEBHOOK_SCHEMA_VERSION,
+        apiVersion: API_VERSION,
+        type: event,
+        data: payload,
+        ...(options.isTest === true ? { isTest: true } : {}),
+      };
+
       const created: WebhookDeliveryView[] = [];
       for (const endpoint of endpoints) {
         // An empty connection scope means every connection in the workspace.
@@ -470,19 +526,41 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
         ) {
           continue;
         }
-        const row = await deps.prisma.webhookDelivery.create({
-          data: {
+        // `(webhookEndpointId, eventId)` is unique, so a redispatched outbox
+        // row joins the delivery that already exists rather than sending the
+        // same event to the same endpoint twice.
+        const row = await deps.prisma.webhookDelivery.upsert({
+          where: { webhookEndpointId_eventId: { webhookEndpointId: endpoint.id, eventId } },
+          create: {
             workspaceId: options.workspaceId,
             webhookEndpointId: endpoint.id,
             eventId,
             eventType: event,
             state: 'pending',
             payloadHash: hash,
+            payload: body as Prisma.InputJsonValue,
             nextAttemptAt: deps.clock.now(),
           },
+          update: {},
           select: DELIVERY_SELECT,
         });
         created.push(toDeliveryView(row));
+
+        // Creating the row is not sending it. Without this the delivery sat
+        // pending forever, which is how outbound webhooks came to be recorded
+        // and never delivered.
+        await deps.scheduler.scheduleWebhookDelivery?.({
+          workspaceId: options.workspaceId,
+          deliveryId: row.id,
+          workflowInput: {
+            ctx: webhookWorkflowContext(options.workspaceId, options.correlationId ?? eventId),
+            deliveryId: row.id,
+            endpointId: endpoint.id,
+            eventName: event,
+            isRedelivery: false,
+            maxAttempts: WEBHOOK_DELIVERY_MAX_ATTEMPTS,
+          },
+        });
       }
       return created;
     },

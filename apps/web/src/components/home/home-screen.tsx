@@ -1,15 +1,15 @@
 'use client';
 
-import { Link } from '@/components/link';
 import { useEffect, useRef } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { EmptyState, PageHeader } from '@relay/design-system/patterns';
-import { Badge, Button, Separator } from '@relay/design-system/primitives';
+import { ArrowUpRight, CalendarDays, Plug } from 'lucide-react';
+import { Link } from '@/components/link';
+import { Separator } from '@relay/design-system/primitives';
 
 import { ApiError } from '@/lib/api';
-import { useActionCenter, useCalendar } from '@/lib/api/hooks';
-import { useSession } from '@/lib/auth/session-context';
+import { useActionCenter } from '@/lib/api/hooks';
 import { useTranslations } from '@/lib/i18n';
 import { EmptyScene } from '@/components/empty';
 import { StaggerList } from '@/components/motion';
@@ -17,13 +17,13 @@ import { ActionCenterList } from '@/components/shell/action-center-list';
 
 import { ConnectionHealth } from './connection-health';
 import { DigestCard } from './digest-card';
+import { DraftsList } from './drafts-list';
 import { RecentReceipts } from './recent-receipts';
 import { HomeSection } from './section';
 import { StatTiles } from './stat-tiles';
 import { TrialBanner } from './trial-banner';
 import { UpcomingQueue } from './upcoming-queue';
-
-const DAY_MS = 86_400_000;
+import { useHomeCalendar } from './use-home-calendar';
 
 /**
  * Home.
@@ -46,26 +46,26 @@ const DAY_MS = 86_400_000;
  */
 export function HomeScreen() {
   const t = useTranslations();
-  const { session, project, canPublish } = useSession();
   const { announce } = useAnnouncer();
 
   const actionQuery = useActionCenter();
   const actionItems = actionQuery.data?.data ?? [];
   const needsYouEmpty = !actionQuery.isPending && !actionQuery.error && actionItems.length === 0;
 
-  const now = new Date();
-  const upcomingQuery = useCalendar({
-    from: now.toISOString(),
-    to: new Date(now.getTime() + DAY_MS).toISOString(),
-    ...(project === null ? {} : { projectId: project.id }),
-  });
-  const upcomingCount = upcomingQuery.data?.data.length ?? 0;
+  const { query: upcomingQuery, day: upcomingDay } = useHomeCalendar();
+  const upcomingCount = upcomingDay.length;
 
   // Announce the shape of the day once, when both reads have settled, so a
   // screen reader user does not have to walk the page to find out.
   const announced = useRef(false);
   useEffect(() => {
-    if (announced.current || actionQuery.isPending || upcomingQuery.isPending) {
+    if (
+      announced.current ||
+      actionQuery.isPending ||
+      upcomingQuery.isPending ||
+      actionQuery.isError ||
+      upcomingQuery.isError
+    ) {
       return;
     }
     announced.current = true;
@@ -76,92 +76,112 @@ export function HomeScreen() {
   }, [
     actionItems.length,
     actionQuery.isPending,
+    actionQuery.isError,
     announce,
     t,
     upcomingCount,
     upcomingQuery.isPending,
+    upcomingQuery.isError,
   ]);
 
   return (
     <>
       <PageHeader
-        title={t('home.title')}
-        description={t('home.subtitle')}
-        actions={
-          canPublish ? (
-            <Button variant="primary" asChild>
-              <Link href="/compose">{t('nav.compose')}</Link>
-            </Button>
-          ) : null
-        }
+        title={t('scheduler.homeTitle')}
+        titleStyle="strong"
+        description={t('scheduler.homeDescription')}
+        className="px-[var(--layout-gutter)] [&_h1]:text-[clamp(2rem,3vw,3rem)] [&_h1]:leading-tight"
       />
 
-      <StaggerList className="relay-page flex flex-col gap-8 py-5 md:py-6" stagger={0.06} y={16}>
+      <StaggerList className="relay-page flex flex-col gap-10 py-8 md:py-10" stagger={0.06} y={16}>
         <TrialBanner />
 
+        <div className="grid gap-4 md:grid-cols-2">
+          {[
+            { href: '/calendar', label: t('scheduler.plan'), Icon: CalendarDays },
+            { href: '/connections', label: t('scheduler.connect'), Icon: Plug },
+          ].map(({ href, label, Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="border-border-default bg-surface-raised text-text-primary hover:border-accent focus-visible:outline-border-focus flex items-center gap-5 rounded-xl border p-6 transition-colors focus-visible:outline-2 md:p-8"
+            >
+              <Icon aria-hidden="true" className="text-text-accent size-8 shrink-0" />
+              <span className="text-title-lg flex-1 font-semibold">{label}</span>
+              <ArrowUpRight aria-hidden="true" className="size-5" />
+            </Link>
+          ))}
+        </div>
         <StatTiles />
 
-        <HomeSection
-          id="home-needs-you"
-          emphasis
-          title={t('home.needsYou.title')}
-          meta={
-            actionItems.length > 0 ? (
-              <Badge tone="accent">
-                {t('actionCenter.itemCount', { count: actionItems.length })}
-              </Badge>
-            ) : undefined
-          }
-          link={
-            actionItems.length > 0
-              ? { href: '/action-center', label: t('home.needsYou.viewAll') }
-              : undefined
-          }
-        >
-          {needsYouEmpty ? (
-            // The drawn scene, not an icon in a dashed circle: an empty
-            // action center is the single most common thing a healthy
-            // workspace sees, so it is worth some character.
-            <EmptyState
-              compact
-              illustration={<EmptyScene scene="actionCenter" />}
-              title={t('actionCenter.empty')}
-              description={t('home.needsYou.emptyQuiet')}
-            />
-          ) : (
-            <div className={actionItems.length > 0 ? 'border-cta border-s-[3px] ps-4' : undefined}>
-              <ActionCenterList
-                items={actionItems}
-                loading={actionQuery.isPending}
-                error={ApiError.is(actionQuery.error) ? actionQuery.error : null}
-                onRetry={() => {
-                  void actionQuery.refetch();
-                }}
-                maxItems={5}
-                showSnooze={false}
-              />
-            </div>
-          )}
-        </HomeSection>
+        <div className="grid items-start gap-10 xl:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.5fr)] xl:gap-12">
+          <div className="flex min-w-0 flex-col gap-10">
+            <HomeSection
+              id="home-needs-you"
+              emphasis
+              title={t('home.needsYou.title')}
+              link={
+                actionItems.length > 0
+                  ? {
+                      href: '/action-center',
+                      label:
+                        actionItems.length > 3
+                          ? t('home.v2.needsYou.remaining', { count: actionItems.length - 3 })
+                          : t('home.needsYou.viewAll'),
+                    }
+                  : undefined
+              }
+            >
+              {needsYouEmpty ? (
+                <EmptyState
+                  compact
+                  illustration={<EmptyScene scene="actionCenter" />}
+                  title={t('actionCenter.empty')}
+                  description={t('home.needsYou.emptyQuiet')}
+                />
+              ) : (
+                <div className="border-cta border-s-[3px] ps-4 md:ps-6">
+                  <ActionCenterList
+                    items={actionItems}
+                    loading={actionQuery.isPending}
+                    error={ApiError.is(actionQuery.error) ? actionQuery.error : null}
+                    onRetry={() => {
+                      void actionQuery.refetch();
+                    }}
+                    maxItems={3}
+                    showSnooze={false}
+                    comfortable
+                  />
+                </div>
+              )}
+              <Link
+                href="/approvals"
+                className="text-body-sm text-text-accent focus-visible:outline-border-focus self-start underline-offset-4 hover:underline focus-visible:outline-2"
+              >
+                {t('web.approvals.index.homeLink')}
+              </Link>
+            </HomeSection>
 
-        <Separator />
+            <Separator />
 
-        <UpcomingQueue />
+            <DraftsList />
 
-        <Separator />
+            <Separator />
 
-        <DigestCard />
+            <UpcomingQueue />
+          </div>
 
-        <Separator />
-
-        <div className="grid gap-8 lg:grid-cols-2">
-          <RecentReceipts />
-          <ConnectionHealth />
+          <aside
+            aria-label={t('home.v2.activity.label')}
+            className="border-border-subtle flex min-w-0 flex-col gap-10 xl:border-s xl:ps-10"
+          >
+            <DigestCard />
+            <Separator />
+            <RecentReceipts />
+            <Separator />
+            <ConnectionHealth />
+          </aside>
         </div>
-
-        <p className="text-body-sm text-text-tertiary">
-          {t('shell.workspace.current', { name: session.workspace.name })}
-        </p>
       </StaggerList>
     </>
   );

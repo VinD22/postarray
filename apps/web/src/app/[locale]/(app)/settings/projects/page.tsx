@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
+import { getRequestIntl } from '@/lib/i18n/server';
 import type { ReactNode } from 'react';
 
 import { ProjectsScreen } from '@/features/settings/projects/projects-screen';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const intl = await getRequestIntl();
+  return { title: intl.t.format('settings.projects.title') };
+}
 
 /**
  * Server component. It renders the screen and nothing else: every string on

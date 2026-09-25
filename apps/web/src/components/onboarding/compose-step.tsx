@@ -107,16 +107,31 @@ export function ComposeStep() {
     setPending(true);
     setError(null);
     try {
+      // The body on screen is always the body that is scheduled. A retry
+      // after a failed attempt used to reuse the draft id and schedule the
+      // text from the first attempt, silently dropping every later edit.
       const draft =
         contentItemId === null
           ? await api.content.createDraft(
               { projectId: project.id, body },
               newIdempotencyKey('draft'),
             )
-          : { id: contentItemId };
+          : await api.content.updateMaster(contentItemId, { body });
       setContentItemId(draft.id);
 
       await api.content.setTargets(draft.id, { targets: [{ connectionId: connection.id }] });
+
+      // Validate this exact saved version before the first schedule attempt,
+      // not only after the debounced check has had a draft id to run against.
+      const checked = await api.validation.validate({ contentItemId: draft.id });
+      setValidation(checked);
+      if (checked !== null && checked.issues.some((issue) => issue.severity === 'error')) {
+        const message = t('onboarding.compose.fixIssues');
+        setError(message);
+        announce(message, 'assertive');
+        setPending(false);
+        return;
+      }
 
       // `datetime-local` yields a wall clock reading with no zone attached.
       // `new Date(...)` would resolve it in whatever zone the browser happens to

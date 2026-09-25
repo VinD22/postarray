@@ -8,7 +8,7 @@ import type {
 import { enqueueWorkflowOutbox } from '../internal/enqueue-outbox';
 import { toProviderId } from '../internal/mappers';
 import { runInWorkspace } from '../internal/runtime';
-import { localDateTimeIn, partsOf, resolveWallClock } from '../internal/zone-time';
+import { localDateIn, localDateTimeIn, partsOf, resolveWallClock } from '../internal/zone-time';
 
 /**
  * A repeating series, occurrence by occurrence.
@@ -100,7 +100,10 @@ export function createWorkerRepeatService(deps: ServiceDeps): WorkerRepeatServic
       if (input.count !== null && input.occurrenceIndex >= input.count) {
         return stop('repeat.series_reached_count');
       }
-      if (input.endDate !== null && instant.getTime() > new Date(input.endDate).getTime()) {
+      // The end date is a calendar date in the series' zone and is inclusive:
+      // "until 1 September" still posts on 1 September. Comparing against
+      // UTC midnight would silently drop the last occurrence.
+      if (input.endDate !== null && localDateIn(instant, input.ianaTimeZone) > input.endDate) {
         return stop('repeat.series_reached_end_date');
       }
 

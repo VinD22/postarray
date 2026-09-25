@@ -10,6 +10,7 @@ import type { ActorContext, PageQuery, ReceiptService, ServiceDeps } from '../ty
 import type { PublicationReceiptView, ReceiptSummaryView } from '../views';
 
 import { notFound } from '../internal/errors';
+import { readContentPublication } from './content-publication';
 import {
   fromStoredAccountType,
   fromStoredSurface,
@@ -428,6 +429,10 @@ export function createReceiptService(deps: ServiceDeps): ReceiptService {
         });
         return toPage(rows, args, (row) => row.id, toSummary);
       });
+    },
+
+    getContentPublication(ctx: ActorContext, contentItemId: string) {
+      return readContentPublication(deps, ctx, contentItemId);
     },
   };
 }

@@ -8,6 +8,10 @@
  */
 
 export { createServices } from './services/index';
+export {
+  createDomainEventService,
+  type DomainEventServiceDeps,
+} from './services/domain-events';
 export { oauthCompletionReady, socialOAuthCallbackUrl } from './services/connections';
 export {
   createOAuthGateway,
@@ -81,6 +85,7 @@ export type {
   MailMessage,
   MailerPort,
   MasterDraftPatch,
+  SaveCompositeInput,
   MoneyView,
   MediaDerivativeRequest,
   MediaDerivativeService,
@@ -105,6 +110,13 @@ export type {
   ReceiptService,
   RssService,
   SchedulerPort,
+  SchedulerKind,
+  ClaimedDomainEventRow,
+  DomainEventService,
+  MediaScanResult,
+  MediaScannerPort,
+  RealtimePublisherPort,
+  WebhookDeliveryWorkflowInput,
   SchedulingService,
   ServiceDeps,
   Services,
@@ -140,6 +152,7 @@ export type {
 
 export { pendingGrantEnvelopeFromRow, pendingGrantEnvelopeToRow } from './oauth-pending-envelope';
 
+export { uploadLimitForMimeType } from './services/media';
 export { normalizeAliasForLookup } from './services/identity';
 export { deriveOnboardingComplete, mergeStep } from './services/onboarding';
 export {
@@ -151,6 +164,10 @@ export {
   startRuleRunOutboxPayloadSchema,
   startBulkImportPayloadSchema,
   startMediaDerivativePayloadSchema,
+  DOMAIN_EVENT_OUTBOX_KINDS,
+  WORKFLOW_OUTBOX_KINDS,
+  isDomainEventOutboxKind,
+  isWorkflowOutboxKind,
   workflowOutboxPayloadSchemas,
   type CancelPublishOutboxPayload,
   type PausePublishOutboxPayload,
@@ -162,6 +179,7 @@ export {
   type StartMediaDerivativePayload,
   type WorkflowOutboxInput,
   type WorkflowOutboxKind,
+  type DomainEventOutboxKind,
 } from './outbox';
 
 export type {
@@ -216,6 +234,9 @@ export type {
   PublicationReceiptView,
   PublishAttemptView,
   PublishJobView,
+  PublishJobsAcceptedView,
+  ContentPublicationView,
+  ContentPublicationTargetView,
   ReceiptItemView,
   ReceiptSummaryView,
   RssFeedView,
@@ -277,3 +298,80 @@ export {
   type StoredMaster,
   type StoredVariantSettings,
 } from './internal/stored-content';
+
+// The composer's Suggest menu, Review button and posting time hint.
+export { SUGGEST_REASON_KEYS, createAiSuggestionService } from './services/ai-suggestions';
+export {
+  MEDIA_ANALYSIS_REASON_KEYS,
+  analysisOperations,
+  createMediaAnalysisService,
+} from './services/media-analysis';
+export { MEDIA_CHECK_MESSAGE_KEYS } from './services/media-analysis-checks';
+export {
+  MEDIA_ANALYSIS_BLOCK_REASONS,
+  MEDIA_UNDERSTANDING_PROMPT_VERSION,
+  aiSettingsUpdateSchema,
+  mediaAnalysisChecksRequestSchema,
+  mediaAnalysisRequestSchema,
+  mediaUnderstandingOutputSchema,
+} from './services/media-analysis-types';
+export type {
+  AiSettingsView,
+  MediaAnalysisOutcome,
+  MediaAnalysisView,
+  MediaCheckWarning,
+  MediaChecksView,
+} from './services/media-analysis-types';
+export type { AiSuggestionServiceOptions } from './services/ai-suggestions';
+// Stored insights: weekly digest, per-post "How it did", what works for you.
+export { createInsightService, createWorkerDigestService } from './services/insights';
+export { explainFailure } from './services/insight-failures';
+export {
+  digestSettingsUpdateSchema,
+  generateDigestRequestSchema,
+} from './services/insights-types';
+export type {
+  DigestRowView,
+  DigestSettingsView,
+  DigestView,
+  FailureExplanationView,
+  InsightService,
+  InsightView,
+  NextTestView,
+  OpenExperimentView,
+  PostChannelFeedbackView,
+  PostExperimentView,
+  PostFeedbackReadingView,
+  PostFeedbackView,
+  WhatWorksRowView,
+  WhatWorksView,
+  WorkerDigestService,
+} from './services/insights-types';
+export {
+  REVIEW_CHECKS,
+  SUGGESTION_KINDS,
+  SUGGESTION_TONES,
+  acceptSuggestionRequestSchema,
+  bestTimeRequestSchema,
+  reviewRequestSchema,
+  suggestionRequestSchema,
+} from './services/ai-suggestions-types';
+export type {
+  AcceptSuggestionRequest,
+  AcceptedSuggestionView,
+  BestTimeRequest,
+  BestTimeView,
+  MediaUnderstandingReader,
+  ReviewCheck,
+  ReviewCheckStatus,
+  ReviewCheckView,
+  ReviewFinding,
+  ReviewRequest,
+  ReviewView,
+  SuggestionKind,
+  SuggestionProposal,
+  SuggestionProvenance,
+  SuggestionRequest,
+  SuggestionTone,
+  SuggestionView,
+} from './services/ai-suggestions-types';

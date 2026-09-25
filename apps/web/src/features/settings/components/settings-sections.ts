@@ -71,6 +71,13 @@ export const SETTINGS_SECTIONS: readonly SettingsSectionDescriptor[] = [
     availability: 'available',
   },
   {
+    id: 'ai',
+    href: '/settings/ai',
+    titleKey: 'settings.ui.section.ai',
+    summaryKey: 'settings.ui.section.aiSummary',
+    availability: 'available',
+  },
+  {
     id: 'security',
     href: '/settings/security',
     titleKey: 'settings.ui.section.security',

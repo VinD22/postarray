@@ -67,6 +67,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'これに関するアカウントはありません{provider}ログインすると接続できるようになります。{reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'この {provider} ログインには接続できるアカウントがありません。',
+  'connection.oauth.claimFailed': 'これらのアカウントを接続できませんでした',
+  'connection.oauth.claimFailedAction':
+    'プラットフォーム側では何も変更されていません。もう一度お試しください。失敗が続く場合は接続をやり直してください。',
   'connection.oauth.canceled': '接続がキャンセルされました{provider}。何も変わりませんでした。',
   'connection.oauth.alreadyConnected': '{account}はすでにこのワークスペースに接続されています。',
   'connection.oauth.connectedToAnotherWorkspace':

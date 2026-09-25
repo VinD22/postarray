@@ -45,7 +45,11 @@ export function EditorialDisplay({
   reveal = false,
   className,
 }: EditorialDisplayProps): ReactNode {
-  const classes = cn('font-display text-balance', SIZE_CLASS[size], className);
+  const classes = cn(
+    'font-display text-balance tracking-[-0.025em] [font-variation-settings:"opsz"_72]',
+    SIZE_CLASS[size],
+    className,
+  );
 
   if (reveal) {
     return (

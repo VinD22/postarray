@@ -8,6 +8,7 @@ import {
 } from '@relay/contracts';
 import type {
   CapabilitySnapshot,
+  CommitPreview,
   GrowthPlan,
   OpportunityRecord,
   ValidationResult,
@@ -407,6 +408,39 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
         state.receipts.set(job.id, [makeReceipt(now)]);
         return job;
       },
+      async previewCommit(ctx, input): Promise<CommitPreview> {
+        assertWorkspace(ctx);
+        const item = state.contentItems.get(input.contentItemId);
+        if (item === undefined) {
+          throw notFound('CONTENT_ITEM_NOT_FOUND');
+        }
+        const filter = input.connectionIds === undefined ? null : new Set(input.connectionIds);
+        const targets = item.variants.filter(
+          (variant) => filter === null || filter.has(variant.connectionId),
+        );
+        const escalations =
+          input.kind === 'publish_now' && targets.length > 0
+            ? [
+                {
+                  code: 'immediate_publish',
+                  messageKey: 'agent_policy.immediate_publish',
+                  params: { targetCount: targets.length },
+                },
+              ]
+            : [];
+        return {
+          contentItemId: item.id,
+          kind: input.kind,
+          targetCount: targets.length,
+          versionChecksum: item.currentChecksum ?? '0'.repeat(64),
+          externalPublicationCount: targets.length,
+          blockers: [],
+          escalations,
+          validation: { issues: [] },
+          canCommit: targets.length > 0,
+          requiresConfirmation: escalations.length > 0,
+        };
+      },
       async getJob(ctx, jobId): Promise<PublishJobSummary> {
         assertWorkspace(ctx);
         const job = state.jobs.get(jobId);
@@ -589,6 +623,16 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
         // An empty catalog is the honest sandbox answer. Inventing a directory
         // URL here would teach an agent that this tool returns made-up links.
         return [];
+      },
+    },
+
+    events: {
+      // The sandbox publishes to no stream, so there is nothing to report and
+      // saying so is the honest answer. Inventing events here would teach an
+      // agent that this tool describes a real workspace.
+      async listRecent(ctx) {
+        assertWorkspace(ctx);
+        return { events: [], lastEventId: null };
       },
     },
 

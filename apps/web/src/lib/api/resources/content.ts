@@ -1,7 +1,11 @@
 /** Drafts, validation, approvals, scheduling, publishing, receipts and media. */
 
 import type {
+  CommitPreview,
+  CommitPreviewRequest,
+  DisclosureFlags,
   MasterDraft,
+  MentionRef,
   PublicationReceipt,
   ValidationResult,
   VariantOverrides,
@@ -12,6 +16,7 @@ import type {
   ContentItemView as ApplicationContentItemView,
   ContentVersionView as ApplicationContentVersionView,
   PostVariantView,
+  ContentPublicationView,
   PublishJobView,
   PublishConfirmationEvidence,
 } from '@relay/application';
@@ -19,7 +24,14 @@ import { ERROR_CODES } from '@relay/contracts';
 
 import { call } from '../call';
 import { ApiError } from '../error';
-import { demoApprovals, demoCalendar, demoReceipts, page } from '../fixtures';
+import {
+  demoApprovals,
+  demoCalendar,
+  demoPublicationReceipts,
+  demoPublishJobs,
+  demoReceipts,
+  page,
+} from '../fixtures';
 import type { ForwardAuth } from '../transport';
 import type {
   ApprovalRequestView,
@@ -59,6 +71,68 @@ const emptyItem: ContentItemView = {
   targets: [],
   reviewVariants: [],
 };
+
+/** A labelled demo is read-only. Surface that fact without leaking raw errors. */
+function demoWriteUnavailable(): never {
+  throw new ApiError({
+    code: 'PROVIDER_UNAVAILABLE',
+    status: 503,
+    messageCode: 'demo_unavailable',
+    retryable: false,
+    details: {},
+    correlationId: null,
+    retryAfterSeconds: null,
+  });
+}
+
+/**
+ * One target on `PUT /content/{id}/targets`.
+ *
+ * Everything past `connectionId` is per-target native state the server stores
+ * on the variant. It is optional on the wire and absent means "leave what is
+ * there", which is why the composer sends the full set for every target it
+ * writes rather than only the field that changed.
+ */
+export interface ContentTargetInput {
+  readonly connectionId: string;
+  readonly destinationId?: string | null;
+  readonly mentions?: readonly MentionRef[];
+  readonly privacyValue?: string | null;
+  readonly disclosure?: DisclosureFlags | null;
+}
+
+/** An empty draft in the application's own shape, for demo mode. */
+function demoCompositeItem(contentItemId: string): ApplicationContentItemView {
+  const now = new Date().toISOString();
+  return {
+    id: contentItemId,
+    workspaceId: emptyItem.workspaceId,
+    projectId: 'project_demo000000000000001',
+    campaignId: null,
+    title: null,
+    state: 'draft',
+    approvalPolicy: 'any_approver',
+    approvalState: 'not_required',
+    locale: 'en',
+    contentKind: 'text',
+    body: '',
+    mediaIds: [],
+    links: [],
+    signature: null,
+    threadItems: [],
+    schedule: null,
+    disclosure: { aiAssisted: false, commercialContent: false, brandedContent: false },
+    variants: [],
+    currentVersionId: null,
+    approvedVersionId: null,
+    currentChecksum: null,
+    reapprovalRequired: false,
+    createdVia: 'web',
+    createdByUserId: null,
+    createdAt: now,
+    updatedAt: now,
+  };
+}
 
 type MasterPatch = Pick<
   MasterDraft,
@@ -106,7 +180,9 @@ function toContentItem(item: ApplicationContentItemView): ContentItemView {
     reapprovalRequired: item.reapprovalRequired,
     currentVersionId: item.currentVersionId,
     createdSurface: item.createdVia,
-    createdByName: item.createdByUserId ?? '',
+    // Never a raw user id. The name is resolved by the publication read model;
+    // until then the screen shows its own unavailable label.
+    createdByName: '',
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
     scheduledAt: item.schedule?.instant ?? null,
@@ -135,6 +211,94 @@ function toContentItem(item: ApplicationContentItemView): ContentItemView {
   };
 }
 
+/** The content row that owns one of the labelled demo publication receipts. */
+function demoPublishedContentItem(contentItemId: string): ContentItemView | null {
+  const summary = demoReceipts.find((entry) => entry.contentItemId === contentItemId);
+  if (!summary) return null;
+
+  const receipt = demoPublicationReceipts.find((entry) => entry.id === summary.receiptId);
+  if (!receipt) return null;
+
+  return {
+    ...emptyItem,
+    id: contentItemId,
+    projectId: 'project_demo00000000000000001',
+    title: summary.title,
+    state: summary.state,
+    currentVersionId: receipt.contentVersionId,
+    createdAt: receipt.scheduledInstant,
+    updatedAt: receipt.createdAt,
+    scheduledAt: receipt.scheduledInstant,
+    scheduledTimeZone: receipt.ianaTimeZone,
+    targets: [
+      {
+        variantId: `variant_demo_receipt_${summary.receiptId}`,
+        connectionId: receipt.connectionId,
+        provider: receipt.provider,
+        accountLabel: summary.accountLabel,
+        inherits: true,
+        state: summary.state,
+        characterCount: 0,
+        characterLimit: null,
+        issueCount: summary.failedItemCount,
+        blockingIssueCount: summary.failedItemCount,
+      },
+    ],
+    reviewVariants: [
+      {
+        variantId: `variant_demo_receipt_${summary.receiptId}`,
+        provider: receipt.provider,
+        accountLabel: summary.accountLabel,
+        body: '',
+        locale: 'en',
+        contentKind: 'text',
+        mediaIds: [],
+        destinationLabel: null,
+        privacyValue: 'public',
+        scheduledAt: receipt.scheduledInstant,
+        scheduledTimeZone: receipt.ianaTimeZone,
+        estimatedCost: null,
+      },
+    ],
+  };
+}
+
+/** The content row behind a scheduled demo job that has no receipt yet. */
+function demoScheduledContentItem(contentItemId: string): ContentItemView | null {
+  const entry = demoCalendar.find((candidate) => candidate.contentItemId === contentItemId);
+  const job = demoPublishJobs.find((candidate) => candidate.contentItemId === contentItemId);
+  if (!entry || !job) return null;
+
+  return {
+    ...emptyItem,
+    id: contentItemId,
+    projectId: entry.projectId ?? 'project_demo00000000000000001',
+    title: entry.title,
+    state: entry.state,
+    approvalState: entry.approvalState,
+    currentVersionId: job.contentVersionId,
+    createdAt: job.createdAt,
+    updatedAt: job.updatedAt,
+    scheduledAt: entry.scheduledAt,
+    scheduledTimeZone: entry.timeZone,
+    targets: [
+      {
+        variantId: job.postVariantId ?? `pv_demo_calendar_${entry.publishJobId}`,
+        connectionId: job.connectionId,
+        provider: entry.provider,
+        accountLabel: entry.accountLabel,
+        inherits: true,
+        state: entry.state,
+        characterCount: 0,
+        characterLimit: null,
+        issueCount: 0,
+        blockingIssueCount: 0,
+      },
+    ],
+    reviewVariants: [],
+  };
+}
+
 function toCalendarEntry(entry: ApplicationCalendarEntry): CalendarEntryView {
   if (entry.jobId === null || entry.provider === null || entry.accountLabel === null) {
     throw new ApiError({
@@ -150,6 +314,8 @@ function toCalendarEntry(entry: ApplicationCalendarEntry): CalendarEntryView {
   return {
     publishJobId: entry.jobId,
     contentItemId: entry.contentItemId,
+    projectId: entry.projectId,
+    connectionId: entry.connectionId,
     title: entry.title ?? '',
     scheduledAt: entry.instant,
     timeZone: entry.ianaTimeZone,
@@ -180,54 +346,82 @@ export const contentApi = {
       toContentItem,
     ),
 
+  /**
+   * The whole draft as the application models it: master fields, every
+   * variant's overrides, and each target's destination, mentions, privacy and
+   * disclosure.
+   *
+   * `get` below deliberately narrows to what list and review screens need, and
+   * that narrowing is lossy: it drops overrides and per-target settings
+   * entirely. The composer has to reopen a draft exactly as it was saved, so it
+   * reads the unnarrowed view instead of reconstructing fields the mapper threw
+   * away.
+   */
+  getComposite: (
+    contentItemId: string,
+    forward?: ForwardAuth,
+  ): Promise<ApplicationContentItemView> =>
+    call<ApplicationContentItemView, ApplicationContentItemView>(
+      `/content/${contentItemId}`,
+      { ...forward },
+      () => demoCompositeItem(contentItemId),
+      (item) => item,
+    ),
+
   get: (contentItemId: string, forward?: ForwardAuth): Promise<ContentItemView> =>
     call<ApplicationContentItemView, ContentItemView>(
       `/content/${contentItemId}`,
       { ...forward },
-      () =>
-        contentItemId === 'content_demo0000000000003'
-          ? {
-              ...emptyItem,
-              id: contentItemId,
-              title: 'Case study, migrating a 40 account workspace',
-              body: 'Forty social accounts used to mean forty separate checks. We moved the workspace in four stages: connection inventory, policy mapping, approval rehearsal, then scheduled cutover. Nothing published until every owner signed off.',
-              state: 'approval_requested',
-              approvalState: 'requested',
-              currentVersionId: 'version_demo0000000000000001',
-              targets: [
-                {
-                  variantId: 'variant_demo0000000000000001',
-                  connectionId: 'conn_demo00000000000000002',
-                  provider: 'linkedin',
-                  accountLabel: 'Example Studio EU',
-                  inherits: true,
-                  state: 'approval_requested',
-                  characterCount: 238,
-                  characterLimit: 3000,
-                  issueCount: 0,
-                  blockingIssueCount: 0,
-                },
-              ],
-              reviewVariants: [
-                {
-                  variantId: 'variant_demo0000000000000001',
-                  provider: 'linkedin',
-                  accountLabel: 'Example Studio EU',
-                  body: 'Forty social accounts used to mean forty separate checks. We moved the workspace in four stages: connection inventory, policy mapping, approval rehearsal, then scheduled cutover. Nothing published until every owner signed off.',
-                  locale: 'en',
-                  contentKind: 'text',
-                  mediaIds: [],
-                  destinationLabel: null,
-                  privacyValue: 'public',
-                  scheduledAt:
-                    demoCalendar.find((entry) => entry.contentItemId === contentItemId)
-                      ?.scheduledAt ?? null,
-                  scheduledTimeZone: 'Europe/Berlin',
-                  estimatedCost: null,
-                },
-              ],
-            }
-          : { ...emptyItem, id: contentItemId },
+      () => {
+        const published = demoPublishedContentItem(contentItemId);
+        if (published) return published;
+
+        if (contentItemId === 'content_demo0000000000003') {
+          return {
+            ...emptyItem,
+            id: contentItemId,
+            title: 'Case study, migrating a 40 account workspace',
+            body: 'Forty social accounts used to mean forty separate checks. We moved the workspace in four stages: connection inventory, policy mapping, approval rehearsal, then scheduled cutover. Nothing published until every owner signed off.',
+            state: 'approval_requested',
+            approvalState: 'requested',
+            currentVersionId: 'version_demo0000000000000001',
+            targets: [
+              {
+                variantId: 'variant_demo0000000000000001',
+                connectionId: 'conn_demo00000000000000002',
+                provider: 'linkedin',
+                accountLabel: 'Example Studio EU',
+                inherits: true,
+                state: 'approval_requested',
+                characterCount: 238,
+                characterLimit: 3000,
+                issueCount: 0,
+                blockingIssueCount: 0,
+              },
+            ],
+            reviewVariants: [
+              {
+                variantId: 'variant_demo0000000000000001',
+                provider: 'linkedin',
+                accountLabel: 'Example Studio EU',
+                body: 'Forty social accounts used to mean forty separate checks. We moved the workspace in four stages: connection inventory, policy mapping, approval rehearsal, then scheduled cutover. Nothing published until every owner signed off.',
+                locale: 'en',
+                contentKind: 'text',
+                mediaIds: [],
+                destinationLabel: null,
+                privacyValue: 'public',
+                scheduledAt:
+                  demoCalendar.find((entry) => entry.contentItemId === contentItemId)
+                    ?.scheduledAt ?? null,
+                scheduledTimeZone: 'Europe/Berlin',
+                estimatedCost: null,
+              },
+            ],
+          };
+        }
+
+        return demoScheduledContentItem(contentItemId) ?? { ...emptyItem, id: contentItemId };
+      },
       toContentItem,
     ),
 
@@ -247,6 +441,27 @@ export const contentApi = {
       toContentItem,
     ),
 
+  /**
+   * The composer's whole draft as one version: master, targets and every
+   * target's overrides in one transaction. A stale `expectedVersionId` is
+   * refused with 409 `CONFLICT` instead of overwriting another save.
+   */
+  saveComposite: (
+    contentItemId: string,
+    input: {
+      readonly expectedVersionId: string | null;
+      readonly master: Partial<MasterPatch>;
+      readonly targets: readonly ContentTargetInput[];
+      readonly variantOverrides: Readonly<Record<string, VariantOverrides>>;
+    },
+  ): Promise<ApplicationContentItemView> =>
+    call<ApplicationContentItemView, ApplicationContentItemView>(
+      `/content/${contentItemId}/composite`,
+      { method: 'PUT', body: input, sideEffectFree: true },
+      () => demoCompositeItem(contentItemId),
+      (item) => item,
+    ),
+
   overrideVariant: (
     contentItemId: string,
     variantId: string,
@@ -255,19 +470,19 @@ export const contentApi = {
     call(
       `/content/${contentItemId}/variants/${variantId}`,
       { method: 'PATCH', body: input },
-      () => {
-        throw new Error('No variant is available in demo mode.');
-      },
+      demoWriteUnavailable,
     ),
 
   resetVariantToMaster: (contentItemId: string, variantId: string): Promise<PostVariantView> =>
-    call(`/content/${contentItemId}/variants/${variantId}/overrides`, { method: 'DELETE' }, () => {
-      throw new Error('No variant is available in demo mode.');
-    }),
+    call(
+      `/content/${contentItemId}/variants/${variantId}/overrides`,
+      { method: 'DELETE' },
+      demoWriteUnavailable,
+    ),
 
   setTargets: (
     contentItemId: string,
-    input: { targets: readonly { connectionId: string }[] },
+    input: { targets: readonly ContentTargetInput[] },
   ): Promise<ContentItemView> =>
     call<ApplicationContentItemView, ContentItemView>(
       `/content/${contentItemId}/targets`,
@@ -311,9 +526,11 @@ export const contentApi = {
 
   /** The provider-shaped preview for one target. */
   preview: (contentItemId: string, variantId: string): Promise<CanonicalPreview> =>
-    call(`/content/${contentItemId}/preview`, { query: { targetId: variantId } }, () => {
-      throw new Error('No preview is available in demo mode.');
-    }),
+    call(
+      `/content/${contentItemId}/preview`,
+      { query: { targetId: variantId } },
+      demoWriteUnavailable,
+    ),
 
   delete: (contentItemId: string): Promise<void> =>
     call(`/content/${contentItemId}`, { method: 'DELETE' }, () => undefined),
@@ -401,11 +618,21 @@ export type CalendarQuery = {
   readonly projectId?: string;
   readonly connectionId?: string;
   readonly state?: PublishState;
+  readonly cursor?: string;
+  readonly limit?: number;
 };
 
 export const schedulingApi = {
   schedule: (
-    input: { contentItemId: string; scheduledAt: string; timeZone: string },
+    input: {
+      contentItemId: string;
+      scheduledAt: string;
+      timeZone: string;
+      /** Evidence from the commit preview. Required when the preview escalates. */
+      confirmation?: PublishConfirmationEvidence;
+      /** Schedule only these targets. Omitted means every target. */
+      connectionIds?: readonly string[];
+    },
     idempotencyKey: string,
   ): Promise<PublishJobView> =>
     call(
@@ -419,12 +646,12 @@ export const schedulingApi = {
             ianaTimeZone: input.timeZone,
             repeat: null,
           },
+          ...(input.confirmation === undefined ? {} : { confirmation: input.confirmation }),
+          ...(input.connectionIds === undefined ? {} : { connectionIds: input.connectionIds }),
         },
         idempotencyKey,
       },
-      () => {
-        throw new Error('Scheduling is unavailable in demo mode.');
-      },
+      demoWriteUnavailable,
     ),
 
   reschedule: (
@@ -445,15 +672,15 @@ export const schedulingApi = {
         },
         idempotencyKey,
       },
-      () => {
-        throw new Error('Rescheduling is unavailable in demo mode.');
-      },
+      demoWriteUnavailable,
     ),
 
   cancel: (jobId: string, reason: string, idempotencyKey: string): Promise<PublishJobView> =>
-    call(`/schedules/${jobId}/cancel`, { method: 'POST', body: { reason }, idempotencyKey }, () => {
-      throw new Error('Canceling a schedule is unavailable in demo mode.');
-    }),
+    call(
+      `/schedules/${jobId}/cancel`,
+      { method: 'POST', body: { reason }, idempotencyKey },
+      demoWriteUnavailable,
+    ),
 
   /**
    * Hold a scheduled post. Stops what has not happened; retracts nothing that
@@ -464,9 +691,7 @@ export const schedulingApi = {
     call(
       `/schedules/${jobId}/pause`,
       { method: 'POST', body: note === null ? {} : { note }, idempotencyKey },
-      () => {
-        throw new Error('Pausing a schedule is unavailable in demo mode.');
-      },
+      demoWriteUnavailable,
     ),
 
   /**
@@ -499,16 +724,27 @@ export const schedulingApi = {
         },
         idempotencyKey,
       },
-      () => {
-        throw new Error('Resuming a schedule is unavailable in demo mode.');
-      },
+      demoWriteUnavailable,
     ),
 
-  getCalendar: (query: CalendarQuery): Promise<Paginated<CalendarEntryView>> =>
+  getCalendar: (
+    query: CalendarQuery,
+    forward?: ForwardAuth,
+  ): Promise<Paginated<CalendarEntryView>> =>
     call<Paginated<ApplicationCalendarEntry>, Paginated<CalendarEntryView>>(
       '/calendar',
-      { query },
-      () => page(demoCalendar),
+      { query, ...forward },
+      () =>
+        page(
+          demoCalendar.filter(
+            (entry) =>
+              Date.parse(entry.scheduledAt) >= Date.parse(query.from) &&
+              Date.parse(entry.scheduledAt) < Date.parse(query.to) &&
+              (!query.projectId || entry.projectId === query.projectId) &&
+              (!query.connectionId || entry.connectionId === query.connectionId) &&
+              (!query.state || entry.state === query.state),
+          ),
+        ),
       (result) => ({ ...result, data: result.data.map(toCalendarEntry) }),
     ),
 
@@ -524,10 +760,32 @@ export const publishingApi = {
   publishNow: (
     input: { contentItemId: string; confirmation: PublishConfirmationEvidence },
     idempotencyKey: string,
-  ): Promise<PublishJobView | null> =>
-    call('/publications', { method: 'POST', body: input, idempotencyKey }, () => null),
+  ): Promise<PublishJobView> =>
+    call('/publications', { method: 'POST', body: input, idempotencyKey }, () => {
+      // Demo mode must not turn a click into a false success. No provider is
+      // contacted there, so the composer keeps the confirmation sheet open
+      // and explains the failure instead of navigating to an empty receipt.
+      return demoWriteUnavailable();
+    }),
 
-  getJob: (jobId: string): Promise<PublishJobView | null> => call(`/jobs/${jobId}`, {}, () => null),
+  /**
+   * What a publish or schedule would take, without committing: target count,
+   * version checksum, blockers and the escalations a confirmation must name.
+   * Demo mode has no server preflight, so it answers null and the sheet says
+   * the check is unavailable rather than inventing a clean result.
+   */
+  previewCommit: (
+    contentItemId: string,
+    input: CommitPreviewRequest,
+  ): Promise<CommitPreview | null> =>
+    call(
+      `/content/${contentItemId}/commit-preview`,
+      { method: 'POST', body: input },
+      () => null,
+    ),
+
+  getJob: (jobId: string): Promise<PublishJobView | null> =>
+    call(`/jobs/${jobId}`, {}, () => demoPublishJobs.find((job) => job.id === jobId) ?? null),
 
   retryTarget: (
     jobId: string,
@@ -539,11 +797,21 @@ export const publishingApi = {
       { method: 'POST', body: { targetId: variantId }, idempotencyKey },
       () => null,
     ),
+  /**
+   * Per-target job state, receipt, link and failure for one content item.
+   * Demo mode has no jobs, so it answers null and the screen reads the item.
+   */
+  getContentPublication: (contentItemId: string): Promise<ContentPublicationView | null> =>
+    call(`/content/${contentItemId}/publication`, {}, () => null),
 };
 
 export const receiptsApi = {
   get: (receiptId: string): Promise<PublicationReceipt | null> =>
-    call(`/receipts/${receiptId}`, {}, () => null),
+    call(
+      `/receipts/${receiptId}`,
+      {},
+      () => demoPublicationReceipts.find((receipt) => receipt.id === receiptId) ?? null,
+    ),
 
   listForJob: (jobId: string): Promise<{ readonly data: readonly PublicationReceipt[] }> =>
     call(`/jobs/${jobId}/receipts`, {}, () => ({ data: [] })),

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 
 import { CustomCursor } from '@/components/cursor/custom-cursor';
 import { JsonLd } from '@/features/marketing/components/json-ld';
+import { MarketingMeasurement } from '@/features/marketing/components/marketing-measurement';
 import { SiteFooter } from '@/features/marketing/components/site-footer';
 import { SiteHeader } from '@/features/marketing/components/site-header';
 import { marketingTranslator } from '@/features/marketing/i18n';
@@ -70,6 +71,7 @@ export default async function MarketingLayout({
       <JsonLd node={await organizationJsonLd(locale)} />
 
       <CustomCursor />
+      <MarketingMeasurement />
     </div>
   );
 }

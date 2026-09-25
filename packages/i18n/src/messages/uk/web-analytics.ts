@@ -304,7 +304,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'Відстежуване посилання: це коротке переспрямування URL Post Array, тож ви можете бачити кліки, навіть якщо платформа не повідомляє про них. Початкове призначення ніколи не змінюється без запису аудиту.',
   'analytics.links.emptyExample':
-    'Приклад: relay.to/a7Kq2 переспрямовує на acme.com/blog/launch із кампанією q3-launch.',
+    'Приклад: pa.link/a7Kq2 переспрямовує на acme.com/blog/launch із кампанією q3-launch.',
   'analytics.links.table.caption':
     'Враховуються відстежувані посилання в цій робочій області та їхні перші кліки.',
   'analytics.links.campaign': 'Кампанія',

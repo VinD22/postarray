@@ -1,6 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { Pause, Play } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
 import { PublishFanoutFallback } from './publish-fanout-fallback';
@@ -82,6 +84,8 @@ export interface HeroWebglStageProps {
 
 /** Purely decorative next to the reach figure it sits beside — never announced. */
 export function HeroWebglStage({ className }: HeroWebglStageProps): ReactNode {
+  const t = useTranslations();
+  const [paused, setPaused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const allowed = useWebglAllowed();
 
@@ -97,7 +101,7 @@ export function HeroWebglStage({ className }: HeroWebglStageProps): ReactNode {
     if (!node || typeof IntersectionObserver === 'undefined') return;
     const observer = new IntersectionObserver(
       (entries) => setIntersecting(entries[0]?.isIntersecting ?? false),
-      { rootMargin: '200px' },
+      { rootMargin: '0px' },
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -119,6 +123,19 @@ export function HeroWebglStage({ className }: HeroWebglStageProps): ReactNode {
     return cancel;
   }, [allowed, intersecting, ready]);
 
+  useEffect(() => {
+    if (!ready) return;
+    const update = () =>
+      setColors(readSceneColors(containerRef.current ?? document.documentElement));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme', 'class'],
+    });
+    return () => observer.disconnect();
+  }, [ready]);
+
   // Computed once on the client (this component never renders the canvas
   // during SSR, so `window` is always defined by the time this actually
   // matters); a fixed value rather than something re-derived every frame.
@@ -127,17 +144,33 @@ export function HeroWebglStage({ className }: HeroWebglStageProps): ReactNode {
     [],
   );
 
-  const active = intersecting && !documentHidden;
+  const active = allowed && intersecting && !documentHidden && !paused;
 
   return (
-    <div ref={containerRef} aria-hidden="true" className={className}>
-      {ready && colors ? (
-        <WebglErrorBoundary fallback={<PublishFanoutFallback className="h-full w-full" />}>
-          <HeroPublishCanvas colors={colors} active={active} dpr={dpr} />
-        </WebglErrorBoundary>
-      ) : (
-        <PublishFanoutFallback className="h-full w-full" />
-      )}
+    <div ref={containerRef} className={className}>
+      <div aria-hidden="true" className="h-full w-full">
+        {allowed && ready && colors ? (
+          <WebglErrorBoundary fallback={<PublishFanoutFallback className="h-full w-full" />}>
+            <HeroPublishCanvas colors={colors} active={active} dpr={dpr} />
+          </WebglErrorBoundary>
+        ) : (
+          <PublishFanoutFallback className="h-full w-full" />
+        )}
+      </div>
+      {allowed && ready && colors ? (
+        <button
+          type="button"
+          onClick={() => setPaused((value) => !value)}
+          aria-label={t(paused ? 'web.motion.play' : 'web.motion.pause')}
+          className="border-border-default bg-surface-raised text-text-secondary hover:text-text-primary absolute end-2 bottom-2 flex size-9 items-center justify-center rounded-md border pointer-coarse:size-11"
+        >
+          {paused ? (
+            <Play aria-hidden="true" className="size-4" />
+          ) : (
+            <Pause aria-hidden="true" className="size-4" />
+          )}
+        </button>
+      ) : null}
     </div>
   );
 }

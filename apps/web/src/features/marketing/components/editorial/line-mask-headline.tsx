@@ -3,7 +3,7 @@
 import { createElement, useRef, type ElementType, type Ref } from 'react';
 
 import { EASE_OUT_EXPO, EXPRESSIVE_MD } from '@/lib/motion/constants';
-import { gsap, SplitText, useGSAP } from '@/lib/motion/gsap';
+import { gsap, SplitText, useGSAP } from '@/lib/motion/gsap-split';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 export interface LineMaskHeadlineProps {

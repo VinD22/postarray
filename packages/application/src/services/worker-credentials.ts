@@ -1,4 +1,5 @@
 import { ERROR_CODES, RelayError, type ErrorCode } from '@relay/contracts';
+import { productMetrics } from '@relay/observability';
 
 import type {
   ActorContext,
@@ -160,6 +161,14 @@ export function createWorkerCredentialService(deps: ServiceDeps): WorkerCredenti
           await db.socialConnection.updateMany({
             where: { id: connection.id, workspaceId: input.ctx.workspaceId },
             data: { status: 'action_required' },
+          });
+
+          // A connection falling out of `active` is a token the product could
+          // not keep alive. Counted only on the transition, so a repeated
+          // failure against an already-broken connection does not inflate it.
+          productMetrics.tokenRefreshFailuresTotal.add(1, {
+            connection_id: connection.id,
+            error_class: input.errorCode,
           });
         }
       });

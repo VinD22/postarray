@@ -1,3 +1,4 @@
+import { commitPreviewRequestSchema, publishConfirmationEvidenceSchema } from '@relay/contracts';
 import { z } from 'zod';
 
 import { contentItemIdSchema, postVariantIdSchema } from '../../common/schemas';
@@ -19,16 +20,7 @@ import { contentItemIdSchema, postVariantIdSchema } from '../../common/schemas';
  * nine is refused. The server never trusts that a host UI displayed a dialog,
  * because that is not a fact we can observe.
  */
-export const publishConfirmationSchema = z
-  .object({
-    /** How many external publications the human was told this would create. */
-    acknowledgedTargetCount: z.number().int().nonnegative().max(1000),
-    /** The exact content version hash the human saw. */
-    acknowledgedVersionChecksum: z.string().regex(/^[0-9a-f]{64}$/),
-    /** Set when the human confirmed each named escalation trigger. */
-    acknowledgedEscalations: z.array(z.string().min(1).max(64)).max(32).default([]),
-  })
-  .strict();
+export const publishConfirmationSchema = publishConfirmationEvidenceSchema;
 
 export const publishNowSchema = z
   .object({
@@ -39,4 +31,11 @@ export const publishNowSchema = z
 
 export const retryTargetSchema = z.object({ targetId: postVariantIdSchema }).strict();
 
+/**
+ * Commit preview. The same preflight as publish and schedule, with nothing
+ * frozen, so the confirm step can name every escalation before the commit.
+ */
+export const commitPreviewSchema = commitPreviewRequestSchema;
+
 export type PublishNowInput = z.infer<typeof publishNowSchema>;
+export type CommitPreviewInput = z.infer<typeof commitPreviewSchema>;

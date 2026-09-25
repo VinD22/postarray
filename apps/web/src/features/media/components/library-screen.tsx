@@ -43,6 +43,7 @@ import { formatBytes, formatDateTime } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
 import { EmptyScene } from '@/components/empty';
+import { Link } from '@/components/link';
 
 import { MediaDetail } from './media-detail';
 import { UploadPanel } from './upload-panel';
@@ -140,104 +141,110 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
         }
       />
 
-      {props.status === 'forbidden' ? (
-        <PermissionDenied
-          title={t.full('mediaLib.permission.title')}
-          description={t.full('mediaLib.permission.body')}
-          requirements={['viewer']}
-          requirementsLabel={t.full('common.required')}
-        />
-      ) : null}
-
-      {props.status === 'error' ? (
-        <ErrorState
-          title={t.full('mediaLib.error.title')}
-          description={props.errorMessage ?? t.full('mediaLib.error.body')}
-          {...(props.onRetry ? { onRetry: props.onRetry, retryLabel: t.full('action.retry') } : {})}
-          {...(props.errorReference
-            ? { reference: { label: t.full('common.details'), value: props.errorReference } }
-            : {})}
-        />
-      ) : null}
-
-      {props.status === 'offline' ? (
-        <OfflineBanner
-          title={t.full('mediaLib.offline.title')}
-          description={t.full('mediaLib.offline.body')}
-          actions={
-            props.onRetry ? (
-              <Button variant="secondary" size="sm" onClick={props.onRetry}>
-                {t.full('action.retry')}
-              </Button>
-            ) : null
-          }
-        />
-      ) : null}
-
-      {props.status === 'rate_limited' ? (
-        <RateLimitNotice
-          title={t.full('mediaLib.rateLimited.title')}
-          cause={t.full('mediaLib.rateLimited.cause')}
-          resetLabel={t.full('mediaLib.rateLimited.resetLabel')}
-          resetAt={
-            props.rateLimitResetAt === undefined
-              ? t.full('common.unknown')
-              : formatDateTime(t.locale, props.rateLimitResetAt, {
-                  timeZone: props.timeZone,
-                  dateStyle: 'medium',
-                  timeStyle: 'short',
-                })
-          }
-          alternative={t.full('mediaLib.rateLimited.alternative')}
-          actions={
-            props.onRetry ? (
-              <Button variant="secondary" size="sm" onClick={props.onRetry}>
-                {t.full('action.retry')}
-              </Button>
-            ) : null
-          }
-        />
-      ) : null}
-
-      {props.status === 'loading' ? (
-        <LoadingState label={t.full('mediaLib.loading')}>
-          <SkeletonTable rows={6} columns={5} />
-        </LoadingState>
-      ) : null}
-
-      {props.status === 'ready' ? (
-        <>
-          <UploadPanel
-            rules={WORKSPACE_UPLOAD_RULES}
-            items={props.uploads}
-            online={props.online}
-            importEnabled={props.importEnabled}
-            onFiles={props.onFiles}
-            onImportUrl={props.onImportUrl}
-            onPause={props.onPauseUpload}
-            onResume={props.onResumeUpload}
-            onCancel={props.onCancelUpload}
-            onRetry={props.onRetryUpload}
+      {/* The header carries its own inline padding; the body needs the same
+          gutter or every panel below it sits flush against the frame. */}
+      <div className="flex flex-col gap-6 px-4 md:px-6">
+        {props.status === 'forbidden' ? (
+          <PermissionDenied
+            title={t.full('mediaLib.permission.title')}
+            description={t.full('mediaLib.permission.body')}
+            requirements={['viewer']}
+            requirementsLabel={t.full('common.required')}
           />
+        ) : null}
 
-          {props.assets.length === 0 ? (
-            // A brand new workspace lands here before it owns a single file,
-            // so the library gets the drawn scene rather than an icon in a
-            // dashed circle, for the same reason the calendar and the action
-            // centre do: it is a first screen, not a failure.
-            <EmptyState
-              illustration={<EmptyScene scene="library" />}
-              title={t.full('mediaLib.empty.title')}
-              description={t.full('mediaLib.empty.body')}
-              example={t.full('mediaLib.empty.example')}
+        {props.status === 'error' ? (
+          <ErrorState
+            title={t.full('mediaLib.error.title')}
+            description={props.errorMessage ?? t.full('mediaLib.error.body')}
+            {...(props.onRetry
+              ? { onRetry: props.onRetry, retryLabel: t.full('action.retry') }
+              : {})}
+            {...(props.errorReference
+              ? { reference: { label: t.full('common.details'), value: props.errorReference } }
+              : {})}
+          />
+        ) : null}
+
+        {props.status === 'offline' ? (
+          <OfflineBanner
+            title={t.full('mediaLib.offline.title')}
+            description={t.full('mediaLib.offline.body')}
+            actions={
+              props.onRetry ? (
+                <Button variant="secondary" size="sm" onClick={props.onRetry}>
+                  {t.full('action.retry')}
+                </Button>
+              ) : null
+            }
+          />
+        ) : null}
+
+        {props.status === 'rate_limited' ? (
+          <RateLimitNotice
+            title={t.full('mediaLib.rateLimited.title')}
+            cause={t.full('mediaLib.rateLimited.cause')}
+            resetLabel={t.full('mediaLib.rateLimited.resetLabel')}
+            resetAt={
+              props.rateLimitResetAt === undefined
+                ? t.full('common.unknown')
+                : formatDateTime(t.locale, props.rateLimitResetAt, {
+                    timeZone: props.timeZone,
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  })
+            }
+            alternative={t.full('mediaLib.rateLimited.alternative')}
+            actions={
+              props.onRetry ? (
+                <Button variant="secondary" size="sm" onClick={props.onRetry}>
+                  {t.full('action.retry')}
+                </Button>
+              ) : null
+            }
+          />
+        ) : null}
+
+        {props.status === 'loading' ? (
+          <LoadingState label={t.full('mediaLib.loading')}>
+            <SkeletonTable rows={6} columns={5} />
+          </LoadingState>
+        ) : null}
+
+        {props.status === 'ready' ? (
+          <>
+            <UploadPanel
+              rules={WORKSPACE_UPLOAD_RULES}
+              items={props.uploads}
+              online={props.online}
+              importEnabled={props.importEnabled}
+              onFiles={props.onFiles}
+              onImportUrl={props.onImportUrl}
+              onPause={props.onPauseUpload}
+              onResume={props.onResumeUpload}
+              onCancel={props.onCancelUpload}
+              onRetry={props.onRetryUpload}
             />
-          ) : view === 'grid' ? (
-            <MediaGrid assets={props.assets} onOpen={setOpenAssetId} />
-          ) : (
-            <MediaList assets={props.assets} timeZone={props.timeZone} onOpen={setOpenAssetId} />
-          )}
-        </>
-      ) : null}
+
+            {props.assets.length === 0 ? (
+              // A brand new workspace lands here before it owns a single file,
+              // so the library gets the drawn scene rather than an icon in a
+              // dashed circle, for the same reason the calendar and the action
+              // centre do: it is a first screen, not a failure.
+              <EmptyState
+                illustration={<EmptyScene scene="library" />}
+                title={t.full('mediaLib.empty.title')}
+                description={t.full('mediaLib.empty.body')}
+                example={t.full('mediaLib.empty.example')}
+              />
+            ) : view === 'grid' ? (
+              <MediaGrid assets={props.assets} onOpen={setOpenAssetId} />
+            ) : (
+              <MediaList assets={props.assets} timeZone={props.timeZone} onOpen={setOpenAssetId} />
+            )}
+          </>
+        ) : null}
+      </div>
 
       <Sheet
         open={openAsset !== null}
@@ -254,6 +261,15 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
                 <SheetTitle>{openAsset.name ?? t.full('common.unavailable')}</SheetTitle>
               </SheetHeader>
               <SheetBody>
+                {openAsset.storageAvailable ? (
+                  <div className="mb-4">
+                    <Button variant="secondary" size="sm" asChild>
+                      <Link href={`/compose?mediaId=${encodeURIComponent(openAsset.id)}`}>
+                        {t.full('mediaLib.detail.useInPost')}
+                      </Link>
+                    </Button>
+                  </div>
+                ) : null}
                 <MediaDetail
                   asset={openAsset}
                   rules={props.rules}

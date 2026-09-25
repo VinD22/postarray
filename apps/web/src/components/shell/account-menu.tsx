@@ -42,7 +42,6 @@ export function AccountMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label={t('nav.account')}
         className="hover:bg-surface-hover flex size-11 items-center justify-center rounded-md md:size-9"
       >
         <Avatar
@@ -51,6 +50,8 @@ export function AccountMenu() {
           fallback={initialsOf(session.user.name)}
           size="sm"
         />
+        {/* After the initials, so the accessible name starts with what is shown (WCAG 2.5.3). */}
+        <span className="sr-only">{t('nav.account')}</span>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-64">

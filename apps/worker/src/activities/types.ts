@@ -12,6 +12,13 @@ import { approvalLevelSchema, creationSurfaceSchema, localeSchema } from '@relay
 import type { MediaDerivativeOperation } from '@relay/contracts';
 import { z } from 'zod';
 
+import type {
+  BuildWeeklyDigestInput,
+  BuildWeeklyDigestResult,
+  SendWeeklyDigestEmailInput,
+  SendWeeklyDigestEmailResult,
+} from '../workflows/core/digest.core';
+
 /**
  * The activity surface.
  *
@@ -864,6 +871,8 @@ export interface WorkerActivities {
   fetchAccountMetrics(input: FetchMetricsInput): Promise<FetchMetricsResult>;
   recordAnalyticsRun(input: RecordAnalyticsRunInput): Promise<void>;
   generatePostFeedback(input: GeneratePostFeedbackInput): Promise<GeneratePostFeedbackResult>;
+  buildWeeklyDigest(input: BuildWeeklyDigestInput): Promise<BuildWeeklyDigestResult>;
+  sendWeeklyDigestEmail(input: SendWeeklyDigestEmailInput): Promise<SendWeeklyDigestEmailResult>;
   describeCredential(input: DescribeCredentialInput): Promise<DescribeCredentialResult>;
   refreshCredential(input: RefreshCredentialInput): Promise<RefreshCredentialResult>;
   raiseConnectionIncident(input: ConnectionIncidentInput): Promise<void>;
@@ -892,6 +901,17 @@ export interface WorkerActivities {
   readBulkImportVerdict(input: BulkImportActivityInput): Promise<BulkImportActivityResult>;
   applyBulkImportRows(input: ApplyBulkImportInput): Promise<BulkImportActivityResult>;
   produceMediaDerivative(input: ProduceMediaDerivativeInput): Promise<ProduceMediaDerivativeResult>;
+  scanMediaAsset(input: ScanMediaAssetInput): Promise<ScanMediaAssetResult>;
+}
+
+export interface ScanMediaAssetInput {
+  readonly ctx: ActivityContext;
+  readonly mediaAssetId: string;
+}
+
+export interface ScanMediaAssetResult {
+  readonly scanState: string;
+  readonly noteKey: string | null;
 }
 
 export type ActivityName = keyof WorkerActivities;
@@ -919,6 +939,8 @@ export const ACTIVITY_NAMES: readonly ActivityName[] = [
   'fetchAccountMetrics',
   'recordAnalyticsRun',
   'generatePostFeedback',
+  'buildWeeklyDigest',
+  'sendWeeklyDigestEmail',
   'describeCredential',
   'refreshCredential',
   'raiseConnectionIncident',
@@ -947,4 +969,5 @@ export const ACTIVITY_NAMES: readonly ActivityName[] = [
   'readBulkImportVerdict',
   'applyBulkImportRows',
   'produceMediaDerivative',
+  'scanMediaAsset',
 ];

@@ -76,6 +76,11 @@ export const connectionMessages = {
   'connection.oauth.claimComplete': 'Selected accounts are connected',
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts': 'Na tomto {provider} přihlášení lze připojit. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'Z tohoto přihlášení {provider} nelze připojit žádný účet.',
+  'connection.oauth.claimFailed': 'Tyto účty se nepodařilo připojit',
+  'connection.oauth.claimFailedAction':
+    'Na platformě se nic nezměnilo. Zkuste to znovu, a pokud selhávání pokračuje, začněte připojení znovu.',
   'connection.oauth.canceled': 'Připojení bylo zrušeno dne {provider}. Nic se nezměnilo.',
   'connection.oauth.alreadyConnected': '{account} je již připojen k tomuto pracovnímu prostoru.',
   'connection.oauth.connectedToAnotherWorkspace':

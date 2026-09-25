@@ -11,6 +11,7 @@ import type {
   CreateDraftInput,
   MasterDraftPatch,
   PageQuery,
+  SaveCompositeInput,
   ServiceDeps,
   TargetSpec,
 } from '../types';
@@ -27,7 +28,9 @@ import {
   requireProjectOwnershipIfPresent,
 } from '../internal/project-ownership';
 import {
+  assertExpectedVersion,
   loadAggregate,
+  lockContentItem,
   reapprovalRequired,
   toContentItemView,
   toVariantView,
@@ -416,6 +419,92 @@ export function createContentService(deps: ServiceDeps): ContentService {
               after: { checksum: view.currentChecksum },
               metadata: {
                 releasedFields: released,
+                reapprovalRequired: view.reapprovalRequired,
+              },
+            });
+
+            return view;
+          }),
+      });
+    },
+
+    async saveComposite(ctx: ActorContext, input: SaveCompositeInput): Promise<ContentItemView> {
+      return withIdempotency(deps.kv, ctx, {
+        operation: 'content.saveComposite',
+        body: input,
+        run: async () =>
+          authorized(deps, ctx, 'content.write', undefined, async (db, actor) => {
+            // Lock first, then read: a concurrent save waits here and then sees
+            // the version the other one wrote, so it cannot fork the history.
+            await lockContentItem(db, input.contentItemId, deps.clock.now());
+            const aggregate = await loadAggregate(db, input.contentItemId);
+            assertEditable(aggregate);
+            assertExpectedVersion(aggregate, input.expectedVersionId);
+
+            const resolved = await resolveTargets(db, input.targets);
+            for (const target of resolved) {
+              guard(actor, 'content.write', { connectionId: target.connectionId });
+            }
+
+            const previousMaster = aggregate.master;
+            const patch = input.master;
+            const nextMaster = storedMasterSchema.parse({
+              ...previousMaster,
+              ...(patch.title === undefined ? {} : { title: patch.title }),
+              ...(patch.body === undefined ? {} : { body: patch.body }),
+              ...(patch.contentKind === undefined ? {} : { contentKind: patch.contentKind }),
+              ...(patch.locale === undefined ? {} : { locale: patch.locale }),
+              ...(patch.mediaIds === undefined ? {} : { mediaIds: [...patch.mediaIds] }),
+              ...(patch.links === undefined ? {} : { links: [...patch.links] }),
+              ...(patch.signature === undefined ? {} : { signature: patch.signature }),
+              ...(patch.threadItems === undefined ? {} : { threadItems: [...patch.threadItems] }),
+              ...(patch.schedule === undefined ? {} : { schedule: patch.schedule }),
+              ...(patch.disclosure === undefined ? {} : { disclosure: patch.disclosure }),
+              ...(patch.campaignId === undefined ? {} : { campaignId: patch.campaignId }),
+            });
+
+            const signatureByConnection = new Map(
+              aggregate.variants.map((variant) => [variant.connectionId, variant.signatureId]),
+            );
+            const replaced = input.variantOverrides ?? {};
+            const variants: VariantWriteSpec[] = variantSpecsFrom(
+              resolved,
+              input.targets,
+              existingSettings(aggregate),
+            ).map((spec) => {
+              const claimed = replaced[spec.connectionId];
+              const overrides =
+                claimed === undefined
+                  ? reconcileOverrides({
+                      previousMaster,
+                      nextMaster,
+                      overrides: spec.settings.overrides,
+                    })
+                  : prune(nextMaster, storedOverridesSchema.parse(claimed));
+              return {
+                ...spec,
+                signatureId: signatureByConnection.get(spec.connectionId) ?? null,
+                settings: { ...spec.settings, overrides },
+              };
+            });
+
+            const view = await rewrite(db, actor, aggregate, nextMaster, variants);
+
+            await recordAudit(db, actor, {
+              action: 'content_version.created',
+              targetType: 'content_item',
+              targetId: input.contentItemId,
+              before: {
+                checksum: aggregate.checksum,
+                connectionIds: aggregate.variants.map((variant) => variant.connectionId),
+              },
+              after: {
+                checksum: view.currentChecksum,
+                connectionIds: resolved.map((target) => target.connectionId),
+              },
+              metadata: {
+                composite: true,
+                overriddenConnectionIds: Object.keys(replaced),
                 reapprovalRequired: view.reapprovalRequired,
               },
             });

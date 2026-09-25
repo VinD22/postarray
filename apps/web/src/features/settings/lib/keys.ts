@@ -1,7 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { api, keys } from '@/lib/api';
+import { useSession } from '@/lib/auth/session-context';
 
 /**
  * Cache keys for these screens.
@@ -19,15 +18,7 @@ export function settingsKey(
   return ['ws', workspaceId, 'settings', ...parts];
 }
 
-/**
- * The active workspace id.
- *
- * Reads the session query the shell already populates, so this is a cache hit
- * on every screen after the first. An empty string before the session resolves
- * is deliberate: the queries that depend on it are keyed by it, so they refetch
- * under the real id as soon as it arrives.
- */
+/** Read the server-authorized shell context before issuing any settings query. */
 export function useWorkspaceId(): string {
-  const session = useQuery({ queryKey: keys.session(), queryFn: () => api.session.get() });
-  return session.data?.workspace.id ?? '';
+  return useSession().workspace.id;
 }

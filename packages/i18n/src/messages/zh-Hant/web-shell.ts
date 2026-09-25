@@ -20,7 +20,7 @@ export const webShellMessages = {
   'shell.demo.title': '你正在查看示範資料',
   'shell.demo.body':
     '此瀏覽器無法連線至 Post Array API，因此畫面填入植入的範例 Workspace。此處未連線至真實帳號，也無法發布。',
-  'shell.demo.howToConnect': '設定 NEXT_PUBLIC_RELAY_API_URL 並重新啟動應用程式以使用即時資料。',
+  'shell.demo.howToConnect': '設定 NEXT_PUBLIC_POSTARRAY_API_URL 並重新啟動應用程式以使用即時資料。',
   'shell.offline.title': '你目前離線',
   'shell.offline.body': '草稿會保留在這台裝置。連線恢復後即可排程和發布。',
   'shell.offline.retry': '檢查連線',

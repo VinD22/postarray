@@ -272,6 +272,68 @@ function workerContext(ctx: WorkflowActorContext): ActorContext {
  */
 export function createWorkerMediaService(deps: ServiceDeps): WorkerMediaService {
   return {
+    /**
+     * Move one asset out of `pending`.
+     *
+     * Idempotent by state: an asset that already reached a verdict is left
+     * alone, so a redelivered workflow does not re-scan bytes or overwrite a
+     * quarantine decision. A scanner that cannot reach a verdict writes
+     * `failed`, never `clean`, because an outage must not become an approval.
+     */
+    async scanMediaAsset(ctx, input) {
+      const actorContext = workerContext(ctx);
+      const scanner = deps.mediaScanner;
+
+      return runInWorkspace(deps, actorContext, async (db) => {
+        const asset = await db.mediaAsset.findFirst({
+          where: { id: input.mediaAssetId, workspaceId: ctx.workspaceId },
+          select: {
+            id: true,
+            storageKey: true,
+            mimeType: true,
+            byteSize: true,
+            scanState: true,
+            scanNote: true,
+          },
+        });
+        if (asset === null) {
+          throw notFound('media_asset', input.mediaAssetId);
+        }
+        if (asset.scanState !== 'pending') {
+          return { scanState: asset.scanState, noteKey: asset.scanNote };
+        }
+
+        if (scanner === undefined) {
+          // A deployment with no scanner leaves the asset pending and says so
+          // through the action centre, rather than passing unexamined bytes
+          // to a provider.
+          return { scanState: asset.scanState, noteKey: asset.scanNote };
+        }
+
+        const result = await scanner.scan({
+          workspaceId: ctx.workspaceId,
+          storageKey: asset.storageKey,
+          claimedMimeType: asset.mimeType,
+          byteSize: Number(asset.byteSize),
+        });
+
+        const updated = await db.mediaAsset.update({
+          where: { id: asset.id },
+          data: {
+            scanState: result.verdict,
+            scanNote: result.noteKey,
+            ...(result.detectedMimeType === null ? {} : { mimeType: result.detectedMimeType }),
+            ...(result.width === null ? {} : { width: result.width }),
+            ...(result.height === null ? {} : { height: result.height }),
+            ...(result.durationMs === null ? {} : { durationMs: result.durationMs }),
+          },
+          select: { scanState: true, scanNote: true },
+        });
+
+        return { scanState: updated.scanState, noteKey: updated.scanNote };
+      });
+    },
+
     async produceDerivative(ctx, input, transform): Promise<MediaDerivativeView> {
       const actorContext = workerContext(ctx);
 

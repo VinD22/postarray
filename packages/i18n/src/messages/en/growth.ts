@@ -4,6 +4,8 @@ export const growthMessages = {
   'growth.subtitle':
     'A guided plan built from facts you confirm. It proposes work. It never publishes on its own.',
 
+  'growth.profile.noProject':
+    'Choose a project before saving the profile. A business profile belongs to one project.',
   'growth.profile.title': 'Business profile',
   'growth.profile.intro':
     'Answer these once. Everything the advisor proposes is based on what you confirm here.',

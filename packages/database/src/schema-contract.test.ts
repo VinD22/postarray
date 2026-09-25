@@ -45,6 +45,11 @@ const POST_BASELINE_TABLE_EXCEPTIONS = [
   // forced and policied in the same file and the completeness assertion
   // repeated at the end.
   '0077_publishing_credits.sql',
+  // Opt-in image analysis. Same situation: 0004 was applied and checksummed
+  // long before vision analysis existed, so `app.media_analyses` is created
+  // post-baseline with RLS enabled, forced and policied in the same file and
+  // the completeness assertion repeated at the end.
+  '0080_ai_image_analysis.sql',
 ];
 
 function modelIdDefaults(source: string): ReadonlyMap<string, string> {

@@ -306,7 +306,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'En spårad länk är en kort URL-relä som omdirigerar genom, så att du kan se klick även när en plattform inte rapporterar några. Den ursprungliga destinationen ändras aldrig utan en granskningspost.',
   'analytics.links.emptyExample':
-    'Exempel: relay.to/a7Kq2 omdirigerar till acme.com/blog/launch med kampanj q3-launch.',
+    'Exempel: pa.link/a7Kq2 omdirigerar till acme.com/blog/launch med kampanj q3-launch.',
   'analytics.links.table.caption':
     'Spårade länkar i den här arbetsytan och deras första parts klick räknas.',
   'analytics.links.campaign': 'Kampanj',

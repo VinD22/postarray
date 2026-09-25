@@ -173,6 +173,7 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
     service: 'api' as const,
     core: {
       nodeEnv: 'test' as const,
+      runtimeProfile: 'test' as const,
       isProduction: false,
       isDevelopment: false,
       isTest: true,

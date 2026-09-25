@@ -7,6 +7,9 @@ import { useTranslations } from '@relay/i18n/react';
 
 import { StaggerList } from '@/components/motion';
 
+import { normalizedMetricNameSchema } from '@relay/contracts';
+
+import { metricLabelKey } from '../metrics';
 import type { ConfounderCode, Observation } from '../types';
 import { useValueFormat } from '../use-value-format';
 
@@ -45,6 +48,12 @@ const CONFOUNDER_KEY: Readonly<Record<ConfounderCode, string>> = {
   paid_distribution: 'analytics.evidence.confounder.paid',
   provider_definition_change: 'analytics.evidence.confounder.provider',
 };
+
+/** A stored metric name's label, or the unavailable word when this build has none. */
+function metricKeyOf(name: string): string {
+  const parsed = normalizedMetricNameSchema.safeParse(name);
+  return parsed.success ? metricLabelKey(parsed.data) : 'analytics.value.unavailable';
+}
 
 export interface NextTest {
   readonly accountName: string;
@@ -87,7 +96,13 @@ export function Observations({
             {observations.map((observation) => (
               <li key={observation.id} data-stagger-item className="flex flex-col gap-1.5">
                 <p className="text-body-lg text-text-primary max-w-[70ch]">
-                  {t(OBSERVATION_KEY[observation.kind], observation.values)}
+                  {observation.storedMessageKey === undefined
+                    ? t(OBSERVATION_KEY[observation.kind], observation.values)
+                    : t(observation.storedMessageKey, {
+                        count: observation.sampleSize,
+                        percent: format.percent(Number(observation.values.percent)),
+                        metric: t(metricKeyOf(String(observation.values.metric))),
+                      })}
                 </p>
 
                 <p className="text-body-sm text-text-tertiary tabular-nums">

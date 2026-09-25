@@ -41,6 +41,8 @@ export interface ActionCenterListProps {
   readonly maxItems?: number;
   readonly showSnooze?: boolean;
   readonly emptyAction?: ReactNode;
+  /** Gives decision rows more reading room on Home without loosening the full queue. */
+  readonly comfortable?: boolean;
 }
 
 /**
@@ -57,6 +59,7 @@ export function ActionCenterList({
   maxItems,
   showSnooze = true,
   emptyAction,
+  comfortable = false,
 }: ActionCenterListProps) {
   const t = useTranslations();
   const format = useFormatters();
@@ -172,8 +175,11 @@ export function ActionCenterList({
                 <li
                   key={item.id}
                   className={cn(
-                    'border-border-subtle flex flex-col gap-2 border-b py-3',
-                    'sm:flex-row sm:items-start sm:gap-4',
+                    'border-border-subtle flex flex-col gap-2 border-b',
+                    comfortable ? 'py-4' : 'py-3',
+                    comfortable
+                      ? 'md:flex-row md:items-start md:gap-4'
+                      : 'sm:flex-row sm:items-start sm:gap-4',
                     'transition-[translate,border-color] duration-[--duration-fast] ease-[--ease-standard]',
                     'hover:border-accent hover:-translate-y-0.5 motion-reduce:transition-none',
                   )}
@@ -184,7 +190,12 @@ export function ActionCenterList({
                   </span>
 
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
-                    <p className="text-body-md text-text-primary">
+                    <p
+                      className={cn(
+                        'text-text-primary',
+                        comfortable ? 'text-body-lg leading-[1.65]' : 'text-body-md',
+                      )}
+                    >
                       {t(
                         definition.messageKey,
                         formatActionItemValues(item, format, t('common.unavailable')),

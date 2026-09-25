@@ -10,9 +10,7 @@ import { useTranslations } from '@relay/i18n/react';
 import { api } from '@/lib/api';
 
 import { ExperimentFormDialog, type ExperimentDraft } from './components/experiment-form-dialog';
-import { MetricCell } from './components/metric-cell';
 import { QueryErrorState } from './components/query-error-state';
-import { providerLabelKey } from './labels';
 import { metricLabelKey } from './metrics';
 import { useCreateExperiment, useExperiments } from './queries';
 import type { AccountRef, ExperimentView } from './types';
@@ -172,15 +170,10 @@ function ExperimentSummary({ experiment }: { readonly experiment: ExperimentView
     experiment.status === 'planned'
       ? t('analytics.experiment.status.planned')
       : experiment.status === 'collecting'
-        ? t('analytics.experiment.status.collecting', {
-            published: experiment.variants.reduce((total, variant) => total + variant.postCount, 0),
-            target: experiment.minimumPostsPerVariant * experiment.variants.length,
-          })
+        ? t('analytics.experiment.status.collectingNow')
         : experiment.status === 'inconclusive'
           ? t('analytics.experiment.status.inconclusive')
           : t('analytics.experiment.status.complete');
-
-  const totalPosts = experiment.variants.reduce((total, variant) => total + variant.postCount, 0);
 
   return (
     <article className="border-border-default flex flex-col gap-3 border-t pt-5">
@@ -197,62 +190,44 @@ function ExperimentSummary({ experiment }: { readonly experiment: ExperimentView
         {t('analytics.experiment.successMetric')}
         <span className="text-text-secondary ps-1.5">{metricName}</span>
         <span className="ps-3">
-          {t('analytics.experiment.windowDays', {
-            count: experiment.measurementWindowDays,
+          {t('analytics.experiment.windowRange', {
+            start: format.date(experiment.windowStart),
+            end: format.date(experiment.windowEnd),
           })}
-        </span>
-        <span className="ps-3">
-          {experiment.accounts.map((account) => t(providerLabelKey(account.provider))).join(', ')}
         </span>
       </p>
 
-      <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        {experiment.variants.map((variant) => (
-          <li key={variant.id} className="flex min-w-56 flex-col gap-1">
-            <span className="text-label text-text-tertiary">{variant.label}</span>
-            {variant.description ? (
-              <span className="text-body-sm text-text-secondary">{variant.description}</span>
-            ) : null}
-            {variant.reading ? (
-              <MetricCell reading={variant.reading} />
-            ) : (
-              <span className="text-body-md text-text-secondary">
-                {t('analytics.value.unavailable')}
-              </span>
-            )}
-            <span className="text-body-sm text-text-tertiary tabular-nums">
-              {t('analytics.table.sampleSize', { count: variant.postCount })}
-            </span>
-          </li>
-        ))}
-      </ul>
+      {/*
+        No variant list. The create endpoint accepts variants, the read model
+        does not return them, and this screen used to map over the field
+        anyway behind an unchecked cast, which throws on the first real
+        experiment. Saying that the readings are not reported is honest; an
+        empty list would read as "no variants were defined", which is false.
+      */}
+      <Notice
+        tone="neutral"
+        title={t('analytics.experiment.variants')}
+        description={t('analytics.experiment.variantsNotReported')}
+      />
 
-      {experiment.status === 'complete' || experiment.status === 'inconclusive' ? (
+      {experiment.conclusion === null && experiment.caveats === null ? null : (
         <Notice
           tone="neutral"
           title={t('analytics.experiment.result.title')}
           description={
             <span className="flex flex-col gap-1">
-              <span>{t('analytics.experiment.result.association', { count: totalPosts })}</span>
-              {experiment.excludedPostCount > 0 ? (
+              {experiment.conclusion === null ? null : <span>{experiment.conclusion}</span>}
+              <span>{t('analytics.experiment.result.associationOnly')}</span>
+              {experiment.caveats === null ? null : (
                 <span>
-                  {t('analytics.experiment.result.unavailable', {
-                    metric: metricName,
-                    count: experiment.excludedPostCount,
-                  })}
+                  {t('analytics.experiment.caveats')}
+                  <span className="ps-1.5">{experiment.caveats}</span>
                 </span>
-              ) : null}
-              {experiment.completedAt ? (
-                <span>
-                  {t('analytics.experiment.status.running', {
-                    date: format.date(experiment.completedAt),
-                  })}
-                </span>
-              ) : null}
+              )}
             </span>
           }
         />
-      ) : null}
+      )}
 
       <Separator />
     </article>

@@ -32,7 +32,7 @@ export const webShellMessages = {
   'shell.demo.body':
     'Post Array API kan inte nås från den här webbläsaren, så skärmarna är fyllda med en seedad arbetsyta. Inget här är kopplat till ett riktigt konto och ingenting kan publiceras.',
   'shell.demo.howToConnect':
-    'Ställ in NEXT_PUBLIC_RELAY_API_URL och starta om appen för att använda livedata.',
+    'Ställ in NEXT_PUBLIC_POSTARRAY_API_URL och starta om appen för att använda livedata.',
 
   /* -- Connectivity ------------------------------------------------------ */
   'shell.offline.title': 'Du är offline',

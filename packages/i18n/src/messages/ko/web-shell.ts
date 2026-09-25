@@ -22,7 +22,7 @@ export const webShellMessages = {
   'shell.demo.body':
     '이 브라우저에서는 Post Array API에 접근할 수 없으므로 화면은 시드된 예제 작업 공간으로 채워집니다. 여기에는 실제 계정과 연결된 것이 없으며 게시할 수 있는 것도 없습니다.',
   'shell.demo.howToConnect':
-    '라이브 데이터를 사용하려면 NEXT_PUBLIC_RELAY_API_URL을 설정하고 앱을 다시 시작하세요.',
+    '라이브 데이터를 사용하려면 NEXT_PUBLIC_POSTARRAY_API_URL을 설정하고 앱을 다시 시작하세요.',
   'shell.offline.title': '오프라인 상태입니다',
   'shell.offline.body':
     '초안이 이 기기에 보관됩니다. 연결이 복구되면 예약 및 게시가 다시 시작됩니다.',

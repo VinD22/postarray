@@ -1,8 +1,10 @@
 'use client';
 
 import { useId, useMemo, type ReactNode } from 'react';
+import { Check } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { Button } from '../primitives/button';
+import { IconButton } from '../primitives/icon-button';
 import { VisuallyHidden } from '../primitives/visually-hidden';
 
 export type DiffOperation = 'unchanged' | 'added' | 'removed';
@@ -28,6 +30,13 @@ export interface DiffViewMessages {
   readonly removedAnnotation: string;
   /** Explains where the suggestion came from and that nothing changed yet. */
   readonly provenance?: ReactNode;
+  /**
+   * Accessible name for one segment's accept control, built by the caller from
+   * the segment so the name says which run it applies to. Required whenever
+   * `onAcceptSegment` is supplied; without it the control is not rendered,
+   * because an unnamed icon button is not a control.
+   */
+  readonly acceptSegmentLabel?: (segment: DiffSegment) => string;
 }
 
 export interface DiffViewProps {
@@ -35,6 +44,19 @@ export interface DiffViewProps {
   messages: DiffViewMessages;
   onAccept: () => void;
   onReject: () => void;
+  /**
+   * Accept one run on its own, leaving the rest of the suggestion pending.
+   *
+   * The argument is the segment's index in `segments`, not in the filtered
+   * before or after column, so a caller can map it straight back to the
+   * proposal it sent. Omit it and the view keeps its original all-or-nothing
+   * shape exactly: no per-segment control is rendered.
+   *
+   * This exists because a suggestion is rarely uniformly good. Rewriting three
+   * sentences to fix one is how a person ends up rejecting a change they
+   * partly wanted, and accepting a change they partly did not.
+   */
+  onAcceptSegment?: ((index: number) => void) | undefined;
   /** Disable both actions while the parent is applying the decision. */
   busy?: boolean;
   className?: string;
@@ -51,23 +73,49 @@ export interface DiffViewProps {
  * colour alone fails for someone who cannot see either: `<ins>` and `<del>`
  * elements give the semantics, a tint gives the glance, and a visually hidden
  * annotation gives the screen reader the word.
+ *
+ * A suggestion can be taken whole or in pieces. `onAccept` and `onReject` are
+ * the whole-proposal decision and have not changed. Supplying
+ * `onAcceptSegment` additionally puts a named accept control after each
+ * inserted and deleted run, so a person can keep the sentence they wanted
+ * without inheriting the two they did not.
  */
 export function DiffView({
   segments,
   messages,
   onAccept,
   onReject,
+  onAcceptSegment,
   busy = false,
   className,
 }: DiffViewProps): ReactNode {
   const headingId = useId();
 
+  // The index travels with each segment, because both columns are filtered
+  // views of one list and a position in either one means nothing to the caller.
   const { before, after } = useMemo(() => {
+    const indexed = segments.map((segment, index) => ({ segment, index }));
     return {
-      before: segments.filter((segment) => segment.operation !== 'added'),
-      after: segments.filter((segment) => segment.operation !== 'removed'),
+      before: indexed.filter((entry) => entry.segment.operation !== 'added'),
+      after: indexed.filter((entry) => entry.segment.operation !== 'removed'),
     };
   }, [segments]);
+
+  const acceptSegmentLabel = messages.acceptSegmentLabel;
+  const perSegment =
+    onAcceptSegment !== undefined && acceptSegmentLabel !== undefined
+      ? (segment: DiffSegment, index: number): ReactNode => (
+          <IconButton
+            size="sm"
+            variant="ghost"
+            disabled={busy}
+            label={acceptSegmentLabel(segment)}
+            icon={<Check aria-hidden="true" />}
+            onClick={() => onAcceptSegment(index)}
+            className="align-middle"
+          />
+        )
+      : undefined;
 
   return (
     <section
@@ -84,15 +132,15 @@ export function DiffView({
         <div className="flex min-w-0 flex-col gap-1.5">
           <p className="text-label text-text-tertiary">{messages.beforeLabel}</p>
           <p className="text-body-md text-text-secondary whitespace-pre-wrap">
-            {before.map((segment) =>
+            {before.map(({ segment, index }) =>
               segment.operation === 'removed' ? (
-                <del
-                  key={segment.id}
-                  className="bg-destructive-bg text-destructive-fg decoration-destructive-border"
-                >
-                  <VisuallyHidden>{messages.removedAnnotation}</VisuallyHidden>
-                  {segment.text}
-                </del>
+                <span key={segment.id}>
+                  <del className="bg-destructive-bg text-destructive-fg decoration-destructive-border">
+                    <VisuallyHidden>{messages.removedAnnotation}</VisuallyHidden>
+                    {segment.text}
+                  </del>
+                  {perSegment?.(segment, index)}
+                </span>
               ) : (
                 <span key={segment.id}>{segment.text}</span>
               ),
@@ -103,15 +151,15 @@ export function DiffView({
         <div className="flex min-w-0 flex-col gap-1.5">
           <p className="text-label text-text-tertiary">{messages.afterLabel}</p>
           <p className="text-body-md text-text-primary whitespace-pre-wrap">
-            {after.map((segment) =>
+            {after.map(({ segment, index }) =>
               segment.operation === 'added' ? (
-                <ins
-                  key={segment.id}
-                  className="bg-success-bg text-success-fg decoration-success-border"
-                >
-                  <VisuallyHidden>{messages.addedAnnotation}</VisuallyHidden>
-                  {segment.text}
-                </ins>
+                <span key={segment.id}>
+                  <ins className="bg-success-bg text-success-fg decoration-success-border">
+                    <VisuallyHidden>{messages.addedAnnotation}</VisuallyHidden>
+                    {segment.text}
+                  </ins>
+                  {perSegment?.(segment, index)}
+                </span>
               ) : (
                 <span key={segment.id}>{segment.text}</span>
               ),

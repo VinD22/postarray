@@ -278,6 +278,19 @@ export interface BulkImportWorkflowOutput {
  * row is the receipt and the unique constraint on `(asset, preset key)` already
  * makes a retry converge instead of duplicating.
  */
+/** What the scan workflow receives. Ids only; the bytes are read by the activity. */
+export interface MediaScanWorkflowInput {
+  readonly ctx: ActivityContext;
+  readonly mediaAssetId: string;
+}
+
+export interface MediaScanWorkflowOutput {
+  readonly mediaAssetId: string;
+  readonly scanState: string;
+  /** An i18n key. Null when the asset passed with nothing to say. */
+  readonly noteKey: string | null;
+}
+
 export interface MediaDerivativeWorkflowInput {
   readonly ctx: ActivityContext;
   readonly mediaAssetId: string;

@@ -4,6 +4,7 @@ import type {
   DataExportWorkflowInput,
   PublishWorkflowInput,
   SchedulerPort,
+  SchedulerKind,
 } from '../types';
 
 import { systemClock } from './clock';
@@ -78,6 +79,10 @@ export class InMemoryScheduler implements SchedulerPort {
   readonly dataDeletions = new Map<string, RecordedDataDeletion>();
   readonly signals: { jobId: string; signal: string }[] = [];
   constructor(_clock: Clock = systemClock) {}
+
+  describeKind(): SchedulerKind {
+    return 'memory';
+  }
 
   async schedulePublish(input: {
     readonly jobId: string;

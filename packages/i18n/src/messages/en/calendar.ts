@@ -1,5 +1,28 @@
 /** Calendar, queue, action center and approvals. */
 export const calendarMessages = {
+  'scheduler.title': 'Your week, at a glance.',
+  'scheduler.description': 'Plan posts across projects. See what is next and what needs you.',
+  'scheduler.demoTitle': 'Try the scheduler',
+  'scheduler.demoNote': 'Sample workspace. Try moving a post. Nothing here publishes.',
+  'scheduler.openApp': 'Open your scheduler',
+  'scheduler.reset': 'Reset sample',
+  'scheduler.move': 'Move to tomorrow',
+  'scheduler.projectOne': 'Northbound Studio',
+  'scheduler.projectTwo': 'Fieldwork Coffee',
+  'scheduler.sampleOne': 'A first look at our new collection',
+  'scheduler.sampleTwo': 'Behind the scenes at the studio',
+  'scheduler.sampleThree': 'Meet your morning ritual',
+  'scheduler.sampleFour': 'This week, in a few good moments',
+  'scheduler.emptyDay': 'Room for something good',
+  'scheduler.filters': 'More filters',
+  'scheduler.sampleLabel': 'Interactive sample',
+  'scheduler.daySummary': '{count, plural, =0 {No posts} one {# post} other {# posts}}',
+  'scheduler.homeTitle': 'Make something worth sharing.',
+  'scheduler.homeDescription': 'Connect an account, plan your week, and keep every project moving.',
+  'scheduler.connect': 'Connect accounts',
+  'scheduler.plan': 'Plan your week',
+  'scheduler.demoShort': 'Sample workspace. Explore freely. Nothing publishes.',
+
   'calendar.title': 'Calendar',
   'calendar.view.day': 'Day',
   'calendar.view.week': 'Week',
@@ -73,6 +96,8 @@ export const calendarMessages = {
     'The main post published, but a follow up item for {account} failed.',
   'actionCenter.item.analyticsStale': 'Analytics for {account} have not updated since {date}.',
   'actionCenter.item.rssStalled': 'The feed {name} has not returned a valid item since {date}.',
+  'actionCenter.item.mediaScanStuck':
+    'A file uploaded on {date} has not finished its safety check, so it cannot be published yet.',
   'actionCenter.item.webhookFailing':
     'Deliveries to {endpoint} have failed {count, plural, one {# time} other {# times}} in a row.',
   'actionCenter.item.usageBalance':
@@ -114,6 +139,8 @@ export const calendarMessages = {
   'approval.decision.approved': 'Approval recorded. This version can move to scheduling.',
   'approval.decision.changesRequested': 'Changes requested. The post returned to draft.',
   'approval.decision.rejected': 'Rejection recorded. The post returned to draft.',
+  'approval.next.scheduleNow': 'Schedule now',
+  'approval.next.revise': 'Open post to revise',
   'approval.changed.title': 'The post changed after this request',
   'approval.changed.body':
     'This screen is showing a newer version. Do not decide this request. Ask the author to submit it again.',

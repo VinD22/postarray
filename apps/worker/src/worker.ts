@@ -14,6 +14,7 @@ import { NativeConnection, Worker, type WorkerOptions } from '@temporalio/worker
 import { createActivities, type WorkerGateway } from './activities/index';
 import type { WorkerActivities } from './activities/types';
 import { InlineScheduler } from './fallback/inline-scheduler';
+import { schedulerFallbackAllowed } from '@relay/runtime';
 import type { WorkflowLog } from './runtime/types';
 import { nowMs, nowIso } from './runtime/clock';
 
@@ -143,7 +144,10 @@ export async function startWorker(options: WorkerStartOptions): Promise<RunningW
   });
   const taskQueue = config.temporal.taskQueue;
   const capabilities = detectCapabilities(config);
-  const allowFallback = config.core.isProduction ? false : (options.allowInlineFallback ?? true);
+  // Not `isProduction`: a staging box or a container started without NODE_ENV
+  // is not a laptop, and the inline scheduler keeps no durable history and no
+  // cross-process deduplication. See `schedulerFallbackAllowed`.
+  const allowFallback = schedulerFallbackAllowed(config) && (options.allowInlineFallback ?? true);
 
   const checks: HealthCheck[] = [];
 
@@ -165,7 +169,7 @@ export async function startWorker(options: WorkerStartOptions): Promise<RunningW
     const scheduler = new InlineScheduler({
       activities,
       log: toWorkflowLog(logger),
-      isProduction: config.core.isProduction,
+      permitted: true,
       reason: failure ?? 'TEMPORAL_ADDRESS is not set',
     });
     scheduler.start();

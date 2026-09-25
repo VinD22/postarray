@@ -87,6 +87,29 @@ describe('browser core resource contracts', () => {
     );
   });
 
+  it('carries the selected capacity tier to hosted checkout', async () => {
+    await billingApi.createCheckout(
+      {
+        interval: 'annual',
+        returnUrl: 'https://app.example.test/settings/billing',
+        tier: 'relay_studio',
+      },
+      'idem-studio',
+    );
+    expect(callMock).toHaveBeenCalledWith(
+      '/billing/checkout',
+      expect.objectContaining({
+        body: {
+          interval: 'annual',
+          successUrl: 'https://app.example.test/settings/billing',
+          tier: 'relay_studio',
+        },
+        idempotencyKey: 'idem-studio',
+      }),
+      expect.any(Function),
+    );
+  });
+
   it('uses canonical billing and audit routes', async () => {
     await billingApi.getState();
     await billingApi.getUsage();

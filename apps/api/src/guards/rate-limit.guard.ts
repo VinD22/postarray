@@ -127,10 +127,11 @@ export class RateLimitGuard implements CanActivate {
     const windowIndex = Math.floor(now.getTime() / (rule.windowSeconds * 1000));
     const counterKey = `relay:ratelimit:${key}:${windowIndex}`;
 
-    let used = 0;
-    for (let unit = 0; unit < cost; unit += 1) {
-      used = await this.kv.increment(counterKey, { ttlSeconds: rule.windowSeconds * 2 });
-    }
+    // One round trip whatever the cost. Charging a cost of ten used to mean
+    // ten Redis calls on the request the limiter exists to make cheap.
+    const used = await this.kv.incrementBy(counterKey, cost, {
+      ttlSeconds: rule.windowSeconds * 2,
+    });
 
     const windowEndsInSeconds =
       rule.windowSeconds - Math.floor((now.getTime() / 1000) % rule.windowSeconds);

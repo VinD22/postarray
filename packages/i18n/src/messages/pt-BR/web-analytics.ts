@@ -308,7 +308,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'Um link rastreado é um URL curto Post Array redirecionado, para que você possa ver os cliques mesmo quando uma plataforma não relata nenhum. O destino original nunca é alterado sem uma entrada de auditoria.',
   'analytics.links.emptyExample':
-    'Exemplo: relay.to/a7Kq2 redireciona para acme.com/blog/launch com campanha q3-launch.',
+    'Exemplo: pa.link/a7Kq2 redireciona para acme.com/blog/launch com campanha q3-launch.',
   'analytics.links.table.caption':
     'Links rastreados neste espaço de trabalho e suas contagens de cliques primários.',
   'analytics.links.campaign': 'Campanha',

@@ -48,6 +48,7 @@ export function createRefusingServices(): Services {
       list: page,
       get: refuse('project'),
       create: refuse('project'),
+      updateConnections: refuse('project'),
       update: refuse('project'),
       archive: refuse('project'),
       delete: refuse('project'),
@@ -88,6 +89,7 @@ export function createRefusingServices(): Services {
       freezeVersion: refuse('content_version'),
       preview: refuse('content'),
       delete: refuse('content'),
+      saveComposite: refuse('content'),
     },
     validation: { validate: refuse('content') },
     approvals: {
@@ -132,10 +134,16 @@ export function createRefusingServices(): Services {
     },
     publishing: {
       publishNow: refuse('content'),
+      previewCommit: refuse('content'),
       getJob: refuse('job'),
       retryTarget: refuse('job'),
     },
-    receipts: { get: refuse('receipt'), listForJob: refuse('job'), listRecent: page },
+    receipts: {
+      get: refuse('receipt'),
+      listForJob: refuse('job'),
+      listRecent: page,
+      getContentPublication: refuse('content_item'),
+    },
     agentConfirmations: {
       request: refuse('agent_confirmation'),
       get: refuse('agent_confirmation'),
@@ -150,6 +158,7 @@ export function createRefusingServices(): Services {
     media: {
       createUploadUrl: refuse('media'),
       finalizeUpload: refuse('media'),
+      getReadUrls: refuse('media'),
       acceptDirectUpload: refuse('media'),
       readObjectForDownload: refuse('media'),
       importFromUrl: refuse('media'),
@@ -217,6 +226,32 @@ export function createRefusingServices(): Services {
       schedulePost: refuse('assistant'),
       requestApproval: refuse('assistant'),
     },
+    aiSuggestions: {
+      suggest: refuse('suggestion'),
+      review: refuse('suggestion'),
+      accept: refuse('suggestion'),
+      bestTime: refuse('suggestion'),
+    },
+    insights: {
+      latestDigest: () => Promise.resolve(null),
+      generateDigest: refuse('insight'),
+      list: () => Promise.resolve([]),
+      postFeedback: refuse('insight'),
+      whatWorks: refuse('insight'),
+      digestSettings: () => Promise.resolve({ emailEnabled: true, canChange: false }),
+      updateDigestSettings: refuse('insight'),
+      postExperiment: () => Promise.resolve(null),
+      openExperiments: () => Promise.resolve([]),
+      tagExperiment: refuse('insight'),
+    },
+    mediaAnalysis: {
+      settings: () => Promise.resolve({ imageAnalysisEnabled: false, canChange: false }),
+      updateSettings: refuse('media_analysis'),
+      analyze: refuse('media_analysis'),
+      get: () => Promise.resolve(null),
+      checks: refuse('media_analysis'),
+      summariesFor: () => Promise.resolve([]),
+    },
     growth: {
       getBusinessProfile: () => Promise.resolve(null),
       upsertBusinessProfile: refuse('profile'),
@@ -250,6 +285,9 @@ export function createRefusingServices(): Services {
       listDeliveries: page,
       redeliver: refuse('delivery'),
       emit: () => Promise.resolve([]),
+    },
+    domainEvents: {
+      dispatch: () => Promise.resolve(),
     },
     credentials: {
       status: refuse('connection'),
@@ -309,7 +347,10 @@ export function createRefusingServices(): Services {
     },
     // Worker-only. The REST API never reaches it; it is present so adding a
     // worker-facing method still breaks this file at compile time.
-    workerMedia: { produceDerivative: refuse('media_derivative') },
+    workerMedia: {
+      produceDerivative: refuse('media_derivative'),
+      scanMediaAsset: refuse('media_asset'),
+    },
     workerBulkImports: {
       validate: refuse('bulk_import'),
       applyRows: refuse('bulk_import'),
@@ -377,6 +418,10 @@ export function createRefusingServices(): Services {
     },
     workerInsights: {
       generatePostFeedback: refuse('insight'),
+    },
+    workerDigests: {
+      buildWeeklyDigest: refuse('insight'),
+      sendWeeklyDigestEmail: refuse('insight'),
     },
     health: refuseHealth(),
   };

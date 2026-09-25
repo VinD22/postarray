@@ -78,6 +78,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Walang mga account tungkol dito {provider} maaaring konektado ang pag-login. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'Walang account mula sa {provider} login na ito ang maaaring ikonekta.',
+  'connection.oauth.claimFailed': 'Hindi maikonekta ang mga account na iyon',
+  'connection.oauth.claimFailedAction':
+    'Walang nabago sa platform. Subukan ulit, at kung patuloy itong nabibigo, simulan muli ang koneksyon.',
   'connection.oauth.canceled': 'Kinansela ang koneksyon noong {provider}. Walang nagbago.',
   'connection.oauth.alreadyConnected': '{account} ay nakakonekta na sa workspace na ito.',
   'connection.oauth.connectedToAnotherWorkspace':

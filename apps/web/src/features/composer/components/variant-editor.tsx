@@ -9,12 +9,12 @@
  */
 
 import { useState, type ReactNode } from 'react';
-import { RotateCcw } from 'lucide-react';
+import { ChevronDown, RotateCcw } from 'lucide-react';
 import { Button } from '@relay/design-system/primitives';
 import { Notice } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
-import { formatBytes, formatDuration, formatRelativeTime } from '@relay/i18n';
+import { formatByteLimit, formatDuration, formatRelativeTime } from '@relay/i18n';
 import { resolveVariant, type OverridableVariantField } from '@relay/contracts';
 
 import { useComposer } from '../composer-context';
@@ -23,6 +23,8 @@ import { MediaStrip } from './media-strip';
 import { NativeSettings } from './native-settings';
 import { fieldLabel, ResetToMasterDialog } from './reset-to-master-dialog';
 import { SequencePanel } from './sequence-panel';
+import { SuggestBestTime } from './suggest-best-time';
+import { SuggestMenu } from './suggest-menu';
 import { PROVIDER_LABEL } from './provider-identity';
 import type { ResolvedEntity } from './entity-search-field';
 import type { TargetSummary } from '../types';
@@ -133,6 +135,7 @@ export function VariantEditor({
         value={resolved.values.body}
         placeholder={t.full('composer.master.placeholder')}
         onChange={(value) => override('body', value)}
+        toolbar={<SuggestMenu connectionId={summary.connectionId} body={resolved.values.body} />}
         counters={[
           {
             connectionId: summary.connectionId,
@@ -142,11 +145,19 @@ export function VariantEditor({
         ]}
       />
 
-      <section aria-labelledby="limits-heading" className="flex flex-col gap-1">
-        <h3 id="limits-heading" className="text-label text-text-secondary">
-          {t.full('composerWeb.limits.heading', { account: summary.account.displayName })}
-        </h3>
-        <ul className="text-body-sm text-text-tertiary flex flex-col gap-0.5">
+      <SuggestBestTime connectionId={summary.connectionId} />
+
+      <details className="border-border-subtle bg-surface-sunken group rounded-md border">
+        <summary className="text-label text-text-secondary flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 font-medium marker:content-none [&::-webkit-details-marker]:hidden">
+          <span>
+            {t.full('composerWeb.limits.heading', { account: summary.account.displayName })}
+          </span>
+          <ChevronDown
+            aria-hidden="true"
+            className="text-text-tertiary size-4 transition-transform duration-(--duration-fast) group-open:rotate-180"
+          />
+        </summary>
+        <ul className="border-border-subtle text-body-sm text-text-tertiary flex flex-col gap-1 border-t px-3 py-3">
           <li>{t.full('composerWeb.limits.text', { limit: snapshot.text.maxLength })}</li>
           {snapshot.text.linkCounting.mode === 'fixed' &&
           snapshot.text.linkCounting.charactersPerLink !== null ? (
@@ -174,7 +185,7 @@ export function VariantEditor({
           {media.maxBytesByKind.image == null ? null : (
             <li className="tabular-nums">
               {t.full('composerWeb.limits.fileSize', {
-                size: formatBytes(t.locale, media.maxBytesByKind.image),
+                size: formatByteLimit(t.locale, media.maxBytesByKind.image),
               })}
             </li>
           )}
@@ -188,7 +199,7 @@ export function VariantEditor({
             })}
           </li>
         </ul>
-      </section>
+      </details>
 
       <MediaStrip
         assets={assets}

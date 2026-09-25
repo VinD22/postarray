@@ -209,6 +209,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     "Il piano base da 29 $ include 3 progetti attivi. Un'area di lavoro può avere diritto fino a 20 senza creare un altro account.",
   'settings.ui.projects.capacitySummary': '{used} di {limit}',
+  'settings.ui.projects.atLimitAction': 'Vedi i piani',
   'settings.ui.projects.atLimitTitle': "Quest'area di lavoro ha usato ogni spazio per progetti",
   'settings.ui.projects.atLimitBody':
     "Archivia un progetto inattivo o cambia il diritto dell'area di lavoro prima di aggiungerne un altro. Il limite attuale è {limit}.",

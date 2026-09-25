@@ -4,6 +4,10 @@ export const growthMessages = {
   'growth.subtitle':
     'Prováděný plán sestavený z faktů, které potvrdíte. Navrhuje práci. Nikdy nepublikuje sám o sobě.',
 
+  'growth.profile.noProject':
+
+    'Před uložením profilu vyberte projekt. Firemní profil patří k jednomu projektu.',
+
   'growth.profile.title': 'Profil firmy',
   'growth.profile.intro':
     'Odpovězte na ně jednou. Vše, co poradce navrhuje, je založeno na tom, co zde potvrdíte.',

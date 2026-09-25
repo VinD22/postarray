@@ -65,6 +65,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'ไม่สามารถเชื่อมต่อบัญชีในการเข้าสู่ระบบ {provider} นี้ {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'ไม่มีบัญชีจากการเข้าสู่ระบบ {provider} นี้ที่เชื่อมต่อได้',
+  'connection.oauth.claimFailed': 'เชื่อมต่อบัญชีเหล่านั้นไม่ได้',
+  'connection.oauth.claimFailedAction':
+    'ไม่มีอะไรเปลี่ยนแปลงบนแพลตฟอร์ม ลองอีกครั้ง และหากยังล้มเหลวให้เริ่มการเชื่อมต่อใหม่',
   'connection.oauth.canceled': 'การเชื่อมต่อถูกยกเลิกเมื่อ {provider} ไม่มีอะไรเปลี่ยนแปลง',
   'connection.oauth.alreadyConnected': '{account} เชื่อมต่อกับพื้นที่ทำงานนี้แล้ว',
   'connection.oauth.connectedToAnotherWorkspace':

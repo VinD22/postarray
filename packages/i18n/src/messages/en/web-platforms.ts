@@ -174,6 +174,10 @@ export const webPlatformsMessages = {
     'The longest body text {platform} accepts on one post through its official API, read from the same generated dataset the preflight checker measures a draft against.',
   'web.specs.constraint.characterLimit.description':
     'The body text ceiling {platform} enforces on one post, with the official document the number came from and the date a person read it.',
+  'web.specs.constraint.characterLimit.answerTitle':
+    '{platform} character limit: {count, plural, one {# character} other {# characters}}',
+  'web.specs.constraint.characterLimit.answerSentence':
+    '{platform} allows {count, plural, one {# character} other {# characters}} of body text on one post (verified {verified}).',
 
   'web.specs.constraint.titleLimit.name': 'Title length limit',
   'web.specs.constraint.titleLimit.title': '{platform} title length limit',
@@ -181,6 +185,10 @@ export const webPlatformsMessages = {
     'The longest title {platform} accepts in the separate title field its API exposes, read from the same generated dataset the preflight checker measures a draft against.',
   'web.specs.constraint.titleLimit.description':
     'The title field ceiling {platform} enforces, with the official document the number came from and the date a person read it.',
+  'web.specs.constraint.titleLimit.answerTitle':
+    '{platform} title length limit: {count, plural, one {# character} other {# characters}}',
+  'web.specs.constraint.titleLimit.answerSentence':
+    '{platform} allows {count, plural, one {# character} other {# characters}} in the title field (verified {verified}).',
 
   'web.specs.constraint.imageSize.name': 'Image size limit',
   'web.specs.constraint.imageSize.title': '{platform} image size limit',
@@ -188,6 +196,9 @@ export const webPlatformsMessages = {
     'The largest still image file {platform} accepts through its official API, read from the same generated dataset the preflight checker measures a file against.',
   'web.specs.constraint.imageSize.description':
     'The largest image file {platform} accepts, with the official document the number came from and the date a person read it.',
+  'web.specs.constraint.imageSize.answerTitle': '{platform} image size limit: {size}',
+  'web.specs.constraint.imageSize.answerSentence':
+    '{platform} accepts image files up to {size} (verified {verified}).',
 
   'web.specs.constraint.videoSize.name': 'Video size limit',
   'web.specs.constraint.videoSize.title': '{platform} video size limit',
@@ -195,6 +206,9 @@ export const webPlatformsMessages = {
     'The largest video file {platform} accepts through its official API, read from the same generated dataset the preflight checker measures a file against.',
   'web.specs.constraint.videoSize.description':
     'The largest video file {platform} accepts, with the official document the number came from and the date a person read it.',
+  'web.specs.constraint.videoSize.answerTitle': '{platform} video size limit: {size}',
+  'web.specs.constraint.videoSize.answerSentence':
+    '{platform} accepts video files up to {size} (verified {verified}).',
 
   'web.specs.constraint.videoLength.name': 'Video length limit',
   'web.specs.constraint.videoLength.title': '{platform} video length limit',
@@ -202,6 +216,9 @@ export const webPlatformsMessages = {
     'How long a video posted to {platform} through its official API is allowed to run, read from the same generated dataset the preflight checker measures a file against.',
   'web.specs.constraint.videoLength.description':
     'How long a video posted to {platform} may run, with the official document the number came from and the date a person read it.',
+  'web.specs.constraint.videoLength.answerTitle': '{platform} video length limit: {max}',
+  'web.specs.constraint.videoLength.answerSentence':
+    'A video posted to {platform} can run up to {max} (verified {verified}).',
 
   'web.specs.constraint.imageCount.name': 'Images per post',
   'web.specs.constraint.imageCount.title': '{platform} images per post',
@@ -209,6 +226,10 @@ export const webPlatformsMessages = {
     'How many images {platform} accepts on a single post through its official API, read from the same generated dataset the preflight checker measures a draft against.',
   'web.specs.constraint.imageCount.description':
     'How many images fit on one {platform} post, with the official document the number came from and the date a person read it.',
+  'web.specs.constraint.imageCount.answerTitle':
+    '{platform} images per post: {count, plural, one {# image} other {# images}}',
+  'web.specs.constraint.imageCount.answerSentence':
+    '{platform} accepts up to {count, plural, one {# image} other {# images}} on one post (verified {verified}).',
 
   'web.specs.constraint.altTextLimit.name': 'Alternative text limit',
   'web.specs.constraint.altTextLimit.title': '{platform} alt text limit',
@@ -216,6 +237,10 @@ export const webPlatformsMessages = {
     'The longest alternative text {platform} accepts on an attached image through its official API, read from the same generated dataset the preflight checker measures a draft against.',
   'web.specs.constraint.altTextLimit.description':
     'The alternative text ceiling {platform} enforces on an attached image, with the official document the number came from and the date a person read it.',
+  'web.specs.constraint.altTextLimit.answerTitle':
+    '{platform} alt text limit: {count, plural, one {# character} other {# characters}}',
+  'web.specs.constraint.altTextLimit.answerSentence':
+    '{platform} allows {count, plural, one {# character} other {# characters}} of alternative text on an attached image (verified {verified}).',
 
   'web.specs.constraint.fileTypes.name': 'Accepted file types',
   'web.specs.constraint.fileTypes.title': '{platform} accepted file types',
@@ -223,6 +248,9 @@ export const webPlatformsMessages = {
     'The media types {platform} accepts through its official API, read from the same generated dataset the preflight checker measures a file against.',
   'web.specs.constraint.fileTypes.description':
     'Which media types {platform} accepts, with the official document the list came from and the date a person read it.',
+  'web.specs.constraint.fileTypes.answerTitle': '{platform} accepted file types: {items}',
+  'web.specs.constraint.fileTypes.answerSentence':
+    '{platform} accepts these media types: {items} (verified {verified}).',
 
   /* ---------------------------------------------------------------------- */
   /* Image dimensions cluster (/specs/dimensions)                           */
@@ -282,4 +310,51 @@ export const webPlatformsMessages = {
   'web.specs.dimensions.basis.recommended': 'Recommended by the platform',
   'web.specs.dimensions.basis.rendered': 'The size it is displayed at',
   'web.specs.dimensions.basis.safeArea': 'Area that is never cropped',
+
+  /* One page per recorded surface (/specs/dimensions/<platform>/<surface>). */
+  'web.specs.dimensions.surface.feedPhotoTallest.title':
+    '{platform} tallest feed photo size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.feedPhotoTallest.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the tallest feed photo (verified {verified}).',
+  'web.specs.dimensions.surface.feedPhotoWidest.title':
+    '{platform} widest feed photo size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.feedPhotoWidest.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the widest feed photo (verified {verified}).',
+  'web.specs.dimensions.surface.reelCover.title':
+    '{platform} reel cover size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.reelCover.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the reel cover (verified {verified}).',
+  'web.specs.dimensions.surface.videoThumbnail.title':
+    '{platform} video thumbnail size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.videoThumbnail.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the video thumbnail (verified {verified}).',
+  'web.specs.dimensions.surface.channelBanner.title':
+    '{platform} channel banner size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.channelBanner.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the channel banner (verified {verified}).',
+  'web.specs.dimensions.surface.channelBannerSafeArea.title':
+    '{platform} channel banner safe area size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.channelBannerSafeArea.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the channel banner safe area (verified {verified}).',
+  'web.specs.dimensions.surface.serverBanner.title':
+    '{platform} server banner size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.serverBanner.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the server banner (verified {verified}).',
+  'web.specs.dimensions.surface.headerImage.title':
+    '{platform} header image size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.headerImage.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the header image (verified {verified}).',
+  'web.specs.dimensions.surface.pageCoverPhoto.title':
+    '{platform} page cover photo size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.pageCoverPhoto.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the page cover photo (verified {verified}).',
+  'web.specs.dimensions.surface.profilePicture.title':
+    '{platform} profile picture size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.profilePicture.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the profile picture (verified {verified}).',
+  'web.specs.dimensions.surface.videoWatermark.title':
+    '{platform} video watermark size: {width} x {height} pixels',
+  'web.specs.dimensions.surface.videoWatermark.sentence':
+    '{platform} states {basis, select, minimum {a minimum of} maximum {a maximum of} recommended {a recommended size of} rendered {a display size of} other {a never cropped area of}} {width} x {height} pixels for the video watermark (verified {verified}).',
+  'web.specs.dimensions.surface.otherTitle': 'Other image sizes recorded for {platform}',
 } as const;

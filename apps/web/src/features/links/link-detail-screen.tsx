@@ -9,11 +9,11 @@ import {
   Notice,
   SkeletonText,
 } from '@relay/design-system/patterns';
+import { LineChart } from '@relay/design-system/charts';
 import { Button, Code, Separator } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
-import { TrendChart } from '@/features/analytics/components/trend-chart';
 import { deviceLabelKey, referrerLabelKey } from '@/features/analytics/labels';
 import { useValueFormat } from '@/features/analytics/use-value-format';
 
@@ -294,29 +294,45 @@ export function LinkDetailScreen({
               ]}
             />
 
-            <TrendChart
-              unit="count"
-              title={t('analytics.links.series.title')}
-              summary={t('analytics.chart.summary', {
-                metric: t('analytics.links.series.clicks'),
-                account: link.slug,
-                count: measurement.series.length,
-                start: format.date(measurement.periodStart),
-                end: format.date(measurement.periodEnd),
-              })}
+            {/*
+              The shared chart kit, which replaced 464 lines of hand-rolled SVG
+              that had no axis, no tick labels and a tooltip nobody could reach
+              without a mouse. Every rule this chart has to obey lives in the
+              kit now, so the next chart in the product cannot skip them.
+            */}
+            <LineChart
               series={[
                 {
                   id: 'requests',
-                  normalizedName: 'link_clicks',
-                  unit: 'count',
                   label: t('analytics.links.series.requests'),
                   points: measurement.series.map((point) => ({
-                    bucketStart: point.bucketStart,
-                    bucketSeconds: point.bucketSeconds,
-                    value: point.requests,
+                    t: point.bucketStart,
+                    v: point.requests,
                   })),
                 },
               ]}
+              formatX={(iso) => format.date(iso)}
+              formatY={(value) => format.count(value)}
+              messages={{
+                caption: t('analytics.links.series.title'),
+                ariaLabel: t('analytics.chart.summary', {
+                  metric: t('analytics.links.series.clicks'),
+                  account: link.slug,
+                  count: measurement.series.length,
+                  start: format.date(measurement.periodStart),
+                  end: format.date(measurement.periodEnd),
+                }),
+                viewAsTable: t('analytics.chart.showTable'),
+                tableCaption: t('analytics.chart.tableCaption'),
+                xHeader: t('analytics.chart.columnPeriod'),
+                unavailable: t('analytics.value.unavailable'),
+                gapLegend: t('analytics.chart.gapExplained'),
+                pointsLabel: t('analytics.chart.points', {
+                  metric: t('analytics.links.series.requests'),
+                  count: measurement.series.length,
+                }),
+                empty: t('analytics.chart.empty'),
+              }}
             />
 
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

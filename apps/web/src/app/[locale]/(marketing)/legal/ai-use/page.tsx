@@ -32,6 +32,7 @@ export default async function AiUsePage({
         'web.legal.ai.features.text',
         'web.legal.ai.features.translation',
         'web.legal.ai.features.feedback',
+        'web.legal.ai.features.imageAnalysis',
       ],
       content: (
         <p className="text-body-lg text-text-secondary max-w-[70ch] leading-[1.68]">
@@ -44,6 +45,7 @@ export default async function AiUsePage({
       titleKey: 'web.legal.ai.data.title',
       bodyKeys: [
         'web.legal.ai.data.sent',
+        'web.legal.ai.data.images',
         'web.legal.ai.data.training',
         'web.legal.ai.data.optOut',
       ],
@@ -71,7 +73,11 @@ export default async function AiUsePage({
     {
       id: 'no-media',
       titleKey: 'web.legal.ai.noMedia.title',
-      bodyKeys: ['web.legal.ai.noMedia.body', 'web.legal.ai.noMedia.caveat'],
+      bodyKeys: [
+        'web.legal.ai.noMedia.analysisNote',
+        'web.legal.ai.noMedia.body',
+        'web.legal.ai.noMedia.caveat',
+      ],
       content: (
         <p>
           <TextLink href={ROUTES.toolRadar}>{t.t('web.meta.toolRadar.title')}</TextLink>

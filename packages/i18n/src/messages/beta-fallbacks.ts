@@ -86,6 +86,11 @@ export const LOCALE_FILLED_PREFIXES = [
 ] as const;
 
 export const BETA_ENGLISH_FALLBACK_PREFIXES = [
+  'scheduler.',
+  // The commit preview's escalation and blocker sentences (2026-09-23). Each
+  // one is a warning a person acknowledges before a post goes out, so beta
+  // locales keep the reviewed English until a person translates it.
+  'web.commitPreview.',
   // Weekly digest copy is translated for every active launch locale. It still
   // remains subject to the normal human review gate, but missing keys are no
   // longer allowed as an English fallback.
@@ -112,6 +117,30 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // did not. Beta locales keep the reviewed English source until a person
   // translates it.
   'composerWeb.commitFailed.',
+  // The composer's Suggest menu, Review button and posting time hint
+  // (2026-09-23). Each sentence separates a model's proposal from something
+  // that happened, or says a check did not run rather than passed. A machine
+  // translation that blurred "nothing changes until you use it" would leave
+  // somebody believing their draft was rewritten. Beta locales keep the
+  // reviewed English source until a person translates it.
+  'web.suggest.',
+  // Visible questions on the schedule and use case pages (2026-09-24). Each
+  // answer says nothing publishes yet and that posting is official API only.
+  // Beta locales keep the reviewed English source until a person translates it.
+  'web.pageFaq.',
+  // Opt-in image analysis (2026-09-23): the settings switch and the pre-check
+  // warnings. Each sentence either states exactly what is sent to a model or
+  // is a consent and rights reminder, and a machine translation that softened
+  // "never creates or edits them" would misstate what the product does. Beta
+  // locales keep the reviewed English source until a person translates it.
+  'settings.ui.ai.',
+  'mediaAnalysis.',
+  // After publishing (2026-09-24): the per-post verdicts, the one next test,
+  // failure explanations, what works for you and the weekly summary email.
+  // Each sentence separates an association from a cause or says a number is
+  // unavailable rather than zero. Beta locales keep the reviewed English
+  // source until a person translates it.
+  'insight.',
   // Transactional security and invitation mail stays in reviewed English
   // until each beta locale has a human-reviewed delivery template.
   'email.',
@@ -167,6 +196,8 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // has a human translation.
   'shell.project.',
   'web.connection.project',
+  'web.connection.incident.expiringSoon',
+  'composer.schedule.confirmPublishTitle',
   'error.project_',
   'settings.ui.projects.',
   'growth.ui.ugc.',
@@ -296,6 +327,76 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
 export const BETA_ENGLISH_FALLBACK_KEYS = [
+  // English-first agency navigation and motion controls (2026-09-19). These
+  // exact keys use the normal English fallback until translation review.
+  'shell.context.description',
+  'shell.context.search',
+  'shell.context.results',
+  'shell.context.projectDetail',
+  'shell.context.workspaceDetail',
+  'shell.context.empty',
+  // Drop-anywhere upload in the app shell: reviewed English until translated.
+  'shell.drop.title',
+  'shell.drop.body',
+  'shell.drop.uploading',
+  'shell.drop.failed',
+  'shell.drop.unsupported',
+  'palette.group.projects',
+  'web.motion.pause',
+  'web.motion.play',
+  // Composer composite save, inline media details and degraded channels
+  // (2026-09-23). Reviewed English until translation review.
+  'composerWeb.autosave.conflictAnonymous',
+  'composerWeb.autosave.conflictKeepServer',
+  'composerWeb.media.detailsTitle',
+  'composerWeb.media.detailsBody',
+  'composerWeb.media.scanFailed',
+  'composerWeb.channels.unavailableTitle',
+  'composerWeb.channels.unavailableBody',
+  // Consequence-labelled primary action and readiness summary (2026-09-23).
+  'composerWeb.actionBar.publishToCount',
+  'composerWeb.actionBar.scheduleFor',
+  'composerWeb.readiness.summary',
+  'mediaLib.detail.useInPost',
+
+  // Added with the analytics overview rebuild: a working compare-to-previous
+  // query, a per-channel rollup table, a series chart and CSV export. Reviewed
+  // English until a reviewer covers them in each locale.
+  'analytics.definition.term.availability',
+  'analytics.table.provider',
+  'analytics.table.value',
+  'analytics.table.observedAt',
+  'analytics.filter.customFrom',
+  'analytics.filter.customTo',
+  'analytics.export.csv',
+  'analytics.export.started',
+  'analytics.export.nothing',
+  'analytics.channels.title',
+  'analytics.channels.intro',
+  'analytics.channels.postsMeasured',
+  'analytics.channels.total',
+  'analytics.channels.unavailableCount',
+  'analytics.channels.notAddable',
+  'analytics.channels.sortBy',
+  'analytics.channels.freshness',
+  'analytics.compare.heading',
+  'analytics.compare.range',
+  'analytics.compare.loading',
+  'analytics.compare.unavailable',
+  'analytics.compare.delta',
+  'analytics.compare.noPrevious',
+  'analytics.chart.selectAccounts',
+  'analytics.chart.caption',
+  'analytics.chart.ariaLabel',
+  'analytics.chart.points',
+  // Added when the experiments screen stopped rendering a variant breakdown
+  // the API has never returned. The screen now states that per-variant
+  // readings are not reported and shows the window and the server's own
+  // conclusion instead. Reviewed English until a reviewer covers each locale.
+  'analytics.experiment.status.collectingNow',
+  'analytics.experiment.windowRange',
+  'analytics.experiment.variantsNotReported',
+  'analytics.experiment.result.associationOnly',
   // Added when `lastVerifiedAt` became nullable so an unverified metric
   // definition stops rendering a fabricated 1970 verification date. Reviewed
   // English until a reviewer covers it in each locale.
@@ -320,6 +421,8 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'settings.projects.disclosureDefaults',
   'settings.projects.localeRules.legal',
   'settings.ui.section.billing',
+  'settings.ui.section.ai',
+  'settings.ui.section.aiSummary',
   'settings.ui.section.billingSummary',
   'nav.projectSwitcher',
   'composerWeb.entity.searchFailed',
@@ -421,8 +524,6 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.creators.job.adapt.body',
   'web.developers.safety.body',
   'web.developers.safety.killSwitch',
-  'web.receipt.partial.retryUnavailable.title',
-  'web.receipt.partial.retryUnavailable.body',
   'validation.capability_unavailable.message',
   'validation.content_kind_unsupported.message',
   'validation.content_kind_not_implemented.message',
@@ -443,6 +544,11 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'approval.decision.approved',
   'approval.decision.changesRequested',
   'approval.decision.rejected',
+  'approval.next.scheduleNow',
+  'approval.next.revise',
+  'error.request_timeout.message',
+  'error.request_timeout.action',
+  'onboarding.compose.fixIssues',
   // Google Business Profile joined the launch cohort after the current
   // translation batch was cut. Its name and its account-role requirement stay
   // on the reviewed English source until each beta locale picks them up.
@@ -454,6 +560,36 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'calendar.drag.handleHint',
   'calendar.drag.overSlot',
   'calendar.drag.dropped',
+  // The post-detail handoff added live job progress, explicit pre-publish
+  // states and an honest demo-mode write error. These sentences tell a person
+  // whether a publish was accepted, paused, canceled, failed or already sent.
+  // Beta locales keep the reviewed English source until a human reviewer can
+  // preserve those distinctions in each language.
+  'error.demo_unavailable.message',
+  'error.demo_unavailable.action',
+  'receipt.timeline.followUpFailed',
+  'web.receipt.notStarted.title',
+  'web.receipt.notStarted.body',
+  'web.receipt.awaitingApproval.title',
+  'web.receipt.awaitingApproval.body',
+  'web.receipt.progress.eyebrow',
+  'web.receipt.progress.queued.title',
+  'web.receipt.progress.queued.body',
+  'web.receipt.progress.working.title',
+  'web.receipt.progress.working.body',
+  'web.receipt.progress.confirming.title',
+  'web.receipt.progress.confirming.body',
+  'web.receipt.progress.held.title',
+  'web.receipt.progress.held.body',
+  'web.receipt.progress.attention.title',
+  'web.receipt.progress.attention.body',
+  'web.receipt.progress.canceled.title',
+  'web.receipt.progress.canceled.body',
+  'web.receipt.progress.recorded',
+  'web.receipt.progress.checked',
+  'web.receipt.progress.sent',
+  'web.receipt.progress.confirmed',
+  'web.receipt.progress.receipt',
   // Pause and resume, Posting Set management and remembered channel selection
   // (A3, A7, A8). All three make precise claims a machine translation is likely
   // to soften: that pausing cannot retract a post that already published, that
@@ -467,6 +603,223 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   // English until a person translates it.
   'web.home.b3.sticker.connectorsFact',
   'web.home.b3.sticker.connectorsSource',
+  // Two screens that were built and never routed: the queue rule editor at
+  // /calendar/queue and Posting Sets at /library/sets. Their loading, error
+  // and no-project copy is new English. It is filed under `web.` rather than
+  // inside `queue.` or `set.`, both of which every active locale has already
+  // translated key for key, so a new key there would read as a translation
+  // regression rather than as new work. Reviewed English until a person
+  // translates it.
+  'web.queue.loading',
+  'web.queue.error.title',
+  'web.queue.error.body',
+  'web.queue.noProject.title',
+  'web.queue.noProject.body',
+  'web.set.loading',
+  'web.set.error.title',
+  'web.set.error.body',
+  'web.set.noProject.title',
+  'web.set.noProject.body',
+  // The same two screens, made honest: a rule list that no longer shows its
+  // empty state while it is still loading, a save error that is now on screen
+  // instead of nowhere, and a confirmation before archiving a rule or a Set.
+  // The consequence sentences are the part most worth a human translator:
+  // each one draws the line between what stops and what carries on exactly as
+  // planned, and a machine translation that blurred the two would describe a
+  // different and more frightening action.
+  'web.queue.rules.loading',
+  'web.queue.rules.loadFailed.title',
+  'web.queue.rules.loadFailed.body',
+  'web.queue.save.failedTitle',
+  'web.queue.save.failedBody',
+  'web.queue.save.announcement',
+  'web.queue.archive.title',
+  'web.queue.archive.body',
+  'web.queue.archive.consequence.proposals',
+  'web.queue.archive.consequence.reserved',
+  'web.queue.archive.consequence.scheduled',
+  'web.queue.archive.confirm',
+  'web.queue.archive.cancel',
+  'web.queue.archive.failedTitle',
+  'web.queue.archive.failedBody',
+  'web.set.archive.title',
+  'web.set.archive.body',
+  'web.set.archive.consequence.picker',
+  'web.set.archive.consequence.existing',
+  'web.set.archive.consequence.restore',
+  'web.set.archive.confirm',
+  'web.set.archive.cancel',
+  'web.set.archive.failedTitle',
+  'web.set.archive.failedBody',
+  // Retrying one failed account on a partially published post. The retry was
+  // built and connected to nothing, and the screen answered every reason it
+  // might not be possible with a single blanket sentence. Each sentence below
+  // either states exactly what a button will publish, to which account, or
+  // states why nothing can be published, and a machine translation that blurred
+  // "the accounts that already published are not touched" would describe an
+  // action that duplicates real posts. Reviewed English until a person
+  // translates it.
+  'web.receipt.retry.action',
+  'web.receipt.retry.confirmTitle',
+  'web.receipt.retry.confirmBody',
+  'web.receipt.retry.consequence.publishes',
+  'web.receipt.retry.consequence.unaffected',
+  'web.receipt.retry.consequence.once',
+  'web.receipt.retry.confirm',
+  'web.receipt.retry.cancel',
+  'web.receipt.retry.started',
+  'web.receipt.retry.failedTitle',
+  'web.receipt.retry.failedBody',
+  'web.receipt.retry.blocked.alreadyPublished',
+  'web.receipt.retry.blocked.noJob',
+  'web.receipt.retry.blocked.inFlight',
+  'web.receipt.retry.blocked.retryScheduled',
+  'web.receipt.retry.blocked.canceled',
+  'web.receipt.retry.blocked.actionRequired',
+  // The approvals index: new English copy, awaiting translation.
+  'web.approvals.index.description',
+  'web.approvals.index.loading',
+  'web.approvals.index.empty.title',
+  'web.approvals.index.empty.body',
+  'web.approvals.index.error.title',
+  'web.approvals.index.error.body',
+  'web.approvals.index.offline.title',
+  'web.approvals.index.offline.body',
+  'web.approvals.index.denied.body',
+  'web.approvals.index.rateLimited.cause',
+  'web.approvals.index.partial.members',
+  'web.approvals.index.partial.more',
+  'web.approvals.index.decidedNote',
+  'web.approvals.index.review',
+  'web.approvals.index.reviewLabel',
+  'web.approvals.index.due',
+  'web.approvals.index.homeLink',
+  // Step three of the growth advisor used to be a dead end: a confirmed
+  // profile and an empty state saying the capability was not implemented,
+  // while the gateway that generates a plan was sitting right there. New
+  // English for the outcome sentences. Reviewed English until translated.
+  'growth.ui.plan.generateAnnouncement',
+  'growth.ui.plan.generateFailedTitle',
+  'growth.ui.plan.generateFailedBody',
+  // The upload safety check. Every uploaded and imported file is verified to
+  // be the type it claims, to decode, and to be within its size limit before
+  // it can be published. These sentences tell a person which of those failed.
+  // Reviewed English until a reviewer covers them in each locale: a mistranslated
+  // "this file was not accepted" is a person re-uploading the same broken file.
+  'media.scan.pending',
+  'media.scan.mime_mismatch',
+  'media.scan.unrecognized_format',
+  'media.scan.decode_failed',
+  'media.scan.too_large',
+  'media.scan.unreadable',
+  'media.scan.scanner_unavailable',
+  // The action-centre row for an upload whose safety check has not finished.
+  // Reviewed English until a reviewer covers it in each locale.
+  'actionCenter.item.mediaScanStuck',
+  'actionCenter.action.openLibrary',
+  // The platform native preview. Every sentence either names a limit the
+  // capability snapshot carries, or says that the picture on screen is our
+  // model of the platform rather than the platform's own rendering. A machine
+  // translation that softened "will not be published" into something vaguer
+  // would leave somebody believing a file went out that never did. Reviewed
+  // English until a reviewer covers them in each locale.
+  'composerWeb.preview.frame',
+  'composerWeb.preview.device.legend',
+  'composerWeb.preview.device.mobile',
+  'composerWeb.preview.device.desktop',
+  'composerWeb.preview.postedNow',
+  'composerWeb.preview.seeMore',
+  'composerWeb.preview.seeLess',
+  'composerWeb.preview.empty',
+  'composerWeb.preview.destination',
+  'composerWeb.preview.titleLabel',
+  'composerWeb.preview.kind.text',
+  'composerWeb.preview.kind.image',
+  'composerWeb.preview.kind.carousel',
+  'composerWeb.preview.kind.video',
+  'composerWeb.preview.kind.short_video',
+  'composerWeb.preview.kind.long_video',
+  'composerWeb.preview.kind.document',
+  'composerWeb.preview.kind.thread',
+  'composerWeb.preview.kindTitle.unsupported',
+  'composerWeb.preview.kindTitle.not_implemented',
+  'composerWeb.preview.kindTitle.requires_review',
+  'composerWeb.preview.kindBody.unsupported',
+  'composerWeb.preview.kindBody.not_implemented',
+  'composerWeb.preview.kindBody.requires_review',
+  'composerWeb.preview.notSent.title',
+  'composerWeb.preview.notSent.body',
+  'composerWeb.preview.notSent.item',
+  'composerWeb.preview.altText.present',
+  'composerWeb.preview.altText.missing',
+  'composerWeb.preview.altText.waived',
+  'composerWeb.preview.media.loading',
+  'composerWeb.preview.media.unavailable',
+  'composerWeb.preview.media.noThumbnail',
+  'composerWeb.preview.media.image',
+  'composerWeb.preview.media.video',
+  'composerWeb.preview.media.videoDuration',
+  'composerWeb.preview.media.document',
+  'composerWeb.preview.media.audio',
+  'composerWeb.preview.media.none',
+  'composerWeb.preview.carousel.position',
+  'composerWeb.preview.counter.label',
+  'composerWeb.preview.counter.over',
+  'composerWeb.preview.counter.nearAnnounce',
+  'composerWeb.preview.counter.overAnnounce',
+  'composerWeb.preview.counter.underAnnounce',
+  'composerWeb.preview.link.domainOnly',
+  'composerWeb.preview.thread.overLimit',
+  // The composer's sticky action bar, and the notice that names the accounts a
+  // save did not reach. Reviewed English until a reviewer covers them in each
+  // locale.
+  'composerWeb.actionBar.label',
+  'composerWeb.actionBar.toFix',
+  'composerWeb.saveSplit.title',
+  'composerWeb.saveSplit.body',
+  'composerWeb.saveSplit.saved',
+  'composerWeb.saveSplit.unsaved',
+  // Draft recovery and the leave guard. Each sentence states exactly where a
+  // person's unsaved text is and is not, so it stays on the reviewed English
+  // source until a reviewer covers it in each locale.
+  'composerWeb.restore.title',
+  'composerWeb.restore.body',
+  'composerWeb.restore.restore',
+  'composerWeb.restore.discard',
+  'composerWeb.restore.supersededTitle',
+  'composerWeb.restore.supersededBody',
+  'web.unsaved.title',
+  'web.unsaved.body',
+  'web.unsaved.keptOnDevice',
+  'web.unsaved.notOnServer',
+  'web.unsaved.leave',
+  'web.unsaved.stay',
+  // The composer's control for remembering channels between posts, and the
+  // sentences that name the channels a restore left out. Reviewed English
+  // until a reviewer covers them in each locale.
+  'composerWeb.remember.toggle',
+  'composerWeb.remember.turnOff',
+  'composerWeb.remember.failedTitle',
+  'composerWeb.remember.failedBody',
+  'composerWeb.remember.droppedItem',
+  'composerWeb.remember.reason.paused',
+  'composerWeb.remember.reason.gone',
+  'composerWeb.remember.reason.unavailable',
+  'composerWeb.remember.unknownAccount',
+  // Audience option labels in the composer's native settings and confirm
+  // sheet. Reviewed English until a reviewer covers them in each locale.
+  'composerWeb.privacyOption.public',
+  'composerWeb.privacyOption.unlisted',
+  'composerWeb.privacyOption.private',
+  'composerWeb.privacyOption.followers',
+  'composerWeb.privacyOption.friends',
+  'composerWeb.privacyOption.connections',
+  'composerWeb.privacyOption.selfOnly',
+  'composerWeb.privacyOption.direct',
+  'composerWeb.privacyOption.other',
+  'composerWeb.commitDemo.sampleReceipt',
+  'composerWeb.preview.pickTarget',
+  'composerWeb.preview.noTargets',
 ] as const;
 
 /**

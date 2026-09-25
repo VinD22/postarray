@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 
+import { DataProviders } from '@/components/providers';
 import { AppShell } from '@/components/shell';
 import { SessionProvider } from '@/lib/auth/session-context';
 import { ACTIVE_PROJECT_COOKIE } from '@/lib/auth/project-selection';
@@ -25,13 +26,19 @@ export default async function AppLayout({ children }: { readonly children: React
   const activeProjectId = cookieStore.get(ACTIVE_PROJECT_COOKIE)?.value ?? null;
   // This tree is already per request because of the session, so resolving the
   // reader's locale and the workspace time zone here costs nothing extra. The
-  // inner provider overrides the static default set in the root layout.
+  // inner provider carries the full catalog; the root layout ships only the
+  // shell slice.
   const intl = await getRequestIntl(session.workspace.timeZone);
 
   return (
     <SessionProvider session={session} activeProjectId={activeProjectId}>
       <IntlProvider locale={intl.locale} timeZone={intl.timeZone} catalog={intl.catalog}>
-        <AppShell>{children}</AppShell>
+        <DataProviders
+          toastRegionLabel={intl.t.format('a11y.region.notifications')}
+          toastCloseLabel={intl.t.format('action.close')}
+        >
+          <AppShell>{children}</AppShell>
+        </DataProviders>
       </IntlProvider>
     </SessionProvider>
   );

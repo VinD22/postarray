@@ -165,12 +165,9 @@ export function useCreateGroup(): UseMutationResult<
 /**
  * Move an account between groups.
  *
- * Membership is a property of the group, so a move is one write per side. The
- * account's posts, receipts and metrics are keyed to the connection and are
- * untouched, which is what the dialog promises.
- *
- * TODO(web): collapse to a single call once `PATCH /projects/{id}/connections`
- * is exposed by the client. The two-write form below is correct but not atomic.
+ * The account's posts, receipts and metrics are keyed to the connection and
+ * are untouched, which is what the dialog promises. One call: `PATCH /projects/{id}/connections` moves the connection
+ * atomically on the server.
  */
 export function useMoveConnectionGroup(): UseMutationResult<
   void,
@@ -190,26 +187,18 @@ export function useMoveConnectionGroup(): UseMutationResult<
       const find = (id: string | null): CustomerGroup | undefined =>
         id === null ? undefined : groups.find((group) => group.id === id);
 
-      // `update` is typed for the rename case today. The membership payload is
-      // what the REST surface documents, so it is sent through a widened
-      // signature rather than modelled as a rename.
-      const update = api.projects.update as unknown as (
-        projectId: string,
-        input: { connectionIds: readonly string[] },
-      ) => Promise<unknown>;
-
       const source = find(fromGroupId);
-      if (source) {
-        await update(source.id, {
-          connectionIds: source.connectionIds.filter((id) => id !== connectionId),
-        });
-      }
-
       const destination = find(toGroupId);
-      if (destination && !destination.connectionIds.includes(connectionId)) {
-        await update(destination.id, {
-          connectionIds: [...destination.connectionIds, connectionId],
-        });
+      if (destination) {
+        // A connection belongs to at most one project, so adding it to the
+        // destination moves it out of the source in the same transaction.
+        if (!destination.connectionIds.includes(connectionId)) {
+          await api.projects.updateConnections(destination.id, { add: [connectionId] });
+        }
+        return;
+      }
+      if (source) {
+        await api.projects.updateConnections(source.id, { remove: [connectionId] });
       }
     },
     onSuccess: () => {

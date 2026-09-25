@@ -18,6 +18,14 @@ import type { CapabilitySupport, ProviderId } from '@relay/contracts';
 import { PROVIDER_LABEL } from './provider-identity';
 
 export interface ResolvedEntity {
+  /**
+   * The Post Array row this entity is stored as, when one exists.
+   *
+   * A destination has one, because the variant stores a reference to it. A
+   * mention has none: mentions live in the variant's own settings, keyed by the
+   * provider id, and nothing in our schema holds them.
+   */
+  readonly recordId: string | null;
   readonly externalId: string;
   readonly label: string;
   readonly secondary: string | null;

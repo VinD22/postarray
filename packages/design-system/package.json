@@ -17,7 +17,8 @@
     "./theme-bootstrap": "./src/theme-bootstrap.ts",
     "./utils": "./src/utils/index.ts",
     "./styles.css": "./src/styles.css",
-    "./theme.css": "./src/tokens/theme.css"
+    "./theme.css": "./src/tokens/theme.css",
+    "./charts": "./src/charts/index.ts"
   },
   "scripts": {
     "build": "tsc --noEmit",
@@ -29,6 +30,8 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "d3-scale": "4.0.2",
+    "d3-shape": "3.2.0",
     "lucide-react": "^0.468.0",
     "radix-ui": "^1.6.7",
     "tailwind-merge": "^3.3.1"
@@ -42,6 +45,8 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
+    "@types/d3-scale": "4.0.9",
+    "@types/d3-shape": "3.1.7",
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.4",

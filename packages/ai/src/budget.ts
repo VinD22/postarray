@@ -39,6 +39,11 @@ export const DEFAULT_BUDGET_LIMITS: AiBudgetLimits = Object.freeze({
 export interface TokenPricing {
   readonly inputMicrosPerToken: number;
   readonly outputMicrosPerToken: number;
+  /**
+   * Rate for input tokens the provider served from its prefix cache. Absent
+   * means the provider does not discount cache hits, so they cost full price.
+   */
+  readonly cachedInputMicrosPerToken?: number;
   readonly source: string;
   readonly verifiedAt: string;
 }
@@ -48,6 +53,21 @@ export const ASSUMED_PRICING: TokenPricing = Object.freeze({
   outputMicrosPerToken: 1.2,
   source: 'configuration default, unverified',
   verifiedAt: '2026-08-04',
+});
+
+/**
+ * DeepSeek `deepseek-flash` (V4.1 Flash), from api-docs.deepseek.com pricing:
+ * input 0.15 USD per million tokens off-peak and 0.30 peak, output 0.60
+ * off-peak and 1.20 peak, cache hits about 2% of a miss. Priced at the PEAK
+ * rate so a budget never assumes the cheaper window. `deepseek-v4-flash` is
+ * retired and served by this model, so it inherits the same rate.
+ */
+export const DEEPSEEK_FLASH_PRICING: TokenPricing = Object.freeze({
+  inputMicrosPerToken: 0.3,
+  outputMicrosPerToken: 1.2,
+  cachedInputMicrosPerToken: 0.006,
+  source: 'deepseek published pricing for deepseek-flash, peak rate, recorded from docs',
+  verifiedAt: '2026-09-23',
 });
 
 /**
@@ -73,7 +93,8 @@ export const ANTHROPIC_SONNET_PRICING: TokenPricing = Object.freeze({
  * is the conservative default the budget guard was written against.
  */
 export const PRICING_BY_MODEL: Readonly<Record<string, TokenPricing>> = Object.freeze({
-  'deepseek-v4-flash': ASSUMED_PRICING,
+  'deepseek-flash': DEEPSEEK_FLASH_PRICING,
+  'deepseek-v4-flash': DEEPSEEK_FLASH_PRICING,
   'claude-sonnet-5': ANTHROPIC_SONNET_PRICING,
 });
 
@@ -86,14 +107,35 @@ export function estimateTokens(text: string): number {
   return Math.ceil(text.length / 4);
 }
 
+/**
+ * Cost of a call. `cachedInputTokens` is the part of `inputTokens` served from
+ * the prefix cache; it is billed at the cached rate when the model has one.
+ */
 export function estimateCostMicros(
   pricing: TokenPricing,
   inputTokens: number,
   outputTokens: number,
+  cachedInputTokens = 0,
 ): number {
+  const cached = Math.min(Math.max(cachedInputTokens, 0), inputTokens);
+  const cachedRate = pricing.cachedInputMicrosPerToken ?? pricing.inputMicrosPerToken;
   return Math.ceil(
-    inputTokens * pricing.inputMicrosPerToken + outputTokens * pricing.outputMicrosPerToken,
+    (inputTokens - cached) * pricing.inputMicrosPerToken +
+      cached * cachedRate +
+      outputTokens * pricing.outputMicrosPerToken,
   );
+}
+
+/**
+ * Pre-call input estimate for budgeting. Each image is assumed to cost the
+ * provider's per-image cap, so a budget is never beaten by a large picture.
+ */
+export function estimateInputTokens(
+  text: string,
+  imageCount: number,
+  imageTokenCap: number,
+): number {
+  return estimateTokens(text) + imageCount * imageTokenCap;
 }
 
 export function centsToMicros(cents: number): number {

@@ -22,7 +22,7 @@ export const webMarketingMessages = {
   /* Shared marketing furniture                                              */
   /* ---------------------------------------------------------------------- */
 
-  'web.brand.name': 'Relais',
+  'web.brand.name': 'Post Array',
   'web.brand.tagline':
     'Die mehrsprachige Veröffentlichungssteuerungsebene für Personen und Agenten.',
   'web.skipToContent': 'Springe zum Hauptinhalt',
@@ -70,13 +70,13 @@ export const webMarketingMessages = {
   'web.meta.capabilities.title': 'Connector-Fähigkeitsmatrix',
   'web.meta.capabilities.description':
     'Eine Tabelle pro Plattform und pro Fähigkeit, die aus unseren Connector-Definitionen generiert wird und trennt, was wir erstellt haben, von dem, was die Plattform nicht bietet.',
-  'web.meta.creators.title': 'Staffel für Kreative',
+  'web.meta.creators.title': 'Post Array für Kreative',
   'web.meta.creators.description':
     'Für Solokünstler, die dieselbe Idee in mehreren Formaten und Sprachen veröffentlichen, ohne sie fünfmal neu zu schreiben.',
-  'web.meta.agencies.title': 'Relais für Agenturen',
+  'web.meta.agencies.title': 'Post Array für Agenturen',
   'web.meta.agencies.description':
     'Kundentrennung, Genehmigungen, gemeinsam nutzbare Bewertungslinks, Belege und Berichte für Teams, die im Namen anderer Personen veröffentlichen.',
-  'web.meta.developers.title': 'Relais für Entwickler',
+  'web.meta.developers.title': 'Post Array für Entwickler',
   'web.meta.developers.description':
     'Ein Backend hinter der Web-App, die REST-API, ein Remote-MCP-Server, die CLI und signierte Webhooks. Gleiche Genehmigungsregeln auf jeder Oberfläche.',
   'web.meta.pricing.title': 'Pricing',
@@ -85,7 +85,7 @@ export const webMarketingMessages = {
     'Status, Changelog, Dokumentation, Methodik, Vergleiche, der Tool-Radar und der Opportunity-Katalog.',
   'web.meta.status.title': 'Status',
   'web.meta.status.description':
-    'Aktueller Status jeder Relaisoberfläche und jedes Anschlusses sowie der Vorfallverlauf.',
+    'Aktueller Status jeder Post Array-Oberfläche und jedes Anschlusses sowie der Vorfallverlauf.',
   'web.meta.changelog.title': 'Änderungsprotokoll',
   'web.meta.changelog.description':
     'Was wurde geliefert, was hat sich an den Anschlüssen geändert und was wurde korrigiert.',
@@ -446,7 +446,7 @@ export const webMarketingMessages = {
 
   'web.status.title': 'Status',
   'web.status.lede':
-    'Der Zustand jeder Relaisoberfläche und jedes Anschlusses. Der Connector-Status deckt unseren Adapter und die Plattform-API ab, von der er abhängt.',
+    'Der Zustand jeder Post Array-Oberfläche und jedes Anschlusses. Der Connector-Status deckt unseren Adapter und die Plattform-API ab, von der er abhängt.',
   'web.status.updated': 'Die Status werden von Hand gepflegt. Zuletzt aktualisiert {time}.',
   'web.status.surfaces.title': 'Oberflächen',
   'web.status.connectors.title': 'Anschlüsse',
@@ -486,7 +486,7 @@ export const webMarketingMessages = {
   'web.changelog.kind.security': 'Sicherheit',
   'web.changelog.empty': 'Bisher wurde noch nichts öffentlich versendet',
   'web.changelog.emptyBody':
-    'Relais ist im Bau. Der erste Eintrag hier ist das Erste, was ein Kunde nutzen kann, kein Meilenstein über uns selbst.',
+    'Post Array ist im Bau. Der erste Eintrag hier ist das Erste, was ein Kunde nutzen kann, kein Meilenstein über uns selbst.',
 
   /* ---------------------------------------------------------------------- */
   /* Docs shell                                                              */
@@ -1152,7 +1152,7 @@ export const webMarketingMessages = {
     '{supported, plural, one {# Fähigkeit unterstützt} other {# unterstützte Funktionen}}, {requiresReview, plural, one {# Warten auf eine Plattformüberprüfung} other {# Warten auf eine Plattformüberprüfung}}, {notImplemented, plural, one {# noch nicht erstellt} other {# noch nicht erstellt}}, {unsupported, plural, one {# die Plattform bietet nicht an} other {# die Plattform bietet nicht an}}.',
   'web.capabilities.buildState.title': 'Noch überträgt kein Connector Kundenverkehr',
   'web.capabilities.buildState.body':
-    'Relais ist im Bau. Diese Tabelle spiegelt die aktuellen Connector-Definitionen wider, weshalb die meisten Zellen als noch nicht erstellt angezeigt werden. Eine Zelle wird erst dann unterstützt, wenn dieser Connector seine „Definition of Done“ besteht, einschließlich Vertragstests mit den aufgezeichneten Plattformbefestigungen. Die Zellen, die besagen, dass eine Plattform etwas nicht anbietet oder dies hinter einer Bewertung verbirgt, sind Fakten über die Plattform und bereits endgültig.',
+    'Post Array ist im Bau. Diese Tabelle spiegelt die aktuellen Connector-Definitionen wider, weshalb die meisten Zellen als noch nicht erstellt angezeigt werden. Eine Zelle wird erst dann unterstützt, wenn dieser Connector seine „Definition of Done“ besteht, einschließlich Vertragstests mit den aufgezeichneten Plattformbefestigungen. Die Zellen, die besagen, dass eine Plattform etwas nicht anbietet oder dies hinter einer Bewertung verbirgt, sind Fakten über die Plattform und bereits endgültig.',
   'web.capabilities.note.instagramProfessional':
     'Nur professionelle Konten. Ein Verbraucherkonto kann von keiner Anwendung veröffentlicht werden.',
   'web.capabilities.note.facebookPagesOnly':
@@ -1347,5 +1347,5 @@ export const webMarketingMessages = {
     'Post Array veröffentlicht ausschließlich über offizielle Plattform-APIs. Die Verfügbarkeit von Connectors hängt von den Genehmigungen ab, die von den Plattformen kontrolliert werden, und jeder Leistungsanspruch auf dieser Website ist datiert und mit Quellenangabe versehen.',
   'web.footer.noAffiliation':
     'Plattformnamen und -marken gehören ihren Eigentümern. Ihre Verwendung hier identifiziert einen Konnektor und stellt keine Billigung oder Partnerschaft dar.',
-  'web.footer.copyright': 'Relais {year}',
+  'web.footer.copyright': 'Post Array {year}',
 } as const;

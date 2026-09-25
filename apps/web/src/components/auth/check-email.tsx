@@ -95,7 +95,7 @@ export function CheckEmail() {
       </span>
 
       <div className="flex flex-col gap-1">
-        <h1 className="text-title-lg text-text-primary">{t('auth.otp.title')}</h1>
+        <h1 className="relay-auth-title text-text-primary">{t('auth.otp.title')}</h1>
         <p className="text-body-md text-text-secondary">
           {t('auth.otp.sent', { minutes: MAGIC_LINK_MINUTES })}
         </p>

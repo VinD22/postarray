@@ -58,3 +58,6 @@ Thumbs.db
 
 # Local design-skill scratch state
 .commandcode/
+
+# Playwright MCP artifacts
+output/

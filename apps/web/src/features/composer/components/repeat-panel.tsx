@@ -49,8 +49,9 @@ export function RepeatPanel(): ReactNode {
       repeat.endDate,
       repeat.count,
       MAX_OCCURRENCES,
+      zone,
     );
-  }, [repeat, schedule]);
+  }, [repeat, schedule, zone]);
 
   const endMissing = repeat !== null && repeat.endDate === null && repeat.count === null;
   const endMode = repeat?.count !== null && repeat?.count !== undefined ? 'count' : 'date';

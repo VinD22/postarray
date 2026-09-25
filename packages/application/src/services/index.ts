@@ -19,6 +19,8 @@ import { createDataDeletionService } from './data-deletion';
 import { createDataExportService } from './data-exports';
 import { createDataLifecycleService } from './data-lifecycle';
 import { createAssistantService } from './assistant';
+import { createAiSuggestionService } from './ai-suggestions';
+import { createMediaAnalysisService } from './media-analysis';
 import { createGrowthService } from './growth';
 import { createHealthService } from './health';
 import { createIdentityService } from './identity';
@@ -36,11 +38,13 @@ import { createSchedulingService } from './scheduling';
 import { createServiceAccountService } from './service-accounts';
 import { createShortLinkService } from './short-links';
 import { createValidationService } from './validation';
+import { createDomainEventService } from './domain-events';
 import { createWebhookService } from './webhooks';
 import { createWorkspaceService } from './workspaces';
 import { createWorkerAnalyticsService } from './worker-analytics';
 import { createWorkerCredentialService } from './worker-credentials';
 import { createWorkerInsightService } from './worker-insights';
+import { createInsightService, createWorkerDigestService } from './insights';
 import { createWorkerRepeatService } from './worker-repeat';
 import { createWorkerRssService } from './worker-rss';
 import { createWorkerRuleService } from './worker-rules';
@@ -88,6 +92,8 @@ export function createServices(deps: ServiceDeps): Services {
     actionCenter,
     agentConfirmations,
   });
+  const webhooks = createWebhookService(deps);
+  const mediaAnalysis = createMediaAnalysisService(deps);
 
   return {
     workspaces: createWorkspaceService(deps),
@@ -113,7 +119,16 @@ export function createServices(deps: ServiceDeps): Services {
     rss: createRssService(deps),
     growth,
     assistant,
-    webhooks: createWebhookService(deps),
+    aiSuggestions: createAiSuggestionService(deps, { mediaUnderstanding: mediaAnalysis }),
+    mediaAnalysis,
+    insights: createInsightService(deps),
+    webhooks,
+    domainEvents: createDomainEventService({
+      webhooks,
+      clock: deps.clock,
+      logger: deps.logger,
+      ...(deps.realtime === undefined ? {} : { realtime: deps.realtime }),
+    }),
     credentials: createCredentialVaultService(deps),
     apiKeys: createApiKeyService(deps),
     serviceAccounts: createServiceAccountService(deps),
@@ -134,6 +149,7 @@ export function createServices(deps: ServiceDeps): Services {
     workerRss: createWorkerRssService(deps, content),
     workerRules: createWorkerRuleService(deps, content),
     workerInsights: createWorkerInsightService(deps),
+    workerDigests: createWorkerDigestService(deps),
     workerWebhooks: createWorkerWebhookService(deps),
     workerBulkImports: createWorkerBulkImportService(deps, bulkImports),
     workerMedia: createWorkerMediaService(deps),

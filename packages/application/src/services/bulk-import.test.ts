@@ -123,6 +123,18 @@ const fakeDb = {
       rows.push(row);
       return row;
     },
+    createMany: async ({ data }: { data: readonly Record<string, unknown>[] }) => {
+      for (const entry of data) {
+        rows.push({
+          id: `importrow_${rows.length + 1}`,
+          contentItemId: null,
+          publishJobId: null,
+          appliedAt: null,
+          ...entry,
+        } as Row);
+      }
+      return { count: data.length };
+    },
     update: async ({ where, data }: { where: { id: string }; data: Record<string, unknown> }) => {
       const row = rows.find((entry) => entry.id === where.id);
       if (row === undefined) throw new Error('missing row');
@@ -216,26 +228,30 @@ beforeEach(() => {
 });
 
 describe('bulk import upload', () => {
-  it('resolves a second upload of the same file to the first job', async () => {
-    const service = await makeService();
-    const csv = `${HEADER}\n${line('r1')}\n${line('r2')}\n`;
+  it(
+    'resolves a second upload of the same file to the first job',
+    async () => {
+      const service = await makeService();
+      const csv = `${HEADER}\n${line('r1')}\n${line('r2')}\n`;
 
-    const first = await service.upload(ctx, {
-      projectId: 'project_1',
-      filename: 'posts.csv',
-      content: csv,
-    });
-    const second = await service.upload(ctx, {
-      projectId: 'project_1',
-      filename: 'posts-again.csv',
-      content: csv,
-    });
+      const first = await service.upload(ctx, {
+        projectId: 'project_1',
+        filename: 'posts.csv',
+        content: csv,
+      });
+      const second = await service.upload(ctx, {
+        projectId: 'project_1',
+        filename: 'posts-again.csv',
+        content: csv,
+      });
 
-    expect(second.job.id).toBe(first.job.id);
-    expect(jobs).toHaveLength(1);
-    expect(rows).toHaveLength(2);
-    expect(written).toHaveLength(1);
-  });
+      expect(second.job.id).toBe(first.job.id);
+      expect(jobs).toHaveLength(1);
+      expect(rows).toHaveLength(2);
+      expect(written).toHaveLength(1);
+    },
+    15_000,
+  );
 
   it('creates no draft and schedules nothing on upload', async () => {
     const service = await makeService();

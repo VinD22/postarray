@@ -310,7 +310,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'Ang isang sinusubaybayang link ay isang maikling URL na Post Array na nagre-redirect, upang makakakita ka ng mga pag-click kahit na walang nag-uulat ng isang platform. Ang orihinal na destinasyon ay hindi kailanman mababago nang walang audit entry.',
   'analytics.links.emptyExample':
-    'Halimbawa: nagre-redirect ang relay.to/a7Kq2 sa acme.com/blog/launch na may campaign q3-launch.',
+    'Halimbawa: nagre-redirect ang pa.link/a7Kq2 sa acme.com/blog/launch na may campaign q3-launch.',
   'analytics.links.table.caption':
     'Ang mga sinusubaybayang link sa workspace na ito at ang kanilang first party click ay binibilang.',
   'analytics.links.campaign': 'Kampanya',

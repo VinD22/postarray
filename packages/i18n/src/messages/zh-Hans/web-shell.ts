@@ -21,7 +21,7 @@ export const webShellMessages = {
   'shell.demo.title': '您正在查看演示数据',
   'shell.demo.body':
     '无法从此浏览器访问 Post Array API，因此屏幕上充满了种子示例工作区。这里没有任何内容与真实帐户相关联，也没有任何内容可以发布。',
-  'shell.demo.howToConnect': '设置 NEXT_PUBLIC_RELAY_API_URL 并重新启动应用程序以使用实时数据。',
+  'shell.demo.howToConnect': '设置 NEXT_PUBLIC_POSTARRAY_API_URL 并重新启动应用程序以使用实时数据。',
   'shell.offline.title': '您离线',
   'shell.offline.body': '草稿保存在此设备上。连接恢复时恢复计划和发布。',
   'shell.offline.retry': '检查连接',

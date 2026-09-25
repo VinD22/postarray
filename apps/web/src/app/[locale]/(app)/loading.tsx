@@ -23,7 +23,7 @@ export default async function AppLoading() {
   const intl = await getRequestIntl();
 
   return (
-    <div className="flex flex-col gap-6 px-4 py-6 md:px-6">
+    <div className="flex flex-col gap-6 px-4 py-6 md:px-7 md:py-8">
       <LoadingState label={intl.t.format('loading.default')}>
         <div className="flex flex-col gap-6">
           <div aria-hidden="true" className="flex flex-col gap-2">
@@ -33,14 +33,14 @@ export default async function AppLoading() {
 
           <div
             aria-hidden="true"
-            className="border-border-bold bg-surface-raised rounded-lg border-2 p-4 md:p-6"
+            className="border-border-default bg-surface-raised shadow-raised rounded-lg border p-4 md:p-6"
           >
             <SkeletonList rows={4} />
           </div>
 
           <div
             aria-hidden="true"
-            className="border-border-bold bg-surface-raised rounded-lg border-2 p-4 md:p-6"
+            className="border-border-default bg-surface-raised shadow-raised rounded-lg border p-4 md:p-6"
           >
             <SkeletonList rows={3} avatar={false} />
           </div>

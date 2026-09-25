@@ -20,7 +20,9 @@ export type { PromptProvenance, RegistryProblem } from './registry';
 
 export * from './schemas';
 
+export { MEDIA_UNDERSTANDING_VERSION, mediaUnderstandingPrompt } from './media';
 export {
+  ALT_TEXT_VERSION,
   altTextPrompt,
   ctaOptionsPrompt,
   draftFromBriefPrompt,

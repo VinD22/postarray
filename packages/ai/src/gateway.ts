@@ -2,7 +2,7 @@ import { type z } from 'zod';
 
 import { RelayError } from '@relay/contracts';
 
-import { ASSUMED_PRICING, centsToMicros, estimateCostMicros, estimateTokens } from './budget';
+import { ASSUMED_PRICING, centsToMicros, estimateCostMicros, estimateInputTokens } from './budget';
 import type { AiBudgetGuard, TokenPricing } from './budget';
 import { createCircuitBreaker } from './circuit-breaker';
 import type { CircuitBreaker } from './circuit-breaker';
@@ -27,6 +27,7 @@ import type {
   ProviderRequest,
   ProviderResponse,
 } from './types';
+import { AI_IMAGE_TOKEN_CAP, messageText } from './types';
 
 /**
  * The provider-neutral AI gateway.
@@ -57,6 +58,11 @@ export interface AiGatewayDeps {
   /** Injected so retry jitter is deterministic in tests. */
   readonly random?: () => number;
   readonly maxAttempts?: number;
+  /**
+   * Deployment ceiling on any one provider call (`AI_REQUEST_TIMEOUT_MS`). A
+   * prompt or request may ask for less, never more.
+   */
+  readonly maxTimeoutMs?: number;
 }
 
 const DEFAULT_MAX_ATTEMPTS = 2;
@@ -78,6 +84,22 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
   const circuit = deps.circuit ?? createCircuitBreaker(clock);
   const random = deps.random ?? Math.random;
   const maxAttempts = deps.maxAttempts ?? DEFAULT_MAX_ATTEMPTS;
+
+  function effectiveTimeout(request: AiRequest, prompt: PromptModule): number {
+    const asked = request.timeoutMs ?? prompt.timeoutMs;
+    return deps.maxTimeoutMs === undefined ? asked : Math.min(asked, deps.maxTimeoutMs);
+  }
+
+  function worstCaseInput(
+    messages: readonly { content: ProviderRequest['messages'][number]['content'] }[],
+    imageCount: number,
+  ): number {
+    return estimateInputTokens(
+      messages.map((message) => messageText(message.content)).join(''),
+      imageCount,
+      AI_IMAGE_TOKEN_CAP,
+    );
+  }
 
   function status(): AiGatewayStatus {
     if (!deps.provider.available) {
@@ -121,6 +143,12 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
         details: { promptId: prompt.id, degradation: prompt.degradation },
       });
     }
+    if ((request.images?.length ?? 0) > 0 && !deps.provider.supportsImageInput) {
+      throw aiUnavailableError('image_input_unsupported', {
+        correlationId: request.context.correlationId,
+        details: { promptId: prompt.id, degradation: prompt.degradation },
+      });
+    }
     const missing = missingVariables(prompt, request.variables);
     if (missing.length > 0) {
       throw aiOutputInvalidError('missing_required_variables', {
@@ -138,13 +166,12 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
     readonly meta: AiMeta;
     readonly attempts: number;
   }> {
-    const timeoutMs = request.timeoutMs ?? prompt.timeoutMs;
+    const timeoutMs = effectiveTimeout(request, prompt);
     const maxOutputTokens = request.maxOutputTokens ?? prompt.maxOutputTokens;
     const invocationBudgetMicros = centsToMicros(request.budgetCents ?? prompt.budgetCents);
     const built = buildMessages(prompt, request);
-    const estimatedInputTokens = estimateTokens(
-      built.messages.map((message) => message.content).join(''),
-    );
+    const imageCount = request.images?.length ?? 0;
+    const estimatedInputTokens = worstCaseInput(built.messages, imageCount);
     const worstCase = estimateCostMicros(pricing, estimatedInputTokens, maxOutputTokens);
 
     const decision = await deps.budget.check({
@@ -192,13 +219,19 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
         maxOutputTokens,
         temperature: prompt.mode === 'thinking' ? 0.3 : 0.7,
         jsonMode: prompt.outputFormat === 'json',
+        reasoning: prompt.mode === 'thinking',
         timeoutMs,
         signal: controller.signal,
       };
       try {
         const response = await deps.provider.complete(providerRequest);
         circuit.recordSuccess();
-        const costMicros = estimateCostMicros(pricing, response.inputTokens, response.outputTokens);
+        const costMicros = estimateCostMicros(
+          pricing,
+          response.inputTokens,
+          response.outputTokens,
+          response.cachedInputTokens ?? 0,
+        );
         await deps.budget.record(request.context.workspaceId, costMicros);
         const meta: AiMeta = {
           provider: deps.provider.name,
@@ -208,6 +241,10 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
           inputTokens: response.inputTokens,
           outputTokens: response.outputTokens,
           costMicros,
+          ...(response.cachedInputTokens === undefined
+            ? {}
+            : { cachedInputTokens: response.cachedInputTokens }),
+          ...(imageCount === 0 ? {} : { imageCount }),
           latencyMs: clock.now().getTime() - startedAt,
           attempts: attempt,
           degraded: false,
@@ -224,6 +261,8 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
             model: meta.model,
             inputTokens: meta.inputTokens,
             outputTokens: meta.outputTokens,
+            cachedInputTokens: meta.cachedInputTokens ?? null,
+            imageCount,
             costMicros: meta.costMicros,
             latencyMs: meta.latencyMs,
             attempts: meta.attempts,
@@ -323,14 +362,14 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
     const prompt = getPrompt(request.promptId, request.promptVersion);
     assertUsable(request, prompt);
 
-    const timeoutMs = request.timeoutMs ?? prompt.timeoutMs;
+    const timeoutMs = effectiveTimeout(request, prompt);
     const maxOutputTokens = request.maxOutputTokens ?? prompt.maxOutputTokens;
     const built = buildMessages(prompt, request);
     const decision = await deps.budget.check({
       workspaceId: request.context.workspaceId,
       worstCaseCostMicros: estimateCostMicros(
         pricing,
-        estimateTokens(built.messages.map((message) => message.content).join('')),
+        worstCaseInput(built.messages, request.images?.length ?? 0),
         maxOutputTokens,
       ),
       invocationBudgetMicros: centsToMicros(request.budgetCents ?? prompt.budgetCents),
@@ -354,6 +393,7 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
         maxOutputTokens,
         temperature: prompt.mode === 'thinking' ? 0.3 : 0.7,
         jsonMode: prompt.outputFormat === 'json',
+        reasoning: prompt.mode === 'thinking',
         timeoutMs,
         signal: controller.signal,
       })) {
@@ -366,7 +406,14 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
       }
       circuit.recordSuccess();
       const costMicros =
-        final === null ? 0 : estimateCostMicros(pricing, final.inputTokens, final.outputTokens);
+        final === null
+          ? 0
+          : estimateCostMicros(
+              pricing,
+              final.inputTokens,
+              final.outputTokens,
+              final.cachedInputTokens ?? 0,
+            );
       await deps.budget.record(request.context.workspaceId, costMicros);
       yield {
         kind: 'done',

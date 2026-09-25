@@ -18,14 +18,14 @@ import { useSession } from '@/lib/auth/session-context';
 import { CalendarScreen } from './calendar-screen';
 
 export function CalendarContainer(): ReactNode {
-  const { projects, project } = useSession();
+  const { projects } = useSession();
 
   return (
     <CalendarScreen
       composeHref="/compose"
       actionCenterHref="/action-center"
       postHrefPattern="/posts/{id}"
-      defaultProjectId={project?.id ?? null}
+      defaultProjectId={null}
       projects={projects.map((entry) => ({ id: entry.id, name: entry.name }))}
     />
   );

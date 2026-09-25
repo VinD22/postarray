@@ -12,6 +12,7 @@ import type { Translator } from '@relay/i18n';
 
 import { createApiClient } from './api/client';
 import type { ApiClient, FetchLike } from './api/client';
+import type { StreamFetch } from './api/event-stream';
 import { TOKEN_ENV_VAR } from './config/credentials';
 import type { CredentialStore, StoredCredential } from './config/credentials';
 import { resolveProfile } from './config/store';
@@ -75,6 +76,12 @@ export interface CliDeps {
   readonly env: CliEnvironment;
   readonly writer?: Writer;
   readonly fetch?: FetchLike;
+  /**
+   * Transport for `events --follow`. Separate from `fetch` because that one
+   * promises a whole body as text, which is the one thing a stream reader must
+   * never do. Injected so the command is testable without a socket.
+   */
+  readonly streamFetch?: StreamFetch;
   readonly oauthTransport?: OAuthTransport;
   readonly clock?: Clock;
   readonly readFile?: FileReader;

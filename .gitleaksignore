@@ -1,0 +1,81 @@
+# Reviewed historical false positives only. Each fingerprint is scoped to a
+# commit, path, rule and line; new secrets and new occurrences remain scanned.
+# Findings are test idempotency IDs, synthetic signing/redaction fixtures,
+# public LinkedIn documentation objects, and Dutch/French catalog prose.
+# Never add a fingerprint without inspecting its source and confirming it is
+# public prose or a deliberately synthetic fixture, not a live credential.
+
+# apps/api/src/guards/edge-authorization.test.ts
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:apps/api/src/guards/edge-authorization.test.ts:generic-api-key:170
+a4304874de4e31218792c1edbdeb04e867825ab4:apps/api/src/guards/edge-authorization.test.ts:generic-api-key:170
+
+# apps/api/src/testing/fakes.ts
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:apps/api/src/testing/fakes.ts:generic-api-key:211
+a4304874de4e31218792c1edbdeb04e867825ab4:apps/api/src/testing/fakes.ts:generic-api-key:211
+
+# apps/mcp/src/dispatch.test.ts
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:apps/mcp/src/dispatch.test.ts:generic-api-key:215
+a4304874de4e31218792c1edbdeb04e867825ab4:apps/mcp/src/dispatch.test.ts:generic-api-key:215
+
+# apps/mcp/src/journey.test.ts
+44e18719fb44bcf9981ff2fd1fc6b0089d72b9fd:apps/mcp/src/journey.test.ts:generic-api-key:139
+44e18719fb44bcf9981ff2fd1fc6b0089d72b9fd:apps/mcp/src/journey.test.ts:generic-api-key:154
+44e18719fb44bcf9981ff2fd1fc6b0089d72b9fd:apps/mcp/src/journey.test.ts:generic-api-key:171
+44e18719fb44bcf9981ff2fd1fc6b0089d72b9fd:apps/mcp/src/journey.test.ts:generic-api-key:185
+44e18719fb44bcf9981ff2fd1fc6b0089d72b9fd:apps/mcp/src/journey.test.ts:generic-api-key:209
+44e18719fb44bcf9981ff2fd1fc6b0089d72b9fd:apps/mcp/src/journey.test.ts:generic-api-key:222
+78d6f7815aee800e8873c5705e045d30b938516c:apps/mcp/src/journey.test.ts:generic-api-key:139
+78d6f7815aee800e8873c5705e045d30b938516c:apps/mcp/src/journey.test.ts:generic-api-key:154
+78d6f7815aee800e8873c5705e045d30b938516c:apps/mcp/src/journey.test.ts:generic-api-key:171
+78d6f7815aee800e8873c5705e045d30b938516c:apps/mcp/src/journey.test.ts:generic-api-key:185
+78d6f7815aee800e8873c5705e045d30b938516c:apps/mcp/src/journey.test.ts:generic-api-key:209
+78d6f7815aee800e8873c5705e045d30b938516c:apps/mcp/src/journey.test.ts:generic-api-key:222
+
+# apps/web/src/features/comparisons/entries/build-your-own-integration.ts
+72faf5dac3881949045e2fcb0850ff1959daf580:apps/web/src/features/comparisons/entries/build-your-own-integration.ts:linkedin-client-secret:28
+72faf5dac3881949045e2fcb0850ff1959daf580:apps/web/src/features/comparisons/entries/build-your-own-integration.ts:linkedin-client-secret:34
+ce7e2a9cc5d394c064fcd8d1a4beac0f941a2058:apps/web/src/features/comparisons/entries/build-your-own-integration.ts:linkedin-client-secret:28
+ce7e2a9cc5d394c064fcd8d1a4beac0f941a2058:apps/web/src/features/comparisons/entries/build-your-own-integration.ts:linkedin-client-secret:34
+
+# packages/billing/src/signature.test.ts
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:packages/billing/src/signature.test.ts:generic-api-key:14
+a4304874de4e31218792c1edbdeb04e867825ab4:packages/billing/src/signature.test.ts:generic-api-key:14
+
+# packages/billing/src/simulator.ts
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:packages/billing/src/simulator.ts:generic-api-key:57
+a4304874de4e31218792c1edbdeb04e867825ab4:packages/billing/src/simulator.ts:generic-api-key:57
+
+# packages/billing/src/webhooks.test.ts
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:packages/billing/src/webhooks.test.ts:generic-api-key:147
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:packages/billing/src/webhooks.test.ts:generic-api-key:21
+a4304874de4e31218792c1edbdeb04e867825ab4:packages/billing/src/webhooks.test.ts:generic-api-key:147
+a4304874de4e31218792c1edbdeb04e867825ab4:packages/billing/src/webhooks.test.ts:generic-api-key:21
+c7e9323e8172f3c0279f9368c7fe60707cbf778a:packages/billing/src/webhooks.test.ts:generic-api-key:330
+fdaa02c23d63abe3d35ddeae71cb8d9d13a6b75a:packages/billing/src/webhooks.test.ts:generic-api-key:330
+
+# packages/config/src/redaction.test.ts
+eda45575a6654c926af18d45d4a2b79d4b46eb10:packages/config/src/redaction.test.ts:jwt:13
+
+# packages/connectors/src/providers/bluesky/connector.test.ts
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:packages/connectors/src/providers/bluesky/connector.test.ts:generic-api-key:230
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:packages/connectors/src/providers/bluesky/connector.test.ts:generic-api-key:40
+a4304874de4e31218792c1edbdeb04e867825ab4:packages/connectors/src/providers/bluesky/connector.test.ts:generic-api-key:230
+a4304874de4e31218792c1edbdeb04e867825ab4:packages/connectors/src/providers/bluesky/connector.test.ts:generic-api-key:40
+
+# packages/connectors/src/sanitize.test.ts
+4991f36bba72bf29748ab25e3f2fcbfe8508b065:packages/connectors/src/sanitize.test.ts:jwt:18
+a4304874de4e31218792c1edbdeb04e867825ab4:packages/connectors/src/sanitize.test.ts:jwt:18
+
+# packages/contracts/src/publishing.test.ts
+eda45575a6654c926af18d45d4a2b79d4b46eb10:packages/contracts/src/publishing.test.ts:generic-api-key:136
+
+# packages/i18n/src/messages/fr/a11y.ts
+103896dc4aa1f16145952828032d72a6ffe0f5ef:packages/i18n/src/messages/fr/a11y.ts:generic-api-key:48
+427396353e0e867694694d1b6683b4136dfcff3e:packages/i18n/src/messages/fr/a11y.ts:generic-api-key:48
+
+# packages/i18n/src/messages/nl/web-demo.ts
+7711d2571565a50a3120365150903fbece4dca1d:packages/i18n/src/messages/nl/web-demo.ts:linkedin-client-id:163
+b04f680ebc62b9891a0391fdd073d1a452fe4979:packages/i18n/src/messages/nl/web-demo.ts:linkedin-client-id:163
+
+# packages/observability/src/logger.test.ts
+eda45575a6654c926af18d45d4a2b79d4b46eb10:packages/observability/src/logger.test.ts:jwt:7

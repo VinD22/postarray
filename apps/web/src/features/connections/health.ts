@@ -51,7 +51,9 @@ export function remediationKey(health: ConnectionHealth, provider: ProviderId): 
     case 'review_pending':
       return 'connection.incident.reviewRestricted';
     case 'expiring_soon':
-      return 'connection.reconnect.body';
+      // Not `connection.reconnect.body`: nothing is on hold yet, and that
+      // sentence already says "Nothing is lost", which the row repeats.
+      return 'web.connection.incident.expiringSoon';
     default:
       return null;
   }

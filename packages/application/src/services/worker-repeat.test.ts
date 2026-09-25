@@ -188,4 +188,23 @@ describe('repeat occurrence creation', () => {
     expect(db.outboxEvent.create).not.toHaveBeenCalled();
     expect(result).toMatchObject({ publishJobId: 'job_existing', created: false });
   });
+
+  it('still runs an occurrence that falls on the end date itself', async () => {
+    activeDb = { contentItem: { findFirst: vi.fn().mockResolvedValue(liveItem) } };
+    const plan = await service().planRepeatOccurrence(
+      planInput({ ianaTimeZone: 'America/New_York', endDate: '2026-03-08' }),
+    );
+
+    expect(plan).toMatchObject({ shouldRun: true, instant: '2026-03-08T13:00:00.000Z' });
+  });
+
+  it('stops once the occurrence is past the end date in the series zone', async () => {
+    activeDb = { contentItem: { findFirst: vi.fn().mockResolvedValue(liveItem) } };
+    const plan = await service().planRepeatOccurrence(
+      planInput({ ianaTimeZone: 'America/New_York', endDate: '2026-03-07' }),
+    );
+
+    expect(plan.shouldRun).toBe(false);
+    expect(plan.reasonKey).toBe('repeat.series_reached_end_date');
+  });
 });

@@ -23,7 +23,7 @@ export const webShellMessages = withHebrewPluralForms({
   'shell.demo.body':
     'לא ניתן להגיע ל-Post Array API מדפדפן זה, כך שהמסכים מלאים בסביבת עבודה לדוגמה. שום דבר כאן לא מחובר לחשבון אמיתי ושום דבר לא יכול לפרסם.',
   'shell.demo.howToConnect':
-    'הגדר את NEXT_PUBLIC_RELAY_API_URL והפעל מחדש את האפליקציה כדי להשתמש בנתונים חיים.',
+    'הגדר את NEXT_PUBLIC_POSTARRAY_API_URL והפעל מחדש את האפליקציה כדי להשתמש בנתונים חיים.',
   'shell.offline.title': 'אתה במצב לא מקוון',
   'shell.offline.body': 'טיוטות נשמרות במכשיר זה. תזמון ופרסום קורות חיים כאשר החיבור חוזר.',
   'shell.offline.retry': 'בדוק את החיבור',

@@ -21,9 +21,15 @@ export async function generateMetadata(): Promise<Metadata> {
  */
 export default async function PostPage({
   params,
+  searchParams,
 }: {
   readonly params: Promise<{ readonly contentItemId: string }>;
+  readonly searchParams: Promise<{ readonly job?: string | readonly string[] }>;
 }): Promise<ReactElement> {
   const { contentItemId } = await params;
-  return <ReceiptScreen contentItemId={contentItemId} calendarHref="/calendar" />;
+  const query = await searchParams;
+  const jobId = typeof query.job === 'string' && query.job.length > 0 ? query.job : null;
+  return (
+    <ReceiptScreen contentItemId={contentItemId} publishJobId={jobId} calendarHref="/calendar" />
+  );
 }

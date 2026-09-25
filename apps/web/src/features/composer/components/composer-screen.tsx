@@ -26,12 +26,19 @@ import { issueCursorList } from '../state/selectors';
 import { ComposerHeader } from './composer-header';
 import { CostPanel } from './cost-panel';
 import { MasterPanel } from './master-panel';
+import { MasterPreview } from './master-preview';
 import { PaneTransition } from './pane-transition';
 import { ProviderPreview } from './provider-preview';
+import { UnsavedChangesPrompt } from '@/lib/navigation/unsaved-changes';
+
+import { useDraftMirror } from '../hooks/use-draft-mirror';
+import { PartialSaveNotice } from './partial-save-notice';
+import { UnavailableChannelsNotice } from './unavailable-channels-notice';
+import { RestoreBanner } from './restore-banner';
 import { SavedFlash, useSavedFlash } from './saved-flash';
-import { ScheduleSheet, type ScheduleIntent } from './schedule-sheet';
+import { ScheduleSheet, type ScheduleCommitHandler } from './schedule-sheet';
 import { ShortcutsDialog } from './shortcuts-dialog';
-import { SummaryBar } from './summary-bar';
+import { ActionBar, useActionBarReserve } from './action-bar';
 import { TargetRail } from './target-rail';
 import { ValidationPanel } from './validation-panel';
 import { VariantEditor } from './variant-editor';
@@ -47,7 +54,7 @@ export interface ComposerScreenProps {
   readonly onClose: () => void;
   readonly onPickMedia: (scope: string | null) => void;
   readonly onEditMedia: (mediaId: string) => void;
-  readonly onCommit: (intent: ScheduleIntent) => Promise<void>;
+  readonly onCommit: ScheduleCommitHandler;
   readonly searchDestinations: (
     connectionId: string,
     query: string,
@@ -56,19 +63,36 @@ export interface ComposerScreenProps {
     connectionId: string,
     query: string,
   ) => Promise<readonly ResolvedEntity[]>;
-  /** Present when the workspace has hit its write limit for the window. */
+  /**
+   * Present when the workspace has hit its write limit for the window. Usage
+   * is shown only when the server reported it; it is never guessed.
+   */
   readonly rateLimit?: {
     readonly resetAt: string;
-    readonly used: number;
-    readonly limit: number;
-    readonly usageText: string;
+    readonly usage?: {
+      readonly used: number;
+      readonly limit: number;
+      readonly usageText: string;
+    };
   };
   readonly scheduleWarnings?: readonly { id: string; text: string }[];
 }
 
 export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   const t = useTranslations();
-  const { state, dispatch, summaries, totals, saveNow, online } = useComposer();
+  const { bootstrap, state, dispatch, summaries, totals, saveNow, online, dirty, savedAt } =
+    useComposer();
+
+  // The draft is mirrored to this device while it is dirty, so a reload, a
+  // crash or a closed tab is not a lost post. It is removed the moment the
+  // server has the work.
+  useDraftMirror({
+    workspaceId: state.master.workspaceId,
+    state,
+    dirty,
+    savedAt,
+    loadedAt: bootstrap.updatedAt,
+  });
   // Three named layouts, not one layout squeezed twice.
   const isTablet = useBreakpoint('md'); // 768: editor plus review, rail on top
   const isDesktop = useBreakpoint('lg'); // 1024: three panes, review collapsible
@@ -79,6 +103,22 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [issueIndex, setIssueIndex] = useState<number | null>(null);
   const savedFlash = useSavedFlash();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const validationRef = useRef<HTMLDivElement>(null);
+  useActionBarReserve(rootRef, barRef);
+
+  /** The bar's "{n} to fix" opens the panel that lists them and goes to it. */
+  const showIssues = useCallback(() => {
+    setShowPreview(true);
+    setStep('review');
+    // The panel is rendered by the same click, so the scroll waits a frame
+    // rather than looking for an element that does not exist yet.
+    requestAnimationFrame(() => {
+      validationRef.current?.scrollIntoView({ block: 'nearest' });
+      validationRef.current?.focus();
+    });
+  }, []);
 
   const issues = useMemo(() => issueCursorList(summaries), [summaries]);
   const active =
@@ -131,8 +171,9 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       'Ctrl+i': () => moveIssue(1),
       'Ctrl+Shift+i': () => moveIssue(-1),
       'Mod+s': () => {
-        void saveNow();
-        savedFlash.flash();
+        void saveNow()
+          .then(() => savedFlash.flash())
+          .catch(() => undefined);
       },
       'Mod+Enter': () => setScheduleOpen(true),
     },
@@ -142,17 +183,17 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
 
   const reviewPane = (
     <div className="flex flex-col gap-6">
-      {active ? <ProviderPreview summary={active} /> : null}
-      <ValidationPanel focusedIssueIndex={issueIndex} />
-      <CostPanel />
-      <div className="flex flex-wrap gap-2">
-        <Button variant="primary" onClick={() => setScheduleOpen(true)} disabled={!online}>
-          {t.full('action.schedule')}
-        </Button>
-        <Button variant="secondary" onClick={() => void saveNow()}>
-          {t.full('action.saveDraft')}
-        </Button>
+      {active ? <ProviderPreview summary={active} /> : <MasterPreview />}
+      {/*
+        The commit buttons used to live here, at the end of a column that
+        scrolls. They are in the sticky bar now, which is the only place a
+        primary action belongs on a screen this tall.
+      */}
+      <div ref={validationRef} tabIndex={-1}>
+        <ValidationPanel focusedIssueIndex={issueIndex} />
       </div>
+      <PartialSaveNotice />
+      <CostPanel />
       {online ? null : (
         <Notice tone="warning" title={t.full('composerWeb.review.offlineBlocked')} />
       )}
@@ -162,12 +203,16 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           cause={t.full('composerWeb.page.rateLimitCause')}
           resetAt={props.rateLimit.resetAt}
           resetLabel={t.full('common.time')}
-          usage={{
-            used: props.rateLimit.used,
-            limit: props.rateLimit.limit,
-            text: props.rateLimit.usageText,
-            label: t.full('composerWeb.page.rateLimitTitle'),
-          }}
+          usage={
+            props.rateLimit.usage === undefined
+              ? undefined
+              : {
+                  used: props.rateLimit.usage.used,
+                  limit: props.rateLimit.usage.limit,
+                  text: props.rateLimit.usage.usageText,
+                  label: t.full('composerWeb.page.rateLimitTitle'),
+                }
+          }
           alternative={t.full('composerWeb.page.rateLimitAlternative')}
         />
       ) : null}
@@ -198,23 +243,43 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
 
   if (!isTablet) {
     return (
-      <div className="flex min-h-dvh flex-col gap-4 px-4 pt-4">
+      <div ref={rootRef} className="bg-surface-sunken flex min-h-dvh flex-col gap-3 p-3">
         <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
+
+        <RestoreBanner />
+        <UnavailableChannelsNotice />
 
         <StepTabs step={step} onStepChange={setStep} />
 
-        <PaneTransition panelKey={step} className="flex-1 pb-4">
+        <PaneTransition
+          panelKey={step}
+          className="border-border-default bg-surface-canvas flex-1 rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)]"
+        >
+          {/*
+            Each step's panels use h3 headings, so the step itself supplies
+            the h2 that sits between them and the page's h1.
+          */}
+          {step === 'targets' ? null : (
+            <h2 className="sr-only">
+              {step === 'write'
+                ? t.full('composerWeb.pane.master')
+                : step === 'variant'
+                  ? active
+                    ? t.full('composerWeb.pane.variant')
+                    : t.full('composerWeb.pane.master')
+                  : t.full('composerWeb.pane.review')}
+            </h2>
+          )}
           {step === 'targets' ? <TargetRail /> : null}
           {step === 'write' ? masterPane : null}
           {step === 'variant' ? editorPane : null}
           {step === 'review' ? reviewPane : null}
         </PaneTransition>
 
-        <SummaryBar
-          onOpenReview={() => {
-            setStep('review');
-            setScheduleOpen(true);
-          }}
+        <ActionBar
+          barRef={barRef}
+          onCommit={() => setScheduleOpen(true)}
+          onShowIssues={showIssues}
         />
 
         <ScheduleSheet
@@ -225,17 +290,21 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         />
         <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
         <SavedFlash visible={savedFlash.visible} />
+        <UnsavedChangesPrompt dirty={dirty} />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-dvh flex-col gap-4 px-4 pt-4 lg:px-6">
+    <div ref={rootRef} className="bg-surface-sunken flex min-h-dvh flex-col gap-3 p-3">
       <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
+
+      <RestoreBanner />
+      <UnavailableChannelsNotice />
 
       {/* 768 to 1023: the rail becomes a horizontal strip above the editor. */}
       {isDesktop ? null : (
-        <div className="border-border-subtle overflow-x-auto border-b pb-3">
+        <div className="border-border-default bg-surface-raised overflow-x-auto rounded-lg border p-3">
           <div className="min-w-[36rem]">
             <TargetRail />
           </div>
@@ -246,23 +315,25 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         className={
           isDesktop
             ? showPreview
-              ? 'grid flex-1 grid-cols-[17rem_minmax(0,1fr)] gap-6 xl:grid-cols-[17rem_minmax(0,1fr)_22rem]'
-              : 'grid flex-1 grid-cols-[17rem_minmax(0,1fr)] gap-6'
-            : 'grid flex-1 grid-cols-[minmax(0,1fr)_20rem] gap-6'
+              ? 'grid flex-1 grid-cols-[17rem_minmax(0,1fr)] gap-3 xl:grid-cols-[17rem_minmax(0,1fr)_23rem]'
+              : 'grid flex-1 grid-cols-[17rem_minmax(0,1fr)] gap-3'
+            : 'grid flex-1 grid-cols-[minmax(0,1fr)_20rem] gap-3'
         }
       >
         {isDesktop ? (
-          <aside className="border-border-subtle border-e pe-4">
+          <aside className="border-border-default bg-surface-raised rounded-lg border p-3">
             <TargetRail />
           </aside>
         ) : null}
 
         <section
-          aria-label={
-            active ? t.full('composerWeb.pane.variant') : t.full('composerWeb.pane.master')
-          }
-          className="min-w-0 pb-10"
+          aria-labelledby="composer-edit-pane-heading"
+          className="border-border-default bg-surface-raised min-w-0 rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)] lg:p-5"
         >
+          {/* The pane's panels are h3, so the pane supplies their h2. */}
+          <h2 id="composer-edit-pane-heading" className="sr-only">
+            {active ? t.full('composerWeb.pane.variant') : t.full('composerWeb.pane.master')}
+          </h2>
           <PaneTransition panelKey={active ? active.connectionId : 'master'}>
             {active ? editorPane : masterPane}
           </PaneTransition>
@@ -270,13 +341,16 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
 
         {showPreview ? (
           <aside
-            aria-label={t.full('composerWeb.pane.review')}
+            aria-labelledby="composer-review-pane-heading"
             className={
               isDesktop
-                ? 'border-border-subtle hidden border-s ps-4 pb-10 xl:block'
-                : 'border-border-subtle border-s ps-4 pb-10'
+                ? 'border-border-default bg-surface-canvas hidden rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)] xl:block'
+                : 'border-border-default bg-surface-canvas rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)]'
             }
           >
+            <h2 id="composer-review-pane-heading" className="sr-only">
+              {t.full('composerWeb.pane.review')}
+            </h2>
             <div className="flex justify-end">
               <Button variant="ghost" size="sm" onClick={() => setShowPreview(false)}>
                 {t.full('composerWeb.pane.hidePreview')}
@@ -292,9 +366,18 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         at any width it can be collapsed and brought back with a real control.
       */}
       {showPreview ? (
-        <div className={isDesktop ? 'pb-10 xl:hidden' : 'hidden'}>{reviewPane}</div>
+        <div
+          className={
+            isDesktop
+              ? 'border-border-default bg-surface-canvas rounded-lg border p-4 pb-[var(--composer-action-bar-size,4rem)] xl:hidden'
+              : 'hidden'
+          }
+        >
+          <h2 className="sr-only">{t.full('composerWeb.pane.review')}</h2>
+          {reviewPane}
+        </div>
       ) : (
-        <div className="border-border-subtle flex flex-wrap items-center gap-3 border-t pt-3 pb-10">
+        <div className="border-border-default bg-surface-raised flex flex-wrap items-center gap-3 rounded-lg border p-3 pb-[var(--composer-action-bar-size,4rem)]">
           <p className="text-body-sm text-text-tertiary">
             {t.full('composerWeb.pane.previewCollapsed')}
           </p>
@@ -311,6 +394,8 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         })}
       </p>
 
+      <ActionBar barRef={barRef} onCommit={() => setScheduleOpen(true)} onShowIssues={showIssues} />
+
       <ScheduleSheet
         open={scheduleOpen}
         onOpenChange={setScheduleOpen}
@@ -319,6 +404,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       />
       <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
       <SavedFlash visible={savedFlash.visible} />
+      <UnsavedChangesPrompt dirty={dirty} />
     </div>
   );
 }
@@ -366,7 +452,11 @@ function StepTabs({
 
       const listRect = list.getBoundingClientRect();
       const activeRect = active.getBoundingClientRect();
-      thumb.style.left = `${activeRect.left - listRect.left}px`;
+      const isRtl = list.ownerDocument.documentElement.getAttribute('dir') === 'rtl';
+      const inlineStart = isRtl
+        ? listRect.right - activeRect.right
+        : activeRect.left - listRect.left;
+      thumb.style.insetInlineStart = `${inlineStart}px`;
       thumb.style.width = `${activeRect.width}px`;
 
       if (state) {
@@ -383,7 +473,7 @@ function StepTabs({
         <span
           ref={thumbRef}
           aria-hidden="true"
-          className="border-accent bg-accent-subtle pointer-events-none absolute inset-y-0 z-0 rounded-md border"
+          className="border-accent bg-accent-subtle pointer-events-none absolute inset-y-0 start-0 z-0 rounded-md border"
         />
         {STEPS.map((entry, index) => (
           <li key={entry}>

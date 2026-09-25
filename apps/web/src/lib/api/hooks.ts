@@ -10,6 +10,7 @@
  */
 
 import {
+  keepPreviousData,
   useMutation,
   useQuery,
   useQueryClient,
@@ -23,6 +24,7 @@ import { api } from './client';
 import { newIdempotencyKey } from './correlation';
 import { ApiError } from './error';
 import { keys } from './keys';
+import { collectAllPages, FOLLOW_PAGE_SIZE } from './paginate';
 import type {
   ActionItemCategory,
   ActionItemView,
@@ -50,7 +52,14 @@ export function useConnections(
   const workspaceId = useWorkspaceId();
   return useQuery({
     queryKey: keys.connections(workspaceId, filter),
-    queryFn: () => api.connections.list(filter),
+    queryFn: () =>
+      collectAllPages((cursor) =>
+        api.connections.list({
+          ...filter,
+          limit: FOLLOW_PAGE_SIZE,
+          ...(cursor === undefined ? {} : { cursor }),
+        }),
+      ),
   });
 }
 
@@ -84,17 +93,47 @@ export function useActionCenter(
   });
 }
 
-export function useCalendar(range: {
+export interface CalendarRangeInput {
   from: string;
   to: string;
   projectId?: string;
   state?: PublishState;
-}): UseQueryResult<Paginated<CalendarEntryView>, ApiError> {
+}
+
+/**
+ * The calendar read as plain query options, so a prefetch (the neighbouring
+ * week, or the server render) uses exactly the key and function the hook does.
+ */
+export function calendarQueryOptions(
+  workspace: { readonly id: string; readonly timeZone: string },
+  range: CalendarRangeInput,
+) {
+  return {
+    queryKey: keys.calendar(workspace.id, range),
+    // Every entry in the range, not the first page of it: a busy week used to
+    // show its first fifty posts and nothing after them.
+    queryFn: () =>
+      collectAllPages((cursor) =>
+        api.scheduling.getCalendar({
+          ...range,
+          ianaTimeZone: workspace.timeZone,
+          limit: FOLLOW_PAGE_SIZE,
+          ...(cursor === undefined ? {} : { cursor }),
+        }),
+      ),
+  };
+}
+
+export function useCalendar(
+  range: CalendarRangeInput,
+  options: { readonly keepPrevious?: boolean } = {},
+): UseQueryResult<Paginated<CalendarEntryView>, ApiError> {
   const { workspace } = useSession();
-  const workspaceId = workspace.id;
   return useQuery({
-    queryKey: keys.calendar(workspaceId, range),
-    queryFn: () => api.scheduling.getCalendar({ ...range, ianaTimeZone: workspace.timeZone }),
+    ...calendarQueryOptions(workspace, range),
+    // Stepping a week keeps the last window on screen until the next arrives,
+    // instead of flashing a skeleton between two populated grids.
+    ...(options.keepPrevious === true ? { placeholderData: keepPreviousData } : {}),
   });
 }
 

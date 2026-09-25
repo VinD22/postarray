@@ -1,4 +1,4 @@
-import { ValidationFailedError } from '@relay/contracts';
+import { ValidationFailedError, planTierKeySchema } from '@relay/contracts';
 
 import type {
   ActorContext,
@@ -36,6 +36,10 @@ export function createBillingService(deps: ServiceDeps): CustomerBillingService 
 
     async createCheckout(ctx, input) {
       return authorized(deps, ctx, 'billing.manage', undefined, async () => {
+        const tier = planTierKeySchema.safeParse(input.tier ?? 'relay_standard');
+        if (!tier.success) {
+          throw new ValidationFailedError({ details: { field: 'tier' } });
+        }
         if (ctx.idempotencyKey === undefined) {
           throw new ValidationFailedError({
             messageKey: 'errors.idempotency_key_required',
@@ -51,6 +55,7 @@ export function createBillingService(deps: ServiceDeps): CustomerBillingService 
           locale: ctx.locale,
           idempotencyKey: ctx.idempotencyKey,
           interval: input.interval,
+          tier: tier.data,
           successUrl: input.successUrl,
         });
       });

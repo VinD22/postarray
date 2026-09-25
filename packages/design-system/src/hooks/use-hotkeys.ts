@@ -56,13 +56,41 @@ function normalizeBinding(binding: string, apple: boolean): string {
   return [...['ctrl', 'meta', 'alt', 'shift'].filter((m) => modifiers.has(m)), key].join('+');
 }
 
-function eventBinding(event: KeyboardEvent): string {
+/**
+ * A single character that is not a letter or a digit, so a shifted symbol
+ * rather than a shifted letter. `?`, `:` and `+` are typed with Shift held and
+ * arrive with `shiftKey` set; `C` arrives the same way but is a letter, where
+ * Shift genuinely distinguishes two different shortcuts.
+ */
+function isShiftedSymbol(key: string): boolean {
+  return key.length === 1 && !/[a-z0-9]/.test(key);
+}
+
+/**
+ * The bindings this event could reasonably be written as.
+ *
+ * A shifted symbol has two honest spellings and people mean the same thing by
+ * both: `?` is the character the key produces, `shift+?` is how it is typed.
+ * The browser reports them together, `shiftKey` set and `key` already `?`, so
+ * a binding registered as a bare `?` could never match anything at all. Both
+ * spellings are returned here, which is why the composer's help shortcut fires
+ * for the first time and why the shell's `shift+?` keeps working unchanged.
+ *
+ * Only symbols get the second spelling. Dropping Shift from a letter would
+ * make `mod+shift+c` and `mod+c` the same shortcut, which they are not.
+ */
+function eventBindings(event: KeyboardEvent): readonly string[] {
   const modifiers: string[] = [];
   if (event.ctrlKey) modifiers.push('ctrl');
   if (event.metaKey) modifiers.push('meta');
   if (event.altKey) modifiers.push('alt');
-  if (event.shiftKey) modifiers.push('shift');
-  return [...modifiers, event.key.toLowerCase()].join('+');
+  const key = event.key.toLowerCase();
+
+  const shifted = [...modifiers, ...(event.shiftKey ? ['shift'] : []), key].join('+');
+  if (!event.shiftKey || !isShiftedSymbol(key)) {
+    return [shifted];
+  }
+  return [shifted, [...modifiers, key].join('+')];
 }
 
 function isFormField(target: EventTarget | null): boolean {
@@ -94,9 +122,9 @@ export function useHotkeys(map: HotkeyMap, options: HotkeyOptions = {}): void {
     const onKeyDown = (event: Event): void => {
       if (!(event instanceof KeyboardEvent)) return;
       if (!enableInFormFields && isFormField(event.target)) return;
-      const pressed = eventBinding(event);
+      const pressed = eventBindings(event);
       for (const [normalized, raw] of bindings) {
-        if (normalized !== pressed) continue;
+        if (!pressed.includes(normalized)) continue;
         const handler = mapRef.current[raw];
         if (!handler) continue;
         if (preventDefault) event.preventDefault();

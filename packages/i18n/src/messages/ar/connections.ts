@@ -74,6 +74,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'لا يمكن ربط أي حسابات في تسجيل الدخول {provider} هذا. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'لا يمكن ربط أي حساب من تسجيل الدخول هذا عبر {provider}.',
+  'connection.oauth.claimFailed': 'تعذّر ربط تلك الحسابات',
+  'connection.oauth.claimFailedAction':
+    'لم يتغيّر شيء على المنصة. أعد المحاولة، وإذا استمر الفشل فابدأ الربط من جديد.',
   'connection.oauth.canceled': 'تم إلغاء الاتصال بتاريخ {provider}. لم يتغير شيء.',
   'connection.oauth.alreadyConnected': '{account} متصل بالفعل بمساحة العمل هذه.',
   'connection.oauth.connectedToAnotherWorkspace':

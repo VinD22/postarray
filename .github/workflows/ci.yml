@@ -6,7 +6,10 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    # `development` is this repository's integration branch and the one the team
+    # commits to. Listing only `main` meant every commit between releases landed
+    # with no CI at all.
+    branches: [main, development]
   pull_request:
 
 permissions:
@@ -177,6 +180,10 @@ jobs:
           # pass its own.
           NEXT_PUBLIC_SITE_ORIGIN: https://relay.example
 
+      # Per-route first-load JavaScript budgets, read from the web build above.
+      - name: Check web bundle budgets
+        run: pnpm --filter @relay/web budgets
+
       # Every deployable service has an image, and every image is built on every
       # change. A Dockerfile that is only exercised at release time is a
       # Dockerfile that breaks at release time. These are build-only: nothing is
@@ -215,6 +222,113 @@ jobs:
           path: |
             apps/web/playwright-report
             apps/web/test-results
+          retention-days: 7
+
+  lighthouse:
+    name: Lighthouse on the production web build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      # Demo mode answers the product routes (/home, /compose) from fixtures,
+      # so Lighthouse measures the real screens without a signed-in session.
+      - run: pnpm --filter @relay/web build
+        env:
+          # The build refuses a localhost origin; canonicals do not affect the audit.
+          NEXT_PUBLIC_SITE_ORIGIN: https://relay.example
+          NEXT_PUBLIC_POSTARRAY_DEMO_MODE: 'true'
+      # `next start` reads the same two values at request time.
+      - run: pnpm --filter @relay/web lhci
+        env:
+          NEXT_PUBLIC_SITE_ORIGIN: https://relay.example
+          NEXT_PUBLIC_POSTARRAY_DEMO_MODE: 'true'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-report
+          path: apps/web/.next/lighthouseci
+          retention-days: 7
+
+  golden-path:
+    name: Golden path against API, worker and the fake provider
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    # The golden path signs in as a seeded owner through the real auth
+    # provider, which needs secrets a fork does not have. Without them the job
+    # is skipped, the same rule the Neon job above follows.
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: relay_golden
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      GOLDEN_E2E_PASSWORD: ${{ secrets.GOLDEN_E2E_PASSWORD }}
+      GOLDEN_E2E_EMAIL: ${{ secrets.GOLDEN_E2E_EMAIL }}
+      GOLDEN_E2E_CHANNELS: ${{ vars.GOLDEN_E2E_CHANNELS }}
+      GOLDEN_E2E_API_URL: http://localhost:3001
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/relay_golden
+      DIRECT_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/relay_golden
+      NODE_ENV: development
+      POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true'
+      TEMPORAL_ADDRESS: localhost:7233
+      TEMPORAL_NAMESPACE: default
+      NEON_AUTH_BASE_URL: ${{ secrets.GOLDEN_NEON_AUTH_BASE_URL }}
+      NEON_AUTH_JWKS_URL: ${{ secrets.GOLDEN_NEON_AUTH_JWKS_URL }}
+      NEON_AUTH_COOKIE_SECRET: ${{ secrets.GOLDEN_NEON_AUTH_COOKIE_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+        if: ${{ env.GOLDEN_E2E_PASSWORD != '' }}
+      - uses: pnpm/action-setup@v4
+        if: ${{ env.GOLDEN_E2E_PASSWORD != '' }}
+      - uses: actions/setup-node@v4
+        if: ${{ env.GOLDEN_E2E_PASSWORD != '' }}
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install, migrate and seed
+        if: ${{ env.GOLDEN_E2E_PASSWORD != '' }}
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm db:generate
+          pnpm db:migrate
+          pnpm db:seed
+      - name: Start Temporal, the API and the worker
+        if: ${{ env.GOLDEN_E2E_PASSWORD != '' }}
+        run: |
+          docker run -d --name temporal -p 7233:7233 temporalio/temporal:latest server start-dev --ip 0.0.0.0
+          pnpm --filter @relay/api start > api.log 2>&1 &
+          pnpm --filter @relay/worker start > worker.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            curl -fsS http://localhost:3001/healthz > /dev/null && exit 0
+            sleep 2
+          done
+          cat api.log
+          exit 1
+      - run: pnpm --filter @relay/web exec playwright install --with-deps chromium
+        if: ${{ env.GOLDEN_E2E_PASSWORD != '' }}
+      - run: pnpm --filter @relay/web test:e2e:golden
+        if: ${{ env.GOLDEN_E2E_PASSWORD != '' }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: golden-path-report
+          path: |
+            apps/web/playwright-report-golden
+            apps/web/test-results/playwright-golden
+            api.log
+            worker.log
           retention-days: 7
 
   security:

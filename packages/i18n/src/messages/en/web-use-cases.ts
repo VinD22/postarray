@@ -96,4 +96,24 @@ export const webUseCaseMessages = {
     'Every platform limit shown anywhere on this site is generated from the connector registry and carries the document it came from and the date a person read it.',
   'web.useCases.crossPlatform.today':
     'The composer, the per target versions, the validation rules and the generated limits dataset are built. The publishing step is not: no connector is verified in production, so a validated draft can be scheduled internally and cannot reach a platform.',
+
+  /* ---------------------------------------------------------------------- */
+  /* Visible questions on the schedule and use case pages (FAQPage too)     */
+  /* ---------------------------------------------------------------------- */
+  'web.pageFaq.title': 'Questions',
+  'web.pageFaq.schedule.today.q': 'Can this product publish to {platform} today?',
+  'web.pageFaq.schedule.today.a':
+    'Not yet. No {platform} connector has passed its definition of done, and none is verified in production. This page describes what {platform} requires and what the product intends to support.',
+  'web.pageFaq.schedule.limits.q': 'Where do the {platform} limits on this page come from?',
+  'web.pageFaq.schedule.limits.a':
+    'Each limit is read from official {platform} documentation for a freshly connected account with no elevated eligibility. Every set carries the date a person read it, because a platform can change any of them without notice.',
+  'web.pageFaq.schedule.official.q': 'Does it use unofficial ways to post to {platform}?',
+  'web.pageFaq.schedule.official.a':
+    'No. Publishing goes only through the official {platform} API. There is no browser automation, no scraping and no automated engagement.',
+  'web.pageFaq.useCase.today.q': 'Does this workflow run today?',
+  'web.pageFaq.useCase.today.a':
+    'Not end to end. No connector is verified in production, so nothing described on this page publishes anywhere yet. The section on what is actually built says which parts exist.',
+  'web.pageFaq.useCase.official.q': 'Will it use unofficial ways to post?',
+  'web.pageFaq.useCase.official.a':
+    "No. Publishing goes only through each platform's official API. There is no browser automation, no scraping and no automated engagement.",
 } as const;

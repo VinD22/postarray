@@ -25,7 +25,9 @@ import { nowIso } from '../runtime/clock';
  * deduplication, so two copies of this scheduler would publish twice. It
  * therefore:
  *
- * - refuses to start when `NODE_ENV` is `production`;
+ * - refuses to start unless the caller has checked `schedulerFallbackAllowed`,
+ *   which permits it only in tests and on a local machine with a local
+ *   database, never on a deployed box whatever its NODE_ENV says;
  * - reports itself as a failing check in the health report, never as `pass`;
  * - logs a warning naming the missing variable every time it accepts work.
  */
@@ -34,7 +36,7 @@ export class InlineSchedulerNotPermittedError extends RelayError {
   constructor() {
     super(ERROR_CODES.INTERNAL, {
       messageKey: MESSAGE_KEYS.worker.degradedInlineScheduler,
-      details: { reason: 'inline_scheduler_in_production' },
+      details: { reason: 'inline_scheduler_not_permitted' },
     });
     this.name = 'InlineSchedulerNotPermittedError';
   }
@@ -53,7 +55,12 @@ export interface InlineRun {
 export interface InlineSchedulerOptions {
   readonly activities: WorkerActivities;
   readonly log: WorkflowLog;
-  readonly isProduction: boolean;
+  /**
+   * Whether this process may run without durable scheduling. The caller owns
+   * the decision (`schedulerFallbackAllowed` in `@relay/runtime`); this is the
+   * last line of defence against constructing one anyway.
+   */
+  readonly permitted: boolean;
   /** Why Temporal is not available. Surfaced in the health report. */
   readonly reason: string;
 }
@@ -66,7 +73,7 @@ export class InlineScheduler {
   private acceptedCount = 0;
 
   constructor(options: InlineSchedulerOptions) {
-    if (options.isProduction) {
+    if (!options.permitted) {
       throw new InlineSchedulerNotPermittedError();
     }
     this.options = options;

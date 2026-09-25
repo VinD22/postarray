@@ -3,7 +3,11 @@ import type { Paginated } from '@relay/contracts';
 
 import type { ActorContext, ProjectView, CursorQuery, Services } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { CreateProjectInput, UpdateProjectInput } from './projects.schemas';
+import type {
+  CreateProjectInput,
+  UpdateProjectConnectionsInput,
+  UpdateProjectInput,
+} from './projects.schemas';
 
 /** Transport-level delegation for projects. No rule lives here. */
 @Injectable()
@@ -35,6 +39,14 @@ export class ProjectsService {
       ...(patch.blockedTerms === undefined ? {} : { blockedTerms: patch.blockedTerms }),
       ...(patch.domains === undefined ? {} : { domains: patch.domains }),
     });
+  }
+
+  updateConnections(
+    ctx: ActorContext,
+    projectId: string,
+    input: UpdateProjectConnectionsInput,
+  ): Promise<ProjectView> {
+    return this.services.projects.updateConnections(ctx, projectId, input);
   }
 
   delete(ctx: ActorContext, projectId: string): Promise<void> {

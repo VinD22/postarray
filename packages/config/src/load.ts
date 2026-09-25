@@ -5,6 +5,7 @@ import {
   type EnvKey,
   type LogLevel,
   type NodeEnvironment,
+  type RuntimeProfile,
   type PolarServer,
   type RelayEnv,
   envSchema,
@@ -53,6 +54,11 @@ export const SERVICE_REQUIREMENTS: Record<RelayService, ServiceRequirement> = {
 
 export interface CoreConfig {
   readonly nodeEnv: NodeEnvironment;
+  /**
+   * What this process is for. See RUNTIME_PROFILES: this, not `isProduction`,
+   * is what gates adapters that are allowed to discard work on a laptop.
+   */
+  readonly runtimeProfile: RuntimeProfile;
   readonly isProduction: boolean;
   readonly isDevelopment: boolean;
   readonly isTest: boolean;
@@ -304,6 +310,22 @@ function collectPresenceIssues(
   return issues;
 }
 
+/**
+ * A deployment that says nothing gets the profile its NODE_ENV implies, so
+ * this is additive: existing production and test processes keep their exact
+ * behaviour, and only a deployed box with a development-shaped NODE_ENV has
+ * to say `staging` out loud.
+ */
+function defaultRuntimeProfile(nodeEnv: NodeEnvironment): RuntimeProfile {
+  if (nodeEnv === 'production') {
+    return 'production';
+  }
+  if (nodeEnv === 'test') {
+    return 'test';
+  }
+  return 'local';
+}
+
 function toConfig(
   env: RelayEnv,
   present: readonly EnvKey[],
@@ -313,6 +335,7 @@ function toConfig(
     service,
     core: {
       nodeEnv: env.NODE_ENV,
+      runtimeProfile: env.POSTARRAY_RUNTIME_PROFILE ?? defaultRuntimeProfile(env.NODE_ENV),
       isProduction: env.NODE_ENV === 'production',
       isDevelopment: env.NODE_ENV === 'development',
       isTest: env.NODE_ENV === 'test',

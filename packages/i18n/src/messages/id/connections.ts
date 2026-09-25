@@ -67,6 +67,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Tidak ada akun pada login {provider} ini yang dapat dihubungkan. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'Tidak ada akun dari login {provider} ini yang dapat dihubungkan.',
+  'connection.oauth.claimFailed': 'Akun tersebut tidak dapat dihubungkan',
+  'connection.oauth.claimFailedAction':
+    'Tidak ada yang berubah di platform. Coba lagi, dan jika terus gagal, mulai ulang proses koneksi.',
   'connection.oauth.canceled': 'Koneksi dibatalkan pada {provider}. Tidak ada yang berubah.',
   'connection.oauth.alreadyConnected': '{account} sudah terhubung ke ruang kerja ini.',
   'connection.oauth.connectedToAnotherWorkspace':

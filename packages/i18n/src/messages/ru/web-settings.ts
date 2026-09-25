@@ -208,6 +208,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Базовый план за $29 включает 3 активных проекта. Рабочее пространство может получить право на до 20 проектов без создания другого аккаунта.',
   'settings.ui.projects.capacitySummary': '{used} из {limit}',
+  'settings.ui.projects.atLimitAction': 'Посмотреть тарифы',
   'settings.ui.projects.atLimitTitle': 'Это рабочее пространство использовало все слоты проектов',
   'settings.ui.projects.atLimitBody':
     'Заархивируйте неактивный проект или измените лимит рабочего пространства, прежде чем добавлять ещё один. Текущий лимит: {limit}.',

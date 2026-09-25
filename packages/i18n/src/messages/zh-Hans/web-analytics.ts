@@ -222,7 +222,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     'Post Array。跟踪链接是一个短 URL 中继重定向的链接，因此即使平台报告没有点击，您也可以看到点击。如果没有审核条目，原始目的地永远不会更改。',
   'analytics.links.emptyExample':
-    '示例：relay.to/a7Kq2 通过营销活动 q3-launch 重定向到 acme.com/blog/launch。',
+    '示例：pa.link/a7Kq2 通过营销活动 q3-launch 重定向到 acme.com/blog/launch。',
   'analytics.links.table.caption': '此工作区中跟踪的链接及其第一方点击计数。',
   'analytics.links.campaign': '活动',
   'analytics.links.created': '已创建',

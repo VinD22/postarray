@@ -208,6 +208,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Базовий план за $29 включає 3 активні проєкти. Робоча область може отримати право на до 20 проєктів без створення іншого облікового запису.',
   'settings.ui.projects.capacitySummary': '{used} з {limit}',
+  'settings.ui.projects.atLimitAction': 'Переглянути тарифи',
   'settings.ui.projects.atLimitTitle': 'Ця робоча область використала всі слоти проєктів',
   'settings.ui.projects.atLimitBody':
     'Заархівуйте неактивний проєкт або змініть ліміт робочої області, перш ніж додавати ще один. Поточний ліміт: {limit}.',

@@ -1,13 +1,24 @@
 import { en } from '@relay/i18n';
 
+import { WEB_PLAN_TIERS, priceUnits } from '@/features/billing/tiers';
 import { BLOG_ARTICLES, blogArticlePath } from '@/features/blog/registry';
 import { articleContent, articleLocales } from '@/features/blog/types';
+import { COMPARISON_PAGES, comparisonPath } from '@/features/comparisons/registry';
 import { absoluteUrl } from '@/features/marketing/seo';
-import { ROUTES, TOOL_LINKS } from '@/features/marketing/site';
+import {
+  ROUTES,
+  TOOL_LINKS,
+  USE_CASE_LINKS,
+  schedulePlatformPath,
+  specsPlatformPath,
+} from '@/features/marketing/site';
+import { PLATFORM_PAGES } from '@/features/platforms/registry';
+import { SPEC_PLATFORMS } from '@/features/specs/registry';
 
 /**
- * A plain-text context file for AI systems (llmstxt.org), plus the site's
- * pricing summary.
+ * A plain-text context file for AI systems (llmstxt.org): what this product is,
+ * what it costs, what it deliberately does not do, and how an agent connects to
+ * it.
  *
  * Google's own AI Overviews guidance says this file carries no ranking
  * signal there and none is claimed. It exists for the AI engines that do
@@ -45,6 +56,52 @@ export async function GET(): Promise<Response> {
     line('For creators', ROUTES.creators),
     line('For developers', ROUTES.developers),
     '',
+    '## Pricing',
+    '',
+    // Derived from the tier table, not retyped. The docstring above has always
+    // promised a pricing summary and the file has never carried one, so an
+    // agent evaluating this product had to fetch and parse `/pricing` to learn
+    // the single most decision-relevant fact about it.
+    ...WEB_PLAN_TIERS.map(
+      (tier) =>
+        `- ${en[tier.nameKey]}: $${priceUnits(tier.monthlyPriceMinor)} per month, or $${priceUnits(
+          tier.annualPriceMinor,
+        )} per year. ${tier.projectAllowance} active projects.`,
+    ),
+    `- A year costs ten months, so the saving is two months on every tier.`,
+    `- ${en['billing.tier.everyFeature']}. A tier buys active project capacity and nothing else.`,
+    `- ${en['web.home.v2.sticker.trial']} There is no time limited trial: a credit is spent when a post is actually published, and running out refuses the next publish and nothing else.`,
+    '',
+    '## What this is not',
+    '',
+    // Negative facts are disproportionately citable and almost nobody publishes
+    // them. Every line here is a rule the codebase enforces, not a positioning
+    // statement.
+    '- It does not generate images or video. There is no AI media generation of any kind, and no endpoint, button or meter for one.',
+    '- It publishes only through official platform APIs. There is no browser automation, no cookie replay and no unofficial endpoint.',
+    '- It does not automate engagement: no auto-likes, auto-follows, engagement pods, unsolicited replies or DMs.',
+    '- It does not claim a best time to post. That would require inventing confidence we do not have; the queue states its windows plainly instead.',
+    '- A capability that is not built is reported as `not_implemented`, and one the platform does not offer as `unsupported`. These are different states and the interface shows them differently.',
+    '- A metric we could not fetch is reported as unavailable, never as zero.',
+    '',
+    '## For agents connecting programmatically',
+    '',
+    `- Remote MCP server over Streamable HTTP, at the endpoint published on ${absoluteUrl(
+      ROUTES.developers,
+    )}. Tools are grouped by risk: read, reversible, and consequential.`,
+    '- Authentication is OAuth with per-tool scopes. There are no unauthenticated tools.',
+    '- Consequential tools require an idempotency key, which is rejected rather than defaulted when missing.',
+    '- Publishing requires a human confirmation minted by the server. An agent host displaying its own dialog is not an authorization fact and is not accepted as one.',
+    '- The same application services back the web app, the REST API, the MCP server, the CLI and signed webhooks, so no surface can bypass approval, tenancy or idempotency.',
+    '- Every publication produces an immutable receipt.',
+    '',
+    '## Definitions',
+    '',
+    '- Project: one business inside a workspace, with its own connected accounts, calendar, approvals and receipts. One account runs many projects.',
+    '- Master version: the single draft an author writes once, from which a platform-native variant is derived per account.',
+    '- Receipt: the immutable record that one post reached one account, carrying the external id, the permalink and the content checksum.',
+    '- Publishing credit: one published post on the free plan. Spent on publication, never on scheduling.',
+    '',
     '## Writing',
     '',
     ...BLOG_ARTICLES.map((article) => {
@@ -57,6 +114,37 @@ export async function GET(): Promise<Response> {
           : '';
       return `- [${content.title}](${url}): ${content.description}${languageNote}`;
     }),
+    '',
+    '## Reference data',
+    '',
+    line('Post specs, platform by platform', ROUTES.specs),
+    line('Image sizes and dimensions', ROUTES.specsDimensions),
+    ...SPEC_PLATFORMS.map((platform) =>
+      line(`Post specs for ${en[platform.nameKey]}`, specsPlatformPath(platform.slug)),
+    ),
+    line('How we research and verify platform facts', ROUTES.methodology),
+    `- Every value, with its source and verified date, in one file: ${absoluteUrl('/llms-full.txt')}`,
+    '',
+    '## Scheduling by platform',
+    '',
+    line('All platforms', ROUTES.schedule),
+    ...PLATFORM_PAGES.map((page) =>
+      line(
+        `${en[page.nameKey]}: platform rules and scheduling notes`,
+        schedulePlatformPath(page.slug),
+      ),
+    ),
+    '',
+    '## Use cases',
+    '',
+    ...USE_CASE_LINKS.map((link) => line(en[link.labelKey], link.href)),
+    '',
+    '## Comparisons',
+    '',
+    line('All comparisons', ROUTES.compare),
+    ...COMPARISON_PAGES.map(
+      (page) => `- [${page.title}](${absoluteUrl(comparisonPath(page.slug))}): ${page.description}`,
+    ),
     '',
     '## Free tools',
     '',

@@ -34,6 +34,43 @@ export const webComposerMessages = {
   'composerWeb.summary.costUnknown': 'Cost not priced yet',
   'composerWeb.summary.openReview': 'Open review',
 
+  // ----------------------------------------------------------- action bar
+  'composerWeb.actionBar.label': 'Draft actions',
+  'composerWeb.actionBar.toFix': '{count, plural, one {# to fix} other {# to fix}}',
+  'composerWeb.actionBar.publishToCount':
+    '{count, plural, =0 {Publish now} one {Publish to # channel now} other {Publish to # channels now}}',
+  'composerWeb.actionBar.scheduleFor': 'Schedule for {time} ({zone})',
+  'composerWeb.readiness.summary':
+    '{count, plural, =0 {No channels picked yet} other {Ready: {ready} of # channels}}',
+  'composerWeb.saveSplit.title':
+    '{count, plural, one {# account was not saved} other {# accounts were not saved}}',
+  'composerWeb.saveSplit.body':
+    'Your text is still here. The accounts below keep the version on this device, and Post Array writes them again with your next edit.',
+  'composerWeb.saveSplit.saved': 'Saved',
+  'composerWeb.saveSplit.unsaved': 'Not saved yet',
+
+  // ------------------------------------------------------- draft recovery
+  'composerWeb.restore.title': 'Unsaved changes from this device',
+  'composerWeb.restore.body':
+    'This browser kept a copy of edits that never reached Post Array. Restore them, or discard the copy and keep the version on the server.',
+  'composerWeb.restore.restore': 'Restore unsaved changes',
+  'composerWeb.restore.discard': 'Discard the copy',
+  'composerWeb.restore.supersededTitle': 'A newer version was saved elsewhere',
+  // -------------------------------------------------- remembered channels
+  'composerWeb.remember.toggle': 'Start with the channels I used last time',
+  'composerWeb.remember.turnOff': 'Turn off and delete saved selections',
+  'composerWeb.remember.failedTitle': 'That setting was not changed',
+  'composerWeb.remember.failedBody':
+    'This is a project setting, so changing it needs permission to manage the project. Nothing was saved and nothing was deleted.',
+  'composerWeb.remember.droppedItem': '{account}: {reason}',
+  'composerWeb.remember.reason.paused': 'paused, so nothing can publish to it',
+  'composerWeb.remember.reason.gone': 'no longer available in this project',
+  'composerWeb.remember.reason.unavailable': 'not available right now',
+  'composerWeb.remember.unknownAccount': 'An account you can no longer see',
+
+  'composerWeb.restore.supersededBody':
+    'This draft was saved from another device after the copy on this one was made, so the copy has been removed and you are looking at the saved version.',
+
   // ---------------------------------------------------------------- rail
   'composerWeb.rail.masterEntry': 'Master draft',
   'composerWeb.rail.masterHint': 'Edit here to reach every target that still inherits.',
@@ -129,6 +166,19 @@ export const webComposerMessages = {
   'composerWeb.native.privacyChoose': 'Choose an audience',
   'composerWeb.native.privacyExplicit':
     '{provider} does not allow a preselected audience. Choose one before this can be scheduled.',
+  // Audience choices, keyed by the provider's own value in lower case. The
+  // raw value (`PUBLIC`, `SELF_ONLY`) is never shown to a person.
+  // Demo mode refuses every publish; this points at a seeded receipt instead.
+  'composerWeb.commitDemo.sampleReceipt': 'See a sample receipt from the demo workspace',
+  'composerWeb.privacyOption.public': 'Public',
+  'composerWeb.privacyOption.unlisted': 'Unlisted',
+  'composerWeb.privacyOption.private': 'Private',
+  'composerWeb.privacyOption.followers': 'Followers only',
+  'composerWeb.privacyOption.friends': 'Friends',
+  'composerWeb.privacyOption.connections': 'Connections only',
+  'composerWeb.privacyOption.selfOnly': 'Only me',
+  'composerWeb.privacyOption.direct': 'Mentioned people only',
+  'composerWeb.privacyOption.other': 'Other {provider} setting',
   'composerWeb.native.community': 'Community',
   'composerWeb.native.board': 'Board',
   'composerWeb.native.group': 'Group or Page',
@@ -231,6 +281,18 @@ export const webComposerMessages = {
   'composerWeb.autosave.conflictHelp':
     'Nothing is merged automatically. Choose per field, then save.',
   'composerWeb.autosave.retry': 'Try saving again',
+  'composerWeb.autosave.conflictAnonymous':
+    'This draft was saved somewhere else while you were writing. Review both versions before saving.',
+  'composerWeb.autosave.conflictKeepServer': 'Use the saved version',
+  'composerWeb.media.detailsTitle': 'Alt text and rights for {name}',
+  'composerWeb.media.detailsBody':
+    'Changes apply to this file everywhere it is used, including other posts.',
+  'composerWeb.media.scanFailed':
+    'The safety check could not finish. This file cannot publish until it passes.',
+  'composerWeb.channels.unavailableTitle':
+    '{count, plural, one {# channel could not be checked} other {# channels could not be checked}}',
+  'composerWeb.channels.unavailableBody':
+    'We could not read what these channels support, so they are left out for now. Anything already saved for them is kept. Reload to try again.',
 
   // ------------------------------------------------------------ shortcuts
   'composerWeb.shortcuts.title': 'Composer shortcuts',
@@ -297,6 +359,7 @@ export const webComposerMessages = {
   // ==================================================== media library ====
   'mediaLib.view.grid': 'Grid',
   'mediaLib.view.list': 'List',
+  'mediaLib.detail.useInPost': 'Use in post',
   'mediaLib.view.label': 'Layout',
   'mediaLib.sort.label': 'Sort',
   'mediaLib.sort.newest': 'Newest first',
@@ -495,4 +558,120 @@ export const webComposerMessages = {
     '{count, plural, =0 {Choose files} one {Add # file} other {Add # files}}',
   'mediaLib.picker.forMaster': 'Adding to the master draft',
   'mediaLib.picker.forVariant': 'Adding to the version for {account} only',
+
+  // ------------------------------------------------ platform native preview
+  // The preview renders the post the way the platform lays it out. Every
+  // sentence here either states a platform fact taken from the capability
+  // snapshot or says plainly that we are showing a model rather than the
+  // platform's own rendering.
+  'composerWeb.preview.frame': 'Preview: {account} on {provider}, {device}',
+  'composerWeb.preview.device.legend': 'Preview width',
+  'composerWeb.preview.device.mobile': 'Mobile',
+  'composerWeb.preview.device.desktop': 'Desktop',
+  'composerWeb.preview.postedNow': 'Just now',
+  'composerWeb.preview.pickTarget': 'Preview for',
+  'composerWeb.preview.noTargets': 'Choose an account to see how this post will look there.',
+  'composerWeb.preview.seeMore': 'See more',
+  'composerWeb.preview.seeLess': 'See less',
+  'composerWeb.preview.empty': 'Nothing written yet.',
+  'composerWeb.preview.destination': 'Posting to {destination}',
+  'composerWeb.preview.titleLabel': 'Title',
+
+  'composerWeb.preview.kind.text': 'text posts',
+  'composerWeb.preview.kind.image': 'photo posts',
+  'composerWeb.preview.kind.carousel': 'carousels',
+  'composerWeb.preview.kind.video': 'videos',
+  'composerWeb.preview.kind.short_video': 'short videos',
+  'composerWeb.preview.kind.long_video': 'long videos',
+  'composerWeb.preview.kind.document': 'documents',
+  'composerWeb.preview.kind.thread': 'threads',
+
+  'composerWeb.preview.kindTitle.unsupported': '{provider} does not publish {kind}.',
+  'composerWeb.preview.kindTitle.not_implemented':
+    'Post Array cannot publish {kind} to {provider} yet.',
+  'composerWeb.preview.kindTitle.requires_review':
+    '{provider} reviews {kind} publishing before it is allowed.',
+  'composerWeb.preview.kindBody.unsupported':
+    'There is no post to show, because this account cannot receive one. Change the post type, or take this account off the draft.',
+  'composerWeb.preview.kindBody.not_implemented':
+    '{provider} offers this and it is on our connector roadmap. Until it ships, change the post type or take this account off the draft.',
+  'composerWeb.preview.kindBody.requires_review':
+    'It stays unavailable until that review passes. Change the post type, or take this account off the draft.',
+
+  'composerWeb.preview.notSent.title': 'Not sent',
+  'composerWeb.preview.notSent.body':
+    '{count, plural, one {# file is past what {provider} accepts for this post type. It will not be published.} other {# files are past what {provider} accepts for this post type. They will not be published.}}',
+  'composerWeb.preview.notSent.item': 'Not sent',
+
+  'composerWeb.preview.altText.present': 'Alt text',
+  'composerWeb.preview.altText.missing': 'No alt text',
+  'composerWeb.preview.altText.waived': 'Alt text waived',
+
+  'composerWeb.preview.media.loading': 'Loading this file',
+  'composerWeb.preview.media.unavailable': 'This file cannot be read right now.',
+  'composerWeb.preview.media.noThumbnail': 'No preview picture yet',
+  'composerWeb.preview.media.image': 'Image {position} of {count}',
+  'composerWeb.preview.media.video': 'Video',
+  'composerWeb.preview.media.videoDuration': 'Video, {duration}',
+  'composerWeb.preview.media.document': 'Document',
+  'composerWeb.preview.media.audio': 'Audio',
+  'composerWeb.preview.media.none': 'No file attached yet.',
+  'composerWeb.preview.carousel.position': '{position} of {count}',
+
+  'composerWeb.preview.counter.label': '{used} of {limit} characters',
+  'composerWeb.preview.counter.over':
+    '{count, plural, one {# character over} other {# characters over}}',
+  'composerWeb.preview.counter.nearAnnounce':
+    'Close to the {provider} limit. {remaining, plural, one {# character left} other {# characters left}}.',
+  'composerWeb.preview.counter.overAnnounce':
+    'Over the {provider} limit by {count, plural, one {# character} other {# characters}}.',
+  'composerWeb.preview.counter.underAnnounce': 'Back within the {provider} limit.',
+
+  'composerWeb.preview.link.domainOnly':
+    'Only the address is shown. Post Array does not fetch the destination page, so the headline and picture here would be a guess.',
+
+  'composerWeb.preview.thread.overLimit':
+    '{provider} accepts {limit, plural, =0 {no follow up parts} one {# follow up part} other {# follow up parts}}. The rest are not sent.',
+  // The commit preview on the confirm step. Each sentence is a warning a
+  // person acknowledges before anything is scheduled or published.
+  'web.commitPreview.heading': 'Before this goes out',
+  'web.commitPreview.loading': 'Checking what this will do.',
+  'web.commitPreview.unavailable':
+    'We could not check this post in advance. You can still continue, and Post Array checks it again when you confirm.',
+  'web.commitPreview.acknowledgeHint': 'Tick each item to confirm you have read it.',
+  'web.commitPreview.publishNowOnly': 'Applies to Publish now.',
+  'web.commitPreview.escalation.immediate_publish':
+    '{count, plural, one {This publishes to # account now.} other {This publishes to # accounts now.}}',
+  'web.commitPreview.escalation.first_use_connection': 'First post from {account} on {provider}.',
+  'web.commitPreview.escalation.bulk_publication_count':
+    'This creates {count, plural, one {# publication} other {# publications}} at once.',
+  'web.commitPreview.escalation.similar_content_across_accounts':
+    'Very similar text goes to {count, plural, one {# account} other {# accounts}}.',
+  'web.commitPreview.escalation.unapproved_link_domain':
+    'A link points to {host}, which is not on your approved list.',
+  'web.commitPreview.escalation.sensitive_content':
+    'This post is marked as commercial, political or otherwise sensitive.',
+  'web.commitPreview.escalation.privacy_change':
+    'The audience for {account} is different from its usual setting.',
+  'web.commitPreview.escalation.changed_after_approval': 'This post changed after it was approved.',
+  'web.commitPreview.escalation.cost_threshold_exceeded':
+    'The estimated provider cost is higher than usual for one post.',
+  'web.commitPreview.escalation.other': 'One more check needs your confirmation.',
+  'web.commitPreview.blockedTitle': 'This cannot go out yet',
+  'web.commitPreview.blocker.no_targets_selected':
+    'No accounts are selected. Choose at least one account.',
+  'web.commitPreview.blocker.content_invalid':
+    'Some targets have problems. Fix the issues marked in the composer.',
+  'web.commitPreview.blocker.schedule_too_far_ahead':
+    'Posts can be scheduled up to 30 days ahead. Pick an earlier time.',
+  'web.commitPreview.blocker.entitlement_required':
+    'Your plan does not include publishing yet. Open Billing to change plans.',
+  'web.commitPreview.blocker.approval_required':
+    'This workspace needs approval first. Use Request approval instead.',
+  'web.commitPreview.blocker.content_changed_after_approval':
+    'This post changed after it was approved. Request approval again.',
+  'web.commitPreview.blocker.other':
+    'A workspace rule blocks this right now. Check your posting rules or ask an admin.',
+  'web.commitPreview.publishNowForbidden':
+    'Your role can schedule posts but not publish them immediately. Schedule it instead, or ask an admin.',
 } as const;

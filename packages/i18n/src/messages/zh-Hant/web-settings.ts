@@ -151,6 +151,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     '29 美元的基本方案包含 3 個啟用中的專案。工作區最多可取得 20 個專案的權限，無需另外建立帳號。',
   'settings.ui.projects.capacitySummary': '{used} / {limit}',
+  'settings.ui.projects.atLimitAction': '查看方案',
   'settings.ui.projects.atLimitTitle': '此工作區的專案名額已全數用盡',
   'settings.ui.projects.atLimitBody':
     '請先封存一個未使用的專案，或變更工作區的權限額度，才能新增其他專案。目前的上限為 {limit}。',

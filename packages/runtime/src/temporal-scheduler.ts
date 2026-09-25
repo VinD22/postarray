@@ -14,6 +14,7 @@ import {
   ruleWorkflowId,
   type Clock,
   type SchedulerPort,
+  type SchedulerKind,
   type WorkflowActorContext,
 } from '@relay/application';
 import { ERROR_CODES, RelayError, type ProviderId } from '@relay/contracts';
@@ -44,6 +45,10 @@ export class TemporalScheduler implements SchedulerPort {
   readonly #connect: typeof Connection.connect;
   #connection: Promise<Connection> | null = null;
   #client: Promise<Client> | null = null;
+
+  describeKind(): SchedulerKind {
+    return 'temporal';
+  }
 
   constructor(options: TemporalSchedulerOptions) {
     this.#options = options;

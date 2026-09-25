@@ -30,7 +30,25 @@ export const updateProjectSchema = createProjectSchema
   .partial()
   .strict();
 
+const connectionIdListSchema = z.array(z.string().trim().min(1).max(64)).max(200);
+
+/**
+ * `PATCH /v1/projects/{id}/connections`. A connection belongs to at most one
+ * project, so `add` moves it here and `remove` leaves it unassigned. At least
+ * one of the two must name something.
+ */
+export const updateProjectConnectionsSchema = z
+  .object({
+    add: connectionIdListSchema.default([]),
+    remove: connectionIdListSchema.default([]),
+  })
+  .strict()
+  .refine((value) => value.add.length + value.remove.length > 0, {
+    message: 'add or remove must name at least one connection',
+  });
+
 export const listProjectsQuerySchema = cursorQuerySchema;
 
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
 export type UpdateProjectInput = z.infer<typeof updateProjectSchema>;
+export type UpdateProjectConnectionsInput = z.infer<typeof updateProjectConnectionsSchema>;

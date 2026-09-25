@@ -313,7 +313,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     "Un lien suivi est une URL courte vers laquelle Post Array redirige, afin que vous puissiez voir les clics même lorsqu'une plate-forme n'en signale aucun. La destination d'origine n'est jamais modifiée sans une entrée d'audit.",
   'analytics.links.emptyExample':
-    'Exemple : relay.to/a7Kq2 redirige vers acme.com/blog/launch avec la campagne q3-launch.',
+    'Exemple : pa.link/a7Kq2 redirige vers acme.com/blog/launch avec la campagne q3-launch.',
   'analytics.links.table.caption':
     'Liens suivis dans cet espace de travail et nombre de clics de première partie.',
   'analytics.links.campaign': 'Campagne',

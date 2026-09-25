@@ -10,7 +10,7 @@
  */
 
 import { useId, type ReactNode } from 'react';
-import { CalendarDays, ChevronLeft, ChevronRight, Globe, SlidersHorizontal } from 'lucide-react';
+import { CalendarDays, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import {
   Badge,
   Button,
@@ -96,7 +96,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
           />
         </div>
 
-        <div className="flex min-w-0 items-center gap-2">
+        <div className="hidden min-w-0 items-center gap-2 md:flex">
           <CalendarDays aria-hidden="true" className="text-text-tertiary size-4 shrink-0" />
           <Label htmlFor={dateInputId} className="sr-only">
             {t('calendar.goToDate')}
@@ -118,18 +118,31 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
         <p className="text-body-md text-text-secondary min-w-0">
           {t('web.calendar.range.label', {
             range: props.rangeLabel,
-            timeZone: format.zoneLabel(),
+            timeZone: format.timeZone,
           })}
         </p>
 
+        {props.options.projects.length > 1 ? (
+          <FilterSelect
+            className="min-w-40"
+            label={t('calendar.filter.project')}
+            anyLabel={t('web.calendar.filter.anyProject')}
+            value={props.filters.projectId}
+            onChange={(projectId) => props.onFiltersChange({ ...props.filters, projectId })}
+            items={props.options.projects.map((project) => ({
+              value: project.id,
+              label: project.name,
+            }))}
+          />
+        ) : null}
         <Button
           variant="secondary"
           size="sm"
-          className="ms-auto md:hidden"
+          className="ms-auto"
           iconStart={<SlidersHorizontal aria-hidden="true" className="size-4" />}
           onClick={() => props.onFilterSheetOpenChange(true)}
         >
-          {t('action.filter')}
+          {t('scheduler.filters')}
           {activeCount > 0 ? (
             <Badge tone="accent" className="ms-1.5">
               {activeCount}
@@ -139,11 +152,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
       </div>
 
       {/* Wide screens keep every filter on the page. */}
-      <div
-        role="group"
-        aria-label={t('web.calendar.filter.regionLabel')}
-        className="hidden flex-wrap items-end gap-2 md:flex"
-      >
+      <div role="group" aria-label={t('web.calendar.filter.regionLabel')} className="hidden">
         <FilterFields {...props} />
         <FilterSummary
           activeCount={activeCount}
@@ -162,11 +171,6 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
           }
         />
       </div>
-
-      <p className="text-body-sm text-text-tertiary flex items-center gap-1.5 md:hidden">
-        <Globe aria-hidden="true" className="size-3.5" />
-        {t('web.calendar.timeZone.workspace', { timeZone: format.zoneLabel() })}
-      </p>
 
       <Sheet open={props.filterSheetOpen} onOpenChange={props.onFilterSheetOpenChange}>
         <SheetContent side="block-end" closeLabel={t('action.close')}>

@@ -24,6 +24,12 @@ export const METERED_OPERATIONS = [
   'post_create_with_url',
   'ai_text_input_tokens',
   'ai_text_output_tokens',
+  /**
+   * Input tokens spent sending an existing, user-owned image to a model for
+   * analysis (alt text, crop and legibility checks). Analysis, never
+   * generation, and named so it cannot collide with the forbidden list below.
+   */
+  'ai_vision_input_tokens',
 ] as const;
 export const meteredOperationSchema = z.enum(METERED_OPERATIONS);
 export type MeteredOperation = z.infer<typeof meteredOperationSchema>;
@@ -102,6 +108,8 @@ export function createAiTextPriceBook(input: {
   version: string;
   inputMicroPerMillionTokens: number;
   outputMicroPerMillionTokens: number;
+  /** Image input is billed as input tokens. Defaults to the text input rate. */
+  visionInputMicroPerMillionTokens?: number;
   effectiveFrom: string;
   verifiedAt: string;
   sourceUrl: string;
@@ -126,6 +134,12 @@ export function createAiTextPriceBook(input: {
         ...common,
         operation: 'ai_text_output_tokens',
         unitMicroDollars: input.outputMicroPerMillionTokens,
+      },
+      {
+        ...common,
+        operation: 'ai_vision_input_tokens',
+        unitMicroDollars:
+          input.visionInputMicroPerMillionTokens ?? input.inputMicroPerMillionTokens,
       },
     ],
   };

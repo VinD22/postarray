@@ -11,6 +11,7 @@
  */
 
 import { type ReactNode } from 'react';
+import { ChevronDown } from 'lucide-react';
 import {
   Field,
   Input,
@@ -95,43 +96,50 @@ export function LinkControls(): ReactNode {
             </Field>
           ) : null}
 
-          <fieldset className="flex flex-col gap-2">
-            <legend className="text-label text-text-secondary">
-              {t.full('composer.links.utm')}
-            </legend>
-            <div className="grid gap-2 sm:grid-cols-2">
-              {(
-                [
-                  ['source', 'composerWeb.links.utmSource'],
-                  ['medium', 'composerWeb.links.utmMedium'],
-                  ['campaign', 'composerWeb.links.utmCampaign'],
-                  ['term', 'composerWeb.links.utmTerm'],
-                  ['content', 'composerWeb.links.utmContent'],
-                ] as const
-              ).map(([key, labelKey]) => (
-                <Field key={key} label={t(labelKey)}>
-                  {(control) => (
-                    <Input
-                      id={control.id}
-                      value={state.linkPlan.utm[key] ?? ''}
-                      onChange={(event) =>
-                        dispatch({
-                          type: 'links/plan',
-                          plan: {
-                            utm: {
-                              ...state.linkPlan.utm,
-                              [key]:
-                                event.target.value.length === 0 ? undefined : event.target.value,
+          <details className="border-border-subtle bg-surface-sunken group rounded-md border">
+            <summary className="text-label text-text-secondary flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 font-medium marker:content-none [&::-webkit-details-marker]:hidden">
+              <span>{t.full('composer.links.utm')}</span>
+              <ChevronDown
+                aria-hidden="true"
+                className="text-text-tertiary size-4 transition-transform duration-(--duration-fast) group-open:rotate-180"
+              />
+            </summary>
+            <fieldset className="border-border-subtle border-t p-3">
+              <legend className="sr-only">{t.full('composer.links.utm')}</legend>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {(
+                  [
+                    ['source', 'composerWeb.links.utmSource'],
+                    ['medium', 'composerWeb.links.utmMedium'],
+                    ['campaign', 'composerWeb.links.utmCampaign'],
+                    ['term', 'composerWeb.links.utmTerm'],
+                    ['content', 'composerWeb.links.utmContent'],
+                  ] as const
+                ).map(([key, labelKey]) => (
+                  <Field key={key} label={t(labelKey)}>
+                    {(control) => (
+                      <Input
+                        id={control.id}
+                        value={state.linkPlan.utm[key] ?? ''}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'links/plan',
+                            plan: {
+                              utm: {
+                                ...state.linkPlan.utm,
+                                [key]:
+                                  event.target.value.length === 0 ? undefined : event.target.value,
+                              },
                             },
-                          },
-                        })
-                      }
-                    />
-                  )}
-                </Field>
-              ))}
-            </div>
-          </fieldset>
+                          })
+                        }
+                      />
+                    )}
+                  </Field>
+                ))}
+              </div>
+            </fieldset>
+          </details>
 
           <ul className="flex flex-col gap-2">
             {links.map((link) => (

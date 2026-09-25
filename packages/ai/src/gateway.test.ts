@@ -23,6 +23,7 @@ function scriptedProvider(responses: readonly (ProviderResponse | Error)[]): AiP
     name: 'scripted',
     model: 'scripted-1',
     available: true,
+    supportsImageInput: false,
     async complete() {
       const next = responses[Math.min(index, responses.length - 1)];
       index += 1;
@@ -216,6 +217,7 @@ describe('completeStructured', () => {
       name: 'counting',
       model: 'counting-1',
       available: true,
+      supportsImageInput: false,
       async complete() {
         calls += 1;
         return jsonResponse({});

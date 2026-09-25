@@ -39,6 +39,7 @@ export const receiptMessages = {
   'receipt.timeline.providerProcessing': '{provider} is still processing the media',
   'receipt.timeline.published': 'Published as {externalId}',
   'receipt.timeline.commentPublished': 'Follow up item {position} published',
+  'receipt.timeline.followUpFailed': 'Follow up item {position} failed',
   'receipt.timeline.retryScheduled': 'Retry {attempt} scheduled for {time}',
   'receipt.timeline.failed': 'Attempt {attempt} failed',
   'receipt.timeline.canceled': 'Canceled by {actor}',

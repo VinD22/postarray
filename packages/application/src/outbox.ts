@@ -1,4 +1,5 @@
 import {
+  WEBHOOK_EVENT_NAMES,
   approvalLevelSchema,
   creationSurfaceSchema,
   mediaDerivativeOperationsSchema,
@@ -227,6 +228,51 @@ export const workflowOutboxPayloadSchemas = {
 } as const;
 
 export type WorkflowOutboxKind = keyof typeof workflowOutboxPayloadSchemas;
+
+/**
+ * The two disjoint populations of `private.outbox`.
+ *
+ * One table carries two unrelated kinds of row. Workflow intents ask the
+ * scheduler to start or signal a Temporal workflow. Domain events and
+ * notification requests describe something that already happened and need to
+ * reach customer webhook endpoints, the notification writer and the realtime
+ * stream.
+ *
+ * They shared a claim query and a dispatcher that understood only the intents,
+ * so every domain event was claimed, threw `unknown_outbox_kind`, retried on
+ * the thirty-second-to-twenty-four-hour ladder and dead-lettered after ten
+ * attempts. Outbound webhooks and notifications were therefore dead, and the
+ * dead-letter table filled with ordinary traffic.
+ *
+ * Keeping one table is deliberate: every emitter already writes it inside the
+ * same transaction as the receipt or the job it describes, which is the whole
+ * durability guarantee. What the two dispatchers must not share is the claim.
+ */
+export const WORKFLOW_OUTBOX_KINDS = Object.keys(
+  workflowOutboxPayloadSchemas,
+) as readonly WorkflowOutboxKind[];
+
+/**
+ * Everything `emitEvent` and `notify` write. `WEBHOOK_EVENT_NAMES` is the
+ * customer-facing subset; `notification.requested` and `media.scanned` are
+ * internal and never leave the product.
+ */
+export const DOMAIN_EVENT_OUTBOX_KINDS = [
+  ...WEBHOOK_EVENT_NAMES,
+  'notification.requested',
+  'media.scanned',
+  'report.ready',
+] as const;
+
+export type DomainEventOutboxKind = (typeof DOMAIN_EVENT_OUTBOX_KINDS)[number];
+
+export function isWorkflowOutboxKind(kind: string): kind is WorkflowOutboxKind {
+  return (WORKFLOW_OUTBOX_KINDS as readonly string[]).includes(kind);
+}
+
+export function isDomainEventOutboxKind(kind: string): kind is DomainEventOutboxKind {
+  return (DOMAIN_EVENT_OUTBOX_KINDS as readonly string[]).includes(kind);
+}
 export type StartPublishOutboxPayload = z.infer<typeof startPublishOutboxPayloadSchema>;
 export type CancelPublishOutboxPayload = z.infer<typeof cancelPublishOutboxPayloadSchema>;
 export type ReschedulePublishOutboxPayload = z.infer<typeof reschedulePublishOutboxPayloadSchema>;

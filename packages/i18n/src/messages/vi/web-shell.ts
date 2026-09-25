@@ -22,7 +22,7 @@ export const webShellMessages = {
   'shell.demo.body':
     'Không thể truy cập API Post Array từ trình duyệt này, vì vậy các màn hình chứa đầy không gian làm việc mẫu được tạo hạt giống. Không có gì ở đây được kết nối với tài khoản thật và không có gì có thể xuất bản.',
   'shell.demo.howToConnect':
-    'Đặt NEXT_PUBLIC_RELAY_API_URL và khởi động lại ứng dụng để sử dụng dữ liệu trực tiếp.',
+    'Đặt NEXT_PUBLIC_POSTARRAY_API_URL và khởi động lại ứng dụng để sử dụng dữ liệu trực tiếp.',
   'shell.offline.title': 'Bạn đang ngoại tuyến',
   'shell.offline.body':
     'Bản nháp được lưu giữ trên thiết bị này. Lập kế hoạch và xuất bản sơ yếu lý lịch khi kết nối trở lại.',

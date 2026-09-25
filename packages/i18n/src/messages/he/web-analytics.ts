@@ -232,7 +232,7 @@ export const webAnalyticsMessages = withHebrewPluralForms({
   'analytics.links.emptyBody':
     'קישור במעקב הוא מפנה כתובת URL קצרה דרך Post Array, כך שתוכל לראות קליקים גם כאשר פלטפורמה לא מדווחת על שום קליקים. היעד המקורי לעולם לא משתנה ללא ערך ביקורת.',
   'analytics.links.emptyExample':
-    'דוגמה: relay.to/a7Kq2 מפנה אל acme.com/blog/launch עם מסע פרסום q3-launch.',
+    'דוגמה: pa.link/a7Kq2 מפנה אל acme.com/blog/launch עם מסע פרסום q3-launch.',
   'analytics.links.table.caption':
     'קישורים במעקב בסביבת עבודה זו וספירות הקליקים של הצד הראשון שלהם.',
   'analytics.links.campaign': 'מסע פרסום',

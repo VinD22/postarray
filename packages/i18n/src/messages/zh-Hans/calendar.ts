@@ -59,7 +59,7 @@ export const calendarMessages = {
   'actionCenter.item.providerIncident': '{provider} 正在报告问题。计划的帖子将重试。',
   'actionCenter.item.commentFailed': '主帖子已发布，但 {account} 的后续项目失败。',
   'actionCenter.item.analyticsStale': '自 {date} 以来，{account} 的分析尚未更新。',
-  'actionCenter.item.rssStalled': '自 {name} 以来，提要 __RELAY_ICU_0__ 尚未返回有效项目{date}。',
+  'actionCenter.item.rssStalled': '提要 {name} 自 {date} 起未返回有效项目。',
   'actionCenter.item.webhookFailing':
     '向 {endpoint} 的交付连续失败 {count, plural, one {# time} other {# times}}。',
   'actionCenter.item.usageBalance': '针对 {provider} 的计量操作需要使用量余额才能运行。',

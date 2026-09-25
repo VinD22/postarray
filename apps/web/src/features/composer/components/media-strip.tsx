@@ -18,12 +18,54 @@ import { cn } from '@relay/design-system/utils';
 
 import type { MediaAsset } from '../../media/types';
 import { DerivativeDialog } from '../../media/components/derivative-dialog';
+import { displayableMediaUrl } from '../previews/media-source';
+import { useMediaReadUrls } from '../previews/use-media-read-urls';
+
+/**
+ * The attachment's own picture.
+ *
+ * This was a grey square for as long as there was no endpoint that returned a
+ * URL a browser could read. There is one now, so a person picking between four
+ * uploads can tell them apart by looking rather than by reading file names.
+ *
+ * A file with no picture to show keeps the grey square. That is the honest
+ * answer, and it is the common one: a thumbnail derivative exists for very few
+ * assets, and a video has no poster at all yet. Neither is an error worth
+ * interrupting the strip for.
+ */
+function StripThumbnail({ asset }: { readonly asset: MediaAsset }): ReactNode {
+  const { data } = useMediaReadUrls(asset.id);
+  const url = displayableMediaUrl(asset.kind, data);
+
+  if (url === null || !asset.storageAvailable) {
+    return (
+      <span
+        aria-hidden
+        className="border-border-subtle bg-surface-sunken size-10 shrink-0 rounded-md border"
+      />
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- a signed, short lived URL from another origin; the optimiser cannot fetch it.
+    <img
+      src={url}
+      alt={asset.altText ?? ''}
+      loading="lazy"
+      decoding="async"
+      className="border-border-subtle size-10 shrink-0 rounded-md border object-cover"
+    />
+  );
+}
 
 export interface MediaStripProps {
   readonly assets: readonly MediaAsset[];
   readonly mediaIds: readonly string[];
-  /** True when this scope is a target still following the master. */
-  readonly inherited: boolean;
+  /**
+   * True when this scope is a target still following the master, false when
+   * it has its own media, null for the master draft itself (no label).
+   */
+  readonly inherited: boolean | null;
   readonly onPick: () => void;
   readonly onRemove: (mediaId: string) => void;
   readonly onEdit: (mediaId: string) => void;
@@ -64,11 +106,13 @@ export function MediaStrip({
         <h3 id="composer-media-heading" className="text-title-sm text-text-primary">
           {t.full('composer.media.title')}
         </h3>
-        <span className="text-label text-text-tertiary">
-          {inherited
-            ? t.full('composer.media.inheritFromMaster')
-            : t.full('composer.media.overridden')}
-        </span>
+        {inherited === null ? null : (
+          <span className="text-label text-text-tertiary">
+            {inherited
+              ? t.full('composer.media.inheritFromMaster')
+              : t.full('composer.media.overridden')}
+          </span>
+        )}
       </div>
 
       {files.length === 0 ? (
@@ -83,10 +127,7 @@ export function MediaStrip({
                 key={asset.id}
                 className="border-border-subtle flex items-center gap-3 border-b py-2 last:border-b-0"
               >
-                <span
-                  aria-hidden
-                  className="border-border-subtle bg-surface-sunken size-10 shrink-0 rounded-md border"
-                />
+                <StripThumbnail asset={asset} />
                 <span className="flex min-w-0 flex-col gap-0.5">
                   <span className="text-body-md text-text-primary truncate">{assetName}</span>
                   <span className="text-label text-text-tertiary flex flex-wrap gap-x-3">
@@ -116,6 +157,20 @@ export function MediaStrip({
                         ? t.full('mediaLib.alt.waive')
                         : (asset.altText ?? '')}
                   </span>
+                  {/* A file publishes only once the safety check has passed it. */}
+                  {asset.scanState === 'pending' ? (
+                    <span className="text-label text-text-secondary">
+                      {t.full('library.scan.pending')}
+                    </span>
+                  ) : asset.scanState === 'failed' ? (
+                    <span className="text-label text-warning-fg">
+                      {t.full('composerWeb.media.scanFailed')}
+                    </span>
+                  ) : asset.scanState === 'suspicious' || asset.scanState === 'infected' ? (
+                    <span className="text-label text-destructive-fg">
+                      {t.full('library.scan.rejected')}
+                    </span>
+                  ) : null}
                   {asset.rightsDeclared ? null : (
                     <span className="text-label text-destructive-fg">
                       {t.full('mediaLib.rights.undeclared')}

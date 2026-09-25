@@ -76,6 +76,18 @@ const CASES: readonly ReplayCase[] = [
   replayCase('publishPostWorkflow', publishPostDescriptor, makePostInput(), {
     workflowId: 'publish:ws_test:job_1',
   }),
+  // A single-target retry is an ordinary immediate publish job with a derived
+  // key. It must replay like any other run.
+  replayCase(
+    'publishPostWorkflow (single target retry)',
+    publishPostDescriptor,
+    makePostInput({
+      publishJobId: 'job_retry',
+      idempotencyKey: 'pj_retry_0123456789abcdef',
+      immediate: true,
+    }),
+    { workflowId: 'publish:ws_test:job_retry' },
+  ),
   replayCase('publishTargetWorkflow', publishTargetDescriptor, makeTargetInput(), {
     workflowId: 'publish:ws_test:job_1:pv_1',
     simulatorOptions: {
@@ -272,6 +284,37 @@ describe('recorded publish history', () => {
     });
     expect(run.commands.filter((command) => command.kind === 'child')).toHaveLength(1);
     expect(countActivity(run.commands, 'preflightCampaign')).toBe(1);
+  });
+});
+
+describe('recorded content lifecycle history', () => {
+  /**
+   * The content item settles inside `setJobState` once the job is final. That
+   * keeps the workflow's command stream unchanged, so histories recorded
+   * before settlement existed still replay. These cases pin the hook point:
+   * exactly one final `setJobState`, and it is the last state write.
+   */
+  it('writes one final job state, after every target has finished', async () => {
+    const run = await runWorkflow(publishPostDescriptor, makePostInput(), {
+      workflowId: 'publish:ws_test:job_settle',
+    });
+    const writes = run.simulator.jobStates;
+    expect(writes.at(-1)?.state).toBe('published');
+    expect(writes.filter((write) => write.state === 'published')).toHaveLength(1);
+    const history = activityHistory(run.commands);
+    expect(history.lastIndexOf('setJobState')).toBeGreaterThan(
+      history.indexOf('preflightCampaign'),
+    );
+  });
+
+  it('writes a final failed state once when the provider rejects the target', async () => {
+    const run = await runWorkflow(publishPostDescriptor, makePostInput(), {
+      workflowId: 'publish:ws_test:job_settle_failed',
+      simulatorOptions: { providerScript: [{ kind: 'permanent' }] },
+    });
+    const writes = run.simulator.jobStates;
+    expect(writes.at(-1)?.state).toBe('failed_permanently');
+    expect(writes).toHaveLength(1);
   });
 });
 

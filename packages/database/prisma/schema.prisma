@@ -821,23 +821,27 @@ model UserAlias {
 }
 
 model Workspace {
-  id               String          @id @default(dbgenerated("app.new_id('ws')"))
-  name             String
-  slug             String          @unique @db.Citext
-  ownerUserId      String          @map("owner_user_id")
-  status           WorkspaceStatus @default(trialing)
-  defaultLocale    String          @default("en") @map("default_locale")
-  defaultTimeZone  String          @default("UTC") @map("default_time_zone")
-  contentLocales   String[]        @default(["en"]) @map("content_locales")
-  markets          String[]        @default([])
-  weekStart        Int             @default(1) @map("week_start")
-  hourCycle        String          @default("h23") @map("hour_cycle")
+  id                       String          @id @default(dbgenerated("app.new_id('ws')"))
+  name                     String
+  slug                     String          @unique @db.Citext
+  ownerUserId              String          @map("owner_user_id")
+  status                   WorkspaceStatus @default(trialing)
+  defaultLocale            String          @default("en") @map("default_locale")
+  defaultTimeZone          String          @default("UTC") @map("default_time_zone")
+  contentLocales           String[]        @default(["en"]) @map("content_locales")
+  markets                  String[]        @default([])
+  weekStart                Int             @default(1) @map("week_start")
+  hourCycle                String          @default("h23") @map("hour_cycle")
+  /// Opt-in image analysis (0080). Analysis only, never generation.
+  aiImageAnalysisEnabled   Boolean         @default(false) @map("ai_image_analysis_enabled")
+  /// Weekly summary email (0081). The digest is built either way.
+  weeklyDigestEmailEnabled Boolean         @default(true) @map("weekly_digest_email_enabled")
   /// Set by an operator to stop every outbound provider call for this tenant.
-  killSwitchAt     DateTime?       @map("kill_switch_at") @db.Timestamptz(6)
-  killSwitchReason String?         @map("kill_switch_reason")
-  deletedAt        DateTime?       @map("deleted_at") @db.Timestamptz(6)
-  createdAt        DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt        DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  killSwitchAt             DateTime?       @map("kill_switch_at") @db.Timestamptz(6)
+  killSwitchReason         String?         @map("kill_switch_reason")
+  deletedAt                DateTime?       @map("deleted_at") @db.Timestamptz(6)
+  createdAt                DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   memberships             Membership[]
   rolePermissions         RolePermission[]
@@ -847,6 +851,7 @@ model Workspace {
   sessions                UserSession[]
   consents                Consent[]
   onboardingStates        OnboardingState[]
+  mediaAnalyses           MediaAnalysis[]
   projects                Project[]
   businessProfiles        BusinessProfile[]
   projectSources          ProjectSource[]
@@ -2233,8 +2238,10 @@ model MediaAsset {
 
   workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   derivatives MediaDerivative[]
+  analyses    MediaAnalysis[]
 
   @@unique([workspaceId, checksumSha256])
+  @@unique([workspaceId, id], map: "uq_media_assets_workspace_id_id")
   @@index([workspaceId])
   @@index([workspaceId, kind, createdAt(sort: Desc)])
   @@index([retentionExpiresAt, storageDeletedAt])
@@ -2266,6 +2273,34 @@ model MediaDerivative {
   @@unique([mediaAssetId, presetKey])
   @@index([workspaceId])
   @@map("media_derivatives")
+  @@schema("app")
+}
+
+/// What a model saw in one user-owned image (0080). Cached per checksum and
+/// prompt version; immutable once written. Analysis only, never generation.
+model MediaAnalysis {
+  id                  String   @id @default(dbgenerated("app.new_id('manalysis')"))
+  workspaceId         String   @map("workspace_id")
+  mediaAssetId        String   @map("media_asset_id")
+  assetChecksumSha256 String   @map("asset_checksum_sha256")
+  promptId            String   @default("media-understanding") @map("prompt_id")
+  promptVersion       String   @map("prompt_version")
+  provider            String
+  model               String
+  result              Json
+  inputTokens         Int      @default(0) @map("input_tokens")
+  outputTokens        Int      @default(0) @map("output_tokens")
+  costMicros          BigInt   @default(0) @map("cost_micros")
+  createdByUserId     String?  @map("created_by_user_id")
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace  Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [workspaceId, mediaAssetId], references: [workspaceId, id], onDelete: Cascade, map: "media_analyses_workspace_media_asset_fkey")
+
+  @@unique([workspaceId, assetChecksumSha256, promptVersion], map: "media_analyses_cache_key")
+  @@index([workspaceId])
+  @@index([workspaceId, mediaAssetId], map: "media_analyses_workspace_media_asset_idx")
+  @@map("media_analyses")
   @@schema("app")
 }
 
@@ -2737,6 +2772,9 @@ model WebhookDelivery {
   state             WebhookDeliveryState @default(pending)
   attemptCount      Int                  @default(0) @map("attempt_count")
   payloadHash       String               @map("payload_hash")
+  /// The signed request body. Null for rows created before migration 0079,
+  /// which cannot be delivered because their bytes were never stored.
+  payload           Json?
   signatureVersion  String               @default("v1") @map("signature_version")
   responseStatus    Int?                 @map("response_status")
   responseSnippet   String?              @map("response_snippet")

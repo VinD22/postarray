@@ -240,7 +240,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     '追跡リンクは、Post Array がリダイレクトする短い URL であるため、プラットフォームが何も報告しない場合でもクリックを確認できます。監査エントリがなければ、元の宛先が変更されることはありません。',
   'analytics.links.emptyExample':
-    '例:relay.to/a7Kq2 は、キャンペーン q3-launch を使用して acme.com/blog/launch にリダイレクトします。',
+    '例:pa.link/a7Kq2 は、キャンペーン q3-launch を使用して acme.com/blog/launch にリダイレクトします。',
   'analytics.links.table.caption':
     'このワークスペース内の追跡されたリンクとその最初のパーティのクリック数。',
   'analytics.links.campaign': 'キャンペーン',

@@ -18,8 +18,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 import { ERROR_CODES } from '@relay/contracts';
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
-import { useCalendar } from '@/lib/api/hooks';
-import { useWorkspaceId } from '@/lib/auth/session-context';
+import { useEffect } from 'react';
+import { calendarQueryOptions, useCalendar } from '@/lib/api/hooks';
+import { useSession, useWorkspaceId } from '@/lib/auth/session-context';
 import type { CalendarEntryView, Paginated } from '@/lib/api/types';
 import type { CalendarEntry, PublishedMoveMode } from './types';
 
@@ -40,11 +41,35 @@ export type CalendarEntriesResult = UseQueryResult<Paginated<CalendarEntryView>,
  * query, so the volume stays bounded.
  */
 export function useCalendarEntries(input: CalendarQueryInput): CalendarEntriesResult {
-  return useCalendar({
+  return useCalendar(calendarRangeOf(input), { keepPrevious: true });
+}
+
+function calendarRangeOf(input: CalendarQueryInput) {
+  return {
     from: input.from.toISOString(),
     to: input.to.toISOString(),
     ...(input.projectId ? { projectId: input.projectId } : {}),
-  });
+  };
+}
+
+/**
+ * Warm the windows either side of the visible one, so stepping a week or a
+ * month lands on data that is already in the cache. Runs after the visible
+ * window has settled so the prefetch never competes with it. Pass a memoized
+ * array: a fresh one each render would prefetch on every render.
+ */
+export function usePrefetchNeighbourWindows(
+  neighbours: readonly CalendarQueryInput[],
+  enabled: boolean,
+): void {
+  const queryClient = useQueryClient();
+  const { workspace } = useSession();
+  useEffect(() => {
+    if (!enabled) return;
+    for (const neighbour of neighbours) {
+      void queryClient.prefetchQuery(calendarQueryOptions(workspace, calendarRangeOf(neighbour)));
+    }
+  }, [enabled, neighbours, queryClient, workspace]);
 }
 
 /** The page envelope unwrapped, widened to the calendar's own entry shape. */
@@ -81,13 +106,18 @@ export function useRescheduleEntry(): UseMutationResult<unknown, ApiError, Resch
         input.entry.contentItemId,
         input.toInstant,
         input.publishedMode,
+        input.entry.connectionId ?? undefined,
       );
       if (input.publishedMode === 'schedule_new_post') {
+        // Only the target this calendar entry stands for. Without the filter
+        // the server scheduled every target of the item again, so "schedule as
+        // a new post" on one account posted to all of them.
         return api.scheduling.schedule(
           {
             contentItemId: input.entry.contentItemId,
             scheduledAt: input.toInstant,
             timeZone: input.timeZone,
+            ...(input.entry.connectionId ? { connectionIds: [input.entry.connectionId] } : {}),
           },
           key,
         );
@@ -116,9 +146,15 @@ export function rescheduleIdempotencyKey(
   contentItemId: string,
   toInstant: string,
   mode: PublishedMoveMode | null,
+  connectionId?: string,
 ): string {
   const suffix = mode === 'schedule_new_post' ? 'new' : 'move';
-  return `resched.${contentItemId}.${toInstant.replace(/[:.]/g, '-')}.${suffix}`;
+  const base = `resched.${contentItemId}.${toInstant.replace(/[:.]/g, '-')}.${suffix}`;
+  // A new post is scoped to one target, so two targets of the same item moved
+  // to the same instant are two intents, not a replay of one.
+  return mode === 'schedule_new_post' && connectionId !== undefined
+    ? `${base}.${connectionId}`
+    : base;
 }
 
 /** Cancel a scheduled post. The draft survives, so this is safe to offer. */

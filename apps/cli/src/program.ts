@@ -1,6 +1,6 @@
 import { Command, CommanderError, Option } from 'commander';
 
-import { RelayError } from '@relay/contracts';
+import { RelayError, commitKindSchema } from '@relay/contracts';
 import { createTranslator, en, loadCatalog } from '@relay/i18n';
 import type { Translator } from '@relay/i18n';
 
@@ -12,11 +12,14 @@ import { EXIT_OK, EXIT_USAGE, exitCodeFor } from './exit-codes';
 import { processWriter, renderFailure } from './output';
 import type { RenderInput, Writer } from './output';
 import { localizeHelp } from './help';
+import { postsCommitPreview } from './commands/commit-preview';
 
 import { authLogin, authLogout, authWhoAmI } from './commands/auth';
 import type { LoginFlow } from './commands/auth';
 import { configGet, configSet, configUnset } from './commands/config';
+import { eventsWatch } from './commands/events';
 import { linksCreate, linksStats } from './commands/links';
+import { suggestAccept, suggestBestTime, suggestReview, suggestRun } from './commands/suggest';
 import { mediaGet, mediaImport, mediaList, mediaUpload } from './commands/media';
 import {
   postsCancel,
@@ -101,13 +104,11 @@ function argvOption(argv: readonly string[], name: string): string | undefined {
   return undefined;
 }
 
-async function helpTranslatorFor(
-  argv: readonly string[],
-  deps: CliDeps,
-): Promise<Translator> {
+async function helpTranslatorFor(argv: readonly string[], deps: CliDeps): Promise<Translator> {
   try {
     const config = await deps.configStore.read();
-    const profileName = argvOption(argv, '--profile') ?? deps.env.RELAY_PROFILE ?? config.defaultProfile;
+    const profileName =
+      argvOption(argv, '--profile') ?? deps.env.RELAY_PROFILE ?? config.defaultProfile;
     const profile = config.profiles[profileName] ?? {};
     const locale = resolveCliLocale({ locale: argvOption(argv, '--locale') }, profile, deps.env);
     return createTranslator(locale, await loadCatalog(locale));
@@ -194,7 +195,9 @@ export function buildProgram(
   });
 
   // ------------------------------------------------------------ accounts ----
-  const accounts = program.command('accounts').description(localizeHelp(helpTranslator, 'accountsGroup'));
+  const accounts = program
+    .command('accounts')
+    .description(localizeHelp(helpTranslator, 'accountsGroup'));
 
   const accountsListCommand = accounts
     .command('list')
@@ -202,7 +205,9 @@ export function buildProgram(
     .option('--provider <provider>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(accountsListCommand, {
     name: 'accounts list',
     run: async (context, render) => {
@@ -258,14 +263,43 @@ export function buildProgram(
     .command('preview')
     .description(localizeHelp(helpTranslator, 'postsPreview'))
     .requiredOption('--content-item <id>')
-    .requiredOption('--target <id>', 'connection id of the target');
+    .option('--target <id>', 'connection id of the target')
+    .option('--commit <kind>')
+    .option('--at <instant>')
+    .option('--zone <iana>')
+    .option('--connection <id...>');
   attach(previewCommand, {
     name: 'posts preview',
     run: async (context, render) => {
-      const options = previewCommand.opts<{ contentItem: string; target: string }>();
+      const options = previewCommand.opts<{
+        contentItem: string;
+        target?: string;
+        commit?: string;
+        at?: string;
+        zone?: string;
+        connection?: string[];
+      }>();
+      // `--commit publish_now|schedule` previews what committing would take;
+      // without it, `--target` previews how one target will look.
+      if (options.commit !== undefined) {
+        const kind = commitKindSchema.safeParse(options.commit);
+        if (!kind.success) {
+          throw new RelayError('VALIDATION_FAILED', {
+            messageKey: 'error.request_invalid.message',
+            details: { reason: 'COMMIT_KIND_INVALID', flag: '--commit' },
+          });
+        }
+        await postsCommitPreview(context, render, options.contentItem, {
+          kind: kind.data,
+          scheduledAt: options.at,
+          ianaTimeZone: options.zone,
+          connectionIds: options.connection,
+        });
+        return;
+      }
       await postsPreview(context, render, {
         contentItemId: options.contentItem,
-        targetId: options.target,
+        targetId: options.target ?? '',
       });
     },
   });
@@ -274,12 +308,17 @@ export function buildProgram(
     .command('schedule <file>')
     .description(localizeHelp(helpTranslator, 'postsSchedule'))
     .option('--idempotency-key <key>')
-    .option('--project-id <id>');
+    .option('--project-id <id>')
+    .option('--confirm', localizeHelp(helpTranslator, 'postsConfirm'), false);
   attach(scheduleCommand, {
     name: 'posts schedule',
     run: async (context, render) => {
       const [file] = scheduleCommand.args;
-      const options = scheduleCommand.opts<{ idempotencyKey?: string; projectId?: string }>();
+      const options = scheduleCommand.opts<{
+        idempotencyKey?: string;
+        projectId?: string;
+        confirm?: boolean;
+      }>();
       await postsSchedule(context, render, file ?? '', options);
     },
   });
@@ -343,7 +382,9 @@ export function buildProgram(
     .option('--state <state>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(postsListCommand, {
     name: 'posts list',
     run: async (context, render) => {
@@ -358,9 +399,7 @@ export function buildProgram(
   });
 
   // --------------------------------------------------------------- media ----
-  const media = program
-    .command('media')
-    .description(localizeHelp(helpTranslator, 'mediaGroup'));
+  const media = program.command('media').description(localizeHelp(helpTranslator, 'mediaGroup'));
 
   const mediaListCommand = media
     .command('list')
@@ -368,7 +407,9 @@ export function buildProgram(
     .option('--project-id <id>')
     .option('--kind <kind>', localizeHelp(helpTranslator, 'mediaKind'))
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(mediaListCommand, {
     name: 'media list',
     run: async (context, render) => {
@@ -422,7 +463,9 @@ export function buildProgram(
   });
 
   // ------------------------------------------------------------ calendar ----
-  const calendar = program.command('calendar').description(localizeHelp(helpTranslator, 'calendarGroup'));
+  const calendar = program
+    .command('calendar')
+    .description(localizeHelp(helpTranslator, 'calendarGroup'));
   const calendarListCommand = calendar
     .command('list')
     .description(localizeHelp(helpTranslator, 'calendarList'))
@@ -430,7 +473,9 @@ export function buildProgram(
     .requiredOption('--to <instant>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(calendarListCommand, {
     name: 'calendar list',
     run: async (context, render) => {
@@ -446,7 +491,9 @@ export function buildProgram(
   });
 
   // ------------------------------------------------------------ receipts ----
-  const receipts = program.command('receipts').description(localizeHelp(helpTranslator, 'receiptsGroup'));
+  const receipts = program
+    .command('receipts')
+    .description(localizeHelp(helpTranslator, 'receiptsGroup'));
   const receiptsGetCommand = receipts
     .command('get <receipt-id>')
     .description(localizeHelp(helpTranslator, 'receiptsGet'));
@@ -458,8 +505,41 @@ export function buildProgram(
     },
   });
 
+  // -------------------------------------------------------------- events ----
+  const eventsCommand = program
+    .command('events')
+    .description(localizeHelp(helpTranslator, 'eventsWatch'))
+    .option('--follow', localizeHelp(helpTranslator, 'eventsFollow'), false)
+    .option('--no-reconnect', localizeHelp(helpTranslator, 'eventsNoReconnect'))
+    .option('--since <id>', localizeHelp(helpTranslator, 'eventsSince'))
+    .option('--type <type...>', localizeHelp(helpTranslator, 'eventsType'))
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
+  attach(eventsCommand, {
+    name: 'events',
+    run: async (context, render) => {
+      const options = eventsCommand.opts<{
+        follow?: boolean;
+        reconnect?: boolean;
+        since?: string;
+        type?: string[];
+        limit?: number;
+      }>();
+      await eventsWatch(context, render, {
+        follow: options.follow === true,
+        reconnect: options.reconnect !== false,
+        since: options.since,
+        type: options.type,
+        limit: options.limit,
+      });
+    },
+  });
+
   // ----------------------------------------------------------- analytics ----
-  const analytics = program.command('analytics').description(localizeHelp(helpTranslator, 'analyticsGroup'));
+  const analytics = program
+    .command('analytics')
+    .description(localizeHelp(helpTranslator, 'analyticsGroup'));
 
   const analyticsPostCommand = analytics
     .command('post <receipt-id>')
@@ -525,7 +605,9 @@ export function buildProgram(
     .command('list')
     .description(localizeHelp(helpTranslator, 'rulesList'))
     .option('--cursor <cursor>')
-    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) =>
+      Number.parseInt(value, 10),
+    );
   attach(rulesListCommand, {
     name: 'rules list',
     run: async (context, render) => {
@@ -592,6 +674,76 @@ export function buildProgram(
     },
   });
 
+  // ------------------------------------------------------------- suggest ----
+  const suggest = program
+    .command('suggest')
+    .description(localizeHelp(helpTranslator, 'suggestGroup'));
+
+  const suggestRunCommand = suggest
+    .command('run <kind>')
+    .description(localizeHelp(helpTranslator, 'suggestRun'))
+    .option('--body <text>')
+    .option('--brief <text>')
+    .option('--content-item-id <id>')
+    .option('--connection-id <id>')
+    .option('--tone <tone>')
+    .option('--target-language <locale>');
+  attach(suggestRunCommand, {
+    name: 'suggest run',
+    run: async (context, render) => {
+      const [kind] = suggestRunCommand.args;
+      const options = suggestRunCommand.opts<{
+        body?: string;
+        brief?: string;
+        contentItemId?: string;
+        connectionId?: string;
+        tone?: string;
+        targetLanguage?: string;
+      }>();
+      await suggestRun(context, render, kind ?? '', options);
+    },
+  });
+
+  const suggestReviewCommand = suggest
+    .command('review')
+    .description(localizeHelp(helpTranslator, 'suggestReview'))
+    .option('--body <text>')
+    .option('--content-item-id <id>');
+  attach(suggestReviewCommand, {
+    name: 'suggest review',
+    run: async (context, render) => {
+      const options = suggestReviewCommand.opts<{ body?: string; contentItemId?: string }>();
+      await suggestReview(context, render, options);
+    },
+  });
+
+  const suggestAcceptCommand = suggest
+    .command('accept <suggestion-id>')
+    .description(localizeHelp(helpTranslator, 'suggestAccept'))
+    .option('--index <n>', localizeHelp(helpTranslator, 'suggestAccept'), (value: string) =>
+      Number.parseInt(value, 10),
+    )
+    .option('--content-item-id <id>');
+  attach(suggestAcceptCommand, {
+    name: 'suggest accept',
+    run: async (context, render) => {
+      const [suggestionId] = suggestAcceptCommand.args;
+      const options = suggestAcceptCommand.opts<{ index?: number; contentItemId?: string }>();
+      await suggestAccept(context, render, suggestionId ?? '', options);
+    },
+  });
+
+  const suggestBestTimeCommand = suggest
+    .command('best-time <connection-id>')
+    .description(localizeHelp(helpTranslator, 'suggestBestTime'));
+  attach(suggestBestTimeCommand, {
+    name: 'suggest best-time',
+    run: async (context, render) => {
+      const [connectionId] = suggestBestTimeCommand.args;
+      await suggestBestTime(context, render, connectionId ?? '');
+    },
+  });
+
   // -------------------------------------------------------------- config ----
   const config = program.command('config').description(localizeHelp(helpTranslator, 'configGroup'));
 
@@ -606,7 +758,9 @@ export function buildProgram(
     },
   });
 
-  const configUnsetCommand = config.command('unset <key>').description(localizeHelp(helpTranslator, 'configUnset'));
+  const configUnsetCommand = config
+    .command('unset <key>')
+    .description(localizeHelp(helpTranslator, 'configUnset'));
   attach(configUnsetCommand, {
     name: 'config unset',
     run: async (context, render) => {
@@ -615,7 +769,9 @@ export function buildProgram(
     },
   });
 
-  const configGetCommand = config.command('get [key]').description(localizeHelp(helpTranslator, 'configGet'));
+  const configGetCommand = config
+    .command('get [key]')
+    .description(localizeHelp(helpTranslator, 'configGet'));
   attach(configGetCommand, {
     name: 'config get',
     run: async (context, render) => {
@@ -654,7 +810,10 @@ export async function runCli(argv: readonly string[], deps: CliDeps): Promise<Ru
       return { exitCode: error.exitCode === 0 ? EXIT_OK : EXIT_USAGE };
     }
     const relayError = RelayError.fromUnknown(error);
-    renderFailure({ command: 'postarray', json: state.json, writer, translator: state.translator }, relayError);
+    renderFailure(
+      { command: 'postarray', json: state.json, writer, translator: state.translator },
+      relayError,
+    );
     return { exitCode: exitCodeFor(relayError.code) };
   }
 }

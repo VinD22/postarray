@@ -1,4 +1,4 @@
-import { createAiGatewayFromConfig } from '@relay/ai';
+import { createAiGatewayFromConfig, createKeyValueCounterStore } from '@relay/ai';
 import {
   InMemoryScheduler,
   LocalFileStorage,
@@ -17,6 +17,8 @@ import {
   type KeyValueStore,
   type MailerPort,
   type SchedulerPort,
+  type MediaScannerPort,
+  type RealtimePublisherPort,
   type Services,
   type StoragePort,
 } from '@relay/application';
@@ -59,6 +61,7 @@ import { TemporalScheduler } from './temporal-scheduler';
 import { createVerifiedConnectorRegistry } from './verified-connectors';
 import { createComposedConnectorRegistry } from './connector-registry-composition';
 import { createCredentialStore } from './credential-store';
+import { schedulerFallbackAllowed, schedulerFallbackRefused } from './scheduler-fallback';
 import { createOAuthPendingDiscoveryStore } from './oauth-pending-store';
 import { asCredentialVaultPort, createConfiguredCredentialVault } from './credential-vault';
 
@@ -413,6 +416,7 @@ class DatabaseBillingGateway implements BillingGateway {
       { client: this.#client(), config: this.#config.polar, clock: this.#clock },
       {
         interval: input.interval === 'monthly' ? 'month' : 'year',
+        ...(input.tier === undefined ? {} : { tier: input.tier }),
         workspaceId: input.workspaceId,
         actorId: input.actorId,
         successUrl: input.successUrl,
@@ -438,6 +442,7 @@ class DatabaseBillingGateway implements BillingGateway {
           metadata: {
             checkoutId: session.checkoutId,
             interval: session.interval,
+            tier: session.tierKey,
             disclosureVersion: session.disclosure.version,
             disclosureChecksum: session.consent.checksum,
           },
@@ -697,8 +702,20 @@ class DatabaseBillingGateway implements BillingGateway {
   }
 }
 
-function aiAdapter(config: RelayConfig, logger: Logger, clock: Clock): AiGateway {
-  const gateway = createAiGatewayFromConfig({ config, logger, clock });
+function aiAdapter(
+  config: RelayConfig,
+  logger: Logger,
+  clock: Clock,
+  kv: KeyValueStore,
+): AiGateway {
+  // Budget counters live on the shared store (Redis in a deployment), so every
+  // replica sees the same per-workspace spend instead of its own copy.
+  const gateway = createAiGatewayFromConfig({
+    config,
+    logger,
+    clock,
+    counters: createKeyValueCounterStore(kv),
+  });
   return {
     isAvailable: () => gateway.status().availability === 'ready',
     // The assistant's only path from a model to structured data. The gateway
@@ -876,6 +893,10 @@ export interface RuntimeAdapterOverrides {
   readonly scheduler?: SchedulerPort;
   readonly storage?: StoragePort;
   readonly exportEncryption?: DataExportEncryptionPort;
+  /** Worker-only: the API never decodes uploaded bytes. */
+  readonly mediaScanner?: MediaScannerPort;
+  /** Absent until a deployment has Redis. Live updates are best effort. */
+  readonly realtime?: RealtimePublisherPort;
   readonly mailer?: MailerPort;
 }
 
@@ -890,6 +911,38 @@ export interface ApplicationRuntime {
   readonly services: Services;
   readonly prisma: RelayPrismaClient;
   close(): Promise<void>;
+}
+
+/**
+ * Temporal when it is configured, and otherwise a scheduler that does not
+ * durably execute, but only where losing scheduled work is acceptable.
+ *
+ * `InMemoryScheduler` records intent in a `Map`. On a laptop that is exactly
+ * right. On any deployed process it means every scheduled post is accepted and
+ * silently never published, so `schedulerFallbackAllowed` refuses it rather
+ * than letting the process boot into that state.
+ */
+/**
+ * The object store this configuration names, or the local directory that
+ * stands in for it in development.
+ *
+ * Exported because the worker has to build a media scanner over the same
+ * bytes the runtime will later read, and passing it an adapter the runtime
+ * did not build would let the two disagree about where an object lives.
+ */
+export function resolveStoragePort(config: RelayConfig, clock: Clock): StoragePort {
+  return configuredStorage(config, clock) ?? localStorage(config, clock);
+}
+
+function resolveScheduler(options: ApplicationRuntimeOptions, clock: Clock): SchedulerPort {
+  const configured = configuredScheduler(options.config, options.logger, clock);
+  if (configured !== undefined && configured !== null) {
+    return configured;
+  }
+  if (!schedulerFallbackAllowed(options.config)) {
+    throw schedulerFallbackRefused(options.config);
+  }
+  return new InMemoryScheduler(clock);
 }
 
 /** Build the canonical application graph and truthfully own its lifecycle. */
@@ -939,14 +992,8 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
         : { databaseUrl: options.config.database.url }),
     });
   const kv = adapters.kv ?? new MemoryKeyValueStore(clock);
-  const scheduler =
-    adapters.scheduler ??
-    configuredScheduler(options.config, options.logger, clock) ??
-    new InMemoryScheduler(clock);
-  const storage =
-    adapters.storage ??
-    configuredStorage(options.config, clock) ??
-    localStorage(options.config, clock);
+  const scheduler = adapters.scheduler ?? resolveScheduler(options, clock);
+  const storage = adapters.storage ?? resolveStoragePort(options.config, clock);
   const exportEncryption =
     adapters.exportEncryption ?? configuredDataExportEncryption(options.config);
   const mailer =
@@ -1005,11 +1052,13 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
     ...(credentialVault === undefined ? {} : { credentialVault }),
     ...(credentialStore === undefined ? {} : { credentialStore }),
     oauthPending,
-    ai: adapters.ai ?? aiAdapter(options.config, options.logger, clock),
+    ai: adapters.ai ?? aiAdapter(options.config, options.logger, clock, kv),
     billing: adapters.billing ?? new DatabaseBillingGateway(prisma, clock, options.config),
     scheduler,
     storage,
     exportEncryption: exportEncryption ?? undefined,
+    ...(adapters.mediaScanner === undefined ? {} : { mediaScanner: adapters.mediaScanner }),
+    ...(adapters.realtime === undefined ? {} : { realtime: adapters.realtime }),
     mailer,
     logger: options.logger,
     clock,

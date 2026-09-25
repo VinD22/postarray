@@ -10,7 +10,7 @@
  * schedule, publish now. Never "Launch" and never "Run".
  */
 
-import { useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Check } from 'lucide-react';
 import {
   Button,
@@ -37,15 +37,38 @@ import { useTranslations } from '@relay/i18n/react';
 import { crossesOffsetChange, formatCurrency, formatDateTime } from '@relay/i18n';
 import { resolveVariant } from '@relay/contracts';
 
+import { Link } from '@/components/link';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { NextSlotPanel } from '@/features/queue/components/next-slot-panel';
+import { confirmTitleKey } from '../state/confirm-title';
 import { useComposer } from '../composer-context';
 import { describeCommitFailure, type CommitFailure } from '../state/commit-failure';
 import { PROVIDER_LABEL } from './provider-identity';
+import { describePrivacy } from '../state/privacy-label';
+import { CommitPreviewPanel } from './commit-preview-panel';
+import { useCommitPreview } from '../data/use-commit-preview';
+import { acknowledgedCodes, commitAllowed, type PreviewState } from '../state/commit-preview';
 import { RepeatPanel } from './repeat-panel';
 import { isoDateIn, isoTimeIn, zonedToInstant } from '../state/time';
+import { reZoneInstant, timeZoneOptions } from '../state/time-zones';
 
 export type ScheduleIntent = 'draft' | 'approval' | 'schedule' | 'publish';
+
+/**
+ * What the person acknowledged on the confirm step, from the server's own
+ * commit preview. Sent with the commit so the server can check it against the
+ * same preflight. Absent when the preview could not run.
+ */
+export interface CommitAcknowledgement {
+  readonly targetCount: number;
+  readonly versionChecksum: string;
+  readonly escalations: readonly string[];
+}
+
+export type ScheduleCommitHandler = (
+  intent: ScheduleIntent,
+  acknowledgement?: CommitAcknowledgement,
+) => Promise<void>;
 
 /** How long the check-morph confirmation shows before the sheet closes. */
 const CHECK_MORPH_MS = 550;
@@ -53,7 +76,7 @@ const CHECK_MORPH_MS = 550;
 export interface ScheduleSheetProps {
   readonly open: boolean;
   readonly onOpenChange: (open: boolean) => void;
-  readonly onCommit: (intent: ScheduleIntent) => Promise<void>;
+  readonly onCommit: ScheduleCommitHandler;
   /** Cadence and duplicate warnings the server already knows about. */
   readonly warnings?: readonly { id: string; text: string }[];
 }
@@ -66,7 +89,7 @@ export function ScheduleSheet({
 }: ScheduleSheetProps): ReactNode {
   const t = useTranslations();
   const { announce } = useAnnouncer();
-  const { bootstrap, state, dispatch, summaries, totals, online } = useComposer();
+  const { bootstrap, state, dispatch, summaries, totals, online, saveNow } = useComposer();
   const { toast } = useToast();
   const [busy, setBusy] = useState<ScheduleIntent | null>(null);
   const [failure, setFailure] = useState<CommitFailure | null>(null);
@@ -75,12 +98,38 @@ export function ScheduleSheet({
 
   const schedule = state.master.schedule;
   const zone = schedule?.ianaTimeZone ?? bootstrap.workspaceTimeZone;
+  const zoneOptions = useMemo(
+    () => timeZoneOptions([bootstrap.workspaceTimeZone, zone]),
+    [bootstrap.workspaceTimeZone, zone],
+  );
   const instant = schedule?.instant ?? null;
   const inPast = instant !== null && Date.parse(instant) < Date.now();
   const dstChange = useMemo(
     () => (instant === null ? false : crossesOffsetChange(zone, Date.now(), instant)),
     [instant, zone],
   );
+
+  const previews = useCommitPreview({ open, online, instant, timeZone: zone, saveNow });
+  const [acknowledged, setAcknowledged] = useState<ReadonlySet<string>>(() => new Set());
+  useEffect(() => {
+    // A new look at the sheet is a new decision. Nothing ticked carries over.
+    if (!open) {
+      setAcknowledged(new Set());
+    }
+  }, [open]);
+  const toggleAcknowledged = (key: string, checked: boolean): void => {
+    setAcknowledged((current) => {
+      const next = new Set(current);
+      if (checked) {
+        next.add(key);
+      } else {
+        next.delete(key);
+      }
+      return next;
+    });
+  };
+  const scheduleAllowed = commitAllowed(previews.schedule, acknowledged);
+  const publishAllowed = commitAllowed(previews.publishNow, acknowledged);
 
   const setLocal = (date: string, time: string): void => {
     if (date.length === 0 || time.length === 0) {
@@ -99,7 +148,9 @@ export function ScheduleSheet({
   const commit = (intent: ScheduleIntent): void => {
     setBusy(intent);
     setFailure(null);
-    onCommit(intent)
+    const previewState =
+      intent === 'schedule' ? previews.schedule : intent === 'publish' ? previews.publishNow : null;
+    onCommit(intent, acknowledgementFrom(previewState))
       .then(() => {
         if (intent === 'schedule' && instant !== null) {
           announce(
@@ -144,6 +195,9 @@ export function ScheduleSheet({
         const described = describeCommitFailure(intent, error);
         announce(t.full('a11y.announce.publishFailed'), 'assertive');
         setFailure(described);
+        // The server may have seen something the preview did not, or the
+        // content moved on. Ask again so the sheet shows the current picture.
+        previews.refresh();
         toast({
           title: t.full(described.titleKey),
           description: t(described.messageKey, described.values),
@@ -160,7 +214,7 @@ export function ScheduleSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="inline-end" closeLabel={t.full('action.close')}>
         <SheetHeader>
-          <SheetTitle>{t.full('composer.schedule.confirmTitle')}</SheetTitle>
+          <SheetTitle>{t.full(confirmTitleKey(instant))}</SheetTitle>
           <SheetDescription>
             {t.full('composer.targets.publishSummary', {
               count: totals.targetCount,
@@ -227,7 +281,11 @@ export function ScheduleSheet({
                   }
                   dispatch({
                     type: 'schedule/set',
-                    schedule: { instant, ianaTimeZone: value, repeat: schedule?.repeat ?? null },
+                    schedule: {
+                      instant: reZoneInstant(instant, zone, value),
+                      ianaTimeZone: value,
+                      repeat: schedule?.repeat ?? null,
+                    },
                   });
                 }}
               >
@@ -235,10 +293,11 @@ export function ScheduleSheet({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={bootstrap.workspaceTimeZone}>
-                    {bootstrap.workspaceTimeZone}
-                  </SelectItem>
-                  <SelectItem value="UTC">UTC</SelectItem>
+                  {zoneOptions.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             )}
@@ -336,7 +395,14 @@ export function ScheduleSheet({
                         {
                           id: 'audience',
                           term: t.full('composerWeb.native.privacy'),
-                          definition: settings?.privacyValue ?? t.full('common.notSet'),
+                          definition:
+                            settings?.privacyValue == null
+                              ? t.full('common.notSet')
+                              : describePrivacy(
+                                  settings.privacyValue,
+                                  PROVIDER_LABEL[summary.account.provider],
+                                  t,
+                                ),
                         },
                         {
                           id: 'disclosure',
@@ -376,6 +442,18 @@ export function ScheduleSheet({
             </ul>
           </section>
 
+          <CommitPreviewPanel
+            schedule={previews.schedule}
+            publishNow={previews.publishNow}
+            acknowledged={acknowledged}
+            onToggle={toggleAcknowledged}
+            providerLabel={(provider) =>
+              provider in PROVIDER_LABEL
+                ? PROVIDER_LABEL[provider as keyof typeof PROVIDER_LABEL]
+                : provider
+            }
+          />
+
           {warnings.map((warning) => (
             <Notice key={warning.id} tone="warning" title={warning.text} />
           ))}
@@ -406,6 +484,14 @@ export function ScheduleSheet({
                       {t.full('error.reference', { correlationId: failure.correlationId })}
                     </span>
                   )}
+                  {failure.sampleReceiptHref === null ? null : (
+                    <Link
+                      href={failure.sampleReceiptHref}
+                      className="text-body-sm text-text-accent block underline underline-offset-2"
+                    >
+                      {t.full('composerWeb.commitDemo.sampleReceipt')}
+                    </Link>
+                  )}
                 </>
               }
             />
@@ -415,6 +501,7 @@ export function ScheduleSheet({
         <SheetFooter className="flex flex-wrap gap-2">
           <Button
             variant="secondary"
+            disabled={busy !== null}
             loading={busy === 'draft'}
             loadingLabel={t.full('composer.autosave.saving')}
             onClick={() => commit('draft')}
@@ -423,7 +510,7 @@ export function ScheduleSheet({
           </Button>
           <Button
             variant="secondary"
-            disabled={!online || totals.blockedCount > 0}
+            disabled={busy !== null || !online || totals.blockedCount > 0}
             loading={busy === 'approval'}
             loadingLabel={t.full('composer.autosave.saving')}
             onClick={() => commit('approval')}
@@ -431,8 +518,16 @@ export function ScheduleSheet({
             {t.full('action.requestApproval')}
           </Button>
           <Button
-            variant="primary"
-            disabled={justScheduled || !online || !totals.canSchedule || instant === null || inPast}
+            variant={instant === null ? 'secondary' : 'primary'}
+            disabled={
+              busy !== null ||
+              justScheduled ||
+              !online ||
+              !totals.canSchedule ||
+              instant === null ||
+              inPast ||
+              !scheduleAllowed
+            }
             loading={busy === 'schedule' && !justScheduled}
             loadingLabel={t.full('composer.autosave.saving')}
             onClick={() => commit('schedule')}
@@ -447,8 +542,8 @@ export function ScheduleSheet({
             )}
           </Button>
           <Button
-            variant="secondary"
-            disabled={!online || !totals.canSchedule}
+            variant={instant === null ? 'primary' : 'secondary'}
+            disabled={busy !== null || !online || !totals.canSchedule || !publishAllowed}
             loading={busy === 'publish'}
             loadingLabel={t.full('a11y.announce.publishing')}
             onClick={() => commit('publish')}
@@ -462,6 +557,17 @@ export function ScheduleSheet({
       </SheetContent>
     </Sheet>
   );
+}
+
+function acknowledgementFrom(state: PreviewState | null): CommitAcknowledgement | undefined {
+  if (state === null || state.status !== 'ready') {
+    return undefined;
+  }
+  return {
+    targetCount: state.preview.targetCount,
+    versionChecksum: state.preview.versionChecksum,
+    escalations: acknowledgedCodes(state.preview),
+  };
 }
 
 function describeDisclosure(

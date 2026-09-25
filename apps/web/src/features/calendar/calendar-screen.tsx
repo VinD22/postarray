@@ -56,11 +56,14 @@ import { CalendarMonth } from './calendar-month';
 import { CalendarTable } from './calendar-table';
 import { CalendarToolbar } from './calendar-toolbar';
 import { CalendarViewTransition } from './calendar-view-transition';
+import { ScheduleSummary } from './schedule-summary';
+import { ScheduleBoard } from './schedule-board';
 import { AttentionBar } from './attention-bar';
 import { EntryDetailSheet } from './entry-detail-sheet';
 import { HoldDialog, type HoldIntent } from './hold-dialog';
 import { RescheduleDialog } from './reschedule-dialog';
 import { computeRange, stepAnchor } from './date-range';
+import { receiptHrefForEntry } from './entry-href';
 import { useCalendarFormat } from './format';
 import {
   applyFilters,
@@ -76,6 +79,7 @@ import {
 import { buildProposal, collectWarnings, keyboardStep, KEYBOARD_STEP_MINUTES } from './reschedule';
 import {
   useCalendarEntries,
+  usePrefetchNeighbourWindows,
   usePauseScheduled,
   useRescheduleEntry,
   useResumeScheduled,
@@ -122,10 +126,10 @@ export function CalendarScreen({
   const searchParams = useSearchParams();
   const { announce } = useAnnouncer();
 
-  // Week on a real screen, agenda on a phone. Both are honest defaults rather
-  // than one layout squeezed: the agenda is how a schedule is read on a phone.
+  // The post-first week board stacks by day on phones. The detailed grid
+  // remains available in Day view without becoming the first-run experience.
   const isWide = useBreakpoint('md');
-  const defaultView: CalendarView = isWide ? 'week' : 'list';
+  const defaultView: CalendarView = 'week';
 
   const view = parseView(searchParams, defaultView);
   const anchor = useMemo(() => parseAnchor(searchParams, new Date()), [searchParams]);
@@ -147,12 +151,35 @@ export function CalendarScreen({
     projectId: filters.projectId,
   });
 
+  const neighbours = useMemo(
+    () =>
+      ([-1, 1] as const).map((direction) => {
+        const next = computeRange(
+          view,
+          stepAnchor(view, anchor, direction, format.timeZone),
+          format.timeZone,
+          format.weekStartsOn,
+        );
+        return { from: next.start, to: next.end, projectId: filters.projectId };
+      }),
+    [view, anchor, format.timeZone, format.weekStartsOn, filters.projectId],
+  );
+  usePrefetchNeighbourWindows(neighbours, query.isSuccess && !query.isPlaceholderData);
+
   // Recompute the derived list only when the fetched page or the filters
   // change, not on every render of a screen that also holds dialog state.
 
+  const projectNames = useMemo(
+    () => new Map(projects.map((project) => [project.id, project.name])),
+    [projects],
+  );
   const allEntries = useMemo(
-    () => (query.data?.data ?? []) as readonly CalendarEntry[],
-    [query.data],
+    () =>
+      ((query.data?.data ?? []) as readonly CalendarEntry[]).map((entry) => ({
+        ...entry,
+        projectName: entry.projectId ? (projectNames.get(entry.projectId) ?? null) : null,
+      })),
+    [projectNames, query.data],
   );
   const entries = useMemo(() => applyFilters(allEntries, filters), [allEntries, filters]);
   const attentionCount = useMemo(() => allEntries.filter(needsAttention).length, [allEntries]);
@@ -267,27 +294,25 @@ export function CalendarScreen({
       const step = keyboardStep(event.key, view, direction);
       if (!step) return;
       event.preventDefault();
-      setProposal((current) => {
-        const base = current ?? buildProposal({ entry: grabbed, timeZone: format.timeZone });
-        const next = buildProposal({
-          entry: { ...grabbed, scheduledAt: base.toInstant },
-          timeZone: format.timeZone,
-          ...step,
-        });
-        const merged: RescheduleProposal = {
-          entry: grabbed,
-          fromInstant: grabbed.scheduledAt,
-          toInstant: next.toInstant,
-          keepsLocalTime: next.keepsLocalTime,
-        };
-        announce(t('web.calendar.keyboard.moved', { to: format.dateTime(merged.toInstant) }));
-        return merged;
+      const base = proposal ?? buildProposal({ entry: grabbed, timeZone: format.timeZone });
+      const next = buildProposal({
+        entry: { ...grabbed, scheduledAt: base.toInstant },
+        timeZone: format.timeZone,
+        ...step,
       });
+      const merged: RescheduleProposal = {
+        entry: grabbed,
+        fromInstant: grabbed.scheduledAt,
+        toInstant: next.toInstant,
+        keepsLocalTime: next.keepsLocalTime,
+      };
+      setProposal(merged);
+      announce(t('web.calendar.keyboard.moved', { to: format.dateTime(merged.toInstant) }));
     };
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [grabbed, dialogOpen, view, format, direction, announce, cancelMove, t]);
+  }, [grabbed, dialogOpen, proposal, view, format, direction, announce, cancelMove, t]);
 
   useHotkeys(
     {
@@ -344,16 +369,19 @@ export function CalendarScreen({
     [reschedule, format.timeZone],
   );
 
-  const hrefForEntry = useCallback(
-    (entry: CalendarEntry) => postHrefPattern.replace('{id}', entry.contentItemId),
-    [postHrefPattern],
-  );
   // The receipt lives on the post page. A post with no publish job has no
   // receipt yet, and linking to one that does not exist is worse than no link.
   const hrefForReceipt = useCallback(
-    (entry: CalendarEntry) =>
-      entry.publishJobId ? `${postHrefPattern.replace('{id}', entry.contentItemId)}#receipt` : null,
+    (entry: CalendarEntry) => receiptHrefForEntry(postHrefPattern, entry),
     [postHrefPattern],
+  );
+  // A chip for something that has published opens the post at its receipt,
+  // which is what somebody clicking a published chip came to read. A chip for
+  // a draft opens the post itself, because there is no receipt to land on.
+  const hrefForEntry = useCallback(
+    (entry: CalendarEntry) =>
+      hrefForReceipt(entry) ?? postHrefPattern.replace('{id}', entry.contentItemId),
+    [hrefForReceipt, postHrefPattern],
   );
   const hrefForDay = useCallback(
     (day: Date) => {
@@ -382,8 +410,10 @@ export function CalendarScreen({
   return (
     <div className="flex min-h-full flex-col">
       <PageHeader
-        title={t('calendar.title')}
-        description={t('web.calendar.description')}
+        title={t('scheduler.title')}
+        titleStyle="strong"
+        className="[&_h1]:text-[clamp(2rem,3vw,3rem)] [&_h1]:leading-tight"
+        description={t('scheduler.description')}
         actions={
           <Button
             variant="primary"
@@ -418,7 +448,15 @@ export function CalendarScreen({
       />
 
       <div className="flex flex-1 flex-col gap-4 px-4 py-4 md:px-6">
-        {grabbed ? (
+        {!query.isPending && !query.isError && allEntries.length > 0 ? (
+          <ScheduleSummary
+            entries={allEntries}
+            selected={filters.bucket}
+            onSelect={(bucket) => navigate({ filters: { ...filters, bucket } })}
+          />
+        ) : null}
+
+        {grabbed && drag.draggingKey === null ? (
           <Notice
             tone="info"
             liveness="status"
@@ -456,6 +494,7 @@ export function CalendarScreen({
           actionCenterHref={actionCenterHref}
           attentionCount={attentionCount}
           filtersActive={countActiveFilters(filters) > 0}
+          isWide={isWide}
           grabbedKey={grabbed ? entryKey(grabbed) : null}
           proposal={grabbed ? proposal : null}
           draggingKey={drag.draggingKey}
@@ -539,6 +578,7 @@ interface CalendarBodyProps {
   actionCenterHref: string;
   attentionCount: number;
   filtersActive: boolean;
+  isWide: boolean;
   grabbedKey: string | null;
   proposal: RescheduleProposal | null;
   draggingKey: string | null;
@@ -722,41 +762,51 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
             onDragStart={props.onDragStart}
             label={t('web.calendar.month.label', { month: props.rangeLabel })}
           />
+        ) : view === 'week' ? (
+          <ScheduleBoard
+            range={props.range}
+            entries={props.entries}
+            timeZone={format.timeZone}
+            grabbedKey={props.grabbedKey}
+            targetInstant={props.proposal?.toInstant ?? null}
+            onMove={props.onReschedule}
+            onPickUp={props.onPickUp}
+            onDragStart={props.onDragStart}
+            hrefForEntry={props.hrefForEntry}
+            composeHref={props.composeHref}
+          />
+        ) : props.isWide ? (
+          <div>
+            <CalendarGrid
+              range={props.range}
+              entries={props.entries}
+              timeZone={format.timeZone}
+              hrefForEntry={props.hrefForEntry}
+              grabbedKey={props.grabbedKey}
+              onPickUp={props.onPickUp}
+              proposal={props.proposal}
+              draggingKey={props.draggingKey}
+              settle={props.settle}
+              onDragStart={props.onDragStart}
+              label={t('web.calendar.grid.label', { range: props.rangeLabel })}
+            />
+          </div>
         ) : (
-          <>
-            {/* The grid on a real screen, the agenda on a phone. Both render, one
-                is hidden, so no layout shift when the media query settles. */}
-            <div className="hidden md:block">
-              <CalendarGrid
-                range={props.range}
-                entries={props.entries}
-                timeZone={format.timeZone}
-                hrefForEntry={props.hrefForEntry}
-                grabbedKey={props.grabbedKey}
-                onPickUp={props.onPickUp}
-                proposal={props.proposal}
-                draggingKey={props.draggingKey}
-                settle={props.settle}
-                onDragStart={props.onDragStart}
-                label={t('web.calendar.grid.label', { range: props.rangeLabel })}
-              />
-            </div>
-            <div className="md:hidden">
-              <CalendarAgenda
-                range={props.range}
-                entries={props.entries}
-                timeZone={format.timeZone}
-                hrefForEntry={props.hrefForEntry}
-                grabbedKey={props.grabbedKey}
-                onPickUp={props.onPickUp}
-                proposal={props.proposal}
-                draggingKey={props.draggingKey}
-                settle={props.settle}
-                onDragStart={props.onDragStart}
-                label={t('web.calendar.agenda.label', { range: props.rangeLabel })}
-              />
-            </div>
-          </>
+          <div>
+            <CalendarAgenda
+              range={props.range}
+              entries={props.entries}
+              timeZone={format.timeZone}
+              hrefForEntry={props.hrefForEntry}
+              grabbedKey={props.grabbedKey}
+              onPickUp={props.onPickUp}
+              proposal={props.proposal}
+              draggingKey={props.draggingKey}
+              settle={props.settle}
+              onDragStart={props.onDragStart}
+              label={t('web.calendar.agenda.label', { range: props.rangeLabel })}
+            />
+          </div>
         )}
       </CalendarViewTransition>
     </>

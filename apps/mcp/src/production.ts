@@ -6,13 +6,21 @@ import {
 import { loadConfigFor, requireConfigValue } from '@relay/config';
 import { appendAuditEvent, withWorkspaceContext, type RlsTransactionClient } from '@relay/database';
 import { createLogger } from '@relay/observability';
-import { createApplicationRuntime } from '@relay/runtime';
+import {
+  createApplicationRuntime,
+  createRedisRealtimeEventReader,
+  type RealtimeRedisClient,
+} from '@relay/runtime';
 import Redis from 'ioredis';
 import { z } from 'zod';
 
 import type { StartOptions } from './main';
 import type { AuditSink } from './ports';
-import { toApplicationConfirmationStore, toRelayServicePort } from './wiring';
+import {
+  toApplicationConfirmationStore,
+  toRelayServicePort,
+  type RecentEventsReader,
+} from './wiring';
 
 const jsonRecordSchema = z.record(z.string(), z.json());
 
@@ -66,6 +74,31 @@ async function keyValueStore(): Promise<KeyValueStore> {
   };
 }
 
+/**
+ * A reader for the live event stream, or nothing.
+ *
+ * Its own connection, because the key value store's is the one the rest of the
+ * server uses and this read is not on that path. A deployment without Redis
+ * gets nothing, and `list_recent_events` then answers that there is nothing to
+ * report, which is true.
+ */
+function realtimeEventReader(): { reader: RecentEventsReader; close: () => Promise<void> } | null {
+  const config = loadConfigFor('mcp');
+  if (config.redis.url === undefined) {
+    return null;
+  }
+  const client = new Redis(config.redis.url, {
+    enableReadyCheck: true,
+    maxRetriesPerRequest: 3,
+  });
+  return {
+    reader: createRedisRealtimeEventReader(client as unknown as RealtimeRedisClient),
+    close: async () => {
+      await client.quit();
+    },
+  };
+}
+
 export async function createProductionMcpOptions(): Promise<StartOptions> {
   const config = loadConfigFor('mcp');
   const logger = createLogger(
@@ -111,10 +144,14 @@ export async function createProductionMcpOptions(): Promise<StartOptions> {
   };
 
   const appUrl = requireConfigValue(config.core.appUrl, 'APP_URL');
+  const events = realtimeEventReader();
   return {
-    services: toRelayServicePort(runtime.services),
+    services: toRelayServicePort(runtime.services, events?.reader),
     confirmations: toApplicationConfirmationStore(runtime.services, appUrl),
     auditSink,
-    close: () => runtime.close(),
+    close: async () => {
+      await runtime.close();
+      await events?.close();
+    },
   };
 }

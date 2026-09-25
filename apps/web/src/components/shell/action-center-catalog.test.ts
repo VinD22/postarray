@@ -11,8 +11,13 @@ import {
 const KINDS = Object.keys(ACTION_KIND_DEFINITIONS);
 
 describe('action center catalogue', () => {
-  it('covers all eleven queue types from the product behaviour research', () => {
-    expect(KINDS).toHaveLength(11);
+  it('covers every queue type the application can produce', () => {
+    // Eleven came from the product behaviour research. The twelfth is the
+    // upload whose safety check has not finished, which the application began
+    // reporting when that check was built: an asset stuck at `pending` cannot
+    // be published, and without a row here nobody finds out until the composer
+    // refuses it.
+    expect(KINDS).toHaveLength(12);
     expect(KINDS).toEqual(
       expect.arrayContaining([
         'connection_expiring',
@@ -24,6 +29,7 @@ describe('action center catalogue', () => {
         'comment_failed',
         'analytics_stale',
         'rss_stalled',
+        'media_scan_stuck',
         'webhook_failing',
         'usage_balance',
       ]),

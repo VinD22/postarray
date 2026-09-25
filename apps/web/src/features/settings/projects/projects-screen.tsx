@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '@relay/design-system/primitives';
+import { Button, Input } from '@relay/design-system/primitives';
 import { EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
 import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
@@ -13,6 +13,9 @@ import { AsyncBoundary } from '../lib/async-boundary';
 import { projectsGateway } from '../lib/gateway';
 import { useFormatters } from '../lib/formatters';
 import { settingsKey, useWorkspaceId } from '../lib/keys';
+
+/** Referenced by the disabled create buttons so the refusal has a reason. */
+const AT_LIMIT_NOTICE_ID = 'projects-at-limit';
 import { useSettingsMutation } from '../lib/use-settings-mutation';
 import { SettingsStack } from '../components/section';
 import { ProjectEditor } from './project-editor';
@@ -30,9 +33,13 @@ export function ProjectsScreen(): ReactNode {
   const projects = useQuery({ queryKey: PROJECTS_KEY, queryFn: () => projectsGateway.list() });
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
+  const [query, setQuery] = useState('');
 
   const rows = projects.data ?? [];
   const firstProjectId = rows[0]?.id ?? null;
+  const filteredRows = rows.filter((project) =>
+    project.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()),
+  );
 
   useEffect(() => {
     if (selectedId === null && firstProjectId !== null) {
@@ -40,7 +47,10 @@ export function ProjectsScreen(): ReactNode {
     }
   }, [firstProjectId, selectedId]);
 
-  const selected = rows.find((project) => project.id === selectedId) ?? null;
+  const visibleSelectedId = filteredRows.some((project) => project.id === selectedId)
+    ? selectedId
+    : (filteredRows[0]?.id ?? null);
+  const selected = filteredRows.find((project) => project.id === visibleSelectedId) ?? null;
   const atLimit = rows.length >= workspace.projectLimit;
 
   const save = useSettingsMutation({
@@ -50,6 +60,7 @@ export function ProjectsScreen(): ReactNode {
       patch: Parameters<typeof projectsGateway.update>[1];
     }) => projectsGateway.update(input.projectId, input.patch),
     invalidate: [PROJECTS_KEY],
+    onSuccess: () => router.refresh(),
   });
 
   const create = useSettingsMutation({
@@ -59,6 +70,8 @@ export function ProjectsScreen(): ReactNode {
     onSuccess: (project) => {
       setSelectedId(project.id);
       setCreating(false);
+      setQuery('');
+      router.refresh();
     },
   });
 
@@ -78,7 +91,12 @@ export function ProjectsScreen(): ReactNode {
         title={section}
         description={t('settings.ui.projects.description')}
         actions={
-          <Button variant="primary" disabled={atLimit} onClick={() => setCreating(true)}>
+          <Button
+            variant="primary"
+            disabled={atLimit || projects.isPending || projects.isError}
+            aria-describedby={atLimit ? AT_LIMIT_NOTICE_ID : undefined}
+            onClick={() => setCreating(true)}
+          >
             {t('settings.projects.add')}
           </Button>
         }
@@ -98,18 +116,28 @@ export function ProjectsScreen(): ReactNode {
             </p>
           </div>
           <p className="text-title-md text-text-primary shrink-0 whitespace-nowrap tabular-nums">
-            {t('settings.ui.projects.capacitySummary', {
-              used: rows.length,
-              limit: workspace.projectLimit,
-            })}
+            {projects.isPending
+              ? t('common.loading')
+              : projects.isError
+                ? t('common.unavailable')
+                : t('settings.ui.projects.capacitySummary', {
+                    used: rows.length,
+                    limit: workspace.projectLimit,
+                  })}
           </p>
         </section>
 
         {atLimit ? (
           <Notice
+            id={AT_LIMIT_NOTICE_ID}
             tone="warning"
             title={t('settings.ui.projects.atLimitTitle')}
             description={t('settings.ui.projects.atLimitBody', { limit: workspace.projectLimit })}
+            actions={
+              <Button variant="secondary" onClick={() => router.push('/settings/billing')}>
+                {t('settings.ui.projects.atLimitAction')}
+              </Button>
+            }
           />
         ) : null}
 
@@ -125,7 +153,12 @@ export function ProjectsScreen(): ReactNode {
               description={t('settings.ui.projects.emptyBody')}
               example={t('settings.ui.projects.emptyExample')}
               action={
-                <Button variant="primary" disabled={atLimit} onClick={() => setCreating(true)}>
+                <Button
+                  variant="primary"
+                  disabled={atLimit || projects.isPending || projects.isError}
+                  aria-describedby={atLimit ? AT_LIMIT_NOTICE_ID : undefined}
+                  onClick={() => setCreating(true)}
+                >
                   {t('settings.projects.add')}
                 </Button>
               }
@@ -134,17 +167,37 @@ export function ProjectsScreen(): ReactNode {
             <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(14rem,18rem)_minmax(0,1fr)]">
               <nav
                 aria-label={t('settings.ui.projects.listLabel')}
-                className="border-border-default bg-surface-raised h-fit overflow-hidden rounded-lg border"
+                className="border-border-default bg-surface-raised h-fit min-w-0 overflow-hidden rounded-lg border"
               >
-                <ul className="flex overflow-x-auto lg:flex-col lg:overflow-visible">
-                  {rows.map((project) => {
-                    const active = project.id === selectedId;
+                <div className="border-border-subtle border-b p-3">
+                  <Input
+                    type="search"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    aria-label={t('settings.ui.projects.search')}
+                    placeholder={t('settings.ui.projects.search')}
+                  />
+                  <p role="status" className="text-label text-text-tertiary mt-2">
+                    {t('settings.ui.projects.searchCount', {
+                      count: filteredRows.length,
+                      total: rows.length,
+                    })}
+                  </p>
+                </div>
+                {filteredRows.length === 0 ? (
+                  <p className="text-body-sm text-text-secondary p-4">
+                    {t('settings.ui.projects.noMatches')}
+                  </p>
+                ) : null}
+                <ul className="relay-scrollbar flex max-h-64 flex-col overflow-y-auto lg:max-h-[36rem]">
+                  {filteredRows.map((project) => {
+                    const active = project.id === visibleSelectedId;
                     return (
-                      <li key={project.id} className="min-w-56 flex-1 lg:min-w-0">
+                      <li key={project.id} className="min-w-0">
                         <button
                           type="button"
                           className={cn(
-                            'border-border-subtle flex min-h-20 w-full flex-col items-start justify-center gap-1 border-e px-4 py-3 text-start lg:border-e-0 lg:border-b',
+                            'border-border-subtle flex min-h-20 w-full flex-col items-start justify-center gap-1 border-b px-4 py-3 text-start',
                             'transition-colors duration-(--duration-fast) last:border-0',
                             active
                               ? 'bg-accent-subtle text-text-accent'
@@ -153,7 +206,12 @@ export function ProjectsScreen(): ReactNode {
                           aria-current={active ? 'true' : undefined}
                           onClick={() => setSelectedId(project.id)}
                         >
-                          <span className="text-body-md font-semibold">{project.name}</span>
+                          <span
+                            className="text-body-md w-full truncate font-semibold"
+                            title={project.name}
+                          >
+                            {project.name}
+                          </span>
                           <span className="text-label text-text-tertiary">
                             {t('settings.ui.projects.projectMeta', {
                               accounts: project.connectionCount,
@@ -195,7 +253,7 @@ export function ProjectsScreen(): ReactNode {
         open={creating}
         onOpenChange={setCreating}
         saving={create.isSaving}
-        disabled={atLimit}
+        disabled={atLimit || projects.isPending || projects.isError}
         onSubmit={(input) => void create.run(input)}
       />
     </>

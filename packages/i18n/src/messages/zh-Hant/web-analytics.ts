@@ -219,7 +219,7 @@ export const webAnalyticsMessages = {
   'analytics.links.emptyBody':
     '追蹤連結是 Post Array 重定向的短 URL，因此即使平台報告沒有點擊，您也可以看到點擊。如果沒有審核條目，原始目的地永遠不會更改。',
   'analytics.links.emptyExample':
-    '範例：relay.to/a7Kq2 透過行銷活動 q3-launch 重定向到 acme.com/blog/launch。',
+    '範例：pa.link/a7Kq2 透過行銷活動 q3-launch 重定向到 acme.com/blog/launch。',
   'analytics.links.table.caption': '此Workspace中追蹤的連結及其第一方點擊計數。',
   'analytics.links.campaign': '活動',
   'analytics.links.created': '已創建',

@@ -8,6 +8,10 @@
 export const errorMessages = {
   'error.unknown.message': 'Something went wrong and we could not classify it.',
   'error.unknown.action': 'Try again. If it keeps happening, send us the reference below.',
+  'error.demo_unavailable.message':
+    'This action is unavailable while you are viewing demo data.',
+  'error.demo_unavailable.action':
+    'Connect the app to the Post Array API to change real publishing data.',
   'error.internal.message': 'This is a problem on our side, not with your content.',
   'error.internal.action': 'Your work is saved. We have been alerted. Try again in a few minutes.',
   'error.not_implemented.message': 'Post Array has not built this yet.',
@@ -17,6 +21,9 @@ export const errorMessages = {
     'Your draft is kept on this device. Publishing and scheduling resume when the connection returns.',
   'error.network_unreachable.message': 'We could not reach the server.',
   'error.network_unreachable.action': 'Check your connection and try again. Nothing was lost.',
+  'error.request_timeout.message': 'The server took too long to answer.',
+  'error.request_timeout.action':
+    'Try again. If you were saving or publishing, check the result first, because it may have gone through.',
   'error.request_invalid.message': 'The request was not in a shape we can accept.',
   'error.request_invalid.action': 'Check the fields listed below and send it again.',
   'error.validation_failed.message': 'Some fields need a change before this can be saved.',

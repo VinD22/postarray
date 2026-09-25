@@ -86,7 +86,7 @@ export function Timeline({ label, events, className }: TimelineProps): ReactNode
                 {event.timestamp ? (
                   <time
                     dateTime={event.isoTimestamp}
-                    className="text-body-sm text-text-tertiary tabular-nums"
+                    className="mono-id text-body-sm text-text-tertiary"
                   >
                     {event.timestamp}
                   </time>

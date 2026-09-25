@@ -15,24 +15,17 @@
  * network, and collapsing the two would be the exact dishonesty this
  * codebase's first house rule exists to prevent.
  *
- * The numerals count up at the **fast** in-app tier (200ms), not the
- * expressive 900ms `<CountUp>` uses on the marketing site. A dashboard that
- * spends a second animating its own header is a slow dashboard, and none of
- * the three sanctioned expressive moments is here.
+ * Counts render their actual value immediately, without interpolating data.
  */
 
-import { useMemo, useRef, useState, type ReactNode } from 'react';
+import { useId, type ReactNode } from 'react';
 
-import { cn, panelSurface } from '@relay/design-system/utils';
+import { cn } from '@relay/design-system/utils';
 
-import { useCalendar, useConnections } from '@/lib/api/hooks';
+import { useConnections } from '@/lib/api/hooks';
+import { useHomeCalendar } from './use-home-calendar';
 import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useTranslations } from '@/lib/i18n';
-import { DURATION_SLOW, EASE_OUT_EXPO } from '@/lib/motion/constants';
-import { gsap, useGSAP } from '@/lib/motion/gsap';
-import { useMotionOk } from '@/lib/motion/use-motion-ok';
-
-const WEEK_MS = 7 * 86_400_000;
 
 /** Health values that do not need a person to do anything. */
 const HEALTHY = 'healthy';
@@ -50,9 +43,12 @@ export type TileReading =
  */
 export function readingFor(input: {
   readonly isError: boolean;
+  readonly isPending?: boolean;
   readonly count: number;
 }): TileReading {
-  return input.isError ? { kind: 'unavailable' } : { kind: 'count', count: input.count };
+  return input.isError || input.isPending
+    ? { kind: 'unavailable' }
+    : { kind: 'count', count: input.count };
 }
 
 /**
@@ -76,27 +72,23 @@ export function soonestEntry<T extends { readonly scheduledAt: string }>(
 export function StatTiles(): ReactNode {
   const t = useTranslations();
   const format = useFormatters();
-  const { workspace, project } = useSession();
+  const { workspace } = useSession();
 
-  const range = useMemo(() => {
-    const now = new Date();
-    return { from: now.toISOString(), to: new Date(now.getTime() + WEEK_MS).toISOString() };
-  }, []);
-
-  const calendarQuery = useCalendar({
-    ...range,
-    ...(project === null ? {} : { projectId: project.id }),
-  });
+  const { query: calendarQuery, week: entries } = useHomeCalendar();
   const connectionsQuery = useConnections();
 
-  const entries = calendarQuery.data?.data ?? [];
   const connections = connectionsQuery.data?.data ?? [];
   const attention = connections.filter((entry) => entry.health !== HEALTHY).length;
 
   const next = soonestEntry(entries);
-  const scheduledReading = readingFor({ isError: calendarQuery.isError, count: entries.length });
+  const scheduledReading = readingFor({
+    isError: calendarQuery.isError,
+    isPending: calendarQuery.isPending,
+    count: entries.length,
+  });
   const accountsReading = readingFor({
     isError: connectionsQuery.isError,
+    isPending: connectionsQuery.isPending,
     count: connections.length,
   });
 
@@ -104,21 +96,25 @@ export function StatTiles(): ReactNode {
     <section
       aria-label={t('home.v2.tiles.label')}
       data-stagger-item
-      className="grid gap-3 sm:grid-cols-3"
+      className="border-border-default grid grid-cols-2 border-y md:grid-cols-3"
     >
       <Tile
+        className="border-border-subtle border-e"
         label={t('home.v2.tiles.scheduled')}
         hint={t('home.v2.tiles.scheduledHint')}
+        loading={calendarQuery.isPending}
         unavailable={scheduledReading.kind === 'unavailable'}
-        value={<Numeral value={entries.length} format={(n) => format.number(n)} />}
+        value={<span data-numeric>{format.number(entries.length)}</span>}
       />
       <Tile
         label={t('home.v2.tiles.accounts')}
         hint={t('home.v2.tiles.accountsHint', { attention })}
+        loading={connectionsQuery.isPending}
         unavailable={accountsReading.kind === 'unavailable'}
-        value={<Numeral value={connections.length} format={(n) => format.number(n)} />}
+        value={<span data-numeric>{format.number(connections.length)}</span>}
       />
       <Tile
+        className="border-border-subtle col-span-2 border-t md:col-span-1 md:border-s md:border-t-0"
         label={t('home.v2.tiles.nextSlot')}
         hint={
           next === null
@@ -128,7 +124,13 @@ export function StatTiles(): ReactNode {
                 timeZone: workspace.timeZone,
               })
         }
+        loading={calendarQuery.isPending}
         unavailable={scheduledReading.kind === 'unavailable'}
+        detail={
+          next === null
+            ? undefined
+            : t('home.v2.tiles.nextSlotAccount', { account: next.accountLabel })
+        }
         value={
           next === null ? (
             <span className="text-title-sm text-text-secondary">
@@ -150,72 +152,50 @@ function Tile({
   hint,
   value,
   unavailable,
+  loading,
+  detail,
+  className,
 }: {
   readonly label: string;
   readonly hint: string;
   readonly value: ReactNode;
   readonly unavailable: boolean;
+  readonly loading: boolean;
+  readonly detail?: string | undefined;
+  readonly className?: string;
 }): ReactNode {
   const t = useTranslations();
+  const id = useId();
+  const labelId = `${id}-label`;
+  const descriptionId = `${id}-description`;
   return (
-    <div className={cn(panelSurface, 'flex flex-col gap-1 p-3.5')}>
-      <p className="text-label text-text-tertiary tracking-wide uppercase">{label}</p>
-      <p className="font-display text-title-md text-text-primary font-bold">
-        {unavailable ? (
-          <span className="text-title-sm text-text-tertiary">{t('common.unavailable')}</span>
-        ) : (
-          value
-        )}
+    <div
+      role="group"
+      aria-busy={loading}
+      aria-labelledby={labelId}
+      aria-describedby={descriptionId}
+      className={cn('flex min-h-36 flex-col justify-between gap-4 px-4 py-5 md:px-6', className)}
+    >
+      <p id={labelId} className="text-label text-text-tertiary font-medium tracking-wide">
+        {label}
       </p>
-      <p className="text-body-sm text-text-tertiary">{unavailable ? t('home.error.body') : hint}</p>
+      <div className="flex min-w-0 flex-col gap-2">
+        <p className="font-display text-display-lg text-text-primary leading-none font-semibold tracking-[-0.035em]">
+          {loading ? (
+            <span className="text-title-sm text-text-tertiary">{t('common.loading')}</span>
+          ) : unavailable ? (
+            <span className="text-title-sm text-text-tertiary">{t('common.unavailable')}</span>
+          ) : (
+            value
+          )}
+        </p>
+        {detail === undefined || unavailable ? null : (
+          <p className="text-body-sm text-text-secondary truncate">{detail}</p>
+        )}
+      </div>
+      <span id={descriptionId} className="sr-only">
+        {loading ? t('common.loading') : unavailable ? t('home.error.body') : hint}
+      </span>
     </div>
-  );
-}
-
-/**
- * A count that counts.
- *
- * The same technique `<CountUp>` uses (tween a numeric proxy, snap to whole
- * numbers, let the caller format) at a quarter of the duration and with no
- * `ScrollTrigger`: these tiles are above the fold by definition, so waiting
- * for a scroll would mean they simply never animate. Reduced motion renders
- * `format(value)` immediately, which is byte-identical to the resting state.
- */
-function Numeral({
-  value,
-  format,
-}: {
-  readonly value: number;
-  readonly format: (value: number) => string;
-}): ReactNode {
-  const scope = useRef<HTMLSpanElement>(null);
-  const motionOk = useMotionOk();
-  const [display, setDisplay] = useState(value);
-
-  useGSAP(
-    () => {
-      if (!motionOk) {
-        setDisplay(value);
-        return;
-      }
-      const proxy = { value: 0 };
-      const tween = gsap.to(proxy, {
-        value,
-        duration: DURATION_SLOW,
-        ease: EASE_OUT_EXPO,
-        snap: { value: 1 },
-        onUpdate: () => setDisplay(proxy.value),
-      });
-      return () => {
-        tween.kill();
-      };
-    },
-    { scope, dependencies: [motionOk, value] },
-  );
-
-  return (
-    <span ref={scope} data-numeric>
-      {format(display)}
-    </span>
   );
 }

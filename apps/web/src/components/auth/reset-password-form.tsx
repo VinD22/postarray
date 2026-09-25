@@ -85,7 +85,7 @@ export function ResetPasswordForm() {
   if (done) {
     return (
       <div className="flex flex-col gap-6">
-        <h1 className="text-title-lg text-text-primary">{t('auth.resetPassword.title')}</h1>
+        <h1 className="relay-auth-title text-text-primary">{t('auth.resetPassword.title')}</h1>
         <Notice tone="success" liveness="status" title={t('auth.resetPassword.done')} />
         <Button
           variant="primary"
@@ -104,7 +104,7 @@ export function ResetPasswordForm() {
   if (token === '') {
     return (
       <div className="flex flex-col gap-6">
-        <h1 className="text-title-lg text-text-primary">{t('auth.resetPassword.title')}</h1>
+        <h1 className="relay-auth-title text-text-primary">{t('auth.resetPassword.title')}</h1>
         <Notice tone="warning" liveness="status" title={t('auth.newPassword.linkMissing')} />
         <p className="text-body-md text-text-secondary">
           <Link href="/forgot-password" className="text-text-accent font-medium hover:underline">
@@ -118,7 +118,7 @@ export function ResetPasswordForm() {
   return (
     <form onSubmit={submit} className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-title-lg text-text-primary">{t('auth.resetPassword.title')}</h1>
+        <h1 className="relay-auth-title text-text-primary">{t('auth.resetPassword.title')}</h1>
         <p className="text-body-md text-text-secondary">{t('auth.newPassword.help')}</p>
       </div>
 

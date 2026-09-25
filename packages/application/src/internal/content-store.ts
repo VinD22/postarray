@@ -1,4 +1,9 @@
-import { validationIssueSchema, type ApprovalState, type PublishState } from '@relay/contracts';
+import {
+  ConflictError,
+  validationIssueSchema,
+  type ApprovalState,
+  type PublishState,
+} from '@relay/contracts';
 
 import type { ContentItemView, PostVariantView } from '../views';
 
@@ -185,6 +190,45 @@ export async function loadAggregate(db: Db, contentItemId: string): Promise<Cont
     updatedAt: item.updatedAt,
     createdByUserId: item.createdByUserId,
   };
+}
+
+/**
+ * Take the row lock on a content item for the rest of the transaction.
+ *
+ * The workspace-scoped client deliberately has no raw SQL, so this is an
+ * UPDATE rather than `SELECT ... FOR UPDATE`. Postgres takes the same row lock
+ * for both: a second writer blocks here until the first commits, then reads
+ * the version the first one wrote. Call it before `loadAggregate`.
+ */
+export async function lockContentItem(db: Db, contentItemId: string, now: Date): Promise<void> {
+  const locked = await db.contentItem.updateMany({
+    where: { id: contentItemId },
+    data: { updatedAt: now },
+  });
+  if (locked.count === 0) {
+    throw notFound('content_item', contentItemId);
+  }
+}
+
+/** A save built on a version that is no longer current. */
+export function assertExpectedVersion(
+  aggregate: ContentAggregate,
+  expectedVersionId: string | null | undefined,
+): void {
+  if (expectedVersionId === undefined || expectedVersionId === null) {
+    return;
+  }
+  if (aggregate.currentVersionId !== expectedVersionId) {
+    throw new ConflictError({
+      messageKey: 'errors.content_conflict',
+      details: {
+        contentItemId: aggregate.itemId,
+        expectedVersionId,
+        currentVersionId: aggregate.currentVersionId,
+        currentRevision: aggregate.revision,
+      },
+    });
+  }
 }
 
 export interface VariantWriteSpec {

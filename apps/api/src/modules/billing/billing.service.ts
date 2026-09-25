@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import type { CreateCheckoutInput } from './billing.schemas';
 
 import type {
   ActorContext,
@@ -25,10 +26,7 @@ export class BillingService {
     return this.services.billing.getUsage(ctx, range === undefined ? {} : { range });
   }
 
-  createCheckout(
-    ctx: ActorContext,
-    input: { interval: 'monthly' | 'annual'; successUrl: string },
-  ): Promise<CheckoutSessionView> {
+  createCheckout(ctx: ActorContext, input: CreateCheckoutInput): Promise<CheckoutSessionView> {
     return this.services.billing.createCheckout(ctx, input);
   }
 

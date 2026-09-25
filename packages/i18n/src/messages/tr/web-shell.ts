@@ -32,7 +32,7 @@ export const webShellMessages = {
   'shell.demo.body':
     "Post Array API'ye bu tarayıcıdan erişilemediği için ekranlar, yerleşik bir örnek çalışma alanıyla doldurulur. Buradaki hiçbir şey gerçek bir hesaba bağlı değildir ve hiçbir şey yayınlanamaz.",
   'shell.demo.howToConnect':
-    "NEXT_PUBLIC_RELAY_API_URL'yi ayarlayın ve canlı verileri kullanmak için uygulamayı yeniden başlatın.",
+    "NEXT_PUBLIC_POSTARRAY_API_URL'yi ayarlayın ve canlı verileri kullanmak için uygulamayı yeniden başlatın.",
 
   /* -- Connectivity ------------------------------------------------------ */
   'shell.offline.title': 'Çevrimdışısınız',

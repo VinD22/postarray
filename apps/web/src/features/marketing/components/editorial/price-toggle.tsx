@@ -1,13 +1,10 @@
 'use client';
 
-import { useId, useRef, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Link } from '@/components/link';
-import { Button } from '@relay/design-system/primitives';
+import { Button, SegmentedControl } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
-
-import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
-import { Flip, useGSAP } from '@/lib/motion/gsap';
-import { useMotionOk } from '@/lib/motion/use-motion-ok';
+import { useState } from 'react';
 
 import { EditorialBigNumber } from './big-number';
 import { EditorialCard } from './card';
@@ -17,43 +14,32 @@ export type BillingInterval = 'month' | 'year';
 /**
  * The monthly/annual segmented control.
  *
- * ## Mechanics and accessibility (unchanged)
+ * It is the design system's `SegmentedControl` in its pill shape, which is
+ * the fourth and last of the hand-rolled copies of this control to go. The
+ * previous version was a `<fieldset>` of two native radios with a GSAP Flip
+ * thumb, and it was the best of the four: native radios gave it arrow keys and
+ * grouping for free. What it could not give it was the same behaviour as the
+ * other three, which is the whole reason a primitive exists.
  *
- * Built on two native `<input type="radio">` elements inside a `<fieldset>`,
- * not a hand-rolled `role="radiogroup"` — a same-`name` radio group already
- * gives arrow-key navigation and correct grouping semantics for free, with
- * none of the roving-tabindex bookkeeping a custom version would need. The
- * inputs are visually hidden with `sr-only` (not `hidden`/`display:none`), so
- * they stay focusable, and a `peer-focus-visible` ring on the visible label is
- * what a keyboard user actually sees. Each label is at least 44px tall.
+ * Nothing about the accessibility contract changes. Radix ToggleGroup in
+ * single mode renders a real `role="radiogroup"` of `role="radio"` buttons,
+ * selection follows focus the way it did with native radios, and each option
+ * is at least 44px tall. The annual incentive still lives inside the annual
+ * option's own label, so a screen reader hears "Yearly, 2 months free" as one
+ * choice rather than meeting a loose chip beside it.
  *
- * The sliding thumb is a third grid item placed into whichever column is
- * active via `gridColumnStart` — CSS Grid numbers columns in inline order, so
- * the resting position already respects `dir="rtl"` with no second rule. The
- * transition between columns is GSAP Flip: `Flip.getState` is captured
- * synchronously in the handler that changes `value`, before React re-renders
- * the thumb into its new cell, and `Flip.from` plays the measured delta
- * afterward. Flip diffs real `getBoundingClientRect` geometry, so this is
- * correct under RTL without assuming a direction. Reduced motion
- * (`useMotionOk`) never captures a Flip state, so the thumb lands directly in
- * its new cell with no animation.
- *
- * ## What changed
- *
- * Only the surface. The 2px ink outline becomes a hairline, and the thumb
- * stops being a `--color-cta` fill: it is now a raised paper chip with its own
- * hairline and soft shadow, sitting in a sunken track, which is the same
- * physical idea the rest of the editorial system uses.
+ * The GSAP Flip tween is gone. The thumb slides on a CSS transition over a
+ * measured offset, which the global `prefers-reduced-motion` override
+ * neutralises without this file knowing anything about it.
  */
 export interface EditorialPriceToggleProps {
-  /** Accessible name for the `<fieldset>` grouping the two options. */
+  /** Accessible name for the group of options. */
   readonly groupLabel: string;
   readonly monthlyLabel: string;
   readonly annualLabel: string;
   /**
-   * The incentive, rendered inside the annual option's own label so a screen
-   * reader hears "Yearly, 2 months free" as one choice rather than meeting a
-   * loose chip beside it. Omit and the option carries none.
+   * The incentive, rendered inside the annual option's own label. Omit and the
+   * option carries none.
    */
   readonly annualBadge?: string;
   readonly value: BillingInterval;
@@ -70,115 +56,38 @@ export function EditorialPriceToggle({
   onChange,
   className,
 }: EditorialPriceToggleProps): ReactNode {
-  const scope = useRef<HTMLFieldSetElement>(null);
-  const thumbRef = useRef<HTMLSpanElement>(null);
-  const flipState = useRef<ReturnType<typeof Flip.getState> | null>(null);
-  const motionOk = useMotionOk();
-  /**
-   * One radio group per instance. A fixed `name` made every toggle on the site
-   * one group, so a second control on the same page would silently steal the
-   * first one's selection, and a browser restoring form state on reload could
-   * hand back a checked radio that React's own state did not agree with.
-   */
-  const groupName = useId();
-
-  const select = (next: BillingInterval): void => {
-    if (next === value) return;
-    if (motionOk && thumbRef.current) {
-      flipState.current = Flip.getState(thumbRef.current);
-    }
-    onChange(next);
-  };
-
-  useGSAP(
-    () => {
-      if (!flipState.current) return;
-      Flip.from(flipState.current, { duration: DURATION_FAST, ease: EASE_STANDARD });
-      flipState.current = null;
-    },
-    { scope, dependencies: [value] },
-  );
-
   return (
-    <fieldset
-      ref={scope}
-      className={cn(
-        'border-border-default bg-surface-sunken relative grid grid-cols-2 rounded-full border p-1',
-        className,
-      )}
-    >
-      <legend className="sr-only">{groupLabel}</legend>
-      <span
-        ref={thumbRef}
-        aria-hidden="true"
-        style={{ gridColumnStart: value === 'month' ? 1 : 2 }}
-        className="bg-surface-raised border-border-default shadow-raised pointer-events-none row-start-1 rounded-full border"
-      />
-      <ToggleOption
-        column={1}
-        groupName={groupName}
-        label={monthlyLabel}
-        checked={value === 'month'}
-        onSelect={() => select('month')}
-      />
-      <ToggleOption
-        column={2}
-        groupName={groupName}
-        label={annualLabel}
-        badge={annualBadge}
-        checked={value === 'year'}
-        onSelect={() => select('year')}
-      />
-    </fieldset>
-  );
-}
-
-function ToggleOption({
-  column,
-  groupName,
-  label,
-  badge,
-  checked,
-  onSelect,
-}: {
-  readonly column: 1 | 2;
-  readonly groupName: string;
-  readonly label: string;
-  readonly badge?: string;
-  readonly checked: boolean;
-  readonly onSelect: () => void;
-}): ReactNode {
-  return (
-    <label
-      style={{ gridColumnStart: column }}
-      className="relative row-start-1 flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full px-4 text-center"
-    >
-      <input
-        type="radio"
-        name={groupName}
-        checked={checked}
-        onChange={onSelect}
-        className="peer sr-only"
-      />
-      <span
-        className={cn(
-          'text-body-md rounded-full px-1 py-1 whitespace-nowrap',
-          'peer-focus-visible:outline-border-focus peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2',
-          checked ? 'text-text-primary font-medium' : 'text-text-secondary',
-        )}
-      >
-        {label}
-      </span>
-      {/* Marigold on its own documented wash (5.05:1 in light, 10.25:1 in
-          dark). Not vermilion: that fills the primary button and nothing else,
-          and a second vermilion surface on the same screen would stop the
-          first one reading as "press this". */}
-      {badge === undefined ? null : (
-        <span className="text-label bg-accent-warm-subtle text-accent-warm rounded-full px-2 py-1 whitespace-nowrap">
-          {badge}
-        </span>
-      )}
-    </label>
+    <SegmentedControl
+      aria-label={groupLabel}
+      shape="pill"
+      fill
+      scrollable={false}
+      value={value}
+      onValueChange={(next) => {
+        if (next === 'month' || next === 'year') onChange(next);
+      }}
+      className={cn('w-full', className)}
+      items={[
+        { value: 'month', label: monthlyLabel },
+        {
+          value: 'year',
+          label: (
+            <>
+              {annualLabel}
+              {/* Marigold on its own documented wash (5.05:1 in light, 10.25:1
+                  in dark). Not vermilion: that fills the primary button and
+                  nothing else, and a second vermilion surface on the same
+                  screen would stop the first one reading as "press this". */}
+              {annualBadge === undefined ? null : (
+                <span className="text-label bg-accent-warm-subtle text-accent-warm rounded-full px-2 py-1 whitespace-nowrap">
+                  {annualBadge}
+                </span>
+              )}
+            </>
+          ),
+        },
+      ]}
+    />
   );
 }
 

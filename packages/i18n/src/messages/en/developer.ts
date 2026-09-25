@@ -222,6 +222,13 @@ export const developerMessages = {
   'cli.help.posts.cancel':
     'cancel a scheduled job. Risk: consequential. Requires posts:cancel',
   'cli.help.posts.list': 'content items in this workspace. Risk: read',
+  'cli.help.events.watch':
+    'what has happened in this workspace recently. Risk: read. With --follow it streams one JSON object per line and does not return',
+  'cli.help.events.follow': 'keep the stream open and print each event as it arrives',
+  'cli.help.events.noReconnect':
+    'read one stream until the server closes it, then exit, instead of reopening',
+  'cli.help.events.since': 'resume from an event id, so nothing between is missed',
+  'cli.help.events.type': 'limit to these event types',
   'cli.help.media.list': 'assets in this workspace. Risk: read',
   'cli.help.media.kind': 'image, video, gif, document or audio',
   'cli.help.media.get': 'one asset, its scan state and its retention date. Risk: read',

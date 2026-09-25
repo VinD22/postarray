@@ -13,7 +13,7 @@ import { Flip, useGSAP } from '@/lib/motion/gsap';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { useTranslations } from '@/lib/i18n';
 
-import { isNavItemActive, NAV_ITEMS } from './nav-items';
+import { isNavItemActive, isNavSubItemActive, NAV_ITEMS, type NavSubItem } from './nav-items';
 
 /**
  * The navigation rail.
@@ -74,16 +74,15 @@ export function PrimaryNav() {
       ref={navRef}
       aria-label={t('nav.primaryLandmark')}
       className={cn(
-        'hidden md:relative md:flex md:flex-col md:gap-0.5',
-        'border-border-subtle bg-surface-sunken border-e',
-        'px-2 py-3 lg:px-3',
+        'border-border-default bg-surface-raised shadow-raised hidden rounded-lg border',
+        'md:relative md:flex md:flex-col md:gap-1 md:px-2 md:py-2.5 lg:px-2.5',
       )}
     >
       <span
         ref={indicatorRef}
         aria-hidden="true"
         className={cn(
-          'bg-accent pointer-events-none absolute start-0 w-0.5 rounded-full',
+          'bg-accent pointer-events-none absolute start-0 w-0.5 rounded-e-full',
           'transition-opacity duration-(--duration-fast)',
           activeItem ? 'opacity-100' : 'opacity-0',
         )}
@@ -106,17 +105,17 @@ export function PrimaryNav() {
             href={item.href}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'relative flex min-h-11 items-center gap-3 rounded-md px-2.5 py-2 lg:min-h-9',
-              'text-body-md transition-[background-color,color,translate] duration-(--duration-fast)',
-              'hover:-translate-x-0.5 rtl:hover:translate-x-0.5',
+              'relative flex min-h-11 items-center gap-3 rounded-md px-2.5 py-2 lg:min-h-10',
+              'text-body-md lg:text-body-lg transition-[background-color,color,translate] duration-(--duration-fast)',
+              'hover:-translate-y-px',
               active
-                ? 'bg-surface-raised text-text-primary font-medium'
+                ? 'bg-surface-sunken text-text-primary font-semibold'
                 : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
             )}
           >
             <Icon
               aria-hidden="true"
-              className={cn('size-4 shrink-0', active ? 'text-accent' : undefined)}
+              className={cn('size-5 shrink-0', active ? 'text-accent' : undefined)}
             />
             {labelsVisible ? (
               <span className="truncate">{label}</span>
@@ -126,14 +125,88 @@ export function PrimaryNav() {
           </Link>
         );
 
-        return labelsVisible ? (
-          <div key={item.id}>{link}</div>
-        ) : (
-          <Tooltip key={item.id} content={label} side="right">
-            {link}
-          </Tooltip>
+        // Sub destinations appear only while their section is open, so the
+        // rail still reads as eight fixed places rather than as a tree that
+        // changes height for no reason.
+        const subItems = active ? (item.subItems ?? []) : [];
+
+        return (
+          <div key={item.id}>
+            {labelsVisible ? (
+              link
+            ) : (
+              <Tooltip content={label} side="right">
+                {link}
+              </Tooltip>
+            )}
+            {subItems.length === 0 ? null : (
+              <ul className="mt-0.5 flex flex-col gap-0.5">
+                {subItems.map((subItem) => (
+                  <li key={subItem.id}>
+                    <SubLink
+                      item={subItem}
+                      active={isNavSubItemActive(subItem, pathname)}
+                      label={t(subItem.labelKey)}
+                      labelVisible={labelsVisible}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         );
       })}
     </nav>
+  );
+}
+
+/**
+ * One sub destination in the rail.
+ *
+ * Indented from its parent when there is room for labels, and reduced to a
+ * tooltipped icon when there is not, so the icons-only rail at 768px never
+ * loses a destination the wide rail has.
+ */
+function SubLink({
+  item,
+  active,
+  label,
+  labelVisible,
+}: {
+  readonly item: NavSubItem;
+  readonly active: boolean;
+  readonly label: string;
+  readonly labelVisible: boolean;
+}): ReactNode {
+  const Icon = item.icon;
+
+  const link: ReactNode = (
+    <Link
+      href={item.href}
+      aria-current={active ? 'page' : undefined}
+      className={cn(
+        'flex min-h-11 items-center gap-3 rounded-md py-2 lg:min-h-9',
+        'text-body-sm transition-[background-color,color] duration-(--duration-fast)',
+        labelVisible ? 'ps-7 pe-2.5' : 'px-2.5',
+        active
+          ? 'bg-surface-raised text-text-primary font-medium'
+          : 'text-text-tertiary hover:bg-surface-hover hover:text-text-primary',
+      )}
+    >
+      <Icon aria-hidden="true" className={cn('size-4 shrink-0', active && 'text-accent')} />
+      {labelVisible ? (
+        <span className="truncate">{label}</span>
+      ) : (
+        <span className="sr-only">{label}</span>
+      )}
+    </Link>
+  );
+
+  return labelVisible ? (
+    link
+  ) : (
+    <Tooltip content={label} side="right">
+      {link}
+    </Tooltip>
   );
 }

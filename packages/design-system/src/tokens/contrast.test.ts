@@ -117,6 +117,25 @@ describe.each<ThemeName>(['light', 'dark'])('WCAG 2.2 AA gate: %s theme', (theme
     }
   });
 
+  it('keeps chart gridlines visible but quiet against the plotting band', () => {
+    // A gridline is scenery. It has to be findable when a reader looks for it
+    // and invisible when they are not, so it is held to the same narrow band
+    // the tonal surface steps are, and never to the 3:1 that would turn it
+    // into a rule drawn through the data.
+    const ratio = contrastRatio(theme.chart.grid, theme.chart.area);
+    expect(ratio).toBeGreaterThan(1.01);
+    expect(ratio).toBeLessThan(1.6);
+  });
+
+  it('keeps the two series strokes too close to be told apart by colour', () => {
+    // The point of the assertion. If these two ever drift far enough apart to
+    // read as "the dark one and the light one", the kit would start implying
+    // that hue carries the series identity, and a colour blind reader, a
+    // greyscale print and a projector would each lose a series. Dash pattern
+    // plus the legend text is the only differentiator the kit ships.
+    expect(contrastRatio(theme.chart.line, theme.chart.lineCompare)).toBeLessThan(3);
+  });
+
   it('keeps every surface distinguishable from the one above it', () => {
     // Tonal steps replace shadows, so each step must be visible but quiet.
     const steps: readonly [string, string][] = [

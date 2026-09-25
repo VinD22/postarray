@@ -7,6 +7,7 @@ import {
   ruleWorkflowId,
   type Clock,
   type SchedulerPort,
+  type SchedulerKind,
 } from '@relay/application';
 import type { RelayConfig } from '@relay/config';
 import { ERROR_CODES, RelayError } from '@relay/contracts';
@@ -16,6 +17,8 @@ import { TemporalScheduler } from '@relay/runtime';
 import { analyticsSyncDescriptor } from './workflows/core/analytics-sync.core';
 import { bulkImportDescriptor } from './workflows/core/bulk-import.core';
 import { mediaDerivativeDescriptor } from './workflows/core/media-derivative.core';
+import { mediaScanDescriptor } from './workflows/core/media-scan.core';
+import { webhookDeliveryDescriptor } from './workflows/core/webhook-delivery.core';
 import { automationRuleDescriptor } from './workflows/core/automation-rule.core';
 import { dataExportDescriptor } from './workflows/core/data-export.core';
 import { dataDeletionDescriptor } from './workflows/core/data-deletion.core';
@@ -223,6 +226,47 @@ export class WorkerScheduler implements SchedulerPort {
    * either way, so a duplicated request joins the run that already exists
    * rather than starting a second one and writing a second object.
    */
+  describeKind(): SchedulerKind {
+    return this.#temporal !== null ? 'temporal' : 'inline';
+  }
+
+  /**
+   * One signed delivery to one customer endpoint.
+   *
+   * Temporal has no webhook method of its own, so a durable deployment runs
+   * the same workflow body through the worker, exactly as media derivatives
+   * and bulk import do. The workflow id is deterministic per delivery either
+   * way, so a redispatched outbox row joins the run that already exists
+   * rather than sending the same event twice.
+   */
+  async scheduleWebhookDelivery(input: {
+    readonly workspaceId: string;
+    readonly deliveryId: string;
+    readonly workflowInput: Parameters<typeof webhookDeliveryDescriptor.run>[2];
+  }): Promise<{ readonly workflowId: string; readonly runId: string }> {
+    const workflowId = `whd:${input.workspaceId}:${input.deliveryId}`;
+    this.#inline().startWorkflow(webhookDeliveryDescriptor, workflowId, input.workflowInput);
+    return { workflowId, runId: `${workflowId}:inline` };
+  }
+
+  /**
+   * Decide whether one uploaded asset may be published.
+   *
+   * Runs through the worker like the other media work: the codec and the
+   * sniffer live here and must never become dependencies of the API. The
+   * workflow id is deterministic per asset, so a duplicated upload finalize
+   * joins the scan that is already running rather than reading the bytes twice.
+   */
+  async scheduleMediaScan(input: {
+    readonly workspaceId: string;
+    readonly mediaAssetId: string;
+    readonly workflowInput: Parameters<typeof mediaScanDescriptor.run>[2];
+  }): Promise<{ readonly workflowId: string; readonly runId: string }> {
+    const workflowId = `scan:${input.workspaceId}:${input.mediaAssetId}`;
+    this.#inline().startWorkflow(mediaScanDescriptor, workflowId, input.workflowInput);
+    return { workflowId, runId: `${workflowId}:inline` };
+  }
+
   async scheduleMediaDerivative(input: {
     readonly workspaceId: string;
     readonly mediaAssetId: string;

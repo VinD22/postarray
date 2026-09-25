@@ -1,4 +1,6 @@
 import type {
+  CommitKind,
+  CommitPreview,
   AccountType,
   ApprovalState,
   CapabilitySnapshot,
@@ -12,6 +14,7 @@ import type {
   PageInfo,
   ProviderId,
   PublishState,
+  RealtimeEvent,
   Scope,
   ValidationResult,
 } from '@relay/contracts';
@@ -282,7 +285,11 @@ export interface RelayServicePort {
   readonly scheduling: {
     schedule(
       ctx: ActorContextLike,
-      input: { readonly contentItemId: string; readonly scheduleSpec: ScheduleSpecLike },
+      input: {
+        readonly contentItemId: string;
+        readonly scheduleSpec: ScheduleSpecLike;
+        readonly connectionIds?: readonly string[];
+      },
     ): Promise<PublishJobSummary>;
     cancel(
       ctx: ActorContextLike,
@@ -308,6 +315,16 @@ export interface RelayServicePort {
         readonly confirmation: PublishConfirmationEvidenceLike;
       },
     ): Promise<PublishJobSummary>;
+    previewCommit(
+      ctx: ActorContextLike,
+      input: {
+        readonly contentItemId: string;
+        readonly kind: CommitKind;
+        readonly scheduledAt?: string;
+        readonly ianaTimeZone?: string;
+        readonly connectionIds?: readonly string[];
+      },
+    ): Promise<CommitPreview>;
     getJob(ctx: ActorContextLike, jobId: string): Promise<PublishJobSummary>;
   };
 
@@ -370,6 +387,37 @@ export interface RelayServicePort {
       },
     ): Promise<readonly OpportunityRecord[]>;
   };
+
+  /**
+   * Recent status changes in this workspace.
+   *
+   * A tool call answers and ends, so an agent cannot hold the event stream open
+   * the way a browser tab or `postarray events --follow` does. Polling this
+   * between turns is the honest equivalent: same events, same tenancy, same
+   * read scope, bounded page.
+   */
+  readonly events: {
+    listRecent(
+      ctx: ActorContextLike,
+      input: { readonly since?: string; readonly limit: number },
+    ): Promise<RecentEventsPage>;
+  };
+  /**
+   * Composer suggestions: the same use case the editor's Suggest menu and the
+   * CLI call. Optional so fakes and the sandbox can omit it; a tool that needs
+   * it answers `unavailable` rather than inventing a result.
+   */
+  readonly aiSuggestions?: {
+    suggest(ctx: ActorContextLike, input: unknown): Promise<unknown>;
+    review(ctx: ActorContextLike, input: unknown): Promise<unknown>;
+    bestTime(ctx: ActorContextLike, input: unknown): Promise<unknown>;
+  };
+}
+
+/** One page of live events, plus the id to resume from next turn. */
+export interface RecentEventsPage {
+  readonly events: readonly RealtimeEvent[];
+  readonly lastEventId: string | null;
 }
 
 /**

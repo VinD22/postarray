@@ -14,6 +14,8 @@
 
 import type {
   CapabilitySnapshot,
+  CommitKind,
+  CommitPreview,
   ContentKind,
   ContentVersion,
   CreationSurface,
@@ -27,6 +29,7 @@ import type {
   OperationRef,
   OpportunityRecord,
   Paginated,
+  MediaReadUrls,
   ProviderId,
   PublishState,
   Scope,
@@ -37,7 +40,7 @@ import type {
 import type { HealthReport, Logger } from '@relay/observability';
 import type { RelayConfig } from '@relay/config';
 
-export type { Paginated } from '@relay/contracts';
+export type { MediaReadUrls, Paginated } from '@relay/contracts';
 import type {
   ActionItemView as ApplicationActionItemView,
   AgentConfirmationView as ApplicationAgentConfirmationView,
@@ -83,6 +86,7 @@ import type {
   PostVariantView as ApplicationPostVariantView,
   ProviderDestinationView as ApplicationProviderDestinationView,
   PublicationReceiptView as ApplicationPublicationReceiptView,
+  ContentPublicationView as ApplicationContentPublicationView,
   PublishJobView as ApplicationPublishJobView,
   ReceiptSummaryView as ApplicationReceiptSummaryView,
   RssFeedView as ApplicationRssFeedView,
@@ -157,6 +161,12 @@ export interface KeyValueStore {
   setIfAbsent(key: string, value: string, options?: KeyValueSetOptions): Promise<boolean>;
   /** Atomic counter. The TTL is applied only when the counter is created. */
   increment(key: string, options?: KeyValueSetOptions): Promise<number>;
+  /**
+   * Add `amount` in one round trip. The rate limiter charges a cost per
+   * request, so incrementing one unit at a time made an expensive endpoint
+   * pay for its own accounting several times over.
+   */
+  incrementBy(key: string, amount: number, options?: KeyValueSetOptions): Promise<number>;
   /** Remaining time to live in seconds, or null when the key has none. */
   ttl(key: string): Promise<number | null>;
 }
@@ -247,6 +257,7 @@ export type OAuthGrantView = ApplicationOAuthGrantView;
 export type AuditEventView = ApplicationAuditEventView;
 export type PublishJobView = ApplicationPublishJobView;
 export type PublicationReceiptView = ApplicationPublicationReceiptView;
+export type ContentPublicationView = ApplicationContentPublicationView;
 export type ReceiptSummaryView = ApplicationReceiptSummaryView;
 export type MetricObservationView = ApplicationMetricObservationView;
 export type MetricSeriesView = ApplicationMetricSeriesView;
@@ -393,6 +404,16 @@ export interface ContentService {
     input: { contentItemId: string; targetId: string },
   ): Promise<CanonicalPreview>;
   delete(ctx: ActorContext, contentItemId: string): Promise<void>;
+  saveComposite(
+    ctx: ActorContext,
+    input: {
+      contentItemId: string;
+      expectedVersionId?: string | null;
+      master: ViewModel;
+      targets: readonly ViewModel[];
+      variantOverrides?: Readonly<Record<string, ViewModel>>;
+    },
+  ): Promise<ContentItemView>;
 }
 
 export interface ValidationService {
@@ -419,7 +440,12 @@ export interface ApprovalService {
 export interface SchedulingService {
   schedule(
     ctx: ActorContext,
-    input: { contentItemId: string; scheduleSpec: ViewModel },
+    input: {
+      contentItemId: string;
+      scheduleSpec: ViewModel;
+      confirmation?: ViewModel;
+      connectionIds?: readonly string[];
+    },
   ): Promise<PublishJobView>;
   reschedule(
     ctx: ActorContext,
@@ -441,6 +467,16 @@ export interface PublishingService {
     ctx: ActorContext,
     input: { contentItemId: string; confirmation: ViewModel },
   ): Promise<PublishJobView>;
+  previewCommit(
+    ctx: ActorContext,
+    input: {
+      contentItemId: string;
+      kind: CommitKind;
+      scheduledAt?: IsoInstant;
+      ianaTimeZone?: IanaTimeZone;
+      connectionIds?: readonly string[];
+    },
+  ): Promise<CommitPreview>;
   getJob(ctx: ActorContext, jobId: string): Promise<PublishJobView>;
   retryTarget(
     ctx: ActorContext,
@@ -452,6 +488,7 @@ export interface ReceiptService {
   get(ctx: ActorContext, receiptId: string): Promise<PublicationReceiptView>;
   listForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]>;
   listRecent(ctx: ActorContext, query?: CursorQuery): Promise<Paginated<ReceiptSummaryView>>;
+  getContentPublication(ctx: ActorContext, contentItemId: string): Promise<ContentPublicationView>;
 }
 
 export interface MediaService {
@@ -467,6 +504,8 @@ export interface MediaService {
     retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  /** Short-lived URLs a browser can load this asset from. Absent renditions are null. */
+  getReadUrls(ctx: ActorContext, mediaId: string): Promise<MediaReadUrls>;
   /** Local filesystem adapter only. Presigned-PUT deployments refuse both. */
   acceptDirectUpload(
     ctx: ActorContext,

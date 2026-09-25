@@ -1,4 +1,7 @@
 import type {
+  CommitKind,
+  CommitPreview,
+  PlanTierKey,
   AssistantActionOutput,
   AssistantTurnRequest,
   AssistantTurnResponse,
@@ -59,6 +62,9 @@ import type {
   ValidationResult,
   VariantOverrides,
   WebhookEventName,
+  DomainEventEnvelope,
+  RealtimeEventInput,
+  MediaReadUrls,
   ErrorClass,
   ErrorCode,
 } from '@relay/contracts';
@@ -81,6 +87,9 @@ import type { HealthReport, Logger } from '@relay/observability';
 import type { CredentialStorePort } from './ports/credentials';
 import type { OAuthPendingDiscoveryPort } from './ports/oauth-pending';
 import type { OAuthAccountSelectionView } from './ports/oauth-pending';
+import type { AiSuggestionService } from './services/ai-suggestions-types';
+import type { MediaAnalysisService } from './services/media-analysis-types';
+import type { InsightService, WorkerDigestService } from './services/insights-types';
 
 import type {
   AnalyticsOverviewView,
@@ -122,6 +131,8 @@ import type {
   ProviderDestinationView,
   PublicationReceiptView,
   PublishJobView,
+  PublishJobsAcceptedView,
+  ContentPublicationView,
   ReceiptSummaryView,
   RssFeedView,
   RulePreview,
@@ -278,6 +289,45 @@ export interface MailerPort {
 }
 
 /** Safe workflow context. It may be persisted in Temporal history. */
+/**
+ * One claimed domain-event row, as the outbox repository hands it over. Kept
+ * structural so `packages/application` does not depend on the runtime's
+ * repository types.
+ */
+export interface ClaimedDomainEventRow {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly kind: string;
+  readonly dedupeKey: string;
+  readonly payload: unknown;
+  readonly createdAt?: Date | null;
+}
+
+/** Fans a claimed domain event out to webhooks, notifications and realtime. */
+export interface DomainEventService {
+  dispatch(row: ClaimedDomainEventRow): Promise<void>;
+}
+
+/**
+ * Pushes an event to connected clients. Optional: a deployment with no Redis
+ * still delivers webhooks and still writes notifications, it simply has no
+ * live updates.
+ */
+export interface RealtimePublisherPort {
+  publish(event: DomainEventEnvelope): Promise<void>;
+  /**
+   * Push a live update that has no outbox row behind it.
+   *
+   * The outbox fires at campaign boundaries. The states a person actually
+   * watches on a receipt screen, `preparing_media` through
+   * `provider_processing`, are set in between and have no domain event, so the
+   * calls that change them publish here directly. Nothing durable depends on
+   * this: it is a hint that a query is stale, and the truth is the row that
+   * was just written.
+   */
+  publishStatus(event: RealtimeEventInput): Promise<void>;
+}
+
 export interface WorkflowActorContext {
   readonly workspaceId: string;
   readonly correlationId: string;
@@ -441,7 +491,19 @@ export interface DataExportContent {
   readonly expiresAt: string;
 }
 
+/**
+ * Which of the three schedulers is in play.
+ *
+ * `temporal` executes durably. `inline` runs workflow bodies in this process
+ * with no durable history. `memory` records intent and never executes at all.
+ * Readiness reports this so a process that came up degraded is visibly not
+ * ready, rather than accepting schedules it will never honour.
+ */
+export type SchedulerKind = 'temporal' | 'inline' | 'memory';
+
 export interface SchedulerPort {
+  /** See `SchedulerKind`. Read by the health report. */
+  describeKind(): SchedulerKind;
   schedulePublish(input: {
     readonly jobId: string;
     readonly workspaceId: string;
@@ -546,6 +608,33 @@ export interface SchedulerPort {
     readonly mediaAssetId: string;
     readonly presetKey: string;
     readonly workflowInput: MediaDerivativeWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  /**
+   * One signed delivery to one customer endpoint.
+   *
+   * Optional in the same way `scheduleMediaDerivative` is: a deployment with
+   * no scheduler still records the delivery row, it simply cannot send it. The
+   * workflow id is deterministic per delivery, so a repeated dispatch of the
+   * same outbox row joins the run that already exists rather than sending the
+   * event twice.
+   */
+  /**
+   * Decide whether an uploaded object may be published.
+   *
+   * Optional like the other worker-side schedules. Without it the asset stays
+   * `pending`, validation keeps refusing it, and the action centre says why,
+   * which is honest. What must never happen is unexamined bytes reaching a
+   * provider.
+   */
+  scheduleMediaScan?(input: {
+    readonly workspaceId: string;
+    readonly mediaAssetId: string;
+    readonly workflowInput: MediaScanWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  scheduleWebhookDelivery?(input: {
+    readonly workspaceId: string;
+    readonly deliveryId: string;
+    readonly workflowInput: WebhookDeliveryWorkflowInput;
   }): Promise<{ readonly workflowId: string; readonly runId: string }>;
   describe(input: {
     readonly jobId: string;
@@ -654,9 +743,23 @@ export interface UntrustedSourceInput {
     | 'uploaded_file'
     | 'provider_response'
     | 'catalog_record'
-    | 'user_note';
+    | 'user_note'
+    | 'image';
   readonly label: string;
   readonly text: string;
+  readonly retrievedAt: string;
+}
+
+/**
+ * One image sent for analysis, never for generation. Only a scanned, clean,
+ * rights-declared asset of the calling workspace, as a downscaled JPEG under
+ * 1 MB. The gateway fences it as untrusted data in the user message.
+ */
+export interface AiImageInputPort {
+  readonly id: string;
+  readonly label: string;
+  readonly mediaType: 'image/jpeg' | 'image/png' | 'image/webp';
+  readonly dataBase64: string;
   readonly retrievedAt: string;
 }
 
@@ -673,6 +776,8 @@ export interface AiCallRequest {
     Record<string, string | number | boolean | null | readonly string[]>
   >;
   readonly untrustedSources?: readonly UntrustedSourceInput[];
+  /** Images to analyse. Present only on the media-understanding call. */
+  readonly images?: readonly AiImageInputPort[];
 }
 
 /** What one model call cost and which exact prompt version produced it. */
@@ -795,6 +900,7 @@ export interface BillingGateway {
     readonly locale: string;
     readonly idempotencyKey: string;
     readonly interval: 'monthly' | 'annual';
+    readonly tier?: PlanTierKey;
     readonly successUrl: string;
   }): Promise<CheckoutSessionView>;
   createPortalLink(input: {
@@ -837,6 +943,13 @@ export interface ServiceDeps {
     >
   >;
   readonly exportEncryption?: DataExportEncryptionPort;
+  /**
+   * Pushes domain events to connected clients. Absent until a deployment has
+   * Redis; webhooks and notifications work without it, live updates do not.
+   */
+  readonly realtime?: RealtimePublisherPort;
+  /** Worker-only. The API never decodes uploaded bytes. */
+  readonly mediaScanner?: MediaScannerPort;
   readonly mailer: MailerPort;
   readonly logger: Logger;
   readonly clock: Clock;
@@ -1421,6 +1534,24 @@ export interface MasterDraftPatch {
   readonly releaseOverridesFor?: readonly string[];
 }
 
+/**
+ * The composer's whole draft in one request: master, target list and every
+ * target's overrides, written as exactly one new version in one transaction.
+ *
+ * `expectedVersionId` is the `currentVersionId` the caller last read. When it
+ * no longer matches, somebody else saved in between and the call fails with a
+ * 409 `CONFLICT` (`errors.content_conflict`) instead of silently overwriting.
+ * `variantOverrides` is keyed by connection id and replaces that target's
+ * overrides wholesale; a target absent from it keeps what it had.
+ */
+export interface SaveCompositeInput {
+  readonly contentItemId: string;
+  readonly expectedVersionId?: string | null;
+  readonly master: Omit<MasterDraftPatch, 'releaseOverridesFor'>;
+  readonly targets: readonly TargetSpec[];
+  readonly variantOverrides?: Readonly<Record<string, VariantOverrides>>;
+}
+
 // ---------------------------------------------------------------------------
 // Services
 // ---------------------------------------------------------------------------
@@ -1491,6 +1622,16 @@ export interface ProjectService {
   update(ctx: ActorContext, projectId: string, patch: Partial<ProjectView>): Promise<ProjectView>;
   archive(ctx: ActorContext, projectId: string): Promise<ProjectView>;
   delete(ctx: ActorContext, projectId: string): Promise<void>;
+  /**
+   * Changes which connections belong to one project. `add` moves each
+   * connection here from wherever it was; `remove` unassigns a connection only
+   * if it currently belongs to this project. One transaction, one audit event.
+   */
+  updateConnections(
+    ctx: ActorContext,
+    projectId: string,
+    input: { readonly add: readonly string[]; readonly remove: readonly string[] },
+  ): Promise<ProjectView>;
 }
 
 /**
@@ -1628,6 +1769,7 @@ export interface ContentService {
     input: { readonly contentItemId: string; readonly targetId: string },
   ): Promise<CanonicalPreview>;
   delete(ctx: ActorContext, contentItemId: string): Promise<void>;
+  saveComposite(ctx: ActorContext, input: SaveCompositeInput): Promise<ContentItemView>;
 }
 
 export interface ValidationService {
@@ -1658,8 +1800,15 @@ export interface ApprovalService {
 export interface SchedulingService {
   schedule(
     ctx: ActorContext,
-    input: { readonly contentItemId: string; readonly scheduleSpec: ScheduleSpec },
-  ): Promise<PublishJobView>;
+    input: {
+      readonly contentItemId: string;
+      readonly scheduleSpec: ScheduleSpec;
+      /** Evidence the person saw the commit preview. Required when it escalates. */
+      readonly confirmation?: PublishConfirmationEvidence;
+      /** Schedule only these targets. Omitted means every target. */
+      readonly connectionIds?: readonly string[];
+    },
+  ): Promise<PublishJobsAcceptedView>;
   reschedule(
     ctx: ActorContext,
     input: {
@@ -1815,6 +1964,21 @@ export interface PublishingService {
       readonly confirmation: PublishConfirmationEvidence;
     },
   ): Promise<PublishJobView>;
+  /**
+   * What committing would take, without committing: the target count, the
+   * version checksum, blockers and the escalations a confirmation must name.
+   * Runs the same preflight as `publishNow` and `schedule`; freezes nothing.
+   */
+  previewCommit(
+    ctx: ActorContext,
+    input: {
+      readonly contentItemId: string;
+      readonly kind: CommitKind;
+      readonly scheduledAt?: string;
+      readonly ianaTimeZone?: string;
+      readonly connectionIds?: readonly string[];
+    },
+  ): Promise<CommitPreview>;
   getJob(ctx: ActorContext, jobId: string): Promise<PublishJobView>;
   retryTarget(
     ctx: ActorContext,
@@ -1855,6 +2019,8 @@ export interface ReceiptService {
   get(ctx: ActorContext, receiptId: string): Promise<PublicationReceiptView>;
   listForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]>;
   listRecent(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ReceiptSummaryView>>;
+  /** Per-target job state, receipt, link and failure for one content item. */
+  getContentPublication(ctx: ActorContext, contentItemId: string): Promise<ContentPublicationView>;
 }
 
 export interface ActionCenterService {
@@ -1957,7 +2123,52 @@ export interface MediaDerivativeService {
 }
 
 /** Worker-facing. Writes the row only once the bytes are actually stored. */
+/**
+ * What a scan concluded about one uploaded object.
+ *
+ * `failed` is a scanner that could not reach a verdict. It is deliberately not
+ * `clean`: a scanner outage must not become an approval.
+ */
+export interface MediaScanResult {
+  readonly verdict: 'clean' | 'suspicious' | 'infected' | 'failed';
+  /** Read from the bytes, never the client's claim. */
+  readonly detectedMimeType: string | null;
+  readonly width: number | null;
+  readonly height: number | null;
+  readonly durationMs: number | null;
+  /** An i18n key, so the reason reaches the person in their language. */
+  readonly noteKey: string | null;
+  readonly scanner: 'passthrough' | 'clamav';
+}
+
+/**
+ * Decides whether an uploaded object may be published.
+ *
+ * Worker-only, for the same reason `sharp` is: the API never decodes bytes
+ * a stranger uploaded.
+ */
+export interface MediaScannerPort {
+  scan(input: {
+    readonly workspaceId: string;
+    readonly storageKey: string;
+    readonly claimedMimeType: string;
+    readonly byteSize: number;
+  }): Promise<MediaScanResult>;
+}
+
 export interface WorkerMediaService {
+  /**
+   * Move one asset out of `pending`.
+   *
+   * Assets are created `pending` and validation refuses anything that is not
+   * `clean`, so until this existed no uploaded image or video could be
+   * published at all: a person attached a photo, scheduled it, and got a
+   * text-only post with no explanation.
+   */
+  scanMediaAsset(
+    ctx: WorkflowActorContext,
+    input: { readonly mediaAssetId: string },
+  ): Promise<{ readonly scanState: string; readonly noteKey: string | null }>;
   produceDerivative(
     ctx: WorkflowActorContext,
     input: {
@@ -1967,6 +2178,26 @@ export interface WorkerMediaService {
     },
     transform: MediaTransformFn,
   ): Promise<MediaDerivativeView>;
+}
+
+/** What the scan workflow receives. Ids only; the bytes are read by the activity. */
+export interface MediaScanWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly mediaAssetId: string;
+}
+
+/**
+ * What the webhook delivery workflow receives. Ids and the event name only:
+ * the body itself is read from the delivery row by the activity, so the
+ * bytes that were signed cannot drift from the bytes that were stored.
+ */
+export interface WebhookDeliveryWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly deliveryId: string;
+  readonly endpointId: string;
+  readonly eventName: WebhookEventName;
+  readonly isRedelivery: boolean;
+  readonly maxAttempts: number;
 }
 
 /** What the derivative workflow receives. Ids, geometry and MIME types only. */
@@ -1996,6 +2227,11 @@ export interface MediaService {
     readonly retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  /**
+   * Short-lived URLs a browser can load this asset from. See the
+   * implementation: renditions that do not exist are null, never guessed.
+   */
+  getReadUrls(ctx: ActorContext, mediaId: string): Promise<MediaReadUrls>;
   /**
    * Accept the upload body itself.
    *
@@ -2550,7 +2786,11 @@ export interface CustomerBillingService {
   ): Promise<UsageSummaryView>;
   createCheckout(
     ctx: ActorContext,
-    input: { readonly interval: 'monthly' | 'annual'; readonly successUrl: string },
+    input: {
+      readonly interval: 'monthly' | 'annual';
+      readonly successUrl: string;
+      readonly tier?: PlanTierKey;
+    },
   ): Promise<CheckoutSessionView>;
   createPortalLink(
     ctx: ActorContext,
@@ -2662,6 +2902,12 @@ export interface AssistantService {
   ): Promise<AssistantActionOutput>;
 }
 
+/** The composer's Suggest menu, Review button and posting time hint. */
+export type { AiSuggestionService } from './services/ai-suggestions-types';
+export type { MediaAnalysisService } from './services/media-analysis-types';
+/** Weekly digest, per-post feedback and "what works for you". */
+export type { InsightService, WorkerDigestService } from './services/insights-types';
+
 export interface Services {
   readonly workspaces: WorkspaceService;
   readonly members: MembershipService;
@@ -2686,7 +2932,13 @@ export interface Services {
   readonly rss: RssService;
   readonly growth: GrowthService;
   readonly assistant: AssistantService;
+  readonly aiSuggestions: AiSuggestionService;
+  /** Opt-in image analysis: settings, stored analyses and pre-check warnings. */
+  readonly mediaAnalysis: MediaAnalysisService;
+  /** Stored insights: weekly digest, per-post feedback, what works for you. */
+  readonly insights: InsightService;
   readonly webhooks: WebhookService;
+  readonly domainEvents: DomainEventService;
   readonly credentials: CredentialVaultService;
   readonly apiKeys: ApiKeyService;
   readonly serviceAccounts: ServiceAccountService;
@@ -2706,6 +2958,7 @@ export interface Services {
   readonly workerRss: WorkerRssService;
   readonly workerRules: WorkerRuleService;
   readonly workerInsights: WorkerInsightService;
+  readonly workerDigests: WorkerDigestService;
   readonly workerBulkImports: WorkerBulkImportService;
   readonly workerMedia: WorkerMediaService;
   readonly health: HealthService;

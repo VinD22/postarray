@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { updateProjectSchema } from './projects.schemas';
+import { updateProjectConnectionsSchema, updateProjectSchema } from './projects.schemas';
 
 describe('project rule input', () => {
   it('accepts the persisted voice, audience, claim, term and domain fields', () => {
@@ -28,5 +28,19 @@ describe('project rule input', () => {
     expect(() =>
       updateProjectSchema.parse({ approvedClaims: Array.from({ length: 101 }, () => 'claim') }),
     ).toThrow();
+  });
+});
+
+describe('project connection membership input', () => {
+  it('defaults the missing side to an empty list', () => {
+    expect(updateProjectConnectionsSchema.parse({ add: ['conn_1'] })).toEqual({
+      add: ['conn_1'],
+      remove: [],
+    });
+  });
+
+  it('rejects an empty change and unknown fields', () => {
+    expect(() => updateProjectConnectionsSchema.parse({})).toThrow();
+    expect(() => updateProjectConnectionsSchema.parse({ connectionIds: ['conn_1'] })).toThrow();
   });
 });

@@ -75,6 +75,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'इस पर कोई हिसाब नहीं {provider} लॉगिन कनेक्ट किया जा सकता है. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'इस {provider} लॉगिन से कोई भी खाता नहीं जोड़ा जा सकता।',
+  'connection.oauth.claimFailed': 'वे खाते नहीं जोड़े जा सके',
+  'connection.oauth.claimFailedAction':
+    'प्लैटफ़ॉर्म पर कुछ नहीं बदला। फिर कोशिश करें, और अगर बार-बार विफल हो तो कनेक्शन दोबारा शुरू करें।',
   'connection.oauth.canceled': 'पर कनेक्शन रद्द कर दिया गया {provider}. कुछ भी नहीं बदला।',
   'connection.oauth.alreadyConnected': '{account} इस कार्यक्षेत्र से पहले से ही जुड़ा हुआ है.',
   'connection.oauth.connectedToAnotherWorkspace':

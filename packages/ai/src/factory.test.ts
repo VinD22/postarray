@@ -1,7 +1,12 @@
 import { loadConfigFor } from '@relay/config';
 import { describe, expect, it } from 'vitest';
 
-import { ANTHROPIC_SONNET_PRICING, ASSUMED_PRICING, pricingForModel } from './budget';
+import {
+  ANTHROPIC_SONNET_PRICING,
+  ASSUMED_PRICING,
+  DEEPSEEK_FLASH_PRICING,
+  pricingForModel,
+} from './budget';
 import { selectProvider } from './factory';
 
 /**
@@ -50,7 +55,8 @@ describe('selectProvider', () => {
 
   it('prices the selected model rather than inheriting the default rate', () => {
     expect(pricingForModel('claude-sonnet-5')).toBe(ANTHROPIC_SONNET_PRICING);
-    expect(pricingForModel('deepseek-v4-flash')).toBe(ASSUMED_PRICING);
+    expect(pricingForModel('deepseek-v4-flash')).toBe(DEEPSEEK_FLASH_PRICING);
+    expect(pricingForModel('deepseek-flash')).toBe(DEEPSEEK_FLASH_PRICING);
     expect(pricingForModel('some-unpriced-model')).toBe(ASSUMED_PRICING);
   });
 });

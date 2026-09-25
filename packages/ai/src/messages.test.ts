@@ -39,6 +39,15 @@ describe('missingVariables', () => {
 });
 
 describe('buildMessages', () => {
+  it('shows the output keys of a JSON prompt in the stable system prefix', () => {
+    const built = buildMessages(draftFromBriefPrompt, request());
+    const system = String(built.messages[0]?.content);
+    expect(system).toContain('OUTPUT SHAPE');
+    expect(system).toContain('"threadParts"');
+    expect(system).toContain('"suggestedHashtags"');
+    expect(system.indexOf('OUTPUT SHAPE')).toBeLessThan(system.indexOf('Interface locale'));
+  });
+
   it('keeps the instruction channel and the data channel apart', () => {
     const built = buildMessages(draftFromBriefPrompt, request());
     const system = built.messages[0];

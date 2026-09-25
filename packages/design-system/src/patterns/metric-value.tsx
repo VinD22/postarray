@@ -80,7 +80,7 @@ export function MetricValue({
         <p
           data-numeric=""
           className={cn(
-            'text-text-primary font-display tabular-nums',
+            'num text-text-primary font-display',
             size === 'lg' ? 'text-title-lg' : 'text-title-md',
           )}
         >

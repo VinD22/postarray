@@ -13,6 +13,9 @@ const RING_RADIUS = 14;
 
 // How much of the distance to the pointer the ring closes per frame.
 const RING_LERP = 0.18;
+// Below this distance the ring snaps to the pointer and the rAF loop idles.
+const RING_SETTLE_PX = 0.1;
+const CURSOR_TARGET_SELECTOR = '[data-cursor], a, button, summary';
 
 /**
  * A dot + ring that replaces the native cursor on fine-pointer, hover-capable,
@@ -21,13 +24,14 @@ const RING_LERP = 0.18;
  * SSR renders `null` (the enable gate below defaults to the safe "off" state
  * on the server — see `useMotionOk` and `useMediaQuery`'s doc comments), so
  * first paint never assumes a pointer that might not exist. Once enabled, a
- * single rAF loop writes `transform` only: the dot tracks 1:1, the ring lerps
+ * single rAF loop (idle once the ring settles) writes `transform` only: the dot tracks 1:1, the ring lerps
  * toward it. No geometry is read inside that loop.
  *
  * The native cursor is never hidden globally — only on `a`/`button` while
  * this component is mounted and active (`[data-cursor-active] :where(a,
- * button)` in theme.css). Tab / `:focus-visible` fades this cursor out and
- * restores the native one until the next pointermove.
+ * button)` in theme.css). Links, buttons, summaries and opted-in media grow
+ * the ring. Tab / `:focus-visible` fades this cursor out and restores the
+ * native one until the next pointermove.
  */
 export function CustomCursor() {
   const motionOk = useMotionOk({ requireFinePointer: true });
@@ -36,13 +40,15 @@ export function CustomCursor() {
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
+  const ringTrackRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const dot = dotRef.current;
+    const ringTrack = ringTrackRef.current;
     const ring = ringRef.current;
-    if (!enabled || !wrapper || !dot || !ring) return;
+    if (!enabled || !wrapper || !dot || !ringTrack || !ring) return;
 
     document.documentElement.setAttribute('data-cursor-active', 'true');
 
@@ -53,14 +59,25 @@ export function CustomCursor() {
     let hasSeenPointer = false;
     let rafId = 0;
 
+    // The loop runs only while the ring is still travelling: pointermove
+    // starts it, and it stops once the ring has settled on the pointer.
     const tick = () => {
       ringX += (pointerX - ringX) * RING_LERP;
       ringY += (pointerY - ringY) * RING_LERP;
+      const settled =
+        Math.abs(pointerX - ringX) < RING_SETTLE_PX && Math.abs(pointerY - ringY) < RING_SETTLE_PX;
+      if (settled) {
+        ringX = pointerX;
+        ringY = pointerY;
+      }
       dot.style.transform = `translate3d(${pointerX - DOT_RADIUS}px, ${pointerY - DOT_RADIUS}px, 0)`;
-      ring.style.transform = `translate3d(${ringX - RING_RADIUS}px, ${ringY - RING_RADIUS}px, 0)`;
-      rafId = window.requestAnimationFrame(tick);
+      ringTrack.style.transform = `translate3d(${ringX - RING_RADIUS}px, ${ringY - RING_RADIUS}px, 0)`;
+      rafId = settled ? 0 : window.requestAnimationFrame(tick);
     };
-    rafId = window.requestAnimationFrame(tick);
+    const startLoop = () => {
+      if (rafId === 0) rafId = window.requestAnimationFrame(tick);
+    };
+    startLoop();
 
     const showCursor = () => {
       document.documentElement.setAttribute('data-cursor-active', 'true');
@@ -78,23 +95,25 @@ export function CustomCursor() {
         ringY = pointerY;
       }
       showCursor();
+      startLoop();
     };
 
-    // Event delegation: any `data-cursor="link"|"button"|"media"` ancestor
-    // scales the ring. The specific value doesn't change the effect.
+    // Event delegation keeps ordinary controls expressive without requiring
+    // every shared button and link to carry marketing-only props. A custom
+    // `data-cursor` target still opts non-control media into the same response.
     const handlePointerOver = (event: PointerEvent) => {
-      if (event.target instanceof Element && event.target.closest('[data-cursor]')) {
+      if (event.target instanceof Element && event.target.closest(CURSOR_TARGET_SELECTOR)) {
         ring.setAttribute('data-cursor-hover', 'true');
       }
     };
 
     const handlePointerOut = (event: PointerEvent) => {
       const leaving =
-        event.target instanceof Element ? event.target.closest('[data-cursor]') : null;
+        event.target instanceof Element ? event.target.closest(CURSOR_TARGET_SELECTOR) : null;
       if (!leaving) return;
       const entering =
         event.relatedTarget instanceof Element
-          ? event.relatedTarget.closest('[data-cursor]')
+          ? event.relatedTarget.closest(CURSOR_TARGET_SELECTOR)
           : null;
       if (entering !== leaving) {
         ring.setAttribute('data-cursor-hover', 'false');
@@ -137,7 +156,9 @@ export function CustomCursor() {
   return (
     <div ref={wrapperRef} className="relay-cursor" aria-hidden="true">
       <div ref={dotRef} className="relay-cursor-dot" />
-      <div ref={ringRef} className="relay-cursor-ring" />
+      <div ref={ringTrackRef} className="relay-cursor-ring-track">
+        <div ref={ringRef} className="relay-cursor-ring" />
+      </div>
     </div>
   );
 }

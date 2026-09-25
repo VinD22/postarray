@@ -67,6 +67,11 @@ export const connectionMessages = {
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Không có tài khoản nào trên thông tin đăng nhập {provider} này có thể được kết nối. {reason}',
+  'connection.oauth.noEligibleAccountsShort':
+    'Không có tài khoản nào từ lần đăng nhập {provider} này có thể kết nối.',
+  'connection.oauth.claimFailed': 'Không thể kết nối những tài khoản đó',
+  'connection.oauth.claimFailedAction':
+    'Không có gì thay đổi trên nền tảng. Hãy thử lại, và nếu vẫn lỗi thì bắt đầu kết nối lại từ đầu.',
   'connection.oauth.canceled': 'Kết nối đã bị hủy trên {provider}. Không có gì thay đổi.',
   'connection.oauth.alreadyConnected': '{account} đã được kết nối với không gian làm việc này.',
   'connection.oauth.connectedToAnotherWorkspace':

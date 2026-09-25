@@ -6,6 +6,7 @@ import {
   createConnectorRegistry,
   fakeConnectionRef,
   fakeDraft,
+  fakeImageAsset,
   fakePublishRequest,
   type ConnectionRef,
   type ProviderIdentity,
@@ -250,6 +251,149 @@ describe('connector execution gateway', () => {
       status: 'adopted',
     });
     expect(fake.state.posts).toHaveLength(1);
+  });
+});
+
+describe('media reaches the provider before the post that references it', () => {
+  /**
+   * The defect this pins: `preparedMedia` was an empty array on every publish,
+   * because nothing ever called the connector's own `prepareMedia`. Connectors
+   * read both fields and they mean different things: `draft.media` is what the
+   * asset is, `preparedMedia` is where the provider put it. Pinterest looks for
+   * the first prepared item carrying a `publicUrl` and refuses the pin without
+   * one, so an image post reached the provider describing an image it had never
+   * uploaded.
+   */
+  it('prepares the draft media and hands the result to publish', async () => {
+    class EnabledFakeConnector extends FakeConnector {
+      override identity(): ProviderIdentity {
+        return { ...super.identity(), provider: 'bluesky' };
+      }
+
+      override async getCapabilities(connection: ConnectionRef) {
+        const snapshot = await super.getCapabilities(connection);
+        return { ...snapshot, provider: 'bluesky' as const };
+      }
+    }
+
+    const fake = new EnabledFakeConnector({ clock, instant: true });
+    const prepareMedia = vi.spyOn(fake, 'prepareMedia');
+    const publish = vi.spyOn(fake, 'publish');
+
+    const registry = createConnectorRegistry([fake], { clock });
+    const detected = detectCapabilities(config());
+    const verified = new VerifiedConnectorRegistry(
+      registry,
+      { ...detected, connectors: { ...detected.connectors, bluesky: 'live' as const } },
+      config(),
+    );
+    const connectionRef = fakeConnectionRef(
+      { workspaceId, connectionId, provider: 'bluesky' },
+      { clock },
+    );
+    const connection = details('bluesky');
+    const encrypted = await encryptedRecord(connection);
+    const resolver = createWorkspaceCredentialResolver({
+      store: storeFor(encrypted.record),
+      vault: encrypted.vault,
+    });
+    const gateway = new ConnectorExecutionGateway({
+      registry: verified,
+      credentials: resolver,
+      clock,
+    });
+
+    const capabilities = await gateway.capabilitiesFor({ workspaceId, connection });
+    const draft = fakeDraft(
+      { contentKind: 'image', media: [fakeImageAsset()] },
+      { connection: connectionRef, capabilities, clock },
+    );
+    const request = fakePublishRequest(
+      draft,
+      { idempotencyKey: 'idem_publish_000000000002' },
+      { clock },
+    );
+    const { connection: _connection, ...draftWithoutConnection } = draft;
+    const { draft: _draft, ...requestWithoutDraft } = request;
+
+    await expect(
+      gateway.publish({
+        workspaceId,
+        connection,
+        request: { ...requestWithoutDraft, draft: draftWithoutConnection },
+        attemptNumber: 1,
+        dispatchWindowFrom: '2026-08-06T23:00:00.000Z',
+        dispatchWindowTo: '2026-08-07T00:00:00.000Z',
+        capabilities,
+      }),
+    ).resolves.toMatchObject({ status: 'executed' });
+
+    expect(prepareMedia).toHaveBeenCalledTimes(1);
+
+    // The point of the whole change: publish received what prepareMedia
+    // produced, not an empty array.
+    const published = publish.mock.calls[0]?.[0];
+    expect(published?.preparedMedia).toHaveLength(1);
+    expect(published?.preparedMedia[0]?.mediaId).toBe(draft.media[0]?.mediaId);
+  });
+
+  it('does not prepare anything for a post that carries no media', async () => {
+    class EnabledFakeConnector extends FakeConnector {
+      override identity(): ProviderIdentity {
+        return { ...super.identity(), provider: 'bluesky' };
+      }
+
+      override async getCapabilities(connection: ConnectionRef) {
+        const snapshot = await super.getCapabilities(connection);
+        return { ...snapshot, provider: 'bluesky' as const };
+      }
+    }
+
+    const fake = new EnabledFakeConnector({ clock, instant: true });
+    const prepareMedia = vi.spyOn(fake, 'prepareMedia');
+    const registry = createConnectorRegistry([fake], { clock });
+    const detected = detectCapabilities(config());
+    const verified = new VerifiedConnectorRegistry(
+      registry,
+      { ...detected, connectors: { ...detected.connectors, bluesky: 'live' as const } },
+      config(),
+    );
+    const connectionRef = fakeConnectionRef(
+      { workspaceId, connectionId, provider: 'bluesky' },
+      { clock },
+    );
+    const connection = details('bluesky');
+    const encrypted = await encryptedRecord(connection);
+    const gateway = new ConnectorExecutionGateway({
+      registry: verified,
+      credentials: createWorkspaceCredentialResolver({
+        store: storeFor(encrypted.record),
+        vault: encrypted.vault,
+      }),
+      clock,
+    });
+
+    const capabilities = await gateway.capabilitiesFor({ workspaceId, connection });
+    const draft = fakeDraft({}, { connection: connectionRef, capabilities, clock });
+    const request = fakePublishRequest(
+      draft,
+      { idempotencyKey: 'idem_publish_000000000003' },
+      { clock },
+    );
+    const { connection: _connection, ...draftWithoutConnection } = draft;
+    const { draft: _draft, ...requestWithoutDraft } = request;
+
+    await gateway.publish({
+      workspaceId,
+      connection,
+      request: { ...requestWithoutDraft, draft: draftWithoutConnection },
+      attemptNumber: 1,
+      dispatchWindowFrom: '2026-08-06T23:00:00.000Z',
+      dispatchWindowTo: '2026-08-07T00:00:00.000Z',
+      capabilities,
+    });
+
+    expect(prepareMedia).not.toHaveBeenCalled();
   });
 });
 

@@ -921,6 +921,7 @@ export const webSettingsMessages = {
     'Schreibregeln pro Sprache sind noch nicht gebaut. Sprachen und Märkte des Arbeitsbereichs bleiben unter Lokalisierung verfügbar.',
   'settings.ui.projects.capacityTitle': 'Projektkapazität',
   'settings.ui.projects.capacitySummary': '{used} von {limit}',
+  'settings.ui.projects.atLimitAction': 'Tarife ansehen',
   'settings.ui.projects.atLimitTitle': 'Dieser Arbeitsbereich hat jeden Projektplatz belegt',
   'settings.ui.projects.atLimitBody':
     'Archivieren Sie ein inaktives Projekt oder ändern Sie die Berechtigung des Arbeitsbereichs, bevor Sie ein weiteres hinzufügen. Das aktuelle Limit ist {limit}.',

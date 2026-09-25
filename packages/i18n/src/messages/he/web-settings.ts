@@ -163,6 +163,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.projects.capacityHelp':
     'התוכנית הבסיסית ב-$29 כוללת 3 פרויקטים פעילים. סביבת עבודה יכולה לקבל זכאות עד 20 פרויקטים בלי ליצור חשבון נוסף.',
   'settings.ui.projects.capacitySummary': '{used} מתוך {limit}',
+  'settings.ui.projects.atLimitAction': 'לצפות בתוכניות',
   'settings.ui.projects.atLimitTitle': 'סביבת העבודה הזו ניצלה את כל מקומות הפרויקט',
   'settings.ui.projects.atLimitBody':
     'העבר לארכיון פרויקט לא פעיל או שנה את הזכאות של סביבת העבודה לפני הוספת עוד אחד. המגבלה הנוכחית היא {limit}.',

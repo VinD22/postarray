@@ -15,10 +15,13 @@ Two things this document is here to prevent: a model inventing a URL, and anyone
 
 ## 1. Scope in one paragraph
 
-V1 uses one text model, `deepseek-v4-flash`, behind a provider-neutral gateway, to draft, rewrite,
-adapt per platform, transcreate into 30 content languages, write alt text, review claims and platform
-fit, summarize analytics, and turn a confirmed business profile into one versioned GrowthPlan.
-**V1 generates no images and no video.** There is no endpoint, no button, no quota, no meter, no dormant
+V1 uses one model, `deepseek-flash` (V4.1 Flash; see the ADR note in 2.3), behind a
+provider-neutral gateway, to draft, rewrite, adapt per platform, transcreate into 30 content languages,
+write alt text, review claims and platform fit, summarize analytics, and turn a confirmed business
+profile into one versioned GrowthPlan. It may also **analyse** an image the workspace already owns,
+only when an owner or admin turned image analysis on (off by default), to draft alt text and to power
+code-based crop, legibility and consent warnings. Analysis reads pixels a user uploaded; it never
+produces, edits or extends them. **V1 generates no images and no video.** There is no endpoint, no button, no quota, no meter, no dormant
 client, no environment variable and no marketing sentence implying otherwise. The shipped interface is
 English only, built so that adding a locale is a catalog file plus a config entry.
 
@@ -85,9 +88,26 @@ uploaded files) are always passed in that array, never concatenated into the ins
 AI_PROVIDER=deepseek
 DEEPSEEK_API_KEY=
 DEEPSEEK_BASE_URL=https://api.deepseek.com
-DEEPSEEK_MODEL=deepseek-v4-flash
+DEEPSEEK_MODEL=deepseek-flash
 AI_PROMPT_VERSION=
+AI_REQUEST_TIMEOUT_MS=60000
+ANTHROPIC_API_KEY=
+ANTHROPIC_BASE_URL=https://api.anthropic.com
+ANTHROPIC_MODEL=claude-sonnet-5
 ```
+
+**ADR note (2026-09-23): default model is `deepseek-flash`.** `deepseek-v4-flash` is retired and
+requests to it are served by `deepseek-flash` (V4.1 Flash), so the default changed rather than relying
+on the alias. `deepseek-flash` accepts images as OpenAI-style `image_url` parts (base64 data URLs) in
+user messages only, supports JSON output and has a 1M context. Budgets price it at the **peak** rate
+(0.30 USD per million input tokens, 1.20 output; off-peak is half) so a budget never assumes the cheaper
+window; prefix-cache hits (`prompt_cache_hit_tokens`) are billed at about 2% of a miss and the gateway
+records them. The system message is ordered stable-first (policy, prompt instruction, marker, locale)
+with the per-call fence token last, so identical prefixes cache. Budget counters use the shared
+key-value store (Redis in a deployment) rather than per-process memory, and `AI_REQUEST_TIMEOUT_MS`
+is a ceiling on every provider call. Each image is budgeted at the 1,024-token per-image cap.
+`deepseek-v4-pro` does not accept images. Source: api-docs.deepseek.com pricing and vision guide,
+verified 23 September 2026, **re-verify before any financial commitment**.
 
 Only `.env.example` placeholders exist in the repo. `deepseek-v4-flash` and `deepseek-v4-pro` are the
 current identifiers; `deepseek-chat` and `deepseek-reasoner` were retired on 24 July 2026 and must not
@@ -632,6 +652,13 @@ Use this copy verbatim where the boundary needs explaining. It contains no em da
    useful than a weak in-app generator.
 
 ### 12.3 What "excluded" means in code
+
+Analysis is not generation. Image analysis (the `media-understanding` prompt, the
+`ai_vision_input_tokens` meter, the `app.media_analyses` table and the workspace setting
+`ai_image_analysis_enabled`) sends a reduced copy of a user-owned, scanned, rights-declared image to a
+model and stores a text description. Nothing in it can return pixels, and none of the forbidden names
+below are used by it. The meter is deliberately not named `ai_image*` so the generation grep gate keeps
+its meaning.
 
 No generation endpoint. No UI affordance in any state, including disabled or behind a flag. No
 entitlement, no quota, no usage meter, no Polar product. No dormant provider client, no unused SDK

@@ -4,6 +4,10 @@ export const growthMessages = {
   'growth.subtitle':
     'Plan z przewodnikiem zbudowany na podstawie faktów, które potwierdzisz. Proponuje pracę. Nigdy nie publikuje samodzielnie.',
 
+  'growth.profile.noProject':
+
+    'Wybierz projekt przed zapisaniem profilu. Profil firmy należy do jednego projektu.',
+
   'growth.profile.title': 'Profil działalności',
   'growth.profile.intro':
     'Odpowiedz raz. Wszystko, co proponuje doradca, opiera się na tym, co tutaj potwierdzisz.',

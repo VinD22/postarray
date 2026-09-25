@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
+import { getRequestIntl } from '@/lib/i18n/server';
 import type { ReactNode } from 'react';
 
 import { WebhooksScreen } from '@/features/developer/webhooks/webhooks-screen';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const intl = await getRequestIntl();
+  return { title: intl.t.format('automation.webhooks.title') };
+}
 
 /**
  * Server component. It renders the screen and nothing else: every string on

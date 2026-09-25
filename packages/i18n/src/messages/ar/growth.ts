@@ -4,6 +4,10 @@ export const growthMessages = {
   'growth.subtitle':
     'خطة إرشادية مبنية على حقائق تؤكدها. ويقترح العمل. ولا تنشر من تلقاء نفسها أبدًا.',
 
+  'growth.profile.noProject':
+
+    'اختر مشروعًا قبل حفظ الملف. ملف النشاط التجاري يخص مشروعًا واحدًا.',
+
   'growth.profile.title': 'الملف الشخصي للأعمال',
   'growth.profile.intro': 'أجب عن هذه مرة واحدة. كل ما يقترحه المستشار يعتمد على ما تؤكده هنا.',
   'growth.profile.productUrl': 'عنوان URL للمنتج أو الموقع',

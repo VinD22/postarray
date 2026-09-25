@@ -5,7 +5,12 @@ import { ACTIVE_LOCALES, DEFAULT_LOCALE } from '@relay/i18n';
 
 import { Reveal } from '@/components/motion';
 import { ArticleBody } from '@/features/blog/components/article-body';
-import { BLOG_SLUGS, blogArticlePath, findBlogArticle } from '@/features/blog/registry';
+import {
+  BLOG_ARTICLES,
+  BLOG_SLUGS,
+  blogArticlePath,
+  findBlogArticle,
+} from '@/features/blog/registry';
 import {
   articleContent,
   articleFaq,
@@ -23,6 +28,7 @@ import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
 import {
   articleJsonLd,
   articleMetadata,
+  blogFeedAlternates,
   breadcrumbJsonLd,
   faqJsonLd,
 } from '@/features/marketing/seo';
@@ -59,7 +65,7 @@ export async function generateMetadata({
   const t = await marketingTranslator(locale);
   const content = articleContent(article, locale);
 
-  return articleMetadata({
+  const metadata = await articleMetadata({
     headline: content.title,
     description: content.description,
     path: blogArticlePath(article.slug),
@@ -71,6 +77,13 @@ export async function generateMetadata({
     availableLocales: articleLocales(article),
     locale,
   });
+  return {
+    ...metadata,
+    alternates: {
+      ...metadata.alternates,
+      types: blogFeedAlternates(locale, t.t('web.blog.title')),
+    },
+  };
 }
 
 export default async function BlogArticlePage({
@@ -97,6 +110,13 @@ export default async function BlogArticlePage({
   const authorName = t.format(article.author.nameKey);
   const reviewerName =
     article.reviewer === undefined ? undefined : t.format(article.reviewer.nameKey);
+  // Up to three other articles from the same cluster, newest edit first, so
+  // every article links onward inside its topic rather than only back up.
+  const related = BLOG_ARTICLES.filter(
+    (candidate) => candidate.slug !== article.slug && candidate.cluster === article.cluster,
+  )
+    .sort((left, right) => (left.updated < right.updated ? 1 : -1))
+    .slice(0, 3);
 
   return (
     <Container>
@@ -225,8 +245,22 @@ export default async function BlogArticlePage({
 
               <nav
                 aria-label={t.t('web.blog.label.articleList')}
-                className="border-border-bold border-t-2 pt-8"
+                className="border-border-bold space-y-4 border-t-2 pt-8"
               >
+                {related.length === 0 ? null : (
+                  <>
+                    <Subheading as="h2">{t.format(clusterLabelKey(article.cluster))}</Subheading>
+                    <ul className="space-y-2">
+                      {related.map((candidate) => (
+                        <li key={candidate.slug} className="text-body-md">
+                          <TextLink href={blogArticlePath(candidate.slug)}>
+                            {articleContent(candidate, locale).title}
+                          </TextLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
                 <p className="text-body-md text-text-secondary">
                   <TextLink href={ROUTES.blog}>{t.t('web.blog.label.backToIndex')}</TextLink>
                 </p>

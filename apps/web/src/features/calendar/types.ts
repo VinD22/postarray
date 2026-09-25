@@ -36,6 +36,8 @@ export interface CalendarEntry extends CalendarEntryView {
   readonly publishJobId: string | null;
   readonly connectionId?: string;
   readonly projectId?: string | null;
+  /** Workspace-scoped display name resolved from the signed-in session. */
+  readonly projectName?: string | null;
   /** BCP 47 tag of the content, not of the interface. */
   readonly contentLocale?: string | null;
   readonly campaignName?: string | null;

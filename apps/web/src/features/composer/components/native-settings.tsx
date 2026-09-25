@@ -20,13 +20,14 @@ import {
 } from '@relay/design-system/primitives';
 import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
-import type { DestinationKind, DestinationRef, MentionRef } from '@relay/contracts';
+import type { DestinationKind, MentionRef } from '@relay/contracts';
 
 import { useComposer } from '../composer-context';
 import { EntitySearchField, type ResolvedEntity } from './entity-search-field';
 import { CheckRow } from './form-rows';
 import { PROVIDER_LABEL } from './provider-identity';
-import type { TargetSummary } from '../types';
+import { describePrivacy } from '../state/privacy-label';
+import type { ComposerDestination, TargetSummary } from '../types';
 
 const DESTINATION_LABEL_KEY: Readonly<Record<DestinationKind, string>> = {
   none: 'composerWeb.native.heading',
@@ -68,11 +69,14 @@ export function NativeSettings({
 
   const onDestination = useCallback(
     (entity: ResolvedEntity | null) => {
-      const destination: DestinationRef | null =
+      const destination: ComposerDestination | null =
         entity === null
           ? null
           : {
-              destinationId: `dest_${entity.externalId}`,
+              // The stored row id, or null when the search result is not one of
+              // ours. A value made up from the provider id, which is what this
+              // did before, is a reference the server cannot resolve.
+              destinationId: entity.recordId,
               externalId: entity.externalId,
               displayLabel: entity.label,
             };
@@ -134,7 +138,8 @@ export function NativeSettings({
           value={
             settings?.destination
               ? {
-                  externalId: settings.destination.externalId,
+                  recordId: settings.destination.destinationId,
+                  externalId: settings.destination.externalId ?? '',
                   label: settings.destination.displayLabel,
                   secondary: null,
                 }
@@ -178,7 +183,7 @@ export function NativeSettings({
               <SelectContent>
                 {snapshot.privacy.options.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
-                    {option.value}
+                    {describePrivacy(option.value, providerName, t)}
                   </SelectItem>
                 ))}
               </SelectContent>

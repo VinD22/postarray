@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import {
   ACTIVE_LOCALE_CODES,
   DEFAULT_LOCALE,
@@ -102,6 +102,17 @@ const SWEEP_ROUTES: readonly SweepRoute[] = [
 const SWEEP_LOCALES = REVIEW_PROMISE_LOCALE_CODES.filter((locale) => locale !== DEFAULT_LOCALE);
 
 describe('locale metadata sweep', () => {
+  // Loading a catalog is the only slow step: a cold dynamic import that Vite
+  // transforms on first use. `marketingTranslator` caches per locale, so paying
+  // for every locale here, under one generous hook timeout, leaves each case
+  // below doing pure in-memory work. Before this, whichever case happened to
+  // load a locale first could run past its own timeout under parallel load.
+  beforeAll(async () => {
+    await Promise.all(
+      [DEFAULT_LOCALE, ...SWEEP_LOCALES].map((locale) => marketingTranslator(locale)),
+    );
+  }, 120_000);
+
   it('sweeps every locale that carries a reviewed badge', () => {
     for (const locale of REVIEWED_LOCALE_CODE_LIST) {
       expect(REVIEW_PROMISE_LOCALE_CODES, locale).toContain(locale);
@@ -117,27 +128,33 @@ describe('locale metadata sweep', () => {
     expect(localizedHref(ROUTES.home, locale)).toBe(`/${locale}`);
   });
 
-  it.each(SWEEP_LOCALES)('gives %s a self-canonical and a reciprocal cluster', async (locale) => {
-    for (const route of SWEEP_ROUTES) {
-      const metadata = await pageMetadata(route.titleKey, route.descriptionKey, route.path, locale);
-      const alternates = metadata.alternates;
-      const languages = alternates?.languages as Record<string, string> | undefined;
+  it.each(SWEEP_LOCALES)(
+    'gives %s a self-canonical and a reciprocal cluster',
+    async (locale) => {
+      for (const route of SWEEP_ROUTES) {
+        const metadata = await pageMetadata(route.titleKey, route.descriptionKey, route.path, locale);
+        const alternates = metadata.alternates;
+        const languages = alternates?.languages as Record<string, string> | undefined;
 
-      expect(alternates?.canonical, `${locale} ${route.path}`).toBe(
-        absoluteUrl(route.path, locale),
-      );
-      expect(languages?.[locale], `${locale} ${route.path}`).toBe(absoluteUrl(route.path, locale));
-      expect(languages?.['x-default'], `${locale} ${route.path}`).toBe(
-        absoluteUrl(route.path, DEFAULT_LOCALE),
-      );
-
-      for (const alternate of ACTIVE_LOCALE_CODES) {
-        expect(languages?.[alternate], `${locale} ${route.path} to ${alternate}`).toBe(
-          absoluteUrl(route.path, alternate),
+        expect(alternates?.canonical, `${locale} ${route.path}`).toBe(
+          absoluteUrl(route.path, locale),
         );
+        expect(languages?.[locale], `${locale} ${route.path}`).toBe(
+          absoluteUrl(route.path, locale),
+        );
+        expect(languages?.['x-default'], `${locale} ${route.path}`).toBe(
+          absoluteUrl(route.path, DEFAULT_LOCALE),
+        );
+
+        for (const alternate of ACTIVE_LOCALE_CODES) {
+          expect(languages?.[alternate], `${locale} ${route.path} to ${alternate}`).toBe(
+            absoluteUrl(route.path, alternate),
+          );
+        }
       }
-    }
-  });
+    },
+    20_000,
+  );
 
   it.each(SWEEP_LOCALES)(
     'does not show the English title through on %s',

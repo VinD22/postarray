@@ -1,6 +1,7 @@
 export { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
 export { useMediaQuery, useBreakpoint, useCoarsePointer } from './use-media-query';
 export { usePrefersReducedMotion } from './use-prefers-reduced-motion';
+export { useOnline } from './use-online';
 export { useControllable, type UseControllableOptions } from './use-controllable';
 export {
   ThemeProvider,

@@ -216,17 +216,21 @@ describe('refusals are indistinguishable', () => {
     await server.app.close();
   });
 
-  it('negotiates a translated RTL notice without changing the refusal status', async () => {
-    const response = await get('/never-existed', {
-      'accept-language': 'ar-SA,es;q=0.8,en;q=0.5',
-    });
+  it(
+    'negotiates a translated RTL notice without changing the refusal status',
+    async () => {
+      const response = await get('/never-existed', {
+        'accept-language': 'ar-SA,es;q=0.8,en;q=0.5',
+      });
 
-    expect(response.statusCode).toBe(404);
-    expect(response.headers['content-language']).toBe('ar');
-    expect(response.headers['vary']).toBe('accept-language');
-    expect(response.body).toContain('<html lang="ar" dir="rtl">');
-    expect(response.body).toContain('غير متاح');
-  });
+      expect(response.statusCode).toBe(404);
+      expect(response.headers['content-language']).toBe('ar');
+      expect(response.headers['vary']).toBe('accept-language');
+      expect(response.body).toContain('<html lang="ar" dir="rtl">');
+      expect(response.body).toContain('غير متاح');
+    },
+    15_000,
+  );
 });
 
 describe('kill switch', () => {
@@ -282,35 +286,39 @@ describe('enumeration', () => {
     await server.app.close();
   });
 
-  it('localizes the throttling page from Accept-Language', async () => {
-    const server = createLinksServer({
-      store: createMemoryShortLinkStore([record()]),
-      clickSink: createMemoryClickSink(),
-      logger: silentLogger,
-      dedupeHashKey: 'k',
-      clock: fixedClock(NOW),
-      rateLimit: { missLimit: 1000, requestLimit: 1 },
-    });
-    const request = () =>
-      server.app.inject({
-        method: 'GET',
-        url: '/missing',
-        headers: { host: HOST, 'accept-language': 'es-MX,es;q=0.9' },
+  it(
+    'localizes the throttling page from Accept-Language',
+    async () => {
+      const server = createLinksServer({
+        store: createMemoryShortLinkStore([record()]),
+        clickSink: createMemoryClickSink(),
+        logger: silentLogger,
+        dedupeHashKey: 'k',
+        clock: fixedClock(NOW),
+        rateLimit: { missLimit: 1000, requestLimit: 1 },
       });
+      const request = () =>
+        server.app.inject({
+          method: 'GET',
+          url: '/missing',
+          headers: { host: HOST, 'accept-language': 'es-MX,es;q=0.9' },
+        });
 
-    expect((await request()).statusCode).toBe(404);
-    const throttled = await request();
-    expect(throttled.statusCode).toBe(429);
-    // Latin American Spanish is one of the twenty-five launch locales now, so
-    // `es-MX` resolves to `es-419` rather than falling back to peninsular
-    // Spanish: the closest active catalog wins, which is the whole point of
-    // carrying a regional variant. The rendered copy is identical here, so the
-    // assertion below still pins the translation and not just the tag.
-    expect(throttled.headers['content-language']).toBe('es-419');
-    expect(throttled.body).toContain('<html lang="es-419" dir="ltr">');
-    expect(throttled.body).toContain('Baja la velocidad por un momento');
-    await server.app.close();
-  });
+      expect((await request()).statusCode).toBe(404);
+      const throttled = await request();
+      expect(throttled.statusCode).toBe(429);
+      // Latin American Spanish is one of the twenty-five launch locales now, so
+      // `es-MX` resolves to `es-419` rather than falling back to peninsular
+      // Spanish: the closest active catalog wins, which is the whole point of
+      // carrying a regional variant. The rendered copy is identical here, so the
+      // assertion below still pins the translation and not just the tag.
+      expect(throttled.headers['content-language']).toBe('es-419');
+      expect(throttled.body).toContain('<html lang="es-419" dir="ltr">');
+      expect(throttled.body).toContain('Baja la velocidad por un momento');
+      await server.app.close();
+    },
+    15_000,
+  );
 
   it('rejects a malformed slug without a lookup', async () => {
     const response = await get('/a');

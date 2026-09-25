@@ -11,11 +11,12 @@ import {
 import type {
   ActorContext,
   PageQuery,
+  PublishConfirmationEvidence,
   SchedulingService,
   ServiceDeps,
   ValidationService,
 } from '../types';
-import type { CalendarEntry, PublishJobView } from '../views';
+import type { CalendarEntry, PublishJobView, PublishJobsAcceptedView } from '../views';
 
 import { recordAudit } from '../internal/audit';
 import { loadAggregate } from '../internal/content-store';
@@ -69,12 +70,24 @@ export function createSchedulingService(
 
     async schedule(
       ctx: ActorContext,
-      input: { contentItemId: string; scheduleSpec: ScheduleSpec },
-    ): Promise<PublishJobView> {
+      input: {
+        contentItemId: string;
+        scheduleSpec: ScheduleSpec;
+        confirmation?: PublishConfirmationEvidence;
+        connectionIds?: readonly string[];
+      },
+    ): Promise<PublishJobsAcceptedView> {
       const spec = scheduleSpecSchema.parse(input.scheduleSpec);
+      const connectionIds =
+        input.connectionIds === undefined ? undefined : [...new Set(input.connectionIds)].sort();
       return withIdempotency(deps.kv, ctx, {
         operation: 'scheduling.schedule',
-        body: { contentItemId: input.contentItemId, scheduleSpec: spec },
+        body: {
+          contentItemId: input.contentItemId,
+          scheduleSpec: spec,
+          ...(input.confirmation === undefined ? {} : { confirmation: input.confirmation }),
+          ...(connectionIds === undefined ? {} : { connectionIds }),
+        },
         resourceIdOf: (view) => view.id,
         run: async () =>
           authorized(
@@ -84,7 +97,13 @@ export function createSchedulingService(
             undefined,
             async (db, actor) => {
               const aggregate = await loadAggregate(db, input.contentItemId);
-              for (const variant of aggregate.variants) {
+              const selected =
+                connectionIds === undefined
+                  ? aggregate.variants
+                  : aggregate.variants.filter((variant) =>
+                      connectionIds.includes(variant.connectionId),
+                    );
+              for (const variant of selected) {
                 guard(actor, 'post.schedule', {
                   projectId: aggregate.projectId,
                   connectionId: variant.connectionId,
@@ -95,7 +114,8 @@ export function createSchedulingService(
                 contentItemId: input.contentItemId,
                 scheduleSpec: spec,
                 kind: 'schedule',
-                confirmation: false,
+                connectionIds,
+                confirmation: input.confirmation ?? false,
                 validate: async (): Promise<ValidationResult> =>
                   validation.validate(ctx, { contentItemId: input.contentItemId }),
               });
@@ -125,7 +145,7 @@ export function createSchedulingService(
                   after: { publishJobId: first.id, instant: spec.instant },
                 });
               }
-              return first;
+              return { ...first, jobs: result.jobs };
             },
             { timeoutMs: 30_000 },
           ),

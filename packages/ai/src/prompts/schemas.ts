@@ -280,3 +280,67 @@ export type GrowthPlanBody = Omit<GrowthPlan, (typeof GROWTH_PLAN_PROVENANCE_FIE
  * that omits a section fails with a useful path instead of a misleading one.
  */
 export const growthPlanBodySchema = z.unknown();
+
+/* ------------------------------------------------------------------------- */
+/* Media understanding (analysis of an existing, user-owned image)            */
+/* ------------------------------------------------------------------------- */
+
+const unit = z.number().min(0).max(1);
+
+/**
+ * A box in normalized image coordinates: origin top left, every value a
+ * fraction of the image's width or height. Code, not the model, decides what a
+ * box means for a crop.
+ */
+export const normalizedBoxSchema = z
+  .object({ x: unit, y: unit, width: unit, height: unit })
+  .strict()
+  .refine((box) => box.x + box.width <= 1.0001 && box.y + box.height <= 1.0001, {
+    error: 'BOX_OUT_OF_BOUNDS',
+  });
+export type NormalizedBox = z.infer<typeof normalizedBoxSchema>;
+
+export const LEGIBILITY_RISKS = ['none', 'low', 'medium', 'high'] as const;
+export const legibilityRiskSchema = z.enum(LEGIBILITY_RISKS);
+export type LegibilityRisk = z.infer<typeof legibilityRiskSchema>;
+
+export const mediaUnderstandingResultSchema = z
+  .object({
+    subjects: z
+      .array(
+        z
+          .object({
+            label: z.string().min(1).max(120),
+            box: normalizedBoxSchema,
+            prominence: z.enum(['primary', 'secondary']),
+          })
+          .strict(),
+      )
+      .max(12),
+    visibleText: z
+      .array(
+        z
+          .object({
+            text: z.string().min(1).max(500),
+            box: normalizedBoxSchema.nullable(),
+          })
+          .strict(),
+      )
+      .max(20),
+    setting: z.string().min(1).max(200).nullable(),
+    mood: z.string().min(1).max(120).nullable(),
+    /** How likely visible text is to be unreadable at feed size. */
+    textLegibilityRisk: legibilityRiskSchema,
+    sensitive: z
+      .object({
+        faces: z.boolean(),
+        possibleMinors: z.boolean(),
+        logos: z.array(z.string().min(1).max(120)).max(10),
+      })
+      .strict(),
+    evidenceIds,
+    uncertain,
+    uncertaintyReason,
+  })
+  .strict();
+export type MediaUnderstandingResult = z.infer<typeof mediaUnderstandingResultSchema>;

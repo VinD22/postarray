@@ -231,6 +231,12 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
       deps,
       gateway.generatePostFeedback.bind(gateway),
     ),
+    buildWeeklyDigest: wrap('buildWeeklyDigest', deps, gateway.buildWeeklyDigest.bind(gateway)),
+    sendWeeklyDigestEmail: wrap(
+      'sendWeeklyDigestEmail',
+      deps,
+      gateway.sendWeeklyDigestEmail.bind(gateway),
+    ),
     describeCredential: wrap('describeCredential', deps, gateway.describeCredential.bind(gateway)),
     refreshCredential: wrap('refreshCredential', deps, gateway.refreshCredential.bind(gateway)),
     raiseConnectionIncident: wrap(
@@ -307,6 +313,7 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
       deps,
       gateway.produceMediaDerivative.bind(gateway),
     ),
+    scanMediaAsset: wrap('scanMediaAsset', deps, gateway.scanMediaAsset.bind(gateway)),
   };
 }
 

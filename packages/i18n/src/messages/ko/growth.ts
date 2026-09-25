@@ -3,6 +3,8 @@ export const growthMessages = {
   'growth.title': '성장 조언자',
   'growth.subtitle':
     '귀하가 확인한 사실을 바탕으로 구축된 안내 계획입니다. 작업을 제안합니다. 절대로 자체적으로 게시하지 않습니다.',
+  'growth.profile.noProject':
+    '프로필을 저장하기 전에 프로젝트를 선택하세요. 비즈니스 프로필은 하나의 프로젝트에 속합니다.',
   'growth.profile.title': '비즈니스 프로필',
   'growth.profile.intro':
     '이거 한 번 대답해 보세요. Advisor가 제안하는 모든 내용은 여기에서 확인한 내용을 기반으로 합니다.',

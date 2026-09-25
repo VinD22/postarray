@@ -88,6 +88,18 @@ export {
   type DropdownMenuItemProps,
 } from './dropdown-menu';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
+export {
+  SegmentedControl,
+  useSegmentedThumb,
+  segmentedTrack,
+  segmentedItem,
+  segmentedThumb,
+  type SegmentedControlProps,
+  type SegmentedControlItem,
+  type SegmentedControlSize,
+  type SegmentedControlShape,
+  type UseSegmentedThumbOptions,
+} from './segmented-control';
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion';
 export { Badge, badgeVariants, type BadgeProps } from './badge';
 export { StatusDot, type StatusDotProps, type StatusDotTone } from './status-dot';

@@ -414,6 +414,53 @@ export interface PublishJobView {
   readonly hold: PublishHold | null;
 }
 
+/**
+ * What publish now and schedule accept: the first job, flattened for callers
+ * that follow one job, plus every job the request created, one per target.
+ * A multi-target post is several jobs; reading only the first hid the rest.
+ */
+export interface PublishJobsAcceptedView extends PublishJobView {
+  readonly jobs: readonly PublishJobView[];
+}
+
+/** One target of a content item, as its latest job and evidence describe it. */
+export interface ContentPublicationTargetView {
+  readonly postVariantId: string | null;
+  readonly connectionId: string;
+  readonly provider: ProviderId;
+  /** The account's handle or display name. Null when the connection is gone. */
+  readonly accountLabel: string | null;
+  /** The latest job for this target. A retry replaces the job it retried. */
+  readonly job: PublishJobView;
+  /** How many jobs this target has had, the original included. */
+  readonly jobCount: number;
+  /** True once the latest job has stopped moving. */
+  readonly final: boolean;
+  /** True when a single-target retry is allowed right now. */
+  readonly retryable: boolean;
+  readonly receiptId: string | null;
+  readonly externalPostId: string | null;
+  readonly permalink: string | null;
+  readonly publishedAt: string | null;
+  /** The stable error code of the latest failure, when there is one. */
+  readonly failureCode: string | null;
+}
+
+/**
+ * Where a content item's publication stands, target by target.
+ *
+ * Built for polling: `settled` turns true once every target is final, and a
+ * client stops asking then.
+ */
+export interface ContentPublicationView {
+  readonly contentItemId: string;
+  readonly state: PublishState;
+  readonly settled: boolean;
+  /** The creator's display name, or null when it cannot be resolved. Never an id. */
+  readonly createdByName: string | null;
+  readonly targets: readonly ContentPublicationTargetView[];
+}
+
 export interface CalendarEntry {
   readonly jobId: string | null;
   readonly contentItemId: string;
@@ -461,6 +508,7 @@ export type ActionItemKind =
   | 'comment_failed'
   | 'analytics_stale'
   | 'rss_stalled'
+  | 'media_scan_stuck'
   | 'webhook_failing'
   | 'usage_balance';
 

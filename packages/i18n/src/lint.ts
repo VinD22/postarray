@@ -28,6 +28,7 @@ export type LintRule =
   | 'plural-categories'
   | 'no-concatenation-marker'
   | 'no-em-dash'
+  | 'no-retired-brand-name'
   | 'no-hype-word'
   | 'no-trailing-whitespace'
   | 'error-code-coverage'
@@ -98,6 +99,33 @@ const HYPE_WORDS: readonly string[] = [
 
 /** Em dash and horizontal bar. Both are forbidden in product visible copy. */
 const FORBIDDEN_DASHES: readonly string[] = ['—', '―'];
+
+/**
+ * The retired codename, in the shapes that are actually a brand.
+ *
+ * The product is Post Array. `relay` survives only in package scopes and code
+ * symbols, never as a name a reader sees. This rule exists because the rename
+ * missed German entirely: that catalog had translated the codename as a word,
+ * so searching for the English string found nothing while the German homepage
+ * said `Relais` twenty four times including in its title, one page title read
+ * `Staffel für Kreative`, and an analytics hint began `Im Staffellauf`.
+ *
+ * Deliberately narrow. A plain lowercase `relay` is an ordinary English word,
+ * and the API terms legitimately prohibit "using Post Array as a relay for
+ * content you are not authorized to publish". So this matches only the shapes
+ * that are always a name and never a word:
+ *
+ *  - `Relay` / `Relais` capitalised at a word boundary, which also catches
+ *    German compounds like `Relaisoberfläche`,
+ *  - `Staffel` and `Staffellauf`, the other German words for a relay, and
+ *  - the screaming-snake prefix `RELAY_`, which caught a live defect: the demo
+ *    banner told people to set `NEXT_PUBLIC_RELAY_API_URL` long after that
+ *    variable was renamed.
+ *
+ * ICU placeholders are exempt: `{relayValue}` is an argument name, and AGENTS.md
+ * requires argument names to stay in English in every locale.
+ */
+const RETIRED_BRAND_PATTERN = /\bRelais?\b|\bStaffell?(auf|äufe)?\b|RELAY_/u;
 
 /**
  * Markers of a sentence assembled from fragments. A translator cannot reorder
@@ -256,6 +284,16 @@ function checkMessage(key: string, value: string, locale: string, add: Add): voi
       );
       break;
     }
+  }
+
+  // Strip ICU placeholders first: an argument name is code, not copy.
+  if (RETIRED_BRAND_PATTERN.test(value.replace(/\{[^}]*\}/gu, ''))) {
+    add(
+      'no-retired-brand-name',
+      'error',
+      key,
+      'Message contains the retired name Relay. The product is Post Array, and a brand name is not translated.',
+    );
   }
 
   const lowerCaseValue = value.toLowerCase();

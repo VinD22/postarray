@@ -3,6 +3,8 @@ export const growthMessages = {
   'growth.title': 'Penasihat pertumbuhan',
   'growth.subtitle':
     'Rencana terpandu yang dibuat berdasarkan fakta yang Anda konfirmasi. Ini mengusulkan pekerjaan. Ia tidak pernah menerbitkannya sendiri.',
+  'growth.profile.noProject':
+    'Pilih proyek sebelum menyimpan profil. Satu profil bisnis dimiliki satu proyek.',
   'growth.profile.title': 'Profil bisnis',
   'growth.profile.intro':
     'Jawab ini sekali. Segala sesuatu yang penasihat usulkan didasarkan pada apa yang Anda konfirmasikan di sini.',

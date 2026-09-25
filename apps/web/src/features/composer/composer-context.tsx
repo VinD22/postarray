@@ -26,10 +26,19 @@ import type { ValidationIssue } from '@relay/contracts';
 import { composerReducer, type ComposerAction } from './state/composer-reducer';
 import { findUrls } from './state/capability-rules';
 import { initialComposerState } from './state/seed';
-import { summarizeTargets, totalsFor, type DraftTotals, type MediaLookup } from './state/selectors';
+import {
+  hasMeaningfulEdit,
+  summarizeTargets,
+  totalsFor,
+  type DraftTotals,
+  type MediaLookup,
+} from './state/selectors';
+import { ComposerPartialSave, isComposerSaveConflict } from './state/save-conflict';
+import { isUnsavedDraft } from './types';
 import type {
   AutosaveState,
   ComposerBootstrap,
+  ComposerSaveOutcome,
   ComposerState,
   ConflictInfo,
   TargetSummary,
@@ -47,7 +56,12 @@ export interface ComposerContextValue {
   readonly conflict: ConflictInfo | null;
   readonly resolveConflict: (keep: 'mine' | 'theirs') => void;
   readonly online: boolean;
-  readonly saveNow: () => Promise<void>;
+  /** True while the draft holds edits the server has not accepted yet. */
+  readonly dirty: boolean;
+  /** Saves now and resolves with the content item id, creating it if needed. */
+  readonly saveNow: () => Promise<string>;
+  /** Targets whose last variant write was rejected. They retry on the next save. */
+  readonly failedTargetConnectionIds: readonly string[];
 }
 
 const ComposerContext = createContext<ComposerContextValue | null>(null);
@@ -66,7 +80,7 @@ export interface ComposerProviderProps {
   readonly approvalRequired: boolean;
   readonly serverIssues?: readonly ValidationIssue[];
   /** Persists the draft. Rejecting marks the header failed and keeps the text. */
-  readonly onSave: (state: ComposerState) => Promise<void>;
+  readonly onSave: (state: ComposerState) => Promise<ComposerSaveOutcome>;
   readonly children: ReactNode;
 }
 
@@ -88,8 +102,20 @@ export function ComposerProvider({
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [conflict, setConflict] = useState<ConflictInfo | null>(null);
   const [online, setOnline] = useState(true);
+  const [failedTargetConnectionIds, setFailedTargets] = useState<readonly string[]>([]);
+  // The same fact as `lastSavedRevision`, in a form the screen can render: the
+  // device copy of the draft and the leave guard both need to know about it.
+  const [savedRevision, setSavedRevision] = useState(0);
   const lastSavedRevision = useRef(0);
+  // A save reads the draft when it runs, not when it was asked for, so a
+  // coalesced round writes the latest text rather than the text of the
+  // keystroke that scheduled it.
+  const stateRef = useRef(state);
+  stateRef.current = state;
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Rebases the next save on the server's version once the person has chosen
+  // which one to keep. Set only while a conflict is showing.
+  const acceptServerVersion = useRef<(() => void) | null>(null);
 
   const dispatch = useCallback((action: ComposerAction) => {
     rawDispatch(action);
@@ -125,25 +151,92 @@ export function ComposerProvider({
     };
   }, [announce, t]);
 
-  const persist = useCallback(
-    async (next: ComposerState) => {
-      const revision = next.revision;
-      setAutosave('saving');
-      announce(t.full('a11y.announce.saving'), 'polite');
-      try {
-        await onSave(next);
-        lastSavedRevision.current = revision;
-        setSavedAt(new Date().toISOString());
-        setAutosave('saved');
-        announce(t.full('a11y.announce.saved'), 'polite');
-      } catch (error) {
-        setAutosave('failed');
-        announce(t.full('a11y.announce.saveFailed'), 'assertive');
+  /*
+   * Saves are coalesced, never stacked.
+   *
+   * At most one save is in flight and at most one is waiting behind it. Every
+   * request that arrives while a save is running joins that single follow-up
+   * round, so holding a key down cannot queue thirty writes of the same draft.
+   */
+  const runningSave = useRef<Promise<string> | null>(null);
+  const queuedSave = useRef<Promise<string> | null>(null);
+
+  const runSave = useCallback(async (): Promise<string> => {
+    const next = stateRef.current;
+    const revision = next.revision;
+    setAutosave('saving');
+    announce(t.full('a11y.announce.saving'), 'polite');
+    try {
+      const outcome = await onSave(next);
+      lastSavedRevision.current = revision;
+      setSavedRevision(revision);
+      if (next.master.id !== outcome.contentItemId) {
+        dispatch({ type: 'master/assign-id', contentItemId: outcome.contentItemId });
+      }
+      dispatch({ type: 'save/settled', savedConnectionIds: outcome.savedConnectionIds });
+      setFailedTargets(outcome.failedConnectionIds);
+      setSavedAt(outcome.savedAt);
+      // A round where one target was rejected is not a save that worked. The
+      // header says failed, and that target is still dirty, so the next edit
+      // writes it again.
+      setAutosave(outcome.failedConnectionIds.length > 0 ? 'failed' : 'saved');
+      announce(
+        outcome.failedConnectionIds.length > 0
+          ? t.full('a11y.announce.saveFailed')
+          : t.full('a11y.announce.saved'),
+        outcome.failedConnectionIds.length > 0 ? 'assertive' : 'polite',
+      );
+      // A commit awaits this. Freezing a version while a target's edit is
+      // missing from it would approve or publish text nobody sees here, so a
+      // partial save rejects and the commit stops.
+      if (outcome.failedConnectionIds.length > 0) {
+        throw new ComposerPartialSave(outcome.failedConnectionIds);
+      }
+      return outcome.contentItemId;
+    } catch (error) {
+      if (error instanceof ComposerPartialSave) {
         throw error;
       }
-    },
-    [announce, onSave, t],
-  );
+      if (isComposerSaveConflict(error)) {
+        acceptServerVersion.current = error.accept;
+        setConflict({
+          editorName: null,
+          theirBody: error.theirBody,
+          changedAt: error.changedAt,
+        });
+        announce(t.full('composerWeb.autosave.conflictAnonymous'), 'assertive');
+        throw error;
+      }
+      setAutosave('failed');
+      announce(t.full('a11y.announce.saveFailed'), 'assertive');
+      throw error;
+    }
+  }, [announce, dispatch, onSave, t]);
+
+  const persist = useCallback((): Promise<string> => {
+    if (runningSave.current === null) {
+      const started = runSave().finally(() => {
+        runningSave.current = null;
+      });
+      runningSave.current = started;
+      return started;
+    }
+    if (queuedSave.current === null) {
+      const queued = runningSave.current
+        .catch(() => undefined)
+        .then(() => {
+          queuedSave.current = null;
+          const started = runSave().finally(() => {
+            runningSave.current = null;
+          });
+          runningSave.current = started;
+          return started;
+        });
+      queuedSave.current = queued;
+      return queued;
+    }
+    return queuedSave.current;
+  }, [runSave]);
 
   // Debounced autosave. Nothing here can discard text: the state is the source
   // of truth and a failed save leaves it exactly where it was.
@@ -151,51 +244,74 @@ export function ComposerProvider({
     if (state.revision === lastSavedRevision.current) {
       return;
     }
+    // Nothing is created for a visit. Until this draft has content of its own,
+    // there is nothing to write and no row to write it to.
+    if (isUnsavedDraft(state.master) && !hasMeaningfulEdit(state)) {
+      return;
+    }
     if (!online) {
       setAutosave('offline');
+      return;
+    }
+    // While two versions are on screen nothing saves on its own: every attempt
+    // would be refused again, and the person has not chosen yet.
+    if (conflict !== null) {
       return;
     }
     if (timer.current !== null) {
       clearTimeout(timer.current);
     }
     timer.current = setTimeout(() => {
-      void persist(state).catch(() => undefined);
+      void persist().catch(() => undefined);
     }, AUTOSAVE_DELAY_MS);
     return () => {
       if (timer.current !== null) {
         clearTimeout(timer.current);
       }
     };
-  }, [online, persist, state]);
+  }, [conflict, online, persist, state]);
 
   const saveNow = useCallback(() => {
     if (timer.current !== null) {
       clearTimeout(timer.current);
     }
-    return persist(state);
-  }, [persist, state]);
+    return persist();
+  }, [persist]);
 
   const resolveConflict = useCallback(
     (keep: 'mine' | 'theirs') => {
+      acceptServerVersion.current?.();
+      acceptServerVersion.current = null;
       if (keep === 'theirs' && conflict) {
+        // A new revision, so the autosave writes it on top of their version.
         dispatch({ type: 'master/patch', patch: { body: conflict.theirBody } });
       }
       setConflict(null);
       setAutosave('idle');
+      if (keep === 'mine') {
+        // Nothing changed locally, so nothing would schedule a save: write
+        // this version on top of theirs now, as the person just chose.
+        void persist().catch(() => undefined);
+      }
     },
-    [conflict, dispatch],
+    [conflict, dispatch, persist],
   );
 
+  // A Set applied in this session brings its approval policy with it; the
+  // gateway records it on the server before the next save.
+  const appliedSetRequiresApproval =
+    bootstrap.sets.find((set) => set.id === state.appliedSetId)?.requiresApproval ?? false;
+  const effectiveApprovalRequired = approvalRequired || appliedSetRequiresApproval;
   const summaries = useMemo(
     () =>
       summarizeTargets({
         state,
         accounts: bootstrap.accounts,
         media,
-        approvalRequired,
+        approvalRequired: effectiveApprovalRequired,
         serverIssues,
       }),
-    [approvalRequired, bootstrap.accounts, media, serverIssues, state],
+    [effectiveApprovalRequired, bootstrap.accounts, media, serverIssues, state],
   );
 
   const totals = useMemo(() => totalsFor(summaries), [summaries]);
@@ -228,17 +344,21 @@ export function ComposerProvider({
       conflict,
       resolveConflict,
       online,
+      dirty: state.revision !== savedRevision,
       saveNow,
+      failedTargetConnectionIds,
     }),
     [
       autosave,
       bootstrap,
       conflict,
       dispatch,
+      failedTargetConnectionIds,
       online,
       resolveConflict,
       runAll,
       savedAt,
+      savedRevision,
       saveNow,
       state,
       summaries,

@@ -22,13 +22,7 @@ export function DemoNotice() {
   return (
     <Notice
       tone="neutral"
-      title={t('shell.demo.title')}
-      description={
-        <span className="flex flex-col gap-1">
-          <span>{t('shell.demo.body')}</span>
-          <span className="text-text-tertiary">{t('shell.demo.howToConnect')}</span>
-        </span>
-      }
+      title={t('scheduler.demoShort')}
       className="rounded-none border-x-0 border-t-0"
     />
   );

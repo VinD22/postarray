@@ -5,10 +5,12 @@ import { ChevronDown } from 'lucide-react';
 import {
   Button,
   Checkbox,
+  Input,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
+  SegmentedControl,
   Select,
   SelectContent,
   SelectItem,
@@ -53,17 +55,38 @@ export interface AnalyticsToolbarProps {
   readonly onChange: (filters: AnalyticsFilters) => void;
 }
 
-const RANGE_PRESETS: readonly AnalyticsRange['preset'][] = ['7d', '30d', '90d'];
+const RANGE_PRESETS: readonly AnalyticsRange['preset'][] = ['7d', '30d', '90d', 'custom'];
 
 function rangeLabelKey(preset: AnalyticsRange['preset']): string {
   return preset === 'custom' ? 'analytics.range.custom' : `analytics.range.${preset}`;
 }
 
-function presetToRange(preset: AnalyticsRange['preset'], now: Date): AnalyticsRange {
+export function presetToRange(preset: AnalyticsRange['preset'], now: Date): AnalyticsRange {
   const days = preset === '7d' ? 7 : preset === '90d' ? 90 : 30;
   const end = now.toISOString();
   const start = new Date(now.getTime() - days * 86_400_000).toISOString();
   return { preset, start, end };
+}
+
+/** The `YYYY-MM-DD` a date input wants, taken in UTC. */
+function toDateInput(iso: string): string {
+  const parsed = new Date(iso);
+  return Number.isNaN(parsed.getTime()) ? '' : (parsed.toISOString().slice(0, 10) as string);
+}
+
+/**
+ * A date input's value as an instant.
+ *
+ * `edge` decides which end of the day it lands on, so a custom range that
+ * reads "1 March to 7 March" includes all of the seventh rather than stopping
+ * at its first second. UTC throughout: the window is the provider's, and
+ * recomputing it in the browser's zone is how a day goes missing from a report
+ * for a reader in Auckland.
+ */
+function fromDateInput(value: string, edge: 'start' | 'end'): string | null {
+  if (value === '') return null;
+  const parsed = new Date(`${value}T${edge === 'start' ? '00:00:00.000' : '23:59:59.999'}Z`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
 }
 
 export function AnalyticsToolbar({
@@ -79,6 +102,8 @@ export function AnalyticsToolbar({
   const metricId = useId();
   const formatId = useId();
   const compareId = useId();
+  const customFromId = useId();
+  const customToId = useId();
 
   const selectedAccounts = accounts.filter((account) =>
     filters.connectionIds.includes(account.connectionId),
@@ -160,27 +185,34 @@ export function AnalyticsToolbar({
         </div>
 
         <div className="flex flex-col gap-1">
-          <Label htmlFor={rangeId}>{t('analytics.filter.range')}</Label>
-          <Select
+          <span id={rangeId} className="text-label text-text-tertiary">
+            {t('analytics.filter.range')}
+          </span>
+          {/*
+            A segmented control rather than a select: four choices, all short,
+            all worth seeing at once, and the one a reader wants is one press
+            rather than open-scan-press. Custom keeps the last computed range
+            as its starting point so switching to it never blanks the screen.
+          */}
+          <SegmentedControl
+            aria-label={t('analytics.filter.range')}
+            size="sm"
             value={filters.range.preset}
-            onValueChange={(value) =>
+            items={RANGE_PRESETS.map((preset) => ({
+              value: preset,
+              label: t(rangeLabelKey(preset)),
+            }))}
+            onValueChange={(value) => {
+              const preset = value as AnalyticsRange['preset'];
               onChange({
                 ...filters,
-                range: presetToRange(value as AnalyticsRange['preset'], new Date()),
-              })
-            }
-          >
-            <SelectTrigger id={rangeId} size="sm" className="min-w-36">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {RANGE_PRESETS.map((preset) => (
-                <SelectItem key={preset} value={preset}>
-                  {t(rangeLabelKey(preset))}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                range:
+                  preset === 'custom'
+                    ? { ...filters.range, preset: 'custom' }
+                    : presetToRange(preset, new Date()),
+              });
+            }}
+          />
         </div>
 
         <div className="flex flex-col gap-1">
@@ -207,6 +239,48 @@ export function AnalyticsToolbar({
             </SelectContent>
           </Select>
         </div>
+
+        {filters.range.preset === 'custom' ? (
+          // TODO(web): depends on design-system DateTimeField (FE B9). Two
+          // native date inputs until it lands: they are keyboard operable,
+          // localized by the platform and already understood by every
+          // assistive technology, which is more than a hand-rolled picker
+          // would be on the day it shipped.
+          <>
+            <div className="flex flex-col gap-1">
+              <Label htmlFor={customFromId}>{t('analytics.filter.customFrom')}</Label>
+              <Input
+                id={customFromId}
+                type="date"
+                size="sm"
+                className="w-40"
+                value={toDateInput(filters.range.start)}
+                max={toDateInput(filters.range.end)}
+                onChange={(event) => {
+                  const start = fromDateInput(event.target.value, 'start');
+                  if (start === null) return;
+                  onChange({ ...filters, range: { ...filters.range, preset: 'custom', start } });
+                }}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label htmlFor={customToId}>{t('analytics.filter.customTo')}</Label>
+              <Input
+                id={customToId}
+                type="date"
+                size="sm"
+                className="w-40"
+                value={toDateInput(filters.range.end)}
+                min={toDateInput(filters.range.start)}
+                onChange={(event) => {
+                  const end = fromDateInput(event.target.value, 'end');
+                  if (end === null) return;
+                  onChange({ ...filters, range: { ...filters.range, preset: 'custom', end } });
+                }}
+              />
+            </div>
+          </>
+        ) : null}
 
         <div className="flex items-center gap-2 pb-1">
           <Checkbox

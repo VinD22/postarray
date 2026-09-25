@@ -3,6 +3,7 @@ import { DEFAULT_LOCALE, PUBLIC_LOCALE_CODES } from '@relay/i18n';
 import type { MessageKey } from '@relay/i18n/translate';
 
 import { marketingTranslator } from './i18n';
+import { routeLocales } from './locale-eligibility';
 import { ROUTES, SITE_ORIGIN } from './site';
 import { localizedHref } from '@/lib/i18n/routing';
 
@@ -22,6 +23,41 @@ export interface LocaleAlternates {
 }
 
 /** Build an absolute URL for an indexable marketing route in an interface locale. */
+/**
+ * The share card every page points at.
+ *
+ * `apps/web/src/app/opengraph-image.tsx` renders it, and Next merges that
+ * file-convention image automatically only for routes that do not declare their
+ * own `openGraph` object. Every page here declares one, which silently wiped the
+ * image from the whole site: the live HTML carried zero `og:image` tags while
+ * `twitter.card` advertised `summary_large_image`, so every share was a bare
+ * link. Naming it explicitly is what restores it.
+ *
+ * Locale neutral on purpose, matching the card itself: it carries the wordmark
+ * and nothing that needs translating.
+ */
+export function shareCard(alt: string): NonNullable<Metadata['openGraph']>['images'] {
+  return [{ url: absoluteUrl('/opengraph-image'), width: 1200, height: 630, alt }];
+}
+
+/**
+ * The same card for X. `twitter.card` has always advertised
+ * `summary_large_image`, and without `twitter.images` X falls back to guessing
+ * from Open Graph, which some clients do not. `/twitter-image` is the file
+ * convention route beside `/opengraph-image`.
+ */
+export function twitterCard(alt: string): NonNullable<Metadata['twitter']>['images'] {
+  return [{ url: absoluteUrl('/twitter-image'), width: 1200, height: 630, alt }];
+}
+
+/**
+ * The locale a route's canonical URL uses for a request in `locale`: the
+ * request locale when the route is translated into it, English otherwise.
+ */
+export function canonicalLocaleFor(path: string, locale: string): string {
+  return routeLocales(path).includes(locale) ? locale : DEFAULT_LOCALE;
+}
+
 export function absoluteUrl(path: string, locale: string = DEFAULT_LOCALE): string {
   return new URL(localizedHref(path, locale), SITE_ORIGIN).toString();
 }
@@ -33,14 +69,17 @@ export function absoluteUrl(path: string, locale: string = DEFAULT_LOCALE): stri
  * canonicalizing to English would remove that language from search results.
  */
 export function localeAlternates(path: string, locale: string = DEFAULT_LOCALE): LocaleAlternates {
+  const eligible = routeLocales(path);
+  if (eligible !== PUBLIC_LOCALE_CODES) {
+    // An English-only route family: list only the locales that exist and
+    // canonicalize an untranslated request to English.
+    return articleAlternates(path, locale, eligible);
+  }
   return {
     canonical: absoluteUrl(path, locale),
     languages: {
       ...Object.fromEntries(
-        PUBLIC_LOCALE_CODES.map((publicLocale) => [
-          publicLocale,
-          absoluteUrl(path, publicLocale),
-        ]),
+        PUBLIC_LOCALE_CODES.map((publicLocale) => [publicLocale, absoluteUrl(path, publicLocale)]),
       ),
       'x-default': absoluteUrl(path, DEFAULT_LOCALE),
     },
@@ -123,6 +162,23 @@ export function openGraphAlternateLocales(
   ];
 }
 
+/**
+ * A page title, and whether the layout should append the brand to it.
+ *
+ * Several titles name the product themselves because they read better that way
+ * in a search result: "Post Array for agencies" beats "For agencies". The root
+ * layout's template appends `· Post Array` to every title, which turned those
+ * into "Post Array, the multilingual publishing control plane · Post Array" and
+ * spent about eleven characters of the title budget saying it twice.
+ *
+ * Rather than strip the brand from six strings in twenty five locales, and ask
+ * every future translator to remember the rule, a title that already carries the
+ * name opts out of the template with `absolute`.
+ */
+function pageTitle(title: string, brand: string): Metadata['title'] {
+  return title.includes(brand) ? { absolute: title } : title;
+}
+
 export async function pageMetadata(
   titleKey: MessageKey,
   descriptionKey: MessageKey,
@@ -132,13 +188,16 @@ export async function pageMetadata(
   const t = await marketingTranslator(locale);
   const title = t.format(titleKey);
   const description = t.format(descriptionKey);
-  const url = absoluteUrl(path, locale);
+  const canonicalLocale = canonicalLocaleFor(path, locale);
   const alternates = localeAlternates(path, locale);
-  const openGraphLocale = toOpenGraphLocale(locale);
-  const alternateOpenGraphLocales = openGraphAlternateLocales(locale);
+  const url = alternates.canonical;
+  const openGraphLocale = toOpenGraphLocale(canonicalLocale);
+  const alternateOpenGraphLocales = openGraphAlternateLocales(canonicalLocale, routeLocales(path));
+
+  const brand = t.t('web.brand.name');
 
   return {
-    title,
+    title: pageTitle(title, brand),
     description,
     alternates,
     openGraph: {
@@ -146,7 +205,8 @@ export async function pageMetadata(
       url,
       title,
       description,
-      siteName: t.t('web.brand.name'),
+      images: shareCard(title),
+      siteName: brand,
       ...(openGraphLocale === undefined ? {} : { locale: openGraphLocale }),
       ...(alternateOpenGraphLocales.length === 0
         ? {}
@@ -156,6 +216,7 @@ export async function pageMetadata(
       card: 'summary_large_image',
       title,
       description,
+      images: twitterCard(title),
     },
   };
 }
@@ -187,8 +248,10 @@ export async function contentPageMetadata(
   const openGraphLocale = toOpenGraphLocale(canonicalLocale);
   const alternateLocales = openGraphAlternateLocales(canonicalLocale, eligibleLocales);
 
+  const brand = t.t('web.brand.name');
+
   return {
-    title,
+    title: pageTitle(title, brand),
     description,
     alternates,
     openGraph: {
@@ -196,7 +259,8 @@ export async function contentPageMetadata(
       url,
       title,
       description,
-      siteName: t.t('web.brand.name'),
+      images: shareCard(title),
+      siteName: brand,
       ...(openGraphLocale === undefined ? {} : { locale: openGraphLocale }),
       ...(alternateLocales.length === 0 ? {} : { alternateLocale: alternateLocales }),
     },
@@ -204,12 +268,32 @@ export async function contentPageMetadata(
       card: 'summary_large_image',
       title,
       description,
+      images: twitterCard(title),
     },
   };
 }
 
-interface JsonLdNode {
+export interface JsonLdNode {
   readonly [key: string]: unknown;
+}
+
+/**
+ * Public profiles this organization actually operates, for `sameAs`.
+ *
+ * Empty until an official profile exists: listing a handle nobody owns would
+ * tell a search engine this site is somebody else. Add a URL here only once
+ * the account is live and controlled by the team.
+ */
+export const ORGANIZATION_PROFILES: readonly string[] = [];
+
+/** The logo is the `apple-icon` file convention route: 180 x 180, stable URL. */
+function organizationLogo(): JsonLdNode {
+  return {
+    '@type': 'ImageObject',
+    url: new URL('/apple-icon', SITE_ORIGIN).toString(),
+    width: 180,
+    height: 180,
+  };
 }
 
 export async function organizationJsonLd(locale: string = DEFAULT_LOCALE): Promise<JsonLdNode> {
@@ -220,6 +304,8 @@ export async function organizationJsonLd(locale: string = DEFAULT_LOCALE): Promi
     name: t.t('web.brand.name'),
     url: absoluteUrl(ROUTES.home, locale),
     description: t.t('web.brand.tagline'),
+    logo: organizationLogo(),
+    ...(ORGANIZATION_PROFILES.length === 0 ? {} : { sameAs: [...ORGANIZATION_PROFILES] }),
   };
 }
 
@@ -412,6 +498,7 @@ export async function articleMetadata(input: ArticleSeoInput): Promise<Metadata>
       url,
       title: input.headline,
       description: input.description,
+      images: shareCard(input.headline),
       siteName: t.t('web.brand.name'),
       publishedTime: calendarDateToInstant(input.published),
       modifiedTime: calendarDateToInstant(input.updated),
@@ -423,6 +510,18 @@ export async function articleMetadata(input: ArticleSeoInput): Promise<Metadata>
       card: 'summary_large_image',
       title: input.headline,
       description: input.description,
+      images: twitterCard(input.headline),
     },
   };
+}
+
+/**
+ * `<link rel="alternate" type="application/rss+xml">` for the blog feed in
+ * this locale, so a feed reader or crawler finds it from any blog page.
+ */
+export function blogFeedAlternates(
+  locale: string,
+  title: string,
+): NonNullable<NonNullable<Metadata['alternates']>['types']> {
+  return { 'application/rss+xml': [{ url: absoluteUrl('/blog.xml', locale), title }] };
 }

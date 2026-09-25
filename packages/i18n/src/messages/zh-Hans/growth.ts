@@ -2,6 +2,8 @@
 export const growthMessages = {
   'growth.title': '成长顾问',
   'growth.subtitle': '根据您确认的事实制定的指导计划。它提出了工作。它从不单独出版。',
+  'growth.profile.noProject':
+    '保存资料前请先选择一个项目。一份业务资料只属于一个项目。',
   'growth.profile.title': '业务简介',
   'growth.profile.intro': '回答这些一次。顾问提出的所有建议均基于您在此确认的内容。',
   'growth.profile.productUrl': '产品或网站网址',

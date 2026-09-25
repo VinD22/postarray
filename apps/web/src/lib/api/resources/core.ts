@@ -10,7 +10,7 @@ import type {
   UsageSummaryView,
   WorkspaceView as ApplicationWorkspaceView,
 } from '@relay/application';
-import type { Paginated as ContractPaginated } from '@relay/contracts';
+import type { Paginated as ContractPaginated, PlanTierKey } from '@relay/contracts';
 import {
   demoAudit,
   demoBilling,
@@ -102,6 +102,26 @@ export const projectsApi = {
       ...input,
       updatedAt: new Date().toISOString(),
     })),
+  /**
+   * `PATCH /projects/{id}/connections`: `add` moves each connection into this
+   * project, `remove` leaves it unassigned. One server transaction.
+   */
+  updateConnections: (
+    projectId: string,
+    input: { readonly add?: readonly string[]; readonly remove?: readonly string[] },
+  ): Promise<ProjectView> =>
+    call(`/projects/${projectId}/connections`, { method: 'PATCH', body: input }, () => {
+      const project =
+        demoProjects.find((candidate) => candidate.id === projectId) ??
+        requireFirst(demoProjects, 'project');
+      const removed = new Set(input.remove ?? []);
+      const kept = project.connectionIds.filter((id) => !removed.has(id));
+      return {
+        ...project,
+        connectionIds: [...new Set([...kept, ...(input.add ?? [])])],
+        updatedAt: new Date().toISOString(),
+      };
+    }),
   archive: (projectId: string): Promise<void> =>
     call(`/projects/${projectId}`, { method: 'DELETE' }, () => undefined),
 };
@@ -244,14 +264,18 @@ export const billingApi = {
       (state) => state,
     ),
   createCheckout: (
-    input: { interval: 'monthly' | 'annual'; returnUrl: string },
+    input: { interval: 'monthly' | 'annual'; returnUrl: string; tier?: PlanTierKey },
     idempotencyKey: string,
   ): Promise<{ checkoutUrl: string }> =>
     call(
       '/billing/checkout',
       {
         method: 'POST',
-        body: { interval: input.interval, successUrl: input.returnUrl },
+        body: {
+          interval: input.interval,
+          successUrl: input.returnUrl,
+          ...(input.tier === undefined ? {} : { tier: input.tier }),
+        },
         idempotencyKey,
       },
       () => ({ checkoutUrl: input.returnUrl }),

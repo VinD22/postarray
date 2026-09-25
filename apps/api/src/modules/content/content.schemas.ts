@@ -91,6 +91,21 @@ export const setTargetsSchema = z.object({ targets: z.array(targetInputSchema).m
  */
 export const overrideVariantSchema = z.object({ patch: variantOverridesSchema }).strict();
 
+/**
+ * The composer's whole draft in one request: master, targets and every
+ * target's overrides become exactly one new version. `expectedVersionId` is the
+ * `currentVersionId` last read; a stale one is refused with 409 rather than
+ * overwriting somebody else's save.
+ */
+export const saveCompositeSchema = z
+  .object({
+    expectedVersionId: z.string().trim().min(1).max(128).nullable().optional(),
+    master: updateMasterSchema,
+    targets: z.array(targetInputSchema).max(200),
+    variantOverrides: z.record(connectionIdSchema, variantOverridesSchema).optional(),
+  })
+  .strict();
+
 export const applySetSchema = z.object({ setId: setIdSchema }).strict();
 
 export const applySignatureSchema = z
@@ -116,3 +131,4 @@ export const variantParamsSchema = z
 export type CreateDraftInput = z.infer<typeof createDraftSchema>;
 export type UpdateMasterInput = z.infer<typeof updateMasterSchema>;
 export type TargetInput = z.infer<typeof targetInputSchema>;
+export type SaveCompositeBody = z.infer<typeof saveCompositeSchema>;

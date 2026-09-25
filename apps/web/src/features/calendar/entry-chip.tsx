@@ -236,7 +236,15 @@ export function EntryChip({
         </span>
 
         {density === 'compact' ? null : (
-          <span className="text-body-sm text-text-secondary truncate">{entry.accountLabel}</span>
+          <span className="text-body-sm text-text-secondary flex min-w-0 items-center gap-1 truncate">
+            {entry.projectName ? (
+              <>
+                <span className="text-text-primary truncate font-medium">{entry.projectName}</span>
+                <span aria-hidden="true">·</span>
+              </>
+            ) : null}
+            <span className="truncate">{entry.accountLabel}</span>
+          </span>
         )}
       </a>
 

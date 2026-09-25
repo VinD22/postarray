@@ -13,6 +13,7 @@ export function createDisabledProvider(model = 'unconfigured'): AiProviderAdapte
     name: 'disabled',
     model,
     available: false,
+    supportsImageInput: false,
     async complete() {
       throw aiUnavailableError('not_configured');
     },

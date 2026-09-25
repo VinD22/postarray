@@ -6,6 +6,7 @@ export {
   LOG_LEVELS,
   NODE_ENVIRONMENTS,
   POLAR_SERVERS,
+  RUNTIME_PROFILES,
   base64ByteLength,
   booleanish,
   envSchema,
@@ -25,6 +26,7 @@ export {
   type NodeEnvironment,
   type PolarServer,
   type RelayEnv,
+  type RuntimeProfile,
 } from './schema';
 
 export {
@@ -98,3 +100,5 @@ export {
   redactString,
   type RedactOptions,
 } from './redaction';
+
+export { isLocalDatabaseUrl } from './database-locality';

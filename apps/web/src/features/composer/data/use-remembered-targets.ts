@@ -67,6 +67,35 @@ export function useRememberTargets(): UseMutationResult<
   });
 }
 
+/**
+ * The project opt in, from the composer.
+ *
+ * The same call the project settings card makes, kept here rather than
+ * imported across features so the composer's data layer stays the one place
+ * this screen talks to the API. Not optimistic, for the reason that card
+ * gives: turning it off deletes every saved selection in the project, and a
+ * switch that has moved while the deletion has not would be a lie about
+ * somebody else's data.
+ */
+export function useSetRememberedTargetsEnabled(): UseMutationResult<
+  { readonly projectId: string; readonly enabled: boolean },
+  ApiError,
+  { readonly projectId: string; readonly enabled: boolean }
+> {
+  const queryClient = useQueryClient();
+  const workspaceId = useWorkspaceId();
+  return useMutation({
+    mutationFn: (input: { projectId: string; enabled: boolean }) =>
+      api.targetMemory.setEnabled(input.projectId, input.enabled),
+    onSuccess: (_result, input) => {
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'projects'] });
+      void queryClient.invalidateQueries({
+        queryKey: keys.rememberedTargets(workspaceId, input.projectId),
+      });
+    },
+  });
+}
+
 /** Forget this person's selection. Always available, opted in or not. */
 export function useForgetTargets(): UseMutationResult<void, ApiError, string> {
   const queryClient = useQueryClient();

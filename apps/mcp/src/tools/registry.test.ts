@@ -22,10 +22,15 @@ const EXPECTED_READ = [
   'get_analytics',
   'get_growth_plan',
   'list_growth_opportunities',
+  'list_recent_events',
   'get_media',
   'list_media',
   'list_recent_receipts',
   'get_receipt',
+  'preview_commit',
+  'suggest_copy',
+  'review_draft',
+  'suggest_posting_time',
 ];
 
 const EXPECTED_REVERSIBLE = [

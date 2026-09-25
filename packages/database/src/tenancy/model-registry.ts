@@ -77,6 +77,11 @@ export const TENANT_MODELS = new Set<string>([
   // membership is necessary but never sufficient to read another member's
   // onboarding.
   'onboardingState',
+  // The durable record that a human confirmed a consequential agent action.
+  'agentConfirmation',
+  // Stored image analyses (0080). Analysis only, cached per checksum.
+  'mediaAnalysis',
+  'seoKeywordTarget',
 
   // Automation
   'automationRule',
@@ -102,6 +107,11 @@ export const TENANT_MODELS = new Set<string>([
   'affiliatePartner',
   'referralAttribution',
   'commissionLedger',
+  // The free plan's balance and its ledger. Both are workspace owned, and both
+  // were missing here until the credit check started throwing
+  // `tenantModelUnscoped` for every workspace without a paid entitlement row.
+  'postCreditBalance',
+  'postCreditLedgerEntry',
 
   // Lifecycle
   'deletionRequest',
