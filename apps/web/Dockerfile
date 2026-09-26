@@ -29,6 +29,11 @@ COPY tsconfig.base.json turbo.json ./
 COPY packages/contracts packages/contracts
 COPY packages/design-system packages/design-system
 COPY packages/i18n packages/i18n
+# Each workspace package resolves its own dependencies (zod, react, ...) from
+# its own node_modules, which only the deps stage has.
+COPY --from=deps /repo/packages/contracts/node_modules ./packages/contracts/node_modules
+COPY --from=deps /repo/packages/design-system/node_modules ./packages/design-system/node_modules
+COPY --from=deps /repo/packages/i18n/node_modules ./packages/i18n/node_modules
 COPY apps/web apps/web
 
 ENV NEXT_TELEMETRY_DISABLED=1
