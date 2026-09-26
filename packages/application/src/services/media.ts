@@ -754,7 +754,10 @@ export function createMediaService(deps: ServiceDeps): MediaService {
           height: number | null,
         ): Promise<MediaReadUrl | null> => {
           try {
-            const url = await deps.storage.createDownloadUrl(storageKey, MEDIA_READ_URL_TTL_SECONDS);
+            const url = await deps.storage.createDownloadUrl(
+              storageKey,
+              MEDIA_READ_URL_TTL_SECONDS,
+            );
             return { url, width, height, expiresAt };
           } catch {
             // A storage adapter that cannot sign is not a reason to fail the

@@ -23,10 +23,8 @@ describe('active catalogs', () => {
       );
       expect(missingNonB5Keys).toEqual([]);
 
-      const familyCoverage = inspectCatalogFamilies(
-        en,
-        catalog,
-        (key) => isBetaEnglishFallbackKey(key, locale),
+      const familyCoverage = inspectCatalogFamilies(en, catalog, (key) =>
+        isBetaEnglishFallbackKey(key, locale),
       );
       expect(familyCoverage.map((family) => family.prefix)).toEqual([
         'a11y.',

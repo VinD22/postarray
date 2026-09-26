@@ -72,10 +72,7 @@ export function workspaceFromRealtimeChannel(channel: string): string | null {
  * owns the connection passes its client in.
  */
 export interface RealtimeRedisClient {
-  xadd(
-    key: string,
-    ...args: readonly (string | number)[]
-  ): Promise<string | null>;
+  xadd(key: string, ...args: readonly (string | number)[]): Promise<string | null>;
   xrange(
     key: string,
     start: string,
@@ -185,7 +182,10 @@ export interface RealtimeEventReader {
 export function createRedisRealtimeEventReader(client: RealtimeRedisClient): RealtimeEventReader {
   return {
     async readRecent(workspaceId, input) {
-      const limit = Math.min(Math.max(1, input.limit ?? REALTIME_REPLAY_LIMIT), REALTIME_REPLAY_LIMIT);
+      const limit = Math.min(
+        Math.max(1, input.limit ?? REALTIME_REPLAY_LIMIT),
+        REALTIME_REPLAY_LIMIT,
+      );
       // `(` is the exclusive range prefix, so a client is never re-sent the
       // event it told us it already has.
       const start = input.since === null ? '-' : `(${input.since}`;

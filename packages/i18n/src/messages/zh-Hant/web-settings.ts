@@ -535,7 +535,8 @@ export const webSettingsMessages = {
     '合理使用意味着反垃圾郵件、速率和提供商成本控制。它們以相同的方式適用於每個訂戶並被發佈，而不是任意的。',
   'billing.ui.allowanceMetered':
     'X 和其他一些提供商按操作收費。這些費用按成本轉嫁，不屬於計劃價格。',
-  'billing.ui.allowanceNoMedia': 'Post Array。圖像生成和視頻生成不包括在內，也不出售。中繼不生成媒體。',
+  'billing.ui.allowanceNoMedia':
+    'Post Array。圖像生成和視頻生成不包括在內，也不出售。中繼不生成媒體。',
   'billing.ui.readFairUse': '閱讀合理使用政策',
   'billing.ui.readMeteredPolicy': '瞭解計量使用量的計費方式',
   'billing.ui.usageCaption': '在此期間按流量計費的提供商使用量，按成本計費',

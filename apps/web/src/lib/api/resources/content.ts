@@ -778,11 +778,7 @@ export const publishingApi = {
     contentItemId: string,
     input: CommitPreviewRequest,
   ): Promise<CommitPreview | null> =>
-    call(
-      `/content/${contentItemId}/commit-preview`,
-      { method: 'POST', body: input },
-      () => null,
-    ),
+    call(`/content/${contentItemId}/commit-preview`, { method: 'POST', body: input }, () => null),
 
   getJob: (jobId: string): Promise<PublishJobView | null> =>
     call(`/jobs/${jobId}`, {}, () => demoPublishJobs.find((job) => job.id === jobId) ?? null),

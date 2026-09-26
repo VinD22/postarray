@@ -45,4 +45,3 @@ export const digestMessages = {
   'email.digest.footer':
     'Anda menerima ini karena ringkasan mingguan aktif untuk {workspaceName}. Nonaktifkan di pengaturan ruang kerja.',
 } as const;
-

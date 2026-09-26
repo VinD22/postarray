@@ -77,7 +77,6 @@ describe('channel allowance derived from project allowance', () => {
   });
 });
 
-
 /**
  * The free plan is a balance, not a clock.
  *

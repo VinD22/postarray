@@ -7,12 +7,7 @@
  * being confused with translated keys.
  */
 
-export const REQUIRED_CATALOG_FAMILY_PREFIXES = [
-  'a11y.',
-  'email.',
-  'digest.',
-  'state.',
-] as const;
+export const REQUIRED_CATALOG_FAMILY_PREFIXES = ['a11y.', 'email.', 'digest.', 'state.'] as const;
 
 export interface CatalogFamilyCoverage {
   readonly prefix: string;
@@ -54,4 +49,3 @@ export function inspectCatalogFamilies(
 export function isCatalogFamilyComplete(coverage: CatalogFamilyCoverage): boolean {
   return coverage.missingKeys.length === coverage.allowedFallbackKeys.length;
 }
-

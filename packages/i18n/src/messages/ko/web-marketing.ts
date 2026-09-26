@@ -983,7 +983,8 @@ export const webMarketingMessages = {
   'web.capabilities.note.noPrivacyChoice':
     '이 플랫폼은 API를 통해 게시물별 개인 정보 보호 옵션을 제공하지 않습니다.',
   'web.capabilities.note.noThumbnail': '이 플랫폼은 API를 통해 맞춤 썸네일을 허용하지 않습니다.',
-  'web.capabilities.note.inBuild': '플랫폼은 이것을 제공합니다. Post Array은 아직 배송하지 않았습니다.',
+  'web.capabilities.note.inBuild':
+    '플랫폼은 이것을 제공합니다. Post Array은 아직 배송하지 않았습니다.',
   'web.capabilities.note.noCarousel': '플랫폼이 스와이프 캐러셀을 제공하지 않습니다.',
   'web.capabilities.note.noDisclosure': '플랫폼에 AI 또는 상업 콘텐츠 공개 필드가 없습니다.',
   'web.capabilities.note.noAnalytics': '플랫폼이 공식 API를 통해 참여 지표를 제공하지 않습니다.',

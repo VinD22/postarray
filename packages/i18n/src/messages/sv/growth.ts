@@ -5,7 +5,6 @@ export const growthMessages = {
     'En guidad plan byggd från fakta du bekräftar. Den föreslår arbete. Den publicerar aldrig på egen hand.',
 
   'growth.profile.noProject':
-
     'Välj ett projekt innan du sparar profilen. En företagsprofil hör till ett projekt.',
 
   'growth.profile.title': 'Företagsprofil',

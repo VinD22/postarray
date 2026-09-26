@@ -53,8 +53,9 @@ describe('ChannelTable', () => {
     );
     const row = screen.getByRole('row', { name: /Anna/ });
     expect(within(row).getByText(/Unavailable/)).toBeInTheDocument();
-    expect(within(row).getByText(/not a metric this provider allows to be added up/i))
-      .toBeInTheDocument();
+    expect(
+      within(row).getByText(/not a metric this provider allows to be added up/i),
+    ).toBeInTheDocument();
     expect(within(row).queryByText('—')).not.toBeInTheDocument();
   });
 
@@ -109,7 +110,15 @@ describe('ChannelTable', () => {
     render(
       mount(
         <ChannelTable
-          rollups={[rollup({ account: { connectionId: 'a', provider: 'x', handle: 'a', displayName: 'Anna' } }), rollup({ account: { connectionId: 'b', provider: 'x', handle: 'b', displayName: 'Bo' }, total: 900 })]}
+          rollups={[
+            rollup({
+              account: { connectionId: 'a', provider: 'x', handle: 'a', displayName: 'Anna' },
+            }),
+            rollup({
+              account: { connectionId: 'b', provider: 'x', handle: 'b', displayName: 'Bo' },
+              total: 900,
+            }),
+          ]}
           rankMetric="impressions"
           comparing={false}
         />,

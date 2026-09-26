@@ -116,7 +116,8 @@ export const webAnalyticsMessages = {
   'analytics.format.long_video': '長影片',
   'analytics.format.document': '文件',
   'analytics.format.thread': '線',
-  'analytics.value.unavailableReason.notImplemented': 'Post Array 尚未建立此指標的映射{provider}然而。',
+  'analytics.value.unavailableReason.notImplemented':
+    'Post Array 尚未建立此指標的映射{provider}然而。',
   'analytics.value.estimated': '估計的',
   'analytics.value.estimatedMethod': '方法：{method}。',
   'analytics.freshness.title': '這些數字從何而來',
@@ -559,7 +560,8 @@ export const webAnalyticsMessages = {
   'automation.rss.step.template': '貼文說了什麼',
   'automation.rss.step.policy': '如何發布',
   'automation.rss.stepOf': '步{current}的{total}',
-  'automation.rss.urlHelp': 'Post Array 從我們的伺服器而不是您的瀏覽器取得來源。專用網路位址被拒絕。',
+  'automation.rss.urlHelp':
+    'Post Array 從我們的伺服器而不是您的瀏覽器取得來源。專用網路位址被拒絕。',
   'automation.rss.validateAction': '檢查此提要',
   'automation.rss.validateFailed': '該位址沒有傳回可讀的提要',
   'automation.rss.validateFailedReason': '我們得到了什麼：{reason}',

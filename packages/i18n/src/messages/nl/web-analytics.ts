@@ -396,7 +396,8 @@ export const webAnalyticsMessages = {
     'Moet een openbaar https-adres zijn. Privénetwerkadressen en omleidingsketens worden afgewezen door de omleidingsservice.',
   'analytics.links.createCampaign': 'Campagnenaam',
   'analytics.links.createSlug': 'Aangepast einde',
-  'analytics.links.createSlugHelp': 'Laat dit leeg en Post Array genereert een kort willekeurig einde.',
+  'analytics.links.createSlugHelp':
+    'Laat dit leeg en Post Array genereert een kort willekeurig einde.',
   'analytics.links.createUtm': 'UTM-parameters',
   'analytics.links.blockedScheme': 'Alleen https-bestemmingen worden geaccepteerd.',
   'analytics.links.blockedPrivate':
@@ -650,7 +651,8 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} ging niet door, dus de regel stopte hier',
   'automation.test.actionSimulated': '{action} zou worden uitgevoerd',
   'automation.test.actionSkipped': '{action} zou worden overgeslagen: {reason}',
-  'automation.test.noExternalEffect': 'Tijdens deze test is er niets meer van Post Array overgebleven.',
+  'automation.test.noExternalEffect':
+    'Tijdens deze test is er niets meer van Post Array overgebleven.',
   'automation.test.failed': 'De test kan niet worden voltooid: {reason}',
 
   'automation.runs.table.caption': 'Recente uitvoeringen van deze regel.',

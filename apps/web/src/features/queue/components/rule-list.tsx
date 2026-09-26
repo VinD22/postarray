@@ -62,10 +62,7 @@ export function QueueRuleList({
 
   if (rules.length === 0) {
     return (
-      <EmptyState
-        title={t.full('queue.rules.heading')}
-        description={t.full('queue.rules.empty')}
-      />
+      <EmptyState title={t.full('queue.rules.heading')} description={t.full('queue.rules.empty')} />
     );
   }
 

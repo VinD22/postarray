@@ -18,11 +18,7 @@ import {
 } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
-import {
-  sortChannelRollups,
-  type ChannelRollup,
-  type ChannelSortKey,
-} from '../channels';
+import { sortChannelRollups, type ChannelRollup, type ChannelSortKey } from '../channels';
 import { providerLabelKey } from '../labels';
 import { metricLabelKey } from '../metrics';
 import type { ChannelRollup as Rollup } from '../channels';
@@ -67,11 +63,7 @@ export function ChannelTable({
 
   const sorted = useMemo(
     () =>
-      sortChannelRollups(
-        rollups,
-        sortKey,
-        direction === 'ascending' ? 'ascending' : 'descending',
-      ),
+      sortChannelRollups(rollups, sortKey, direction === 'ascending' ? 'ascending' : 'descending'),
     [rollups, sortKey, direction],
   );
 

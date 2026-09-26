@@ -117,14 +117,14 @@ export class RealtimeHub {
       return;
     }
     this.#rooms.delete(workspaceId);
-    void this.#options.subscriber.unsubscribe(realtimeChannel(workspaceId)).catch(
-      (error: unknown) => {
+    void this.#options.subscriber
+      .unsubscribe(realtimeChannel(workspaceId))
+      .catch((error: unknown) => {
         this.#options.logger.warn(
           { workspaceId, error: String(error) },
           'realtime.unsubscribe_failed',
         );
-      },
-    );
+      });
   }
 
   async #deliver(channel: string, eventId: string): Promise<void> {

@@ -207,11 +207,7 @@ export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(functi
   return (
     <td
       ref={ref}
-      className={cn(
-        'px-3 py-2 align-middle',
-        numeric ? 'num text-end' : 'text-start',
-        className,
-      )}
+      className={cn('px-3 py-2 align-middle', numeric ? 'num text-end' : 'text-start', className)}
       {...props}
     />
   );

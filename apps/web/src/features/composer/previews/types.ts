@@ -9,12 +9,7 @@
  */
 
 import type { ReactNode } from 'react';
-import type {
-  CapabilitySupport,
-  ContentKind,
-  MediaKind,
-  ProviderId,
-} from '@relay/contracts';
+import type { CapabilitySupport, ContentKind, MediaKind, ProviderId } from '@relay/contracts';
 import type { MessageKey } from '@relay/i18n';
 
 export type PreviewDevice = 'mobile' | 'desktop';

@@ -66,7 +66,10 @@ describe('resolveSiteOrigin in production', () => {
 
   it('still refuses a localhost origin that arrived through the host', () => {
     expect(() =>
-      resolveSiteOrigin({ NODE_ENV: 'production', VERCEL_PROJECT_PRODUCTION_URL: 'localhost:3000' }),
+      resolveSiteOrigin({
+        NODE_ENV: 'production',
+        VERCEL_PROJECT_PRODUCTION_URL: 'localhost:3000',
+      }),
     ).toThrow(/localhost/);
   });
 

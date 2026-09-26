@@ -64,8 +64,7 @@ export const connectionMessages = withHebrewPluralForms({
   'connection.oauth.claimComplete': 'Selected accounts are connected',
   'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts': 'לא ניתן לחבר חשבונות בכניסה זו {provider}. {reason}',
-  'connection.oauth.noEligibleAccountsShort':
-    'אי אפשר לחבר אף חשבון מהתחברות {provider} הזו.',
+  'connection.oauth.noEligibleAccountsShort': 'אי אפשר לחבר אף חשבון מהתחברות {provider} הזו.',
   'connection.oauth.claimFailed': 'לא הצלחנו לחבר את החשבונות האלה',
   'connection.oauth.claimFailedAction':
     'שום דבר לא השתנה בפלטפורמה. נסו שוב, ואם זה ממשיך להיכשל, התחילו את החיבור מחדש.',

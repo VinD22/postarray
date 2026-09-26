@@ -41,9 +41,7 @@ export function AccountMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        className="hover:bg-surface-hover flex size-11 items-center justify-center rounded-md md:size-9"
-      >
+      <DropdownMenuTrigger className="hover:bg-surface-hover flex size-11 items-center justify-center rounded-md md:size-9">
         <Avatar
           alt={session.user.name}
           src={session.user.avatarUrl ?? undefined}

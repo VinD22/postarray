@@ -653,7 +653,8 @@ export const webAnalyticsMessages = {
     '{condition} wurde nicht bestanden, daher wurde die Regel hier gestoppt',
   'automation.test.actionSimulated': '{action} würde ausgeführt',
   'automation.test.actionSkipped': '{action} würde übersprungen: {reason}',
-  'automation.test.noExternalEffect': 'Während dieses Tests ist nichts von Post Array übrig geblieben.',
+  'automation.test.noExternalEffect':
+    'Während dieses Tests ist nichts von Post Array übrig geblieben.',
   'automation.test.failed': 'Der Test konnte nicht abgeschlossen werden: {reason}',
 
   'automation.runs.table.caption': 'Aktuelle Ausführungen dieser Regel.',

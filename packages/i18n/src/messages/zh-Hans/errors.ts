@@ -44,8 +44,7 @@ export const errorMessages = {
   'error.subscription_past_due.action': '更新 Polar 门户中的付款方式。',
   'error.trial_expired.message': '试验于 {date} 结束。',
   'error.trial_expired.action': '开始订阅以继续发布。',
-  'error.post_credits_exhausted.message':
-    '此工作区已用完所有免费发布次数。其他功能仍可正常使用。',
+  'error.post_credits_exhausted.message': '此工作区已用完所有免费发布次数。其他功能仍可正常使用。',
   'error.post_credits_exhausted.action':
     '选择一个方案即可继续发布。你的账号仍保持连接，草稿和排期都会保留。',
   'error.entitlement_missing.message': '此工作区无权访问该功能。',

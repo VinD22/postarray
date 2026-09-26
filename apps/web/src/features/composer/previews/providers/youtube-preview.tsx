@@ -33,7 +33,10 @@ export function YouTubePreview({ model, device }: PreviewProps): ReactNode {
   return (
     <PreviewFrame model={model} device={device} providerName={NAME}>
       {first ? (
-        <PreviewThumbnail media={first} className={short ? 'aspect-[9/16] w-full' : 'aspect-video w-full'} />
+        <PreviewThumbnail
+          media={first}
+          className={short ? 'aspect-[9/16] w-full' : 'aspect-video w-full'}
+        />
       ) : (
         <p className="text-body-sm text-text-tertiary">
           {t.full('composerWeb.preview.media.none')}

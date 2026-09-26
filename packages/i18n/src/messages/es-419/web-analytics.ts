@@ -330,7 +330,8 @@ export const webAnalyticsMessages = {
     'Debe ser una dirección https pública. El servicio de redireccionamiento rechaza las direcciones de red privadas y las cadenas de redireccionamiento.',
   'analytics.links.createCampaign': 'Nombre de la campaña',
   'analytics.links.createSlug': 'Final personalizado',
-  'analytics.links.createSlugHelp': 'Deje esto vacío y Post Array generará un final aleatorio corto.',
+  'analytics.links.createSlugHelp':
+    'Deje esto vacío y Post Array generará un final aleatorio corto.',
   'analytics.links.createUtm': 'Parámetros UTM',
   'analytics.links.blockedScheme': 'Sólo se aceptan destinos https.',
   'analytics.links.blockedPrivate':

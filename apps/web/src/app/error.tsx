@@ -43,9 +43,7 @@ export default function RouteError({
 }) {
   const pathname = usePathname();
   const locale = localeFromPathname(pathname);
-  const [translator, setTranslator] = useState<Translator>(() =>
-    createTranslator(locale, en),
-  );
+  const [translator, setTranslator] = useState<Translator>(() => createTranslator(locale, en));
 
   useEffect(() => {
     let mounted = true;

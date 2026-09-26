@@ -2,8 +2,7 @@
 export const digestMessages = {
   'digest.title': 'Esta semana',
   'digest.subtitle': 'Lo que podemos ver del {windowStart} al {windowEnd}.',
-  'digest.empty':
-    'Todavía no hay nada que resumir esta semana. Publica algo y aparecerá aquí.',
+  'digest.empty': 'Todavía no hay nada que resumir esta semana. Publica algo y aparecerá aquí.',
   'digest.regenerate': 'Reconstruir el resumen de esta semana',
   'digest.generating': 'Creando el resumen de esta semana',
   'digest.source.deterministic':
@@ -16,8 +15,7 @@ export const digestMessages = {
     'La versión del asistente no coincidía con tus datos y se descartó. Esta es la versión básica.',
   'digest.headline.published':
     '{published, plural, =0 {No se completaron publicaciones} one {Se completó # publicación} other {Se completaron # publicaciones}} entre {windowStart} y {windowEnd}.',
-  'digest.headline.nothingPublished':
-    'No se publicó nada entre {windowStart} y {windowEnd}.',
+  'digest.headline.nothingPublished': 'No se publicó nada entre {windowStart} y {windowEnd}.',
   'digest.outcome.published':
     '{count, plural, one {# publicación se completó en {provider}} many {# publicaciones se completaron en {provider}} other {# publicaciones se completaron en {provider}}}.',
   'digest.outcome.partial':

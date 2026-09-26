@@ -93,7 +93,13 @@ describe('path', () => {
     // Two subpaths, so two move commands: the gap is a real break.
     expect(d.match(/M/g)).toHaveLength(2);
     expect(d).not.toContain('10,'.replace(',', ' '));
-    expect(drawableRuns([{ x: 0, y: 1 }, { x: 1, y: null }, { x: 2, y: 3 }])).toHaveLength(2);
+    expect(
+      drawableRuns([
+        { x: 0, y: 1 },
+        { x: 1, y: null },
+        { x: 2, y: 3 },
+      ]),
+    ).toHaveLength(2);
   });
 
   it('never substitutes zero for a missing reading', () => {

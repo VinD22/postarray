@@ -1,5 +1,9 @@
 import {
-  MAX_SCHEDULE_HORIZON_DAYS, pauseRefusal, scheduleSpecSchema, type ScheduleSpec } from '@relay/contracts';
+  MAX_SCHEDULE_HORIZON_DAYS,
+  pauseRefusal,
+  scheduleSpecSchema,
+  type ScheduleSpec,
+} from '@relay/contracts';
 
 import type { ActorContext, ServiceDeps } from '../types';
 import type { PublishJobView } from '../views';

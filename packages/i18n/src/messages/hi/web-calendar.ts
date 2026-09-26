@@ -381,7 +381,8 @@ export const webCalendarMessages = {
   'web.connection.requirement.generic':
     'आपको इस खाते पर पोस्ट करने के लिए प्लेटफ़ॉर्म से ही अनुमति की आवश्यकता है। Post Array इसे प्रदान नहीं कर सकता।',
 
-  'web.connection.purpose.publish': 'Post Array में आपके द्वारा शेड्यूल किए गए पोस्ट प्रकाशित करना।',
+  'web.connection.purpose.publish':
+    'Post Array में आपके द्वारा शेड्यूल किए गए पोस्ट प्रकाशित करना।',
   'web.connection.purpose.readPosts':
     'Post Array द्वारा प्रकाशित एक पोस्ट को दोबारा पढ़ना, ताकि रसीद यह साबित कर सके कि यह लाइव है।',
   'web.connection.purpose.identity':

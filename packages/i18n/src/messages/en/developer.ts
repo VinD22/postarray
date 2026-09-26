@@ -219,8 +219,7 @@ export const developerMessages = {
     'publish now. Risk: consequential. Requires --confirm, --idempotency-key and posts:publish',
   'cli.help.posts.confirm': 'explicit human confirmation for immediate publication',
   'cli.help.posts.status': 'publish job state, attempts and receipt. Risk: read',
-  'cli.help.posts.cancel':
-    'cancel a scheduled job. Risk: consequential. Requires posts:cancel',
+  'cli.help.posts.cancel': 'cancel a scheduled job. Risk: consequential. Requires posts:cancel',
   'cli.help.posts.list': 'content items in this workspace. Risk: read',
   'cli.help.events.watch':
     'what has happened in this workspace recently. Risk: read. With --follow it streams one JSON object per line and does not return',
@@ -245,8 +244,7 @@ export const developerMessages = {
   'cli.help.growth.planExport': 'export a plan. Risk: read',
   'cli.help.growth.format': 'export format',
   'cli.help.rules.list': 'rules and their limits. Risk: read',
-  'cli.help.rules.test':
-    'test run against a sample event. Performs no external action. Risk: read',
+  'cli.help.rules.test': 'test run against a sample event. Performs no external action. Risk: read',
   'cli.help.links.create':
     'mint a tracked short link. Risk: reversible. Requires --idempotency-key',
   'cli.help.links.stats': 'first-party redirect measurements. Risk: read',

@@ -110,9 +110,7 @@ export function LineChart({
 
   const allValues = drawn.flatMap((one) => one.points.map((point) => point.v));
   const extent = valueExtent(allValues);
-  const anyGap = drawn.some((one) =>
-    hasGap(one.points.map((point) => ({ x: 0, y: point.v }))),
-  );
+  const anyGap = drawn.some((one) => hasGap(one.points.map((point) => ({ x: 0, y: point.v }))));
 
   const tableRows: readonly ChartTableRow[] = times.map((time) => {
     const iso = new Date(time).toISOString();
@@ -172,10 +170,7 @@ export function LineChart({
           [times[0] as number, times[times.length - 1] as number],
           [layout.margin.left, layout.margin.left + layout.innerWidth],
         );
-        const y = linearScale(yDomain, [
-          layout.margin.top + layout.innerHeight,
-          layout.margin.top,
-        ]);
+        const y = linearScale(yDomain, [layout.margin.top + layout.innerHeight, layout.margin.top]);
         // The overlay tracks the first series, which is the subject. Points
         // from a comparison series are in the table, where they belong: two
         // overlapping hit-target columns would fight for the same keystroke.
@@ -202,10 +197,7 @@ export function LineChart({
           [times[0] as number, times[times.length - 1] as number],
           [layout.margin.left, layout.margin.left + layout.innerWidth],
         );
-        const y = linearScale(yDomain, [
-          layout.margin.top + layout.innerHeight,
-          layout.margin.top,
-        ]);
+        const y = linearScale(yDomain, [layout.margin.top + layout.innerHeight, layout.margin.top]);
 
         return (
           <>
@@ -235,8 +227,7 @@ export function LineChart({
                 x: x.map(Date.parse(point.t)),
                 y: point.v === null ? null : y.map(point.v),
               }));
-              const dash =
-                one.dash === 'dashed' ? (DASH_ARRAY[1] as string) : DASH_ARRAY[index];
+              const dash = one.dash === 'dashed' ? (DASH_ARRAY[1] as string) : DASH_ARRAY[index];
               return (
                 <path
                   key={one.id}

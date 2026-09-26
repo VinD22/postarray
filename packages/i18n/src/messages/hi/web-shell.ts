@@ -178,7 +178,8 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak':
     'आपकी सुरक्षा के लिए हम यह नहीं कहते कि कोई पता पंजीकृत है या नहीं।',
   'auth.failure.provider': 'The sign in with {provider} did not complete. Nothing was changed.',
-  'auth.failure.network': 'हम Post Array तक नहीं पहुंच सके। अपना कनेक्शन जांचें और पुनः प्रयास करें।',
+  'auth.failure.network':
+    'हम Post Array तक नहीं पहुंच सके। अपना कनेक्शन जांचें और पुनः प्रयास करें।',
   'auth.signUp.emailInUseNote':
     'यदि इस पते पर पहले से ही एक खाता है, तो हम दूसरा खाता बनाने के बजाय एक साइन इन लिंक ईमेल करते हैं।',
   'auth.legal.readTerms': 'शर्तें पढ़ें',

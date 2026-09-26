@@ -38,8 +38,7 @@ export const digestMessages = {
     'Krótki e-mail co tydzień z informacją o tym, co opublikowano i co udało się zmierzyć. Domyślnie włączone.',
   'digest.settings.enabled': 'Wysyłaj cotygodniowe podsumowanie',
   'email.digest.subject': 'Twój tydzień w {workspaceName}',
-  'email.digest.intro':
-    'Oto, co widzimy dla {workspaceName} między {windowStart} a {windowEnd}.',
+  'email.digest.intro': 'Oto, co widzimy dla {workspaceName} między {windowStart} a {windowEnd}.',
   'email.digest.noData':
     'W tym tygodniu nie udało nam się niczego zmierzyć. Brak liczby oznacza, że nie mogliśmy jej odczytać, a nie że wynosiła zero.',
   'email.digest.footer':

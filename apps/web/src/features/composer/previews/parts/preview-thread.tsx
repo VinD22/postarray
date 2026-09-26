@@ -50,9 +50,7 @@ export function PreviewThread({ items, maxItems, providerName }: PreviewThreadPr
                 {sent ? null : <span>{t.full('composerWeb.preview.notSent.item')}</span>}
               </p>
               <p className="text-body-sm text-text-primary mt-1 whitespace-pre-wrap">
-                {item.text.length > 0
-                  ? item.text
-                  : t.full('composerWeb.preview.empty')}
+                {item.text.length > 0 ? item.text : t.full('composerWeb.preview.empty')}
               </p>
             </li>
           );

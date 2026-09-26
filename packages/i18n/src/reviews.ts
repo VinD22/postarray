@@ -55,13 +55,7 @@ export interface LocaleReview {
 }
 
 export type LocaleReviewArea =
-  | 'catalog'
-  | 'editorial'
-  | 'seo'
-  | 'legal'
-  | 'billing'
-  | 'security'
-  | 'accessibility';
+  'catalog' | 'editorial' | 'seo' | 'legal' | 'billing' | 'security' | 'accessibility';
 
 export interface LocaleReviewApproval {
   readonly area: LocaleReviewArea;
