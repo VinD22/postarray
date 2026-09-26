@@ -180,9 +180,24 @@ describe('ErrorState', () => {
 
 describe('PartialSuccessNotice', () => {
   const targets = [
-    { id: 't1', account: '@postarray on Mastodon', outcome: 'succeeded' as const, detail: 'View post' },
-    { id: 't2', account: '@postarray on Bluesky', outcome: 'succeeded' as const, detail: 'View post' },
-    { id: 't3', account: '@postarray on Instagram', outcome: 'failed' as const, detail: 'The token expired.' },
+    {
+      id: 't1',
+      account: '@postarray on Mastodon',
+      outcome: 'succeeded' as const,
+      detail: 'View post',
+    },
+    {
+      id: 't2',
+      account: '@postarray on Bluesky',
+      outcome: 'succeeded' as const,
+      detail: 'View post',
+    },
+    {
+      id: 't3',
+      account: '@postarray on Instagram',
+      outcome: 'failed' as const,
+      detail: 'The token expired.',
+    },
   ];
 
   const base = {
@@ -242,7 +257,8 @@ describe('PartialSuccessNotice', () => {
 describe('OfflineBanner', () => {
   const base = {
     title: 'The connection dropped',
-    description: 'Drafts still save on this device. Scheduling and publishing wait for the network.',
+    description:
+      'Drafts still save on this device. Scheduling and publishing wait for the network.',
   };
 
   it('is a polite status, never an alert', () => {

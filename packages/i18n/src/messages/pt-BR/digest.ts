@@ -16,8 +16,7 @@ export const digestMessages = {
     'A versão do assistente não correspondeu aos seus dados e foi descartada. Esta é a versão simples.',
   'digest.headline.published':
     '{published, plural, =0 {Nenhuma publicação foi concluída} one {# publicação foi concluída} other {# publicações foram concluídas}} entre {windowStart} e {windowEnd}.',
-  'digest.headline.nothingPublished':
-    'Nada foi publicado entre {windowStart} e {windowEnd}.',
+  'digest.headline.nothingPublished': 'Nada foi publicado entre {windowStart} e {windowEnd}.',
   'digest.outcome.published':
     '{count, plural, one {# publicação foi concluída em {provider}} many {# publicações foram concluídas em {provider}} other {# publicações foram concluídas em {provider}}}.',
   'digest.outcome.partial':

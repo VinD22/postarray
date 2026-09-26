@@ -147,7 +147,8 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Isang bilang ng mga kaganapan',
   'analytics.unit.seconds': 'Mga segundo',
   'analytics.unit.percent': 'Isang porsyento na nakalkula na ng provider',
-  'analytics.unit.ratio': 'Isang ratio na Post Array na kinakalkula mula sa dalawang field ng provider',
+  'analytics.unit.ratio':
+    'Isang ratio na Post Array na kinakalkula mula sa dalawang field ng provider',
   'analytics.unit.currency_minor': 'Isang halaga ng pera sa mga menor de edad na yunit',
 
   'analytics.denominator.none': 'Ito ay isang bilang, hindi isang rate. Wala itong denominator.',

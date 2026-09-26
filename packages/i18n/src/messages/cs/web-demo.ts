@@ -50,7 +50,8 @@ export const webDemoMessages = {
   'web.demo.hero.viewCta': 'Podívat se na demo',
   'web.demo.hero.projectsLine':
     'Jeden účet spravuje více podniků. Každý projekt je samostatný podnik s vlastními připojenými účty, vlastním kalendářem a vlastním schvalováním a přepínáte mezi nimi z jediné nabídky, jako se přepíná služba ve vyhledávací konzoli.',
-  'web.demo.hero.projectsChip': '{count, plural, one {# účet} few {# účty} many {# účtu} other {# účtů}}',
+  'web.demo.hero.projectsChip':
+    '{count, plural, one {# účet} few {# účty} many {# účtu} other {# účtů}}',
   'web.demo.hero.caption':
     'Jeden koncept se stane verzí pro každou platformu, dostane čas a přistane v týdnu. Ukázkový obsah, ne živý účet.',
   'web.demo.hero.more': 'Projděte si celý pracovní postup',

@@ -93,9 +93,7 @@ const persistence = wf.proxyActivities<
 
 const mediaProxy = wf.proxyActivities<
   Group<'prepareTargetMedia' | 'produceMediaDerivative' | 'scanMediaAsset'>
->(
-  toTemporalActivityOptions(ACTIVITY_OPTIONS.prepareMedia),
-);
+>(toTemporalActivityOptions(ACTIVITY_OPTIONS.prepareMedia));
 
 const publishProxy = wf.proxyActivities<Group<'publishTarget' | 'publishSequenceItem'>>(
   toTemporalActivityOptions(ACTIVITY_OPTIONS.publish),

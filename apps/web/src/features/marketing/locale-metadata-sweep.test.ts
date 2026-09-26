@@ -132,7 +132,12 @@ describe('locale metadata sweep', () => {
     'gives %s a self-canonical and a reciprocal cluster',
     async (locale) => {
       for (const route of SWEEP_ROUTES) {
-        const metadata = await pageMetadata(route.titleKey, route.descriptionKey, route.path, locale);
+        const metadata = await pageMetadata(
+          route.titleKey,
+          route.descriptionKey,
+          route.path,
+          locale,
+        );
         const alternates = metadata.alternates;
         const languages = alternates?.languages as Record<string, string> | undefined;
 

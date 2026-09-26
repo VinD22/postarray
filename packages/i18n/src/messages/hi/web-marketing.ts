@@ -1177,7 +1177,8 @@ export const webMarketingMessages = {
     'यह प्लेटफ़ॉर्म अपने API के माध्यम से प्रति पोस्ट गोपनीयता विकल्प प्रदान नहीं करता है।',
   'web.capabilities.note.noThumbnail':
     'यह प्लेटफ़ॉर्म अपने API के माध्यम से कस्टम थंबनेल स्वीकार नहीं करता है।',
-  'web.capabilities.note.inBuild': 'मंच यह पेशकश करता है. Post Array ने इसे अभी तक शिप नहीं किया है।',
+  'web.capabilities.note.inBuild':
+    'मंच यह पेशकश करता है. Post Array ने इसे अभी तक शिप नहीं किया है।',
   'web.capabilities.note.noCarousel': 'प्लेटफ़ॉर्म स्वाइप-कार्यशील कैरोसेल प्रदान नहीं करता।',
   'web.capabilities.note.noDisclosure':
     'प्लेटफ़ॉर्म के पास AI या व्यावसायिक सामग्री के लिए खुलासा क्षेत्र नहीं है।',

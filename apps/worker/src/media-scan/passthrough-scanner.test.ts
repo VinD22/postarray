@@ -12,7 +12,8 @@ const PNG = Buffer.from(
 
 function storageReturning(bytes: Uint8Array | Error): StoragePort {
   return {
-    read: bytes instanceof Error ? vi.fn().mockRejectedValue(bytes) : vi.fn().mockResolvedValue(bytes),
+    read:
+      bytes instanceof Error ? vi.fn().mockRejectedValue(bytes) : vi.fn().mockResolvedValue(bytes),
   } as unknown as StoragePort;
 }
 

@@ -3,7 +3,18 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { isScope, type Scope } from '@relay/contracts';
-import { Badge, Button, Code, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Separator } from '@relay/design-system/primitives';
+import {
+  Badge,
+  Button,
+  Code,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Separator,
+} from '@relay/design-system/primitives';
 import { ErrorState, LoadingState, Notice, SkeletonText } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { Check, ExternalLink, Minus } from 'lucide-react';
@@ -153,7 +164,9 @@ export function OAuthConsentScreen(): ReactNode {
       <article className="border-border-default bg-surface-raised flex flex-col gap-6 rounded-xl border p-5 sm:p-8">
         <div className="flex flex-col gap-2">
           <Badge tone="info">{t('developer.apps.consentPreviewSample')}</Badge>
-          <h1 className="text-title-lg text-text-primary">{t('developer.consent.title', { app: data.client.name })}</h1>
+          <h1 className="text-title-lg text-text-primary">
+            {t('developer.consent.title', { app: data.client.name })}
+          </h1>
           <p className="text-body-sm text-text-secondary">
             {t('developer.consent.developerIdentity', { developer: data.client.name })}
           </p>
@@ -161,13 +174,29 @@ export function OAuthConsentScreen(): ReactNode {
             <p className="text-body-sm text-warning-fg">{t('developer.consent.notFirstParty')}</p>
           ) : null}
           <div className="text-body-sm text-text-tertiary flex flex-wrap gap-x-4 gap-y-1">
-            <a className="inline-flex items-center gap-1 underline underline-offset-2" href={data.client.homepageUrl} target="_blank" rel="noreferrer noopener">
+            <a
+              className="inline-flex items-center gap-1 underline underline-offset-2"
+              href={data.client.homepageUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               {t('developer.apps.homepage')} <ExternalLink aria-hidden="true" className="size-3" />
             </a>
-            <a className="inline-flex items-center gap-1 underline underline-offset-2" href={data.client.privacyPolicyUrl} target="_blank" rel="noreferrer noopener">
-              {t('developer.apps.privacyUrl')} <ExternalLink aria-hidden="true" className="size-3" />
+            <a
+              className="inline-flex items-center gap-1 underline underline-offset-2"
+              href={data.client.privacyPolicyUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {t('developer.apps.privacyUrl')}{' '}
+              <ExternalLink aria-hidden="true" className="size-3" />
             </a>
-            <a className="inline-flex items-center gap-1 underline underline-offset-2" href={data.client.termsUrl} target="_blank" rel="noreferrer noopener">
+            <a
+              className="inline-flex items-center gap-1 underline underline-offset-2"
+              href={data.client.termsUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               {t('developer.apps.termsUrl')} <ExternalLink aria-hidden="true" className="size-3" />
             </a>
           </div>
@@ -177,18 +206,30 @@ export function OAuthConsentScreen(): ReactNode {
 
         <section className="flex flex-col gap-3" aria-labelledby="consent-workspace-heading">
           <div>
-            <h2 id="consent-workspace-heading" className="text-body-md text-text-primary font-medium">
+            <h2
+              id="consent-workspace-heading"
+              className="text-body-md text-text-primary font-medium"
+            >
               {t('developer.consent.selectWorkspace')}
             </h2>
-            <p className="text-body-sm text-text-secondary">{t('developer.consent.workspaceHelp')}</p>
+            <p className="text-body-sm text-text-secondary">
+              {t('developer.consent.workspaceHelp')}
+            </p>
           </div>
           {noWorkspace ? (
-            <Notice tone="warning" title={t('error.workspace_not_found.message')} description={t('error.workspace_not_found.action')} />
+            <Notice
+              tone="warning"
+              title={t('error.workspace_not_found.message')}
+              description={t('error.workspace_not_found.action')}
+            />
           ) : (
             <div className="flex max-w-xl flex-col gap-2">
               <Label htmlFor="oauth-consent-workspace">{t('developer.consent.workspace')}</Label>
               <Select value={selectedWorkspaceId} onValueChange={setWorkspaceId}>
-                <SelectTrigger id="oauth-consent-workspace" aria-label={t('developer.consent.workspace')}>
+                <SelectTrigger
+                  id="oauth-consent-workspace"
+                  aria-label={t('developer.consent.workspace')}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -207,14 +248,20 @@ export function OAuthConsentScreen(): ReactNode {
           <dt className="text-label text-text-tertiary">{t('developer.consent.projects')}</dt>
           <dd className="text-body-md text-text-primary">{t('common.all')}</dd>
           <dt className="text-label text-text-tertiary">{t('developer.consent.clientId')}</dt>
-          <dd className="text-body-md text-text-primary"><Code>{data.client.clientId}</Code></dd>
+          <dd className="text-body-md text-text-primary">
+            <Code>{data.client.clientId}</Code>
+          </dd>
         </dl>
 
         <Separator />
 
         <section className="flex flex-col gap-4">
-          <h2 className="text-body-md text-text-primary font-medium">{t('developer.consent.willBeAbleTo', { app: data.client.name })}</h2>
-          {groups.length === 0 ? <p className="text-body-md text-text-secondary">{t('common.none')}</p> : null}
+          <h2 className="text-body-md text-text-primary font-medium">
+            {t('developer.consent.willBeAbleTo', { app: data.client.name })}
+          </h2>
+          {groups.length === 0 ? (
+            <p className="text-body-md text-text-secondary">{t('common.none')}</p>
+          ) : null}
           {groups.map((group) => (
             <div key={group.risk} className="flex flex-col gap-1">
               <p className="text-label text-text-tertiary">{t(group.titleKey)}</p>
@@ -229,13 +276,17 @@ export function OAuthConsentScreen(): ReactNode {
                   </li>
                 ))}
               </ul>
-              {group.risk === 'consequential' ? <p className="text-body-sm text-warning-fg">{t(group.helpKey)}</p> : null}
+              {group.risk === 'consequential' ? (
+                <p className="text-body-sm text-warning-fg">{t(group.helpKey)}</p>
+              ) : null}
             </div>
           ))}
         </section>
 
         <section className="flex flex-col gap-1">
-          <h2 className="text-body-md text-text-primary font-medium">{t('developer.consent.willNotBeAbleTo', { app: data.client.name })}</h2>
+          <h2 className="text-body-md text-text-primary font-medium">
+            {t('developer.consent.willNotBeAbleTo', { app: data.client.name })}
+          </h2>
           <ul className="flex flex-col gap-1">
             {withheld.map((scope) => (
               <li key={scope} className="text-body-md text-text-secondary flex items-start gap-2">
@@ -252,7 +303,13 @@ export function OAuthConsentScreen(): ReactNode {
           description={t('developer.consent.approvalLevel', { level: approvalLevel })}
         />
         <p className="text-body-sm text-text-secondary">{t('developer.consent.revokeAnyTime')}</p>
-        {decisionError !== null ? <Notice tone="destructive" title={t('developer.consent.errorTitle')} description={t('error.internal.action')} /> : null}
+        {decisionError !== null ? (
+          <Notice
+            tone="destructive"
+            title={t('developer.consent.errorTitle')}
+            description={t('error.internal.action')}
+          />
+        ) : null}
 
         <div className="flex flex-wrap items-center gap-2">
           <Button

@@ -1185,7 +1185,8 @@ export const webMarketingMessages = {
     'Denna plattform erbjuder inte ett sekretessalternativ per post via sitt API.',
   'web.capabilities.note.noThumbnail':
     'Den här plattformen accepterar inte en anpassad miniatyrbild via sitt API.',
-  'web.capabilities.note.inBuild': 'Plattformen erbjuder detta. Post Array har inte skickat den än.',
+  'web.capabilities.note.inBuild':
+    'Plattformen erbjuder detta. Post Array har inte skickat den än.',
   'web.capabilities.note.noCarousel': 'Plattformen erbjuder ingen svepbar karusell.',
   'web.capabilities.note.noDisclosure':
     'Plattformen har inget fält för avslöjande av AI- eller kommersiellt innehåll.',

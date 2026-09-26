@@ -63,8 +63,7 @@ const DEFAULT_TICK_COUNT = 5;
  * because there is only one value to move.
  */
 export function linearScale(domain: Extent, range: Extent): NumericScale {
-  const safeDomain: Extent =
-    domain[0] === domain[1] ? [domain[0] - 0.5, domain[1] + 0.5] : domain;
+  const safeDomain: Extent = domain[0] === domain[1] ? [domain[0] - 0.5, domain[1] + 0.5] : domain;
   const scale = scaleLinear().domain([safeDomain[0], safeDomain[1]]).range([range[0], range[1]]);
 
   return {
@@ -100,11 +99,7 @@ export function timeScale(domain: Extent, range: Extent): NumericScale {
 }
 
 /** A band scale. `padding` is the share of each step left as a gap, 0 to 1. */
-export function bandScale(
-  domain: readonly string[],
-  range: Extent,
-  padding = 0.2,
-): BandScale {
+export function bandScale(domain: readonly string[], range: Extent, padding = 0.2): BandScale {
   const scale = scaleBand<string>()
     .domain([...domain])
     .range([range[0], range[1]])

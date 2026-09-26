@@ -426,7 +426,8 @@ export const webAnalyticsMessages = {
     'Must be a public https address. Private network addresses and redirect chains are rejected by the redirect service.',
   'analytics.links.createCampaign': 'Campaign name',
   'analytics.links.createSlug': 'Custom ending',
-  'analytics.links.createSlugHelp': 'Leave this empty and Post Array generates a short random ending.',
+  'analytics.links.createSlugHelp':
+    'Leave this empty and Post Array generates a short random ending.',
   'analytics.links.createUtm': 'UTM parameters',
   'analytics.links.blockedScheme': 'Only https destinations are accepted.',
   'analytics.links.blockedPrivate':

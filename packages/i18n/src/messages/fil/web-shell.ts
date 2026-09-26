@@ -144,7 +144,8 @@ export const webShellMessages = {
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'Manage or cancel',
   'home.error.title': 'Hindi makapag-load ang bahay',
-  'home.error.body': 'Ang iyong workspace ay buo. Ito ay isang problema sa pag-abot sa Post Array API.',
+  'home.error.body':
+    'Ang iyong workspace ay buo. Ito ay isang problema sa pag-abot sa Post Array API.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title':

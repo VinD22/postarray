@@ -111,27 +111,27 @@ export function DraftsList() {
               {online ? t('home.v2.drafts.staleBody') : t('home.v2.drafts.offlineBody')}
             </Notice>
           ) : null}
-        <ol className="border-border-subtle border-t">
-          {drafts.map((draft) => {
-            const title = draft.title.trim() || draft.body.trim();
-            return (
-              <li
-                key={draft.id}
-                className="border-border-subtle flex flex-col gap-1.5 border-b py-4"
-              >
-                <Link
-                  href={`/compose?contentItemId=${encodeURIComponent(draft.id)}`}
-                  className="text-body-lg text-text-primary w-fit max-w-full truncate font-medium hover:underline"
+          <ol className="border-border-subtle border-t">
+            {drafts.map((draft) => {
+              const title = draft.title.trim() || draft.body.trim();
+              return (
+                <li
+                  key={draft.id}
+                  className="border-border-subtle flex flex-col gap-1.5 border-b py-4"
                 >
-                  {title === '' ? t('home.v2.drafts.untitled') : title}
-                </Link>
-                <time dateTime={draft.updatedAt} className="text-label text-text-tertiary">
-                  {t('home.v2.drafts.edited', { time: format.dateTime(draft.updatedAt) })}
-                </time>
-              </li>
-            );
-          })}
-        </ol>
+                  <Link
+                    href={`/compose?contentItemId=${encodeURIComponent(draft.id)}`}
+                    className="text-body-lg text-text-primary w-fit max-w-full truncate font-medium hover:underline"
+                  >
+                    {title === '' ? t('home.v2.drafts.untitled') : title}
+                  </Link>
+                  <time dateTime={draft.updatedAt} className="text-label text-text-tertiary">
+                    {t('home.v2.drafts.edited', { time: format.dateTime(draft.updatedAt) })}
+                  </time>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       )}
     </HomeSection>

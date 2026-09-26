@@ -49,8 +49,9 @@ export const webDemoMessages = {
 
   'web.demo.hero.viewCta': 'Guarda la demo',
   'web.demo.hero.projectsLine':
-    'Un solo account gestisce più attività. Ogni progetto è un\'attività a sé, con i propri account collegati, il proprio calendario e le proprie approvazioni, e passi dall\'uno all\'altro da un unico menu, come si cambia proprietà in una console di ricerca.',
-  'web.demo.hero.projectsChip': '{count, plural, one {# account} many {# account} other {# account}}',
+    "Un solo account gestisce più attività. Ogni progetto è un'attività a sé, con i propri account collegati, il proprio calendario e le proprie approvazioni, e passi dall'uno all'altro da un unico menu, come si cambia proprietà in una console di ricerca.",
+  'web.demo.hero.projectsChip':
+    '{count, plural, one {# account} many {# account} other {# account}}',
   'web.demo.hero.caption':
     'Una bozza diventa una versione per piattaforma, riceve un orario, e atterra sulla settimana. Contenuti di esempio, non un account reale.',
   'web.demo.hero.more': "Percorri l'intero flusso di lavoro",

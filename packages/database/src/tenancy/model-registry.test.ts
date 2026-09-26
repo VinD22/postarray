@@ -20,10 +20,11 @@ import { GLOBAL_MODELS, TENANT_MODELS } from './model-registry';
  * exists to record. It only insists that somebody made the decision.
  */
 describe('model registry completeness', () => {
-  const schemaModels = Prisma.dmmf.datamodel.models.map((model) =>
-    // The DMMF gives PascalCase model names; the registry stores Prisma delegate
-    // names, which are the same string with a lowercased first character.
-    `${model.name.charAt(0).toLowerCase()}${model.name.slice(1)}`,
+  const schemaModels = Prisma.dmmf.datamodel.models.map(
+    (model) =>
+      // The DMMF gives PascalCase model names; the registry stores Prisma delegate
+      // names, which are the same string with a lowercased first character.
+      `${model.name.charAt(0).toLowerCase()}${model.name.slice(1)}`,
   );
 
   it('classifies every model in the Prisma schema as tenant owned or global', () => {

@@ -45,4 +45,3 @@ export const digestMessages = {
   'email.digest.footer':
     'Je ontvangt dit omdat de wekelijkse samenvatting is ingeschakeld voor {workspaceName}. Schakel deze uit in de werkruimte-instellingen.',
 } as const;
-

@@ -125,7 +125,8 @@ export const webShellMessages = {
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'Kelola atau batalkan',
   'home.error.title': 'Rumah tidak dapat memuat',
-  'home.error.body': 'Ruang kerja Anda masih utuh. Ini adalah masalah saat menjangkau API Post Array.',
+  'home.error.body':
+    'Ruang kerja Anda masih utuh. Ini adalah masalah saat menjangkau API Post Array.',
   'auth.aside.title': 'Publikasikan melalui API resmi dan lihat apa yang sebenarnya terjadi.',
   'auth.aside.point.receipts':
     'Setiap publikasi menghasilkan tanda terima: siapa yang menyetujuinya, kapan dikirimkan, apa yang dikembalikan oleh platform.',
@@ -159,7 +160,8 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak':
     'Demi keselamatan Anda, kami tidak menyebutkan apakah suatu alamat terdaftar.',
   'auth.failure.provider': 'Masuk dengan {provider} tidak selesai. Tidak ada yang berubah.',
-  'auth.failure.network': 'Kami tidak dapat mencapai Post Array. Periksa koneksi Anda dan coba lagi.',
+  'auth.failure.network':
+    'Kami tidak dapat mencapai Post Array. Periksa koneksi Anda dan coba lagi.',
   'auth.signUp.emailInUseNote':
     'Jika alamat ini sudah memiliki akun, kami mengirimkan tautan masuk melalui email alih-alih membuat akun kedua.',
   'auth.legal.readTerms': 'Baca Ketentuannya',

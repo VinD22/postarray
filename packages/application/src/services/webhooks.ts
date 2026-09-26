@@ -465,10 +465,7 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
           workspaceId: actor.workspace.id,
           deliveryId,
           workflowInput: {
-            ctx: webhookWorkflowContext(
-              actor.workspace.id,
-              ctx.correlationId ?? existing.eventId,
-            ),
+            ctx: webhookWorkflowContext(actor.workspace.id, ctx.correlationId ?? existing.eventId),
             deliveryId,
             endpointId: existing.webhookEndpointId,
             eventName: existing.eventType as WebhookEventName,

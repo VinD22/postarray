@@ -24,7 +24,10 @@ import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
 import { useComposer } from '../composer-context';
-import { useRememberedTargets, useSetRememberedTargetsEnabled } from '../data/use-remembered-targets';
+import {
+  useRememberedTargets,
+  useSetRememberedTargetsEnabled,
+} from '../data/use-remembered-targets';
 import type { SeededTargets } from '../data/use-seed-remembered-targets';
 
 export interface RememberTargetsRowProps {
@@ -123,7 +126,11 @@ export function RememberTargetsRow({ projectId, seeded }: RememberTargetsRowProp
 
       {/* What the composer restored, and what it deliberately did not. */}
       {seeded.noticeKey === null ? null : seeded.droppedConnectionIds.length === 0 ? (
-        <p className="text-body-sm text-text-tertiary" role="status" data-testid="remembered-targets-notice">
+        <p
+          className="text-body-sm text-text-tertiary"
+          role="status"
+          data-testid="remembered-targets-notice"
+        >
           {t.full(seeded.noticeKey, { count: seeded.count })}
         </p>
       ) : (

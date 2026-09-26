@@ -32,11 +32,7 @@ export function auditCatalog(
     missingKeys,
     allowedFallbackKeys,
     undeclaredMissingKeys,
-    englishPassThroughKeys: findEnglishPassThroughKeys(
-      catalog,
-      reference,
-      isEnglishFallbackKey,
-    ),
+    englishPassThroughKeys: findEnglishPassThroughKeys(catalog, reference, isEnglishFallbackKey),
   };
 }
 

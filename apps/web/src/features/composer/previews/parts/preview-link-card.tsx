@@ -40,9 +40,7 @@ export function PreviewLinkCard({ link, presentation }: PreviewLinkCardProps): R
         <Link2 aria-hidden className="size-3.5" />
         <span className="truncate">{link.domain}</span>
       </p>
-      {link.title === null ? null : (
-        <p className="text-body-md text-text-primary">{link.title}</p>
-      )}
+      {link.title === null ? null : <p className="text-body-md text-text-primary">{link.title}</p>}
       {link.description === null ? null : (
         <p className="text-body-sm text-text-secondary">{link.description}</p>
       )}

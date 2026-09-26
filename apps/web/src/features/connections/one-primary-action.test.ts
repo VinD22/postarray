@@ -5,7 +5,12 @@ import { describe, expect, it } from 'vitest';
 // The connections screen allows exactly one vermilion action: the page
 // header's "Connect an account". Rows, notices and the empty state stay
 // secondary. Dialogs are separate surfaces and may own their own primary.
-const DIALOG_FILES = new Set(['connection-groups.tsx', 'connect-dialog.tsx', 'permissions-sheet.tsx', 'oauth-account-selection.tsx']);
+const DIALOG_FILES = new Set([
+  'connection-groups.tsx',
+  'connect-dialog.tsx',
+  'permissions-sheet.tsx',
+  'oauth-account-selection.tsx',
+]);
 
 function filledButtons(file: string): number {
   const source = readFileSync(join(__dirname, file), 'utf8');

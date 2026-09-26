@@ -87,9 +87,7 @@ export function PreviewText({
         the visual truncation the platform applies, not about withholding the
         text from anybody.
       */}
-      {expanded ? null : (
-        <VisuallyHidden>{text}</VisuallyHidden>
-      )}
+      {expanded ? null : <VisuallyHidden>{text}</VisuallyHidden>}
       <button
         type="button"
         aria-expanded={expanded}

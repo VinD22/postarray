@@ -9,11 +9,7 @@
 
 import { resolveVariant, type CapabilitySnapshot, type MediaKind } from '@relay/contracts';
 
-import {
-  findUrls,
-  mediaLimitFor,
-  resolvePublishedUrl,
-} from '../state/capability-rules';
+import { findUrls, mediaLimitFor, resolvePublishedUrl } from '../state/capability-rules';
 import type { ComposerState, TargetAccount, VariantSettings } from '../types';
 import { readPreviewCounter } from './counter';
 import { presentationFor } from './presentation-rules';
@@ -140,9 +136,7 @@ export function buildPreviewModel(input: BuildPreviewModelInput): PreviewModel {
   // counter below deliberately reads `values.body` alone, because that is what
   // `validate-draft.ts` measures, and a preview that disagreed with the thing
   // blocking the publish would be worse than no counter.
-  const text = values.signature
-    ? `${values.body}\n\n${values.signature.appliedText}`
-    : values.body;
+  const text = values.signature ? `${values.body}\n\n${values.signature.appliedText}` : values.body;
 
   const totalLimit = mediaLimitFor(snapshot, values.contentKind);
   const threadItems: PreviewThreadItem[] = values.threadItems.map((item) => ({

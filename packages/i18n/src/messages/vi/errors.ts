@@ -99,7 +99,8 @@ export const errorMessages = {
   'error.capability_unsupported.message':
     '{provider} không cung cấp tính năng này thông qua API chính thức.',
   'error.capability_unsupported.action': 'Sử dụng định dạng mà tài khoản này hỗ trợ.',
-  'error.capability_not_implemented.message': 'Post Array chưa xây dựng tính năng này cho {provider}.',
+  'error.capability_not_implemented.message':
+    'Post Array chưa xây dựng tính năng này cho {provider}.',
   'error.capability_not_implemented.action':
     'Trang khả năng liệt kê những gì mỗi trình kết nối có thể thực hiện hiện nay.',
   'error.capability_requires_review.message':

@@ -79,10 +79,13 @@ export function PreviewMedia({
       {sent.length > 0 ? (
         <ul className={cn('grid gap-1', gridClass(sent.length, single))}>
           {sent.map((file, index) => (
-            <li key={file.id} className={cn('relative', tileClass(presentation, sent.length, index, single))}>
+            <li
+              key={file.id}
+              className={cn('relative', tileClass(presentation, sent.length, index, single))}
+            >
               <PreviewThumbnail media={file} className="size-full" />
               {file.durationMs === null ? null : (
-                <Badge tone="neutral" className="absolute bottom-1 end-1">
+                <Badge tone="neutral" className="absolute end-1 bottom-1">
                   {t.full('composerWeb.preview.media.videoDuration', {
                     duration: formatDuration(t.locale, file.durationMs),
                   })}
@@ -91,7 +94,7 @@ export function PreviewMedia({
               {showsAltText && file.kind !== 'video' ? (
                 <Badge
                   tone={file.altText === null && !file.altTextWaived ? 'warning' : 'neutral'}
-                  className="absolute top-1 start-1"
+                  className="absolute start-1 top-1"
                 >
                   {file.altText !== null
                     ? t.full('composerWeb.preview.altText.present')

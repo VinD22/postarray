@@ -40,11 +40,10 @@ export interface SegmentedControlItem {
   readonly disabled?: boolean;
 }
 
-export interface SegmentedControlProps
-  extends Omit<
-    ComponentPropsWithoutRef<'div'>,
-    'children' | 'onChange' | 'defaultValue' | 'dir' | 'value'
-  > {
+export interface SegmentedControlProps extends Omit<
+  ComponentPropsWithoutRef<'div'>,
+  'children' | 'onChange' | 'defaultValue' | 'dir' | 'value'
+> {
   readonly items: readonly SegmentedControlItem[];
   readonly value: string;
   readonly onValueChange: (value: string) => void;
@@ -177,7 +176,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
             onFocus={() => {
               if (item.disabled !== true) select(item.value);
             }}
-            className={cn(segmentedItem(size, shape), fill && 'flex-1 basis-0 shrink')}
+            className={cn(segmentedItem(size, shape), fill && 'flex-1 shrink basis-0')}
           >
             {item.icon === undefined ? null : (
               <span aria-hidden="true" className="flex shrink-0 items-center">

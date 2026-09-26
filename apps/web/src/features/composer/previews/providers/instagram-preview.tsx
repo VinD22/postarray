@@ -30,7 +30,13 @@ import type { PreviewProps } from '../types';
 const NAME = PROVIDER_LABEL.instagram;
 const ACTIONS = [Heart, MessageCircle, Send, Bookmark];
 
-function CarouselDots({ ids, className }: { ids: readonly string[]; className?: string }): ReactNode {
+function CarouselDots({
+  ids,
+  className,
+}: {
+  ids: readonly string[];
+  className?: string;
+}): ReactNode {
   const t = useTranslations();
   const count = ids.length;
   if (count < 2) {

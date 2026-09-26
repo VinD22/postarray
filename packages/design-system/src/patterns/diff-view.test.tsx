@@ -25,12 +25,7 @@ const messages: DiffViewMessages = {
 describe('DiffView, whole-suggestion mode', () => {
   it('names the region and shows both columns', () => {
     render(
-      <DiffView
-        segments={segments}
-        messages={messages}
-        onAccept={vi.fn()}
-        onReject={vi.fn()}
-      />,
+      <DiffView segments={segments} messages={messages} onAccept={vi.fn()} onReject={vi.fn()} />,
     );
 
     expect(screen.getByRole('region', { name: 'Suggested rewrite' })).toBeInTheDocument();
@@ -72,12 +67,7 @@ describe('DiffView, whole-suggestion mode', () => {
     const onReject = vi.fn();
     const user = userEvent.setup();
     render(
-      <DiffView
-        segments={segments}
-        messages={messages}
-        onAccept={onAccept}
-        onReject={onReject}
-      />,
+      <DiffView segments={segments} messages={messages} onAccept={onAccept} onReject={onReject} />,
     );
 
     await user.click(screen.getByRole('button', { name: 'Accept all' }));

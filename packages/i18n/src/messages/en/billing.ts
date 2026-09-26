@@ -89,8 +89,7 @@ export const billingMessages = {
   'billing.credits.noCard': 'No card to start. Connect your accounts and publish.',
   'billing.credits.earn':
     'Refer someone or tell people about Post Array and we will add posts to this workspace by hand.',
-  'billing.credits.granted':
-    '{count, plural, one {# post added} other {# posts added}}',
+  'billing.credits.granted': '{count, plural, one {# post added} other {# posts added}}',
 
   /* The disclosure beside the pay button when there is no trial, which is the
      normal case: the products carry no trial period, so the block must say

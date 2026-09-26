@@ -146,10 +146,7 @@ function checkApproval(
 ): void {
   const reviewer = approval.reviewer.trim();
   if (reviewer.length < 2 || !HAS_LETTER.test(reviewer) || PLACEHOLDER_REVIEWER.test(reviewer)) {
-    add(
-      'approval-reviewer-missing',
-      `The ${approval.area} approval does not name a person.`,
-    );
+    add('approval-reviewer-missing', `The ${approval.area} approval does not name a person.`);
   }
   if (!ISO_DATE.test(approval.reviewedOn)) {
     add('approval-date-invalid', `The ${approval.area} approval date is not YYYY-MM-DD.`);
@@ -282,11 +279,7 @@ export function checkLocaleReview(
   }
 
   const acknowledged = new Set(review.identicalToEnglish ?? []);
-  const passThrough = findEnglishPassThroughKeys(
-    catalog,
-    sources.reference,
-    isFallbackKey,
-  );
+  const passThrough = findEnglishPassThroughKeys(catalog, sources.reference, isFallbackKey);
   const unacknowledged = passThrough.filter((key) => !acknowledged.has(key));
   if (unacknowledged.length > 0) {
     add(

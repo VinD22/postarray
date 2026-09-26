@@ -112,8 +112,7 @@ function connectionItems(
 const STUCK_SCAN_MS = 15 * 60_000;
 
 async function loadEvidence(db: Db, now: Date) {
-  const [connections, approvals, jobs, receipts, feeds, endpoints, stuckMedia] =
-    await Promise.all([
+  const [connections, approvals, jobs, receipts, feeds, endpoints, stuckMedia] = await Promise.all([
     db.socialConnection.findMany({
       where: { status: { not: 'disconnected' } },
       orderBy: { updatedAt: 'desc' },

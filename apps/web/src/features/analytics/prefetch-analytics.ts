@@ -34,10 +34,7 @@ export async function prefetchAnalyticsOverview(
     queryClient.prefetchQuery({
       queryKey: analyticsConnectionsKey(session.workspace.id, projectId),
       queryFn: () =>
-        api.connections.list(
-          { limit: 100, ...(projectId === null ? {} : { projectId }) },
-          forward,
-        ),
+        api.connections.list({ limit: 100, ...(projectId === null ? {} : { projectId }) }, forward),
     }),
     queryClient.prefetchQuery({
       queryKey: analyticsKeys.overview(input),

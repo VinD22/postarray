@@ -205,6 +205,8 @@ describe('useWebglAllowed', () => {
 
   it('is true once motion is allowed and every hardware signal clears', async () => {
     mockMotionPreference('no-preference');
+    // jsdom reports the host's CPU count, which is at most 4 on a CI runner.
+    setNavigatorHint('hardwareConcurrency', 8);
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(
       {} as unknown as RenderingContext,
     );

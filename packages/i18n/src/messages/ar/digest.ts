@@ -2,22 +2,17 @@
 export const digestMessages = {
   'digest.title': 'هذا الأسبوع',
   'digest.subtitle': 'ما يمكننا رؤيته من {windowStart} إلى {windowEnd}.',
-  'digest.empty':
-    'لا يوجد ما يمكن تلخيصه لهذا الأسبوع حتى الآن. انشر شيئًا وسيظهر هنا.',
+  'digest.empty': 'لا يوجد ما يمكن تلخيصه لهذا الأسبوع حتى الآن. انشر شيئًا وسيظهر هنا.',
   'digest.regenerate': 'إعادة إنشاء ملخص هذا الأسبوع',
   'digest.generating': 'جارٍ إنشاء ملخص هذا الأسبوع',
-  'digest.source.deterministic':
-    'كُتب من سجلات النشر والقياسات الخاصة بك، من دون مساعد الكتابة.',
-  'digest.source.ai':
-    'كتبه المساعد من سجلاتك الخاصة. تم التحقق من كل رقم بالرجوع إليها.',
-  'digest.unavailable.aiOff':
-    'مساعد الكتابة متوقف، لذلك هذه هي النسخة الأساسية. لا ينقصها شيء.',
+  'digest.source.deterministic': 'كُتب من سجلات النشر والقياسات الخاصة بك، من دون مساعد الكتابة.',
+  'digest.source.ai': 'كتبه المساعد من سجلاتك الخاصة. تم التحقق من كل رقم بالرجوع إليها.',
+  'digest.unavailable.aiOff': 'مساعد الكتابة متوقف، لذلك هذه هي النسخة الأساسية. لا ينقصها شيء.',
   'digest.unavailable.rejected':
     'لم تتطابق نسخة المساعد مع بياناتك، لذلك تم تجاهلها. هذه هي النسخة الأساسية.',
   'digest.headline.published':
     '{published, plural, =0 {لم تكتمل أي منشورات} zero {لم تكتمل أي منشورات} one {اكتمل منشور واحد} two {اكتمل منشوران} few {اكتملت # منشورات} many {اكتمل # منشورًا} other {اكتمل # منشور}} بين {windowStart} و{windowEnd}.',
-  'digest.headline.nothingPublished':
-    'لم يتم نشر أي شيء بين {windowStart} و{windowEnd}.',
+  'digest.headline.nothingPublished': 'لم يتم نشر أي شيء بين {windowStart} و{windowEnd}.',
   'digest.outcome.published':
     '{count, plural, zero {لم تكتمل أي منشورات على {provider}} one {اكتمل منشور واحد على {provider}} two {اكتمل منشوران على {provider}} few {اكتملت # منشورات على {provider}} many {اكتمل # منشورًا على {provider}} other {اكتمل # منشور على {provider}}}.',
   'digest.outcome.partial':
@@ -38,11 +33,9 @@ export const digestMessages = {
     'رسالة قصيرة كل أسبوع عمّا نُشر وما تمكنا من قياسه. مفعّل تلقائيًا.',
   'digest.settings.enabled': 'إرسال الملخص الأسبوعي',
   'email.digest.subject': 'أسبوعك في {workspaceName}',
-  'email.digest.intro':
-    'إليك ما يمكننا رؤيته في {workspaceName} بين {windowStart} و{windowEnd}.',
+  'email.digest.intro': 'إليك ما يمكننا رؤيته في {workspaceName} بين {windowStart} و{windowEnd}.',
   'email.digest.noData':
     'لم نتمكن من قياس أي شيء هذا الأسبوع. عندما يغيب رقم، فذلك لأننا لم نتمكن من قراءته، وليس لأنه كان صفرًا.',
   'email.digest.footer':
     'تصلك هذه الرسالة لأن الملخص الأسبوعي مفعّل في {workspaceName}. أوقفه من إعدادات مساحة العمل.',
 } as const;
-

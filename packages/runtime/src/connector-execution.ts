@@ -350,9 +350,7 @@ export class ConnectorExecutionGateway {
 
       return {
         status: 'executed',
-        result: publishResultSchema.parse(
-          await connector.publish({ ...request, preparedMedia }),
-        ),
+        result: publishResultSchema.parse(await connector.publish({ ...request, preparedMedia })),
       };
     } finally {
       leased.release();

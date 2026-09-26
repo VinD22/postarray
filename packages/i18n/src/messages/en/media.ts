@@ -138,8 +138,7 @@ export const mediaMessages = {
   'mediaAnalysis.processing': 'Preparing a reduced copy for analysis. Check again in a moment.',
   'mediaAnalysis.warning.subjectCutOff':
     'The subject is cut off in a {ratio} crop. Use the suggested crop.',
-  'mediaAnalysis.warning.smallText':
-    'Text in this image may be too small to read at feed size.',
+  'mediaAnalysis.warning.smallText': 'Text in this image may be too small to read at feed size.',
   'mediaAnalysis.warning.faces':
     'This image shows recognizable faces. Make sure the people in it agreed to be posted.',
   'mediaAnalysis.warning.minors':

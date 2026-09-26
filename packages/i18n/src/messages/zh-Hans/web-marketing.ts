@@ -51,11 +51,13 @@ export const webMarketingMessages = {
   'web.meta.resources.title': '资源',
   'web.meta.resources.description': '状态、变更日志、文档、方法、比较、工具雷达和机会目录。',
   'web.meta.status.title': '地位',
-  'web.meta.status.description': 'Post Array。每个中继表面和每个连接器的当前状态，以及事件历史记录。',
+  'web.meta.status.description':
+    'Post Array。每个中继表面和每个连接器的当前状态，以及事件历史记录。',
   'web.meta.changelog.title': '变更日志',
   'web.meta.changelog.description': '发布了什么、连接器发生了什么变化以及纠正了什么。',
   'web.meta.docs.title': '文档',
-  'web.meta.docs.description': '用于在 Post Array 上构建的 REST API、MCP 服务器、CLI 和 Webhook 文档。',
+  'web.meta.docs.description':
+    '用于在 Post Array 上构建的 REST API、MCP 服务器、CLI 和 Webhook 文档。',
   'web.meta.methodology.title': '方法论',
   'web.meta.methodology.description':
     '我们如何研究平台声明、如何确定其日期、如何比较其他产品以及如何纠正错误。',
@@ -487,7 +489,8 @@ export const webMarketingMessages = {
     '签约实体、其注册地址和管辖管辖区是一个公开决定，将在启动前在此处命名。',
   'web.legal.index.updated': '更新了{date}',
   'web.legal.terms.title': '服务条款',
-  'web.legal.terms.summary': 'Post Array 同意提供什么，您同意做什么，以及当任何一方停止时会发生什么。',
+  'web.legal.terms.summary':
+    'Post Array 同意提供什么，您同意做什么，以及当任何一方停止时会发生什么。',
   'web.legal.terms.service.title': '服务是什么',
   'web.legal.terms.service.body':
     'Post Array 是一项托管服务，用于通过这些平台的官方 API 创建、批准、安排和发布内容到社交平台，以及由此产生的收据、分析和审计记录。它不是一个社交平台，它不控制任何平台在发布帖子后对其进行的操作。',
@@ -529,7 +532,8 @@ export const webMarketingMessages = {
     '您创建、上传或导入的内容和媒体，包括您用其记录的权利和出处。',
   'web.legal.privacy.collect.schedules': '时间表、批准决定、出版收据和审计事件。',
   'web.legal.privacy.collect.analytics': '从平台检索有关您通过 Post Array 发布的帖子的指标。',
-  'web.legal.privacy.collect.billing': 'Polar 持有的账单参考信息。 Post Array 不会存储您的卡详细信息。',
+  'web.legal.privacy.collect.billing':
+    'Polar 持有的账单参考信息。 Post Array 不会存储您的卡详细信息。',
   'web.legal.privacy.collect.technical': '操作和保护服务所需的设备和日志数据，默认情况下经过编辑。',
   'web.legal.privacy.collect.agent':
     '代理和 API 活动：哪个凭证采取哪个操作，使用输入哈希而不是输入。',
@@ -902,7 +906,8 @@ export const webMarketingMessages = {
   'web.capabilities.note.linkedinDocuments': 'LinkedIn 是唯一具有文档发布类型的连接平台。',
   'web.capabilities.note.metaReview': '需要元应用程序审查和业务验证。',
   'web.capabilities.note.xConsent': '需要帐户持有人的记录同意才能自动发布。',
-  'web.capabilities.note.xDisclosure': '该平台提供了一个 AI 字段，Post Array 从您的声明中设置该字段。',
+  'web.capabilities.note.xDisclosure':
+    '该平台提供了一个 AI 字段，Post Array 从您的声明中设置该字段。',
   'web.capabilities.note.noDestinations': '该平台没有页面、论坛或社区等目的地概念。',
   'web.capabilities.note.noThreads': '该平台没有原生的多帖子序列。',
   'web.capabilities.note.noDocuments': '该平台没有文档发布类型。',

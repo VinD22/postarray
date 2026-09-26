@@ -56,9 +56,7 @@ describe('the checkout disclosure', () => {
     expect(disclosure.lines.map((line) => line.id)).toEqual([
       ...REQUIRED_IMMEDIATE_DISCLOSURE_LINE_IDS,
     ]);
-    expect(trialDisclosure.lines.map((line) => line.id)).toEqual([
-      ...REQUIRED_DISCLOSURE_LINE_IDS,
-    ]);
+    expect(trialDisclosure.lines.map((line) => line.id)).toEqual([...REQUIRED_DISCLOSURE_LINE_IDS]);
   });
 
   it('states the real charge due today, not the $0 a trial would show', () => {

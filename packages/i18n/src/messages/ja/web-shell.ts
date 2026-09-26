@@ -122,7 +122,8 @@ export const webShellMessages = {
   'home.trial.banner': 'トライアル、{days, plural, other {残り # 日}}。改宗者{date}に{amount}。',
   'home.trial.manage': '管理またはキャンセル',
   'home.error.title': 'ホームを読み込めませんでした',
-  'home.error.body': 'ワークスペースはそのままです。これは、Post Array API に到達する際の問題です。',
+  'home.error.body':
+    'ワークスペースはそのままです。これは、Post Array API に到達する際の問題です。',
   'auth.aside.title': '公式 API を通じて公開すると、何が起こったのかを正確に確認できます。',
   'auth.aside.point.receipts':
     'すべての出版物には、誰が承認したか、いつ発送したか、プラットフォームが何を返したかなどの領収書が作成されます。',
@@ -153,7 +154,8 @@ export const webShellMessages = {
     'そのユーザー名とパスワードはアカウントと一致しません。両方にチェックを入れて再試行してください。',
   'auth.failure.noAccountLeak': '安全のため、住所が登録されているかどうかは明らかにしません。',
   'auth.failure.provider': 'でサインイン{provider}完了しませんでした。何も変わりませんでした。',
-  'auth.failure.network': 'Post Array に到達できませんでした。接続を確認して、もう一度試してください。',
+  'auth.failure.network':
+    'Post Array に到達できませんでした。接続を確認して、もう一度試してください。',
   'auth.signUp.emailInUseNote':
     'このアドレスにすでにアカウントがある場合は、2 つ目のアカウントを作成する代わりに、サインイン リンクを電子メールで送信します。',
   'auth.legal.readTerms': '規約を読む',

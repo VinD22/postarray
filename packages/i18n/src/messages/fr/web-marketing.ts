@@ -1187,7 +1187,8 @@ export const webMarketingMessages = {
     "Cette plateforme n'offre pas d'option de confidentialité par publication via son API.",
   'web.capabilities.note.noThumbnail':
     "Cette plateforme n'accepte pas de vignette personnalisée via son API.",
-  'web.capabilities.note.inBuild': 'La plateforme propose cela. Post Array ne l’a pas encore expédié.',
+  'web.capabilities.note.inBuild':
+    'La plateforme propose cela. Post Array ne l’a pas encore expédié.',
   'web.capabilities.note.noCarousel': 'La plateforme n’offre pas de carrousel balayable.',
   'web.capabilities.note.noDisclosure':
     'La plateforme n’a pas de champ de divulgation pour le contenu IA ou commercial.',
