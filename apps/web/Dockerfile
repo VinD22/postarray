@@ -13,27 +13,18 @@ WORKDIR /repo
 
 # --- Dependencies -----------------------------------------------------------
 FROM base AS deps
+# The web app imports @relay/application, which reaches most of the workspace,
+# so the whole packages tree is copied rather than a hand-kept list that falls
+# behind. The Prisma schema comes with it, which the root postinstall needs.
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml .npmrc ./
 COPY apps/web/package.json apps/web/
-COPY packages/contracts/package.json packages/contracts/
-COPY packages/design-system/package.json packages/design-system/
-COPY packages/i18n/package.json packages/i18n/
+COPY packages/ packages/
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --frozen-lockfile --filter @relay/web...
 
 # --- Build ------------------------------------------------------------------
-FROM base AS build
-COPY --from=deps /repo/node_modules ./node_modules
-COPY --from=deps /repo/apps/web/node_modules ./apps/web/node_modules
+FROM deps AS build
 COPY tsconfig.base.json turbo.json ./
-COPY packages/contracts packages/contracts
-COPY packages/design-system packages/design-system
-COPY packages/i18n packages/i18n
-# Each workspace package resolves its own dependencies (zod, react, ...) from
-# its own node_modules, which only the deps stage has.
-COPY --from=deps /repo/packages/contracts/node_modules ./packages/contracts/node_modules
-COPY --from=deps /repo/packages/design-system/node_modules ./packages/design-system/node_modules
-COPY --from=deps /repo/packages/i18n/node_modules ./packages/i18n/node_modules
 COPY apps/web apps/web
 
 ENV NEXT_TELEMETRY_DISABLED=1
