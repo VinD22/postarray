@@ -80,9 +80,7 @@ export function BarChart({
     (datum) => datum.value === null || (comparing && (datum.compareValue ?? null) === null),
   );
 
-  const seriesLabels = comparing
-    ? [messages.seriesLabel, compareLabel]
-    : [messages.seriesLabel];
+  const seriesLabels = comparing ? [messages.seriesLabel, compareLabel] : [messages.seriesLabel];
 
   const tableRows: readonly ChartTableRow[] = data.map((datum) => ({
     id: datum.id,
@@ -90,9 +88,7 @@ export function BarChart({
     values: comparing
       ? [
           datum.value === null ? null : formatY(datum.value),
-          (datum.compareValue ?? null) === null
-            ? null
-            : formatY(datum.compareValue as number),
+          (datum.compareValue ?? null) === null ? null : formatY(datum.compareValue as number),
         ]
       : [datum.value === null ? null : formatY(datum.value)],
   }));
@@ -153,10 +149,7 @@ export function BarChart({
           data.map((datum) => datum.id),
           [layout.margin.left, layout.margin.left + layout.innerWidth],
         );
-        const y = linearScale(yDomain, [
-          layout.margin.top + layout.innerHeight,
-          layout.margin.top,
-        ]);
+        const y = linearScale(yDomain, [layout.margin.top + layout.innerHeight, layout.margin.top]);
         const baseline = y.map(0);
         const subjectWidth = comparing ? x.bandwidth / 2 : x.bandwidth;
 

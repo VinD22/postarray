@@ -15,7 +15,8 @@ export const digestMessages = {
     'Ang bersyon ng assistant ay hindi tumugma sa iyong data kaya itinapon ito. Ito ang simpleng bersyon.',
   'digest.headline.published':
     '{published, plural, =0 {Walang natapos na post} one {# post na natapos} other {# post na natapos}} sa pagitan ng {windowStart} at {windowEnd}.',
-  'digest.headline.nothingPublished': 'Walang na-publish sa pagitan ng {windowStart} at {windowEnd}.',
+  'digest.headline.nothingPublished':
+    'Walang na-publish sa pagitan ng {windowStart} at {windowEnd}.',
   'digest.outcome.published':
     '{count, plural, one {# post na natapos sa {provider}} other {# post na natapos sa {provider}}}.',
   'digest.outcome.partial':

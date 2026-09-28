@@ -8,10 +8,7 @@
  */
 
 export { createServices } from './services/index';
-export {
-  createDomainEventService,
-  type DomainEventServiceDeps,
-} from './services/domain-events';
+export { createDomainEventService, type DomainEventServiceDeps } from './services/domain-events';
 export { oauthCompletionReady, socialOAuthCallbackUrl } from './services/connections';
 export {
   createOAuthGateway,
@@ -326,10 +323,7 @@ export type { AiSuggestionServiceOptions } from './services/ai-suggestions';
 // Stored insights: weekly digest, per-post "How it did", what works for you.
 export { createInsightService, createWorkerDigestService } from './services/insights';
 export { explainFailure } from './services/insight-failures';
-export {
-  digestSettingsUpdateSchema,
-  generateDigestRequestSchema,
-} from './services/insights-types';
+export { digestSettingsUpdateSchema, generateDigestRequestSchema } from './services/insights-types';
 export type {
   DigestRowView,
   DigestSettingsView,

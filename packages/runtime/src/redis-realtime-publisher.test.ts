@@ -17,7 +17,13 @@ const JOB = 'job_01j0000000000000000000000a';
 
 /** Documented boundary shim: the publisher uses `warn` and nothing else. */
 function testLogger(warn: (...args: readonly unknown[]) => void = vi.fn()): Logger {
-  return { debug: vi.fn(), info: vi.fn(), warn, error: vi.fn(), child: vi.fn() } as unknown as Logger;
+  return {
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn,
+    error: vi.fn(),
+    child: vi.fn(),
+  } as unknown as Logger;
 }
 
 const logger = testLogger();
@@ -133,9 +139,7 @@ describe('createRedisRealtimePublisher', () => {
 
   it('publishes a status update that has no outbox row behind it', async () => {
     const client = fakeRedis();
-    await createRedisRealtimePublisher({ client, logger }).publishStatus(
-      statusEvent(WORKSPACE_A),
-    );
+    await createRedisRealtimePublisher({ client, logger }).publishStatus(statusEvent(WORKSPACE_A));
     expect(client.calls.map((call) => call.command)).toEqual(['xadd', 'expire', 'publish']);
   });
 });

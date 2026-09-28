@@ -37,7 +37,12 @@ export async function prefetchCalendarWindow(
   const descriptor = getLocale(context.locale) ?? getLocale(context.locale.split('-')[0] ?? 'en');
   const weekStartsOn = descriptor?.weekStartsOn ?? 0;
   const view = parseView(params, 'week');
-  const visible = computeRange(view, parseAnchor(params, new Date()), context.timeZone, weekStartsOn);
+  const visible = computeRange(
+    view,
+    parseAnchor(params, new Date()),
+    context.timeZone,
+    weekStartsOn,
+  );
   const projectId = parseFilters(params).projectId;
   const range = {
     from: visible.start.toISOString(),

@@ -132,7 +132,10 @@ export function SuggestReviewItems(): ReactNode {
             {check.findings.length > 0 ? (
               <ul className="text-label text-text-secondary flex flex-col gap-1 ps-6">
                 {check.findings.map((finding) => (
-                  <li key={`${finding.code}:${finding.explanation}`} className="flex flex-col gap-0.5">
+                  <li
+                    key={`${finding.code}:${finding.explanation}`}
+                    className="flex flex-col gap-0.5"
+                  >
                     {finding.quote === null ? null : (
                       <span>{t.full('web.suggest.review.quote', { text: finding.quote })}</span>
                     )}

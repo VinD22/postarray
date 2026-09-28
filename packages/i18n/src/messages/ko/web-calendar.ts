@@ -296,7 +296,8 @@ export const webCalendarMessages = {
     '이미 수집된 측정항목은 이 작업 영역에 유지되고 업데이트가 중지됩니다.',
   'web.connection.connect.title': '계정 연결',
   'web.connection.connect.chooseProvider': '어떤 플랫폼',
-  'web.connection.connect.permissionHeading': 'Post Array이 무엇을 물어볼 것인가?{provider}~을 위한',
+  'web.connection.connect.permissionHeading':
+    'Post Array이 무엇을 물어볼 것인가?{provider}~을 위한',
   'web.connection.connect.requirementHeading': '계속하기 전에',
   'web.connection.connect.continue': '계속{provider}',
   'web.connection.connect.handoffNote':

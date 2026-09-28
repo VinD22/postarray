@@ -1,0 +1,16 @@
+# Images install their own dependencies and build their own output. Host copies
+# collide with them (pnpm symlinks cannot overwrite the image's directories) and
+# must never carry local secrets into a build context.
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+**/coverage
+**/test-results
+**/playwright-report*
+**/.lighthouseci
+.git
+.playwright-mcp
+**/.env
+**/.env.*
+!**/.env.example

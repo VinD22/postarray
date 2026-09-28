@@ -17,13 +17,15 @@ import {
 const messagesDirectory = dirname(fileURLToPath(import.meta.url));
 
 function sourceModules(locale: string): readonly string[] {
-  return readdirSync(join(messagesDirectory, locale))
-    .filter((file) => file.endsWith('.ts'))
-    .filter((file) => file !== 'index.ts' && !file.endsWith('.test.ts'))
-    // Helper modules are allowed to support catalog assembly but are not
-    // message namespaces and therefore do not belong in the parity manifest.
-    .filter((file) => file !== 'catalog-helpers.ts')
-    .map((file) => file.slice(0, -3));
+  return (
+    readdirSync(join(messagesDirectory, locale))
+      .filter((file) => file.endsWith('.ts'))
+      .filter((file) => file !== 'index.ts' && !file.endsWith('.test.ts'))
+      // Helper modules are allowed to support catalog assembly but are not
+      // message namespaces and therefore do not belong in the parity manifest.
+      .filter((file) => file !== 'catalog-helpers.ts')
+      .map((file) => file.slice(0, -3))
+  );
 }
 
 function importedModules(locale: string): readonly string[] {
@@ -41,43 +43,37 @@ describe('catalog module parity', () => {
     expect(isCatalogModuleParityClean(parity), JSON.stringify(parity)).toBe(true);
   });
 
-  it.each(PUBLIC_LOCALE_CODES)(
-    'has no orphan source modules or imports for %s',
-    (locale) => {
-      expect(statSync(join(messagesDirectory, locale)).isDirectory()).toBe(true);
-      const parity = checkCatalogModuleParity(sourceModules(locale), importedModules(locale));
-      expect(parity.unexpected, `${locale} imports a missing module`).toEqual([]);
-      expect(parity.missing, `${locale} contains an unassembled source module`).toEqual([]);
-    },
-  );
+  it.each(PUBLIC_LOCALE_CODES)('has no orphan source modules or imports for %s', (locale) => {
+    expect(statSync(join(messagesDirectory, locale)).isDirectory()).toBe(true);
+    const parity = checkCatalogModuleParity(sourceModules(locale), importedModules(locale));
+    expect(parity.unexpected, `${locale} imports a missing module`).toEqual([]);
+    expect(parity.missing, `${locale} contains an unassembled source module`).toEqual([]);
+  });
 
-  it.each(PUBLIC_LOCALE_CODES)(
-    'keeps missing modules explicit for %s',
-    (locale) => {
-      const parity = checkCatalogModuleParity(englishModules, importedModules(locale));
-      expect(
-        findUnallowedMissingCatalogModules(parity.missing),
-        `${locale} is missing a module without a beta fallback allowance`,
-      ).toEqual([]);
-      for (const module of parity.missing) {
-        const prefixes =
-          BETA_FALLBACK_CATALOG_MODULE_PREFIXES[
-            module as keyof typeof BETA_FALLBACK_CATALOG_MODULE_PREFIXES
-          ];
-        expect(prefixes, `${locale}:${module} needs fallback namespace metadata`).toBeDefined();
-        if (prefixes === undefined) {
-          continue;
-        }
-        const hasFallbackKey = Object.keys(en).some(
-          (key) =>
-            prefixes.some((prefix) => key.startsWith(prefix)) &&
-            isBetaEnglishFallbackKey(key, locale),
-        );
-        expect(hasFallbackKey, `${locale}:${module} has no declared fallback key`).toBe(true);
+  it.each(PUBLIC_LOCALE_CODES)('keeps missing modules explicit for %s', (locale) => {
+    const parity = checkCatalogModuleParity(englishModules, importedModules(locale));
+    expect(
+      findUnallowedMissingCatalogModules(parity.missing),
+      `${locale} is missing a module without a beta fallback allowance`,
+    ).toEqual([]);
+    for (const module of parity.missing) {
+      const prefixes =
+        BETA_FALLBACK_CATALOG_MODULE_PREFIXES[
+          module as keyof typeof BETA_FALLBACK_CATALOG_MODULE_PREFIXES
+        ];
+      expect(prefixes, `${locale}:${module} needs fallback namespace metadata`).toBeDefined();
+      if (prefixes === undefined) {
+        continue;
       }
-      // Keep this assertion close to the locale loop so removing the last
-      // beta fallback module forces the temporary allowlist to be revisited.
-      expect(BETA_FALLBACK_CATALOG_MODULES).toContain('digest');
-    },
-  );
+      const hasFallbackKey = Object.keys(en).some(
+        (key) =>
+          prefixes.some((prefix) => key.startsWith(prefix)) &&
+          isBetaEnglishFallbackKey(key, locale),
+      );
+      expect(hasFallbackKey, `${locale}:${module} has no declared fallback key`).toBe(true);
+    }
+    // Keep this assertion close to the locale loop so removing the last
+    // beta fallback module forces the temporary allowlist to be revisited.
+    expect(BETA_FALLBACK_CATALOG_MODULES).toContain('digest');
+  });
 });

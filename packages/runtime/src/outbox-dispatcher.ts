@@ -133,12 +133,7 @@ export class OutboxDispatcher {
         failed += 1;
         const code = errorCode(error);
         if (error instanceof UnknownOutboxKindError) {
-          await deadLetterOutboxEvent(
-            this.#options.prisma,
-            event,
-            code,
-            this.#options.clock.now(),
-          );
+          await deadLetterOutboxEvent(this.#options.prisma, event, code, this.#options.clock.now());
           deadLettered += 1;
           this.#options.logger.error(
             { dispatcher: this.#options.name, outboxEventId: event.id, kind: event.kind, code },

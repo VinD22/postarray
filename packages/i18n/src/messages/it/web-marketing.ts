@@ -1189,7 +1189,8 @@ export const webMarketingMessages = {
     "Questa piattaforma non offre un'opzione di privacy per post tramite la sua API.",
   'web.capabilities.note.noThumbnail':
     'Questa piattaforma non accetta una miniatura personalizzata tramite la sua API.',
-  'web.capabilities.note.inBuild': "La piattaforma offre questo. Post Array non l'ha ancora spedito.",
+  'web.capabilities.note.inBuild':
+    "La piattaforma offre questo. Post Array non l'ha ancora spedito.",
   'web.capabilities.note.noCarousel': 'La piattaforma non offre un carosello scorrevole.',
   'web.capabilities.note.noDisclosure':
     'La piattaforma non ha un campo di divulgazione per contenuti IA o commerciali.',

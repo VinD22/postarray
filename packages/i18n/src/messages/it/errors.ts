@@ -61,7 +61,7 @@ export const errorMessages = {
   'error.trial_expired.message': 'La prova si è conclusa il {date}.',
   'error.trial_expired.action': "Inizia l'abbonamento per continuare a pubblicare.",
   'error.post_credits_exhausted.message':
-    'Quest\'area di lavoro ha usato tutti i suoi post gratuiti. Tutto il resto continua a funzionare.',
+    "Quest'area di lavoro ha usato tutti i suoi post gratuiti. Tutto il resto continua a funzionare.",
   'error.post_credits_exhausted.action':
     'Scegli un piano per continuare a pubblicare. I tuoi account restano collegati e le tue bozze e programmazioni vengono conservate.',
   'error.entitlement_missing.message': "Quest'area di lavoro non ha accesso a tale funzionalità.",

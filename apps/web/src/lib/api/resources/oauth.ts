@@ -55,36 +55,30 @@ const demoWorkspace: WorkspaceView = {
 
 export const oauthApi = {
   getConsent: (requestId: string): Promise<OAuthConsentView> =>
-    call(
-      '/oauth/consent',
-      { query: { request_id: requestId } },
-      () => ({
-        client: {
-          name: 'Post Array demo client',
-          clientId: 'client_demo',
-          homepageUrl: 'https://example.com',
-          privacyPolicyUrl: 'https://example.com/privacy',
-          termsUrl: 'https://example.com/terms',
-          logoUrl: null,
-          firstParty: false,
-        },
-        consentNonce: 'demo-consent-nonce',
-        workspaces: [demoWorkspace],
-        scopes: [
-          { scope: 'accounts:read', risk: 'read', descriptionKey: 'scopes.accounts_read' },
-          { scope: 'drafts:write', risk: 'reversible', descriptionKey: 'scopes.drafts_write' },
-        ],
-        approvalLevelKey: 'developer.consent.approval_level.level_2_scheduled',
-      }),
-    ),
+    call('/oauth/consent', { query: { request_id: requestId } }, () => ({
+      client: {
+        name: 'Post Array demo client',
+        clientId: 'client_demo',
+        homepageUrl: 'https://example.com',
+        privacyPolicyUrl: 'https://example.com/privacy',
+        termsUrl: 'https://example.com/terms',
+        logoUrl: null,
+        firstParty: false,
+      },
+      consentNonce: 'demo-consent-nonce',
+      workspaces: [demoWorkspace],
+      scopes: [
+        { scope: 'accounts:read', risk: 'read', descriptionKey: 'scopes.accounts_read' },
+        { scope: 'drafts:write', risk: 'reversible', descriptionKey: 'scopes.drafts_write' },
+      ],
+      approvalLevelKey: 'developer.consent.approval_level.level_2_scheduled',
+    })),
 
   submitConsent: (
     input: OAuthConsentDecisionInput,
     idempotencyKey: string,
   ): Promise<OAuthConsentDecisionView> =>
-    call(
-      '/oauth/consent',
-      { method: 'POST', body: input, idempotencyKey },
-      () => ({ redirectTo: '/' }),
-    ),
+    call('/oauth/consent', { method: 'POST', body: input, idempotencyKey }, () => ({
+      redirectTo: '/',
+    })),
 };

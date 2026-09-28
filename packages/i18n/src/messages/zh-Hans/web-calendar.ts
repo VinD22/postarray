@@ -25,7 +25,8 @@ export const webCalendarMessages = {
     '写入 Reddit 需要经批准的应用，并且每条帖子都需要标题和 subreddit。',
   'web.connection.requirement.wordpress':
     'Post Array 使用您在 WordPress 中创建的应用密码通过站点 REST API 发布。',
-  'web.connection.requirement.medium': 'Medium 通过 OAuth 连接，Post Array 以 Markdown 发布公开文章。',
+  'web.connection.requirement.medium':
+    'Medium 通过 OAuth 连接，Post Array 以 Markdown 发布公开文章。',
   'web.connection.requirement.devto': 'Dev.to 使用您在 Dev.to 设置中创建的 API 密钥连接。',
   'web.connection.requirement.pinterest':
     '写入 Pinterest 需要经批准的应用访问权限，图钉需要图片和您自己的画板。',
@@ -285,7 +286,8 @@ export const webCalendarMessages = {
     '连接帐户不会发布任何内容。每个帖子仍然遵循此工作区批准政策。',
   'web.connection.requirement.instagram':
     'Instagram 发布需要一个专业帐户，这意味着链接到 Facebook 页面的企业或创作者帐户。',
-  'web.connection.requirement.facebook': 'Post Array 发布到 Facebook Pages。个人资料不能作为发布目标。',
+  'web.connection.requirement.facebook':
+    'Post Array 发布到 Facebook Pages。个人资料不能作为发布目标。',
   'web.connection.requirement.linkedin':
     '要为组织发布内容，您需要该 LinkedIn 页面上的内容管理员角色。',
   'web.connection.requirement.youtube':
@@ -320,7 +322,8 @@ export const webCalendarMessages = {
   'web.connection.capability.tableLabel': '按平台划分的功能',
   'web.connection.capability.featureColumn': '能力',
   'web.connection.capability.legendTitle': '如何阅读此内容',
-  'web.connection.capability.legend.supported': '今天，Post Array 可以为正确类型的连接帐户执行此操作。',
+  'web.connection.capability.legend.supported':
+    '今天，Post Array 可以为正确类型的连接帐户执行此操作。',
   'web.connection.capability.legend.not_implemented':
     '该平台提供了此功能，但 Post Array 尚未构建它。它位于连接器路线图上。',
   'web.connection.capability.legend.unsupported':

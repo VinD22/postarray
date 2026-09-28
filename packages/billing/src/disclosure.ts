@@ -259,7 +259,6 @@ export async function buildConsentRecord(input: {
   };
 }
 
-
 /**
  * The disclosure for a checkout that charges today, which is every checkout
  * this product currently runs.

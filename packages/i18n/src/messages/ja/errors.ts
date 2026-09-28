@@ -87,7 +87,8 @@ export const errorMessages = {
     '投稿は審査に合格するまで非公開で公開されます。このページに変更があった場合は更新します。',
   'error.capability_unsupported.message': '{provider}はこれを公式 API を通じて提供していません。',
   'error.capability_unsupported.action': 'このアカウントがサポートする形式を使用してください。',
-  'error.capability_not_implemented.message': 'Post Array はこれをビルドしていません{provider}まだ。',
+  'error.capability_not_implemented.message':
+    'Post Array はこれをビルドしていません{provider}まだ。',
   'error.capability_not_implemented.action':
     '機能ページには、各コネクタが現在実行できる機能がリストされています。',
   'error.capability_requires_review.message':

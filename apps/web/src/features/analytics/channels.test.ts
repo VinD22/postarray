@@ -1,12 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { buildChannelRollups, sortChannelRollups } from './channels';
-import type {
-  AccountRef,
-  AnalyticsOverview,
-  MetricReading,
-  PostComparisonRow,
-} from './types';
+import type { AccountRef, AnalyticsOverview, MetricReading, PostComparisonRow } from './types';
 
 const account = (id: string, name: string): AccountRef => ({
   connectionId: id,
@@ -105,11 +100,7 @@ describe('buildChannelRollups', () => {
     const rollups = buildChannelRollups(
       overview([
         row('a', 'Anna', reading({ value: 100 })),
-        row(
-          'a',
-          'Anna',
-          reading({ availability: 'unavailable_permission', value: null }),
-        ),
+        row('a', 'Anna', reading({ availability: 'unavailable_permission', value: null })),
       ]),
       [account('a', 'Anna')],
     );
@@ -131,10 +122,7 @@ describe('buildChannelRollups', () => {
   it('keeps a row for an account that returned nothing at all', () => {
     // A silently shorter table is how a reader concludes an account is fine
     // when it simply did not answer.
-    const rollups = buildChannelRollups(overview([]), [
-      account('a', 'Anna'),
-      account('b', 'Bo'),
-    ]);
+    const rollups = buildChannelRollups(overview([]), [account('a', 'Anna'), account('b', 'Bo')]);
     expect(rollups).toHaveLength(2);
     expect(rollups.map((one) => one.postsMeasured)).toEqual([0, 0]);
   });

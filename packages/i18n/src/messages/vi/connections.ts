@@ -86,7 +86,8 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Cần xem xét lại nền tảng',
   'capability.level.beta': 'bản thử nghiệm',
   'capability.level.unknown': 'Không có sẵn',
-  'capability.explain.supported': 'Post Array có thể thực hiện việc này cho tài khoản này ngay hôm nay.',
+  'capability.explain.supported':
+    'Post Array có thể thực hiện việc này cho tài khoản này ngay hôm nay.',
   'capability.explain.unsupported':
     '{provider} không cung cấp tính năng này thông qua API chính thức, vì vậy không có công cụ nào có thể thực hiện việc đó một cách an toàn.',
   'capability.explain.not_implemented':

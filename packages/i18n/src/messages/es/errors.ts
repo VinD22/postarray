@@ -97,7 +97,8 @@ export const errorMessages = {
     'Las publicaciones se publican de forma privada hasta que se apruebe la revisión. Actualizamos esta página cuando cambia.',
   'error.capability_unsupported.message': '{provider} no ofrece esto a través de su API oficial.',
   'error.capability_unsupported.action': 'Utilice un formato que admita esta cuenta.',
-  'error.capability_not_implemented.message': 'Post Array aún no ha construido este for {provider}.',
+  'error.capability_not_implemented.message':
+    'Post Array aún no ha construido este for {provider}.',
   'error.capability_not_implemented.action':
     'La página de capacidades enumera lo que cada conector puede hacer hoy.',
   'error.capability_requires_review.message':

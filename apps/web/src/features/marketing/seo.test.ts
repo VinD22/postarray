@@ -126,17 +126,22 @@ describe('page titles', () => {
 });
 
 describe('localized metadata and structured data', () => {
-  it('uses the locale for a self-canonical URL and Open Graph locale', async () => {
-    const metadata = await pageMetadata(
-      'web.meta.product.title',
-      'web.meta.product.description',
-      '/product',
-      'de',
-    );
+  // The first test in the file pays for loading every locale catalog.
+  it(
+    'uses the locale for a self-canonical URL and Open Graph locale',
+    { timeout: 30_000 },
+    async () => {
+      const metadata = await pageMetadata(
+        'web.meta.product.title',
+        'web.meta.product.description',
+        '/product',
+        'de',
+      );
 
-    expect(metadata.alternates?.canonical).toBe(absoluteUrl('/product', 'de'));
-    expect(metadata.openGraph?.locale).toBe('de_DE');
-  });
+      expect(metadata.alternates?.canonical).toBe(absoluteUrl('/product', 'de'));
+      expect(metadata.openGraph?.locale).toBe('de_DE');
+    },
+  );
 
   it('canonicalizes an English-only route family to English', async () => {
     const metadata = await pageMetadata(

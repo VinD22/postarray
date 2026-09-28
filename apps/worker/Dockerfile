@@ -53,6 +53,9 @@ COPY packages/observability/package.json    packages/observability/
 COPY packages/runtime/package.json          packages/runtime/
 COPY apps/worker/package.json               apps/worker/
 
+# The root postinstall runs `prisma generate`, so the schema has to be in
+# place before `pnpm install` or the install itself fails.
+COPY packages/database/prisma packages/database/prisma
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --frozen-lockfile --filter @relay/worker...
 
@@ -77,9 +80,11 @@ FROM base AS prod-deps
 COPY --from=deps /app/pnpm-workspace.yaml /app/package.json /app/pnpm-lock.yaml /app/.npmrc ./
 COPY --from=deps /app/apps/worker/package.json apps/worker/
 COPY --from=deps /app/packages/ packages/
+# The root postinstall runs `prisma generate`, so the schema has to be in
+# place before `pnpm install` or the install itself fails.
+COPY packages/database/prisma packages/database/prisma
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --frozen-lockfile --prod --filter @relay/worker...
-COPY packages/database/prisma packages/database/prisma
 RUN pnpm --filter @relay/database exec prisma generate
 
 # ---------------------------------------------------------------------------

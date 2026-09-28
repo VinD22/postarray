@@ -43,8 +43,7 @@ export const errorMessages = {
   'error.subscription_past_due.action': '在 Polar 入口網站更新付款方式。',
   'error.trial_expired.message': '試用已於 {date} 結束。',
   'error.trial_expired.action': '開始訂閱以繼續發布。',
-  'error.post_credits_exhausted.message':
-    '此工作區已用完所有免費發佈次數。其他功能仍可正常使用。',
+  'error.post_credits_exhausted.message': '此工作區已用完所有免費發佈次數。其他功能仍可正常使用。',
   'error.post_credits_exhausted.action':
     '選擇一個方案即可繼續發佈。你的帳號仍保持連結，草稿和排程都會保留。',
   'error.entitlement_missing.message': '此 Workspace 無法存取該功能。',

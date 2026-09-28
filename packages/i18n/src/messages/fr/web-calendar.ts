@@ -384,7 +384,8 @@ export const webCalendarMessages = {
   'web.connection.requirement.generic':
     "Vous avez besoin d'une autorisation pour publier sur ce compte depuis la plateforme elle-même. Post Array ne peut pas l'accorder.",
 
-  'web.connection.purpose.publish': 'Publication des publications que vous planifiez dans Post Array.',
+  'web.connection.purpose.publish':
+    'Publication des publications que vous planifiez dans Post Array.',
   'web.connection.purpose.readPosts':
     "Relisant un message publié par Post Array, afin que le reçu puisse prouver qu'il est en ligne.",
   'web.connection.purpose.identity':

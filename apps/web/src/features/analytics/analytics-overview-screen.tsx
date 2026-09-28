@@ -197,8 +197,7 @@ export function AnalyticsOverviewScreen({
     if (query.data === undefined || rows.length === 0) return null;
 
     const project =
-      projects.find((one) => one.id === filters.projectId)?.name ??
-      t('shell.project.all');
+      projects.find((one) => one.id === filters.projectId)?.name ?? t('shell.project.all');
 
     return {
       filename: csvFilename({

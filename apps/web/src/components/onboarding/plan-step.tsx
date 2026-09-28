@@ -12,7 +12,6 @@ import { useFormatters, useTranslations } from '@/lib/i18n';
 
 type Interval = 'monthly' | 'annual';
 
-
 /**
  * The two figures, read from the one place that holds them.
  *

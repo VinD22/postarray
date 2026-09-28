@@ -124,7 +124,9 @@ describe('detectCapabilities', () => {
 
     it('turns on only with the explicit opt-in in development or test', () => {
       expect(
-        isFakeConnectorDispatchable(loadConfig({ ...minimal, POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true' })),
+        isFakeConnectorDispatchable(
+          loadConfig({ ...minimal, POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+        ),
       ).toBe(true);
       expect(
         isFakeConnectorDispatchable(

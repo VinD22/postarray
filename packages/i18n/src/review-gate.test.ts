@@ -268,7 +268,11 @@ describe('review gate rules', () => {
       { ...sourcesFor(complete), requireDigests: true, requireEvidence: true },
     );
     expect(findings.map((finding) => finding.rule)).toEqual(
-      expect.arrayContaining(['catalog-digest-invalid', 'source-digest-invalid', 'review-evidence-invalid']),
+      expect.arrayContaining([
+        'catalog-digest-invalid',
+        'source-digest-invalid',
+        'review-evidence-invalid',
+      ]),
     );
   });
 });

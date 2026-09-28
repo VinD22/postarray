@@ -97,7 +97,8 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Потребує перегляду платформи',
   'capability.level.beta': 'Бета',
   'capability.level.unknown': 'Недоступний',
-  'capability.explain.supported': 'Post Array може зробити це для цього облікового запису сьогодні.',
+  'capability.explain.supported':
+    'Post Array може зробити це для цього облікового запису сьогодні.',
   'capability.explain.unsupported':
     '{provider} не пропонує цей свій офіційний API, тому жодний інструмент не може зробити це безпечно.',
   'capability.explain.not_implemented':

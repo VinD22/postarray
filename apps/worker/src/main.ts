@@ -89,7 +89,10 @@ type WebhookActivities = Pick<
 
 type BulkImportActivities = Pick<WorkerActivities, 'readBulkImportVerdict' | 'applyBulkImportRows'>;
 
-type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative' | 'scanMediaAsset'>;
+type MediaDerivativeActivities = Pick<
+  WorkerActivities,
+  'produceMediaDerivative' | 'scanMediaAsset'
+>;
 
 /** Repeats, feeds, rules and per-post feedback. None of these calls a provider. */
 type AutomationActivities = Pick<
@@ -195,7 +198,10 @@ export async function loadGateway(
 function createRealtimePublisher(
   config: RelayConfig,
   logger: Logger,
-): { publisher: ReturnType<typeof createRedisRealtimePublisher>; close: () => Promise<void> } | null {
+): {
+  publisher: ReturnType<typeof createRedisRealtimePublisher>;
+  close: () => Promise<void>;
+} | null {
   if (config.redis.url === undefined) {
     logger.warn({}, 'worker.realtime_disabled');
     return null;
@@ -421,7 +427,9 @@ export async function main(): Promise<void> {
         // Format validation, not malware scanning, and the adapter's own doc
         // comment says so. It exists because nothing else in the product moved
         // an asset out of `pending`, so no uploaded image could ever publish.
-        mediaScanner: createPassthroughScanner({ storage: resolveStoragePort(config, systemClock) }),
+        mediaScanner: createPassthroughScanner({
+          storage: resolveStoragePort(config, systemClock),
+        }),
         ...(realtime === null ? {} : { realtime: realtime.publisher }),
         credentialStore: connectorRuntime.credentialStore,
         ...(connectorRuntime.credentialVault === null

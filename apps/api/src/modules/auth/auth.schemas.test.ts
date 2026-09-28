@@ -11,9 +11,9 @@ describe('authentication interface locale boundary', () => {
       expect(magicLinkSchema.safeParse({ identifier: 'owner@example.test', locale }).success).toBe(
         true,
       );
-      expect(passwordResetSchema.safeParse({ identifier: 'owner@example.test', locale }).success).toBe(
-        true,
-      );
+      expect(
+        passwordResetSchema.safeParse({ identifier: 'owner@example.test', locale }).success,
+      ).toBe(true);
       expect(
         signUpSchema.safeParse({
           email: 'owner@example.test',
@@ -37,9 +37,9 @@ describe('authentication interface locale boundary', () => {
       expect(magicLinkSchema.safeParse({ identifier: 'owner@example.test', locale }).success).toBe(
         false,
       );
-      expect(passwordResetSchema.safeParse({ identifier: 'owner@example.test', locale }).success).toBe(
-        false,
-      );
+      expect(
+        passwordResetSchema.safeParse({ identifier: 'owner@example.test', locale }).success,
+      ).toBe(false);
       expect(
         signUpSchema.safeParse({
           email: 'owner@example.test',
@@ -54,5 +54,4 @@ describe('authentication interface locale boundary', () => {
       ).toBe(false);
     }
   });
-
 });

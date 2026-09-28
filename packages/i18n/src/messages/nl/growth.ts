@@ -5,7 +5,6 @@ export const growthMessages = {
     'Een begeleid plan opgebouwd uit feiten die u bevestigt. Het stelt werk voor. Het publiceert nooit uit zichzelf.',
 
   'growth.profile.noProject':
-
     'Kies een project voordat je het profiel opslaat. Een bedrijfsprofiel hoort bij één project.',
 
   'growth.profile.title': 'Zakelijk profiel',

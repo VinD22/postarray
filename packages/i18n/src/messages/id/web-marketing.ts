@@ -1023,7 +1023,8 @@ export const webMarketingMessages = {
     'Platform ini tidak menawarkan opsi privasi per posting melalui API-nya.',
   'web.capabilities.note.noThumbnail':
     'Platform ini tidak menerima thumbnail khusus melalui API-nya.',
-  'web.capabilities.note.inBuild': 'Platform ini menawarkan hal ini. Post Array belum mengirimkannya.',
+  'web.capabilities.note.inBuild':
+    'Platform ini menawarkan hal ini. Post Array belum mengirimkannya.',
   'web.capabilities.note.noCarousel': 'Platform tidak menawarkan karousel geser.',
   'web.capabilities.note.noDisclosure':
     'Platform tidak memiliki bidang pengungkapan untuk konten AI atau komersial.',

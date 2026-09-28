@@ -16,7 +16,8 @@ export const digestMessages = {
     'सहायक संस्करण आपके डेटा से मेल नहीं खाता था, इसलिए उसे हटा दिया गया। यह सादा संस्करण है।',
   'digest.headline.published':
     '{published, plural, =0 {कोई पोस्ट पूरी नहीं हुई} one {# पोस्ट पूरी हुई} other {# पोस्ट पूरी हुई}} {windowStart} और {windowEnd} के बीच।',
-  'digest.headline.nothingPublished': '{windowStart} और {windowEnd} के बीच कुछ भी प्रकाशित नहीं हुआ।',
+  'digest.headline.nothingPublished':
+    '{windowStart} और {windowEnd} के बीच कुछ भी प्रकाशित नहीं हुआ।',
   'digest.outcome.published':
     '{count, plural, one {प्लेटफ़ॉर्म {provider} पर # पोस्ट पूरी हुई} other {प्लेटफ़ॉर्म {provider} पर # पोस्ट पूरी हुई}}।',
   'digest.outcome.partial':

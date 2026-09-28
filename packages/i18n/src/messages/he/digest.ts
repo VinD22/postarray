@@ -20,7 +20,8 @@ export const digestMessages = withHebrewPluralForms({
     '{count, plural, one {פוסט # הגיע לחלק מהיעדים ב-{provider} ולא לאחרים} two {שני פוסטים הגיעו לחלק מהיעדים ב-{provider} ולא לאחרים} other {# פוסטים הגיעו לחלק מהיעדים ב-{provider} ולא לאחרים}}.',
   'digest.outcome.failed':
     '{count, plural, one {פוסט # לא יצא ב-{provider}} two {שני פוסטים לא יצאו ב-{provider}} other {# פוסטים לא יצאו ב-{provider}}}.',
-  'digest.metrics.noneYet': 'עדיין לא הגיעו מדידות לשבוע הזה. זה אומר שאנחנו לא יודעים איך הפוסטים הצליחו, לא שהם הצליחו גרוע.',
+  'digest.metrics.noneYet':
+    'עדיין לא הגיעו מדידות לשבוע הזה. זה אומר שאנחנו לא יודעים איך הפוסטים הצליחו, לא שהם הצליחו גרוע.',
   'digest.freshness.statement':
     '{label, select, fresh {המדידות סונכרנו לאחרונה ב-{lastObservedAt}.} stale {המדידות לא סונכרנו מאז {lastObservedAt}, לכן המספרים למעלה עשויים להיות מיושנים.} other {עדיין לא סונכרן דבר, לכן אין למעלה נתונים שנמדדו.}}',
   'digest.narrative.headline': '{statement}',
@@ -29,7 +30,8 @@ export const digestMessages = withHebrewPluralForms({
   'digest.narrative.notSupported': '{statement}',
   'digest.narrative.nextAction': '{statement}',
   'digest.settings.title': 'סיכום שבועי באימייל',
-  'digest.settings.description': 'אימייל קצר בכל שבוע עם מה שפורסם ומה שיכולנו למדוד. מופעל כברירת מחדל.',
+  'digest.settings.description':
+    'אימייל קצר בכל שבוע עם מה שפורסם ומה שיכולנו למדוד. מופעל כברירת מחדל.',
   'digest.settings.enabled': 'שלח את הסיכום השבועי',
   'email.digest.subject': 'השבוע שלך ב-{workspaceName}',
   'email.digest.intro':

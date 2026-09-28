@@ -3,12 +3,7 @@ import { randomBytes } from 'node:crypto';
 import { Controller, Get, Header, Inject, Req, Res } from '@nestjs/common';
 import type { RelayConfig } from '@relay/config';
 import { API_VERSION } from '@relay/contracts';
-import {
-  ACTIVE_LOCALE_CODES,
-  createTranslator,
-  loadCatalog,
-  resolveLocale,
-} from '@relay/i18n';
+import { ACTIVE_LOCALE_CODES, createTranslator, loadCatalog, resolveLocale } from '@relay/i18n';
 import type { Response } from 'express';
 import type { Request } from 'express';
 

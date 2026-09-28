@@ -50,7 +50,8 @@ export const webDemoMessages = {
   'web.demo.hero.viewCta': 'Zobacz demo',
   'web.demo.hero.projectsLine':
     'Jedno konto prowadzi wiele firm. Każdy projekt to osobna firma z własnymi połączonymi kontami, własnym kalendarzem i własnymi zatwierdzeniami, a przełączasz się między nimi z jednego menu, tak jak zmienia się usługę w konsoli wyszukiwania.',
-  'web.demo.hero.projectsChip': '{count, plural, one {# konto} few {# konta} many {# kont} other {# konta}}',
+  'web.demo.hero.projectsChip':
+    '{count, plural, one {# konto} few {# konta} many {# kont} other {# konta}}',
   'web.demo.hero.caption':
     'Jeden szkic staje się wersją na platformę, otrzymuje termin i ląduje w tygodniu. Przykładowa treść, nie prawdziwe konto.',
   'web.demo.hero.more': 'Przejdź przez cały przepływ pracy',

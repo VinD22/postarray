@@ -75,10 +75,12 @@ export function PreviewCounter({
       )}
     >
       {counter.over ? <AlertTriangle aria-hidden className="size-3.5" /> : null}
-      <span>{t.full('composerWeb.preview.counter.label', {
-        used: counter.used,
-        limit: counter.max,
-      })}</span>
+      <span>
+        {t.full('composerWeb.preview.counter.label', {
+          used: counter.used,
+          limit: counter.max,
+        })}
+      </span>
       {counter.over ? (
         <span>
           {t.full('composerWeb.preview.counter.over', { count: counter.used - counter.max })}

@@ -54,7 +54,10 @@ test('publish now to two channels and see both receipts', async ({ page }) => {
   await expect(page.getByText(/scanning|pending/i).first()).toBeHidden({ timeout: 120_000 });
   await page.getByText('golden-path.png').first().click();
   await page.getByRole('radio', { name: 'This workspace' }).check();
-  await page.getByRole('button', { name: /declare|save/i }).first().click();
+  await page
+    .getByRole('button', { name: /declare|save/i })
+    .first()
+    .click();
   await expect(page.getByText(/Declared by/)).toBeVisible();
 
   // Compose, target both channels, publish now.
@@ -66,7 +69,10 @@ test('publish now to two channels and see both receipts', async ({ page }) => {
   // resumes this post instead of starting a new one.
   await expect(page).toHaveURL(/contentItemId=/);
   await page.getByRole('button', { name: /^Publish to \d+ channels? now$/ }).click();
-  await page.getByRole('button', { name: /publish now|confirm/i }).last().click();
+  await page
+    .getByRole('button', { name: /publish now|confirm/i })
+    .last()
+    .click();
 
   // Both receipts, from the worker, not the page.
   await page.goto('/receipts');
@@ -85,7 +91,10 @@ test('a forced provider failure can be retried and the result is shown', async (
   test.fixme(true, 'No failure-injection seam into the worker fake provider yet.');
   await signIn(page, env);
   await page.goto('/receipts');
-  const failed = page.getByRole('row').filter({ hasText: /failed/i }).first();
+  const failed = page
+    .getByRole('row')
+    .filter({ hasText: /failed/i })
+    .first();
   await failed.getByRole('button', { name: 'Retry', exact: true }).click();
   await expect(failed).toContainText(/published/i, { timeout: 180_000 });
 });

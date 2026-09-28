@@ -1183,7 +1183,8 @@ export const webMarketingMessages = {
     'Dit platform biedt via zijn API geen privacyoptie per post.',
   'web.capabilities.note.noThumbnail':
     'Dit platform accepteert geen aangepaste thumbnail via de API.',
-  'web.capabilities.note.inBuild': 'Het platform biedt dit. Post Array heeft het nog niet verzonden.',
+  'web.capabilities.note.inBuild':
+    'Het platform biedt dit. Post Array heeft het nog niet verzonden.',
   'web.capabilities.note.noCarousel': 'Het platform biedt geen veegbare carrousel.',
   'web.capabilities.note.noDisclosure':
     'Het platform heeft geen openbaarmakingsveld voor AI- of commerciële inhoud.',

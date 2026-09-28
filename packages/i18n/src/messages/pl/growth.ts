@@ -5,7 +5,6 @@ export const growthMessages = {
     'Plan z przewodnikiem zbudowany na podstawie faktów, które potwierdzisz. Proponuje pracę. Nigdy nie publikuje samodzielnie.',
 
   'growth.profile.noProject':
-
     'Wybierz projekt przed zapisaniem profilu. Profil firmy należy do jednego projektu.',
 
   'growth.profile.title': 'Profil działalności',

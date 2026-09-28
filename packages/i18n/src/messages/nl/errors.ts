@@ -105,7 +105,8 @@ export const errorMessages = {
     'Berichten worden privé gepubliceerd totdat de beoordeling is goedgekeurd. We werken deze pagina bij wanneer deze verandert.',
   'error.capability_unsupported.message': '{provider} biedt dit niet aan via zijn officiële API.',
   'error.capability_unsupported.action': 'Gebruik een indeling die dit account ondersteunt.',
-  'error.capability_not_implemented.message': 'Post Array heeft dit nog niet gebouwd voor {provider}.',
+  'error.capability_not_implemented.message':
+    'Post Array heeft dit nog niet gebouwd voor {provider}.',
   'error.capability_not_implemented.action':
     'Op de mogelijkhedenpagina wordt vermeld wat elke connector vandaag kan doen.',
   'error.capability_requires_review.message':

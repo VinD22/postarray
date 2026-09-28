@@ -36,4 +36,3 @@ describe('catalog audit', () => {
     }
   }, 60_000);
 });
-

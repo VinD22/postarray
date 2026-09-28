@@ -5,13 +5,18 @@ export const digestMessages = {
   'digest.empty': '이번 주에는 아직 요약할 내용이 없습니다. 게시물을 올리면 여기에 표시됩니다.',
   'digest.regenerate': '이번 주 다시 만들기',
   'digest.generating': '이번 주 요약을 만드는 중',
-  'digest.source.deterministic': '게시 기록과 자체 측정값만으로 작성했으며 글쓰기 도우미는 사용하지 않았습니다.',
-  'digest.source.ai': '도우미가 자체 기록을 바탕으로 작성했습니다. 모든 숫자는 기록과 대조했습니다.',
-  'digest.unavailable.aiOff': '글쓰기 도우미가 꺼져 있어 일반 버전으로 표시됩니다. 빠진 내용은 없습니다.',
-  'digest.unavailable.rejected': '도우미 버전이 데이터와 일치하지 않아 폐기되었습니다. 일반 버전으로 표시합니다.',
+  'digest.source.deterministic':
+    '게시 기록과 자체 측정값만으로 작성했으며 글쓰기 도우미는 사용하지 않았습니다.',
+  'digest.source.ai':
+    '도우미가 자체 기록을 바탕으로 작성했습니다. 모든 숫자는 기록과 대조했습니다.',
+  'digest.unavailable.aiOff':
+    '글쓰기 도우미가 꺼져 있어 일반 버전으로 표시됩니다. 빠진 내용은 없습니다.',
+  'digest.unavailable.rejected':
+    '도우미 버전이 데이터와 일치하지 않아 폐기되었습니다. 일반 버전으로 표시합니다.',
   'digest.headline.published':
     '{published, plural, =0 {완료된 게시물이 없습니다} one {게시물 #개가 완료되었습니다} other {게시물 #개가 완료되었습니다}} 기간: {windowStart}~{windowEnd}.',
-  'digest.headline.nothingPublished': '{windowStart}부터 {windowEnd} 사이에 게시된 내용이 없습니다.',
+  'digest.headline.nothingPublished':
+    '{windowStart}부터 {windowEnd} 사이에 게시된 내용이 없습니다.',
   'digest.outcome.published':
     '{count, plural, one {플랫폼 {provider}에서 게시물 #개가 완료되었습니다} other {플랫폼 {provider}에서 게시물 #개가 완료되었습니다}}.',
   'digest.outcome.partial':
@@ -28,7 +33,8 @@ export const digestMessages = {
   'digest.narrative.notSupported': '{statement}',
   'digest.narrative.nextAction': '{statement}',
   'digest.settings.title': '주간 요약 이메일',
-  'digest.settings.description': '게시된 내용과 측정할 수 있었던 내용을 담은 짧은 이메일을 매주 보냅니다. 기본으로 켜져 있습니다.',
+  'digest.settings.description':
+    '게시된 내용과 측정할 수 있었던 내용을 담은 짧은 이메일을 매주 보냅니다. 기본으로 켜져 있습니다.',
   'digest.settings.enabled': '주간 요약 보내기',
   'email.digest.subject': '{workspaceName}의 이번 주',
   'email.digest.intro':

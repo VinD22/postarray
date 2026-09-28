@@ -45,4 +45,3 @@ export const digestMessages = {
   'email.digest.footer':
     'Du erhältst diese Nachricht, weil die wöchentliche Zusammenfassung für {workspaceName} aktiviert ist. Du kannst sie in den Workspace-Einstellungen deaktivieren.',
 } as const;
-

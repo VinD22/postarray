@@ -30,7 +30,8 @@ export const webDemoMessages = {
   'web.demo.hero.viewCta': 'شاهد العرض التوضيحي',
   'web.demo.hero.projectsLine':
     'حساب واحد يدير أعمالًا متعددة. كل مشروع هو نشاط تجاري مستقل بحساباته المتصلة وتقويمه وموافقاته الخاصة، وتتنقل بينها من قائمة واحدة، كما تبدّل الموقع في وحدة تحكم البحث.',
-  'web.demo.hero.projectsChip': '{count, plural, zero {لا حسابات} one {حساب واحد} two {حسابان} few {# حسابات} many {# حسابًا} other {# حساب}}',
+  'web.demo.hero.projectsChip':
+    '{count, plural, zero {لا حسابات} one {حساب واحد} two {حسابان} few {# حسابات} many {# حسابًا} other {# حساب}}',
   'web.demo.hero.caption':
     'تصبح مسودة واحدة نسخة لكل منصة، وتحصل على وقت، وتحط في الأسبوع. محتوى نموذجي، وليس حسابًا فعليًا.',
   'web.demo.hero.more': 'اقطع كل تدفق العمل',

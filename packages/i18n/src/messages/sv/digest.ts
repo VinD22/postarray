@@ -2,12 +2,16 @@
 export const digestMessages = {
   'digest.title': 'Denna vecka',
   'digest.subtitle': 'Vad vi kan se från {windowStart} till {windowEnd}.',
-  'digest.empty': 'Det finns inget att sammanfatta för denna vecka ännu. Publicera något så visas det här.',
+  'digest.empty':
+    'Det finns inget att sammanfatta för denna vecka ännu. Publicera något så visas det här.',
   'digest.regenerate': 'Bygg om denna veckas sammanfattning',
   'digest.generating': 'Bygger denna veckas sammanfattning',
-  'digest.source.deterministic': 'Skrivet från dina publiceringsregister och egna mätningar, utan skrivassistenten.',
-  'digest.source.ai': 'Skrivet av assistenten från dina egna register. Varje siffra har kontrollerats mot dem.',
-  'digest.unavailable.aiOff': 'Skrivassistenten är avstängd, så detta är den enkla versionen. Inget saknas.',
+  'digest.source.deterministic':
+    'Skrivet från dina publiceringsregister och egna mätningar, utan skrivassistenten.',
+  'digest.source.ai':
+    'Skrivet av assistenten från dina egna register. Varje siffra har kontrollerats mot dem.',
+  'digest.unavailable.aiOff':
+    'Skrivassistenten är avstängd, så detta är den enkla versionen. Inget saknas.',
   'digest.unavailable.rejected':
     'Assistentversionen matchade inte dina data och förkastades. Detta är den enkla versionen.',
   'digest.headline.published':
@@ -29,10 +33,12 @@ export const digestMessages = {
   'digest.narrative.notSupported': '{statement}',
   'digest.narrative.nextAction': '{statement}',
   'digest.settings.title': 'Veckovis sammanfattning via e-post',
-  'digest.settings.description': 'Ett kort e-postmeddelande varje vecka med vad som skickades och vad vi kunde mäta. På som standard.',
+  'digest.settings.description':
+    'Ett kort e-postmeddelande varje vecka med vad som skickades och vad vi kunde mäta. På som standard.',
   'digest.settings.enabled': 'Skicka veckosammanfattningen',
   'email.digest.subject': 'Din vecka i {workspaceName}',
-  'email.digest.intro': 'Här är vad vi kan se för {workspaceName} mellan {windowStart} och {windowEnd}.',
+  'email.digest.intro':
+    'Här är vad vi kan se för {workspaceName} mellan {windowStart} och {windowEnd}.',
   'email.digest.noData':
     'Vi kunde inte mäta något denna vecka. När ett nummer saknas beror det på att vi inte kunde läsa det, inte på att det var noll.',
   'email.digest.footer':

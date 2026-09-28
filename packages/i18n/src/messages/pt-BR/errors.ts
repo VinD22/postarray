@@ -92,7 +92,8 @@ export const errorMessages = {
   'error.capability_unsupported.message':
     '{provider} não oferece isso por meio de sua API oficial.',
   'error.capability_unsupported.action': 'Use um formato compatível com esta conta.',
-  'error.capability_not_implemented.message': 'Post Array ainda não construiu isso para {provider}.',
+  'error.capability_not_implemented.message':
+    'Post Array ainda não construiu isso para {provider}.',
   'error.capability_not_implemented.action':
     'A página de capacidade lista o que cada conector pode fazer hoje.',
   'error.capability_requires_review.message':

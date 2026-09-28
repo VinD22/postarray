@@ -24,9 +24,7 @@ describe('catalog family coverage', () => {
       (key) => key === 'email.invite.subject' || key === 'digest.title',
     );
 
-    expect(coverage.map((family) => family.prefix)).toEqual([
-      ...REQUIRED_CATALOG_FAMILY_PREFIXES,
-    ]);
+    expect(coverage.map((family) => family.prefix)).toEqual([...REQUIRED_CATALOG_FAMILY_PREFIXES]);
     expect(coverage[0]?.missingKeys).toEqual([]);
     expect(coverage[1]?.allowedFallbackKeys).toEqual(['email.invite.subject']);
     expect(coverage[2]?.allowedFallbackKeys).toEqual(['digest.title']);

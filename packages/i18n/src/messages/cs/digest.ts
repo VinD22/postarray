@@ -2,14 +2,12 @@
 export const digestMessages = {
   'digest.title': 'Tento týden',
   'digest.subtitle': 'Co vidíme od {windowStart} do {windowEnd}.',
-  'digest.empty':
-    'Pro tento týden zatím není co shrnout. Něco publikujte a objeví se to zde.',
+  'digest.empty': 'Pro tento týden zatím není co shrnout. Něco publikujte a objeví se to zde.',
   'digest.regenerate': 'Znovu sestavit přehled tohoto týdne',
   'digest.generating': 'Sestavuje se přehled tohoto týdne',
   'digest.source.deterministic':
     'Napsáno z vašich publikačních záznamů a vlastních měření, bez asistenta psaní.',
-  'digest.source.ai':
-    'Napsal asistent z vašich vlastních záznamů. Každé číslo bylo ověřeno.',
+  'digest.source.ai': 'Napsal asistent z vašich vlastních záznamů. Každé číslo bylo ověřeno.',
   'digest.unavailable.aiOff':
     'Asistent psaní je vypnutý, takže vidíte základní verzi. Nic v ní nechybí.',
   'digest.unavailable.rejected':
@@ -37,7 +35,8 @@ export const digestMessages = {
     'Krátký e-mail každý týden s tím, co bylo odesláno a co se podařilo změřit. Ve výchozím nastavení zapnuto.',
   'digest.settings.enabled': 'Posílat týdenní přehled',
   'email.digest.subject': 'Váš týden v {workspaceName}',
-  'email.digest.intro': 'Zde je to, co vidíme pro {workspaceName} mezi {windowStart} a {windowEnd}.',
+  'email.digest.intro':
+    'Zde je to, co vidíme pro {workspaceName} mezi {windowStart} a {windowEnd}.',
   'email.digest.noData':
     'Tento týden se nám nepodařilo nic změřit. Pokud nějaké číslo chybí, je to proto, že jsme ho nemohli načíst, ne proto, že by bylo nula.',
   'email.digest.footer':

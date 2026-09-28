@@ -5,7 +5,6 @@ export const growthMessages = {
     'Onayladığınız gerçeklerden oluşturulan rehberli bir plan. Çalışmayı teklif ediyor. Hiçbir zaman tek başına yayınlanmaz.',
 
   'growth.profile.noProject':
-
     'Profili kaydetmeden önce bir proje seçin. Bir işletme profili tek bir projeye aittir.',
 
   'growth.profile.title': 'İşletme profili',

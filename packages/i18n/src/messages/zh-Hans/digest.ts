@@ -5,8 +5,7 @@ export const digestMessages = {
   'digest.empty': '本周还没有可总结的内容。发布一些内容后，它会显示在这里。',
   'digest.regenerate': '重新生成本周摘要',
   'digest.generating': '正在生成本周摘要',
-  'digest.source.deterministic':
-    '根据您的发布记录和自有测量数据生成，没有使用写作助手。',
+  'digest.source.deterministic': '根据您的发布记录和自有测量数据生成，没有使用写作助手。',
   'digest.source.ai': '由助手根据您的记录生成。每个数字都已与这些记录核对。',
   'digest.unavailable.aiOff': '写作助手已关闭，因此这是普通版本。没有遗漏任何内容。',
   'digest.unavailable.rejected': '助手版本与您的数据不匹配，因此已丢弃。这是普通版本。',
@@ -29,10 +28,12 @@ export const digestMessages = {
   'digest.narrative.notSupported': '{statement}',
   'digest.narrative.nextAction': '{statement}',
   'digest.settings.title': '每周摘要邮件',
-  'digest.settings.description': '每周发送一封简短邮件，说明发布了什么以及我们测量到了什么。默认开启。',
+  'digest.settings.description':
+    '每周发送一封简短邮件，说明发布了什么以及我们测量到了什么。默认开启。',
   'digest.settings.enabled': '发送每周摘要',
   'email.digest.subject': '{workspaceName} 的本周摘要',
-  'email.digest.intro': '以下是我们在 {windowStart} 到 {windowEnd} 期间能看到的 {workspaceName} 情况。',
+  'email.digest.intro':
+    '以下是我们在 {windowStart} 到 {windowEnd} 期间能看到的 {workspaceName} 情况。',
   'email.digest.noData':
     '我们本周无法测量任何内容。缺少数字是因为我们无法读取它，而不是因为它等于零。',
   'email.digest.footer':

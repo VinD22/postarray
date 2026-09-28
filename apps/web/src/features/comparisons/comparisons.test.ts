@@ -12,12 +12,7 @@ import {
   findComparisonPage,
 } from './registry';
 import { COMPARISON_SLUGS } from './slugs';
-import {
-  comparisonLocales,
-  comparisonSources,
-  comparisonStrings,
-  isInternalSource,
-} from './types';
+import { comparisonLocales, comparisonSources, comparisonStrings, isInternalSource } from './types';
 
 /**
  * The invariants that make a comparison page safe to publish.

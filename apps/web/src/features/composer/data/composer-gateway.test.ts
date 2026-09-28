@@ -266,8 +266,23 @@ describe('loadComposer', () => {
   it('carries the master fields the narrowed list view drops', async () => {
     getComposite.mockResolvedValue(
       compositeItem({
-        threadItems: [{ id: 'comment_01', kind: 'thread', order: 0, body: 'Two.', mediaIds: [], links: [], delaySeconds: 120, connectionId: null }],
-        schedule: { instant: '2026-09-10T09:00:00.000Z', ianaTimeZone: 'Europe/Berlin', repeat: null },
+        threadItems: [
+          {
+            id: 'comment_01',
+            kind: 'thread',
+            order: 0,
+            body: 'Two.',
+            mediaIds: [],
+            links: [],
+            delaySeconds: 120,
+            connectionId: null,
+          },
+        ],
+        schedule: {
+          instant: '2026-09-10T09:00:00.000Z',
+          ianaTimeZone: 'Europe/Berlin',
+          repeat: null,
+        },
       }),
     );
 
@@ -382,10 +397,7 @@ describe('createComposerGateway', () => {
         connectionId: 'conn_01',
         patch: { privacyValue: 'public' },
       },
-    ].reduce<ComposerState>(
-      (state, action) => composerReducer(state, action as never),
-      start,
-    );
+    ].reduce<ComposerState>((state, action) => composerReducer(state, action as never), start);
 
     const gateway = createComposerGateway({
       contentItemId: 'content_01',

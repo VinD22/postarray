@@ -9,7 +9,8 @@ afterEach(async () => {
 });
 
 describe('telemetry runtime dependencies', () => {
-  it('initializes and shuts down the configured SDKs', async () => {
+  // The first import of the Sentry and OpenTelemetry SDKs is slow on a cold runner.
+  it('initializes and shuts down the configured SDKs', { timeout: 30_000 }, async () => {
     await expect(
       initErrorReporting({
         dsn: 'https://public@example.invalid/1',

@@ -329,7 +329,8 @@ export const webAnalyticsMessages = {
     'Harus berupa alamat https publik. Alamat jaringan pribadi dan rantai pengalihan ditolak oleh layanan pengalihan.',
   'analytics.links.createCampaign': 'Nama kampanye',
   'analytics.links.createSlug': 'Akhiran khusus',
-  'analytics.links.createSlugHelp': 'Biarkan ini kosong dan Post Array menghasilkan akhir acak pendek.',
+  'analytics.links.createSlugHelp':
+    'Biarkan ini kosong dan Post Array menghasilkan akhir acak pendek.',
   'analytics.links.createUtm': 'Parameter UTM',
   'analytics.links.blockedScheme': 'Hanya tujuan https yang diterima.',
   'analytics.links.blockedPrivate':

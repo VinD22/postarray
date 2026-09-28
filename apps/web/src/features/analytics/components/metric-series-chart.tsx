@@ -49,10 +49,30 @@ export function MetricSeriesChart({
   // violation the first time an account is unchecked: React needs the call
   // count identical between renders. An empty slot is disabled and passes an
   // id it never fetches with.
-  const slotA = useMetricSeries(charted[0]?.connectionId ?? '', metric, range, charted[0] !== undefined);
-  const slotB = useMetricSeries(charted[1]?.connectionId ?? '', metric, range, charted[1] !== undefined);
-  const slotC = useMetricSeries(charted[2]?.connectionId ?? '', metric, range, charted[2] !== undefined);
-  const slotD = useMetricSeries(charted[3]?.connectionId ?? '', metric, range, charted[3] !== undefined);
+  const slotA = useMetricSeries(
+    charted[0]?.connectionId ?? '',
+    metric,
+    range,
+    charted[0] !== undefined,
+  );
+  const slotB = useMetricSeries(
+    charted[1]?.connectionId ?? '',
+    metric,
+    range,
+    charted[1] !== undefined,
+  );
+  const slotC = useMetricSeries(
+    charted[2]?.connectionId ?? '',
+    metric,
+    range,
+    charted[2] !== undefined,
+  );
+  const slotD = useMetricSeries(
+    charted[3]?.connectionId ?? '',
+    metric,
+    range,
+    charted[3] !== undefined,
+  );
   const queries = useMemo(() => [slotA, slotB, slotC, slotD], [slotA, slotB, slotC, slotD]);
 
   const metricName = t(metricLabelKey(metric));

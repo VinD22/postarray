@@ -92,7 +92,9 @@ describe('toRealtimeEvents', () => {
 
   it('carries no field the emitter added beyond the declared payload', () => {
     const events = toRealtimeEvents(
-      envelope({ data: { publishJobId: JOB, title: 'launch day', providerResponse: { ok: true } } }),
+      envelope({
+        data: { publishJobId: JOB, title: 'launch day', providerResponse: { ok: true } },
+      }),
     );
     expect(Object.keys(events[0]?.data ?? {}).sort()).toEqual([
       'contentItemId',

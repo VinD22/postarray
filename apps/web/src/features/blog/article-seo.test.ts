@@ -58,38 +58,43 @@ describe('article alternates', () => {
 });
 
 describe('article metadata', () => {
-  it('marks the page as an article with real publication and modification times', async () => {
-    const subject = requireArticle();
-    const content = articleContent(subject, 'de');
-    const metadata = await articleMetadata({
-      headline: content.title,
-      description: content.description,
-      path: blogArticlePath(subject.slug),
-      published: '2026-08-01',
-      updated: '2026-08-10',
-      authorName: en['web.blog.byline.editorial.name'],
-      reviewerName: en['web.blog.byline.platform.name'],
-      availableLocales: articleLocales(subject),
-      locale: 'de',
-    });
+  // The first test in the file pays for loading every locale catalog.
+  it(
+    'marks the page as an article with real publication and modification times',
+    { timeout: 30_000 },
+    async () => {
+      const subject = requireArticle();
+      const content = articleContent(subject, 'de');
+      const metadata = await articleMetadata({
+        headline: content.title,
+        description: content.description,
+        path: blogArticlePath(subject.slug),
+        published: '2026-08-01',
+        updated: '2026-08-10',
+        authorName: en['web.blog.byline.editorial.name'],
+        reviewerName: en['web.blog.byline.platform.name'],
+        availableLocales: articleLocales(subject),
+        locale: 'de',
+      });
 
-    const openGraph = metadata.openGraph as
-      | {
-          readonly type?: string;
-          readonly publishedTime?: string;
-          readonly modifiedTime?: string;
-          readonly locale?: string;
-          readonly authors?: readonly string[];
-        }
-      | undefined;
+      const openGraph = metadata.openGraph as
+        | {
+            readonly type?: string;
+            readonly publishedTime?: string;
+            readonly modifiedTime?: string;
+            readonly locale?: string;
+            readonly authors?: readonly string[];
+          }
+        | undefined;
 
-    expect(openGraph?.type).toBe('article');
-    expect(openGraph?.publishedTime).toBe('2026-08-01T00:00:00.000Z');
-    expect(openGraph?.modifiedTime).toBe('2026-08-10T00:00:00.000Z');
-    const contentLocale = articleLocales(subject).includes('de') ? 'de' : 'en';
-    expect(openGraph?.locale).toBe(toOpenGraphLocale(contentLocale));
-    expect(openGraph?.authors).toEqual([en['web.blog.byline.editorial.name']]);
-  });
+      expect(openGraph?.type).toBe('article');
+      expect(openGraph?.publishedTime).toBe('2026-08-01T00:00:00.000Z');
+      expect(openGraph?.modifiedTime).toBe('2026-08-10T00:00:00.000Z');
+      const contentLocale = articleLocales(subject).includes('de') ? 'de' : 'en';
+      expect(openGraph?.locale).toBe(toOpenGraphLocale(contentLocale));
+      expect(openGraph?.authors).toEqual([en['web.blog.byline.editorial.name']]);
+    },
+  );
 });
 
 describe('article structured data', () => {

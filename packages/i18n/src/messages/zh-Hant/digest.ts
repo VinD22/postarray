@@ -15,7 +15,8 @@ export const digestMessages = {
   'digest.outcome.published': '{count, plural, other {# 則貼文已在 {provider} 上完成}}。',
   'digest.outcome.partial': '{count, plural, other {# 則貼文在 {provider} 上僅送達部分目的地}}。',
   'digest.outcome.failed': '{count, plural, other {# 則貼文未能在 {provider} 上發出}}。',
-  'digest.metrics.noneYet': '本週尚未收到任何衡量數據。這表示我們尚不清楚這些貼文的表現，而非表現不佳。',
+  'digest.metrics.noneYet':
+    '本週尚未收到任何衡量數據。這表示我們尚不清楚這些貼文的表現，而非表現不佳。',
   'digest.freshness.statement':
     '{label, select, fresh {數據最後同步於 {lastObservedAt}。} stale {自 {lastObservedAt} 後未再同步，因此上方數據可能已過時。} other {尚未同步任何數據，因此上方沒有任何衡量結果。}}',
   'digest.narrative.headline': '{statement}',
@@ -27,7 +28,10 @@ export const digestMessages = {
   'digest.settings.description': '每週一封簡短電子郵件，彙整已發布內容與可衡量的成果。預設為開啟。',
   'digest.settings.enabled': '寄送每週摘要',
   'email.digest.subject': '你在 {workspaceName} 的這一週',
-  'email.digest.intro': '以下是我們在 {windowStart} 到 {windowEnd} 期間，於 {workspaceName} 觀察到的內容。',
-  'email.digest.noData': '我們這週未能測得任何數據。若某個數字缺漏，是因為我們無法讀取它，而不是因為它是零。',
-  'email.digest.footer': '你收到此郵件是因為 {workspaceName} 已啟用每週摘要功能。可在工作區設定中關閉。',
+  'email.digest.intro':
+    '以下是我們在 {windowStart} 到 {windowEnd} 期間，於 {workspaceName} 觀察到的內容。',
+  'email.digest.noData':
+    '我們這週未能測得任何數據。若某個數字缺漏，是因為我們無法讀取它，而不是因為它是零。',
+  'email.digest.footer':
+    '你收到此郵件是因為 {workspaceName} 已啟用每週摘要功能。可在工作區設定中關閉。',
 } as const;

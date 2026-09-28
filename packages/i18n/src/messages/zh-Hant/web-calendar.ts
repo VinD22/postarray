@@ -25,7 +25,8 @@ export const webCalendarMessages = {
     '寫入 Reddit 需要經批准的應用程式，而且每則貼文都需要標題和 subreddit。',
   'web.connection.requirement.wordpress':
     'Post Array 使用您在 WordPress 中建立的應用程式密碼，透過網站 REST API 發布。',
-  'web.connection.requirement.medium': 'Medium 透過 OAuth 連線，Post Array 以 Markdown 發布公開文章。',
+  'web.connection.requirement.medium':
+    'Medium 透過 OAuth 連線，Post Array 以 Markdown 發布公開文章。',
   'web.connection.requirement.devto': 'Dev.to 使用您在 Dev.to 設定中建立的 API 金鑰連線。',
   'web.connection.requirement.pinterest':
     '寫入 Pinterest 需要經批准的應用程式存取權限，圖釘需要圖片和您自己的畫板。',
@@ -290,7 +291,8 @@ export const webCalendarMessages = {
   'web.connection.projectMissing.body': '專案能讓不同產品或客戶的頻道、媒體、草稿與排程彼此分開。',
   'web.connection.requirement.instagram':
     'Instagram 發布需要專業帳號，這意味著連結到 Facebook 頁面的企業或創建者帳號。',
-  'web.connection.requirement.facebook': 'Post Array 發佈到 Facebook Pages。個人資料不能作為發布目標。',
+  'web.connection.requirement.facebook':
+    'Post Array 發佈到 Facebook Pages。個人資料不能作為發布目標。',
   'web.connection.requirement.linkedin': '要為組織發布，您需要該 LinkedIn 頁面上的內容管理員角色。',
   'web.connection.requirement.youtube':
     '在 Google 完成應用程式審核之前，從此項目上傳的內容將作為私人發布。之後您可以更改 YouTube 上的可見度。',
@@ -323,7 +325,8 @@ export const webCalendarMessages = {
   'web.connection.capability.tableLabel': '按平台劃分的功能',
   'web.connection.capability.featureColumn': '能力',
   'web.connection.capability.legendTitle': '如何閱讀此內容',
-  'web.connection.capability.legend.supported': 'Post Array 現在可以為正確類型的連線帳號執行此操作。',
+  'web.connection.capability.legend.supported':
+    'Post Array 現在可以為正確類型的連線帳號執行此操作。',
   'web.connection.capability.legend.not_implemented':
     '該平台提供了此功能，但 Post Array 尚未建置它。它位於連接器路線圖上。',
   'web.connection.capability.legend.unsupported':

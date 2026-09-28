@@ -47,12 +47,22 @@ describe('failure explanations', () => {
 describe('post feedback readings', () => {
   it('ignores rows without a window', () => {
     expect(
-      toReading({ id: 'x', messageArgs: {}, evidenceIds: [], sampleSize: null, createdAt: created }),
+      toReading({
+        id: 'x',
+        messageArgs: {},
+        evidenceIds: [],
+        sampleSize: null,
+        createdAt: created,
+      }),
     ).toBeNull();
   });
 
   it('keeps an unavailable subject as null, never zero', () => {
-    const view = reading({ window: 'seven_days', verdict: 'insufficient_data', subjectValue: null });
+    const view = reading({
+      window: 'seven_days',
+      verdict: 'insufficient_data',
+      subjectValue: null,
+    });
     expect(view.subjectValue).toBeNull();
     expect(deterministicNextTest(view)).toBeNull();
   });

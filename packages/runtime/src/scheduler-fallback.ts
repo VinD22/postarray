@@ -39,7 +39,8 @@ export function schedulerFallbackRefused(config: RelayConfig): RelayError {
       reason: 'scheduler_fallback_refused',
       profile: config.core.runtimeProfile,
       databaseIsLocal: isLocalDatabaseUrl(config.database.url),
-      remedy: 'set TEMPORAL_ADDRESS, or set POSTARRAY_RUNTIME_PROFILE=local against a local database',
+      remedy:
+        'set TEMPORAL_ADDRESS, or set POSTARRAY_RUNTIME_PROFILE=local against a local database',
     },
   });
 }

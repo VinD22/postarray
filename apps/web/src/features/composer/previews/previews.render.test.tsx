@@ -109,10 +109,13 @@ describe('every platform preview', () => {
     expect(within(group).getByText('Shipping the new preview today.')).toBeInTheDocument();
   });
 
-  it.each(NAMED)('renders %s at the mobile width without an authored width on the text', (provider) => {
-    renderPreview(model({ provider }));
-    expect(screen.getByRole('group')).toHaveStyle({ inlineSize: '360px' });
-  });
+  it.each(NAMED)(
+    'renders %s at the mobile width without an authored width on the text',
+    (provider) => {
+      renderPreview(model({ provider }));
+      expect(screen.getByRole('group')).toHaveStyle({ inlineSize: '360px' });
+    },
+  );
 });
 
 describe('media that will not be published', () => {
@@ -155,14 +158,17 @@ describe('the counter', () => {
 });
 
 describe('link cards', () => {
-  const link = { url: 'https://example.com/a', domain: 'example.com', title: null, description: null };
+  const link = {
+    url: 'https://example.com/a',
+    domain: 'example.com',
+    title: null,
+    description: null,
+  };
 
   it('shows the address alone where the platform builds a card', () => {
     renderPreview(model({ provider: 'x', links: [link] }));
     expect(screen.getByText('example.com')).toBeInTheDocument();
-    expect(
-      screen.getByText(/Post Array does not fetch the destination page/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Post Array does not fetch the destination page/)).toBeInTheDocument();
   });
 
   it('shows no card where the platform builds none', () => {
@@ -187,7 +193,8 @@ describe('the seeded accounts', () => {
   it.each(SEED_ACCOUNTS.map((account) => [account.provider, account] as const))(
     'renders %s from its own capability snapshot',
     (_provider, account) => {
-      const support: CapabilitySupport = account.capabilities.contentKinds.text ?? 'not_implemented';
+      const support: CapabilitySupport =
+        account.capabilities.contentKinds.text ?? 'not_implemented';
       renderPreview(
         model({
           provider: account.provider,

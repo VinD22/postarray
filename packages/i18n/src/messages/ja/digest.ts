@@ -15,7 +15,8 @@ export const digestMessages = {
     'アシスタント版はデータと一致しなかったため破棄されました。これは通常版です。',
   'digest.headline.published':
     '{published, plural, =0 {完了した投稿はありません} one {#件の投稿が完了しました} other {#件の投稿が完了しました}}。期間は{windowStart}から{windowEnd}です。',
-  'digest.headline.nothingPublished': '{windowStart}から{windowEnd}の間に公開されたものはありません。',
+  'digest.headline.nothingPublished':
+    '{windowStart}から{windowEnd}の間に公開されたものはありません。',
   'digest.outcome.published':
     '{count, plural, one {プラットフォーム {provider}で#件の投稿が完了しました} other {プラットフォーム {provider}で#件の投稿が完了しました}}。',
   'digest.outcome.partial':

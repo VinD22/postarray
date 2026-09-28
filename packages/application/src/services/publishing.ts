@@ -1,8 +1,4 @@
-import {
-  scheduleSpecSchema,
-  type CommitPreview,
-  type ValidationResult,
-} from '@relay/contracts';
+import { scheduleSpecSchema, type CommitPreview, type ValidationResult } from '@relay/contracts';
 
 import type {
   ActorContext,

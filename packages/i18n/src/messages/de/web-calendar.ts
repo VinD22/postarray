@@ -387,7 +387,8 @@ export const webCalendarMessages = {
   'web.connection.requirement.generic':
     'Sie benötigen die Erlaubnis, auf diesem Konto von der Plattform selbst aus zu posten. Post Array kann es nicht gewähren.',
 
-  'web.connection.purpose.publish': 'Veröffentlichen der von Ihnen geplanten Beiträge in Post Array.',
+  'web.connection.purpose.publish':
+    'Veröffentlichen der von Ihnen geplanten Beiträge in Post Array.',
   'web.connection.purpose.readPosts':
     'Lesen Sie einen von Post Array veröffentlichten Beitrag noch einmal durch, damit anhand der Quittung nachgewiesen werden kann, dass er aktiv ist.',
   'web.connection.purpose.identity':

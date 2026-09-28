@@ -35,7 +35,8 @@ export default defineConfig({
     command: 'pnpm dev:e2e',
     url: baseURL,
     reuseExistingServer: false,
-    timeout: 120_000,
+    // Cold webpack compiles can exceed two minutes on a loaded laptop.
+    timeout: Number(process.env.RELAY_E2E_SERVER_TIMEOUT_MS ?? 120_000),
     stdout: 'ignore',
     stderr: 'pipe',
     env: {

@@ -389,7 +389,8 @@ export const webAnalyticsMessages = {
     'Herkese açık bir https adresi olmalıdır. Özel ağ adresleri ve yönlendirme zincirleri, yönlendirme hizmeti tarafından reddedilir.',
   'analytics.links.createCampaign': 'Kampanya adı',
   'analytics.links.createSlug': 'Özel bitiş',
-  'analytics.links.createSlugHelp': 'Bunu boş bırakın ve Post Array kısa, rastgele bir son oluşturur.',
+  'analytics.links.createSlugHelp':
+    'Bunu boş bırakın ve Post Array kısa, rastgele bir son oluşturur.',
   'analytics.links.createUtm': 'UTM parametreleri',
   'analytics.links.blockedScheme': 'Yalnızca https hedefleri kabul edilir.',
   'analytics.links.blockedPrivate':

@@ -1,9 +1,6 @@
 import { DEFAULT_LOCALE, PUBLIC_LOCALE_CODES } from '@relay/i18n';
 
-import {
-  BLOG_FEED_CONTENT_TYPE,
-  blogFeedXml,
-} from '@/features/blog/feed';
+import { BLOG_FEED_CONTENT_TYPE, blogFeedXml } from '@/features/blog/feed';
 
 /**
  * One static RSS feed per public non-English locale. The English feed stays at
@@ -23,7 +20,10 @@ export async function GET(
 ): Promise<Response> {
   const { locale } = await params;
 
-  if (!PUBLIC_LOCALE_CODES.some((publicLocale) => publicLocale === locale) || locale === DEFAULT_LOCALE) {
+  if (
+    !PUBLIC_LOCALE_CODES.some((publicLocale) => publicLocale === locale) ||
+    locale === DEFAULT_LOCALE
+  ) {
     return new Response('Not found', { status: 404 });
   }
 

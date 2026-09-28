@@ -542,7 +542,8 @@ export const webMarketingMessages = withHebrewPluralForms({
   'web.legal.privacy.collect.content':
     'תוכן ומדיה שאתה יוצר, מעלה או מייבא, לרבות הזכויות והמקור שאתה מקליט איתו.',
   'web.legal.privacy.collect.schedules': 'לוחות זמנים, החלטות אישור, קבלות פרסום ואירועי ביקורת.',
-  'web.legal.privacy.collect.analytics': 'מדדים שנאספו מפלטפורמות לגבי פוסטים שפרסמת דרך Post Array.',
+  'web.legal.privacy.collect.analytics':
+    'מדדים שנאספו מפלטפורמות לגבי פוסטים שפרסמת דרך Post Array.',
   'web.legal.privacy.collect.billing':
     'אסמכתאות חיוב המוחזקות על ידי Polar. ממסר לא שומר את פרטי הכרטיס שלך.',
   'web.legal.privacy.collect.technical':

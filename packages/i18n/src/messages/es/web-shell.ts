@@ -181,7 +181,8 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak': 'Por su seguridad, no decimos si una dirección está registrada.',
   'auth.failure.provider':
     'El inicio de sesión en with {provider} no se completó. No se cambió nada.',
-  'auth.failure.network': 'No pudimos llegar a Post Array. Comprueba tu conexión y vuelve a intentarlo.',
+  'auth.failure.network':
+    'No pudimos llegar a Post Array. Comprueba tu conexión y vuelve a intentarlo.',
   'auth.signUp.emailInUseNote':
     'Si esta dirección ya tiene una cuenta, le enviamos por correo electrónico un enlace de inicio de sesión en lugar de crear una segunda.',
   'auth.legal.readTerms': 'Lea los términos',

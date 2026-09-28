@@ -10,8 +10,7 @@ const claimOAuth = vi.fn();
 let keyCounter = 0;
 
 vi.mock('next/navigation', () => ({
-  useSearchParams: () =>
-    new URLSearchParams('status=select&provider=facebook&transactionId=otx_1'),
+  useSearchParams: () => new URLSearchParams('status=select&provider=facebook&transactionId=otx_1'),
 }));
 vi.mock('@/lib/auth/session-context', () => ({ useWorkspaceId: () => 'ws_1' }));
 vi.mock('@/lib/api', () => ({
@@ -25,7 +24,12 @@ vi.mock('@/lib/api', () => ({
           provider: 'facebook',
           expiresAt: '2026-09-24T10:00:00.000Z',
           accounts: [
-            { externalAccountId: 'p1', displayName: 'Cafe Verde', handle: 'cafeverde', eligible: true },
+            {
+              externalAccountId: 'p1',
+              displayName: 'Cafe Verde',
+              handle: 'cafeverde',
+              eligible: true,
+            },
             { externalAccountId: 'p2', displayName: 'Old Page', handle: null, eligible: false },
           ],
         }),

@@ -8,14 +8,7 @@
  */
 
 export type DraftsListState =
-  | 'loading'
-  | 'empty'
-  | 'ready'
-  | 'partial'
-  | 'offline'
-  | 'denied'
-  | 'rateLimited'
-  | 'error';
+  'loading' | 'empty' | 'ready' | 'partial' | 'offline' | 'denied' | 'rateLimited' | 'error';
 
 export interface DraftsErrorShape {
   readonly isOffline: boolean;

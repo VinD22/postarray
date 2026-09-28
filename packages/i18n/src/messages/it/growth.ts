@@ -5,7 +5,6 @@ export const growthMessages = {
     'Un piano guidato costruito a partire dai fatti che confermi. Propone lavoro. Non pubblica mai da solo.',
 
   'growth.profile.noProject':
-
     'Scegli un progetto prima di salvare il profilo. Un profilo aziendale appartiene a un solo progetto.',
 
   'growth.profile.title': 'Profilo aziendale',

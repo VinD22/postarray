@@ -100,9 +100,7 @@ function connectRealtime(config: RelayConfig, logger: Logger): RealtimeConnectio
   ],
 })
 export class EventsModule implements OnApplicationShutdown {
-  constructor(
-    @Inject(REALTIME_CONNECTIONS) private readonly connections: RealtimeConnections,
-  ) {}
+  constructor(@Inject(REALTIME_CONNECTIONS) private readonly connections: RealtimeConnections) {}
 
   /**
    * Close both sockets on shutdown.

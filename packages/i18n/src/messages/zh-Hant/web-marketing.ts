@@ -55,7 +55,8 @@ export const webMarketingMessages = {
   'web.meta.changelog.title': '變更日誌',
   'web.meta.changelog.description': '發布了什麼、連接器發生了什麼變化以及糾正了什麼。',
   'web.meta.docs.title': '文件',
-  'web.meta.docs.description': '用於在 Post Array 上建立的 REST API、MCP 伺服器、CLI 和 Webhook 文件。',
+  'web.meta.docs.description':
+    '用於在 Post Array 上建立的 REST API、MCP 伺服器、CLI 和 Webhook 文件。',
   'web.meta.methodology.title': '方法論',
   'web.meta.methodology.description':
     '我們如何研究平台聲明、如何確定其日期、如何比較其他產品以及如何糾正錯誤。',
@@ -486,7 +487,8 @@ export const webMarketingMessages = {
   'web.legal.entity.pending': '締約實體、其註冊地址及管轄地仍待決定，並會在啟動前於此列明。',
   'web.legal.index.updated': '更新於 {date}',
   'web.legal.terms.title': '服務條款',
-  'web.legal.terms.summary': 'Post Array 同意提供的服務、您同意採取的行動，以及任一方停止時會發生的事。',
+  'web.legal.terms.summary':
+    'Post Array 同意提供的服務、您同意採取的行動，以及任一方停止時會發生的事。',
   'web.legal.terms.service.title': '服務內容',
   'web.legal.terms.service.body':
     'Post Array 是一項託管服務，透過各平台的官方 API 建立、核准、排程及發佈社群平台內容，並提供由此產生的收據、分析資料及稽核記錄。它不是社群平台，也不控制任何平台在貼文發佈後如何處理該貼文。',
@@ -518,7 +520,8 @@ export const webMarketingMessages = {
   'web.legal.terms.developer.body':
     '程式化存取亦受 API 與 MCP 條款約束，包括速率限制、範圍要求及服務帳號絕不繼承人類完整權限的規則。',
   'web.legal.privacy.title': '隱私權政策',
-  'web.legal.privacy.summary': 'Post Array 蒐集什麼、為何蒐集、由誰處理、保存多久，以及如何匯出或刪除。',
+  'web.legal.privacy.summary':
+    'Post Array 蒐集什麼、為何蒐集、由誰處理、保存多久，以及如何匯出或刪除。',
   'web.legal.privacy.collect.title': '我們持有的資料',
   'web.legal.privacy.collect.account':
     '帳號及個人資料：您的姓名、電子郵件、工作空間成員資格及角色。',
@@ -902,7 +905,8 @@ export const webMarketingMessages = {
   'web.capabilities.note.linkedinDocuments': 'LinkedIn 是唯一已連結且有文件貼文類型的平台。',
   'web.capabilities.note.metaReview': '需要 Meta 應用程式審查及企業驗證。',
   'web.capabilities.note.xConsent': '自動發文需要帳號持有人的已記錄同意。',
-  'web.capabilities.note.xDisclosure': '平台提供「使用 AI 製作」欄位，Post Array 會依您的聲明設定。',
+  'web.capabilities.note.xDisclosure':
+    '平台提供「使用 AI 製作」欄位，Post Array 會依您的聲明設定。',
   'web.capabilities.note.noDestinations': '此平台沒有粉絲專頁、看板或社群等目的地概念。',
   'web.capabilities.note.noThreads': '此平台沒有原生多貼文序列。',
   'web.capabilities.note.noDocuments': '此平台沒有文件貼文類型。',

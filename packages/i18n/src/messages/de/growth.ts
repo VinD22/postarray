@@ -5,7 +5,6 @@ export const growthMessages = {
     'Ein geführter Plan, der auf von Ihnen bestätigten Fakten basiert. Es schlägt Arbeit vor. Es veröffentlicht niemals alleine.',
 
   'growth.profile.noProject':
-
     'Wählen Sie ein Projekt, bevor Sie das Profil speichern. Ein Unternehmensprofil gehört zu genau einem Projekt.',
 
   'growth.profile.title': 'Unternehmensprofil',

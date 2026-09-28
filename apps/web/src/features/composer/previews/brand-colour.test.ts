@@ -43,12 +43,14 @@ describe('previews never paint a provider brand colour', () => {
   it('has no brand fill, brand border or brand token in any preview file', () => {
     const offenders = FILES.flatMap((file) => {
       const lines = readFileSync(file, 'utf8').split('\n');
-      return lines
-        .map((line, index) => ({ line, index }))
-        .filter(({ line }) => BANNED.some((pattern) => pattern.test(line)))
-        // This suite names the patterns it bans, so its own source is exempt.
-        .filter(() => !file.endsWith('brand-colour.test.ts'))
-        .map(({ index }) => `${relative(PREVIEWS_DIR, file)}:${index + 1}`);
+      return (
+        lines
+          .map((line, index) => ({ line, index }))
+          .filter(({ line }) => BANNED.some((pattern) => pattern.test(line)))
+          // This suite names the patterns it bans, so its own source is exempt.
+          .filter(() => !file.endsWith('brand-colour.test.ts'))
+          .map(({ index }) => `${relative(PREVIEWS_DIR, file)}:${index + 1}`)
+      );
     });
     expect(offenders).toEqual([]);
   });

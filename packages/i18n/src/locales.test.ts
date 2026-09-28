@@ -150,10 +150,9 @@ describe('locale registry', () => {
 
   it('matches runtime CLDR plural categories for every public locale', () => {
     for (const locale of ACTIVE_LOCALES) {
-      expect(
-        [...locale.pluralCategories].sort(),
-        `${locale.bcp47} plural metadata`,
-      ).toEqual([...getCardinalPluralCategories(locale.bcp47)].sort());
+      expect([...locale.pluralCategories].sort(), `${locale.bcp47} plural metadata`).toEqual(
+        [...getCardinalPluralCategories(locale.bcp47)].sort(),
+      );
     }
   });
 

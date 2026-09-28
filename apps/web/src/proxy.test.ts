@@ -54,9 +54,10 @@ describe('locale proxy', () => {
       const response = proxy(request);
 
       expect(response.status, locale).toBe(200);
-      expect(pathnameFromHeader(response.headers.get('x-middleware-rewrite'), request.url), locale).toBe(
-        `/${locale}/pricing`,
-      );
+      expect(
+        pathnameFromHeader(response.headers.get('x-middleware-rewrite'), request.url),
+        locale,
+      ).toBe(`/${locale}/pricing`);
       expect(response.cookies.get(LOCALE_COOKIE)?.value, locale).toBe(locale);
     }
   });

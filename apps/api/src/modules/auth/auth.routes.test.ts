@@ -124,7 +124,7 @@ describe('authentication routes', () => {
         termsVersionHash: 'a'.repeat(64),
         privacyVersionHash: 'b'.repeat(64),
         acceptedTerms: true,
-    });
+      });
 
     expect(response.status).toBe(422);
     expect(response.body.code).toBe('VALIDATION_FAILED');

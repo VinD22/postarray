@@ -16,7 +16,14 @@
  * Every string is a required prop, as everywhere else in this package.
  */
 
-export { XAxis, YAxis, BandAxis, type XAxisProps, type YAxisProps, type BandAxisProps } from './axis';
+export {
+  XAxis,
+  YAxis,
+  BandAxis,
+  type XAxisProps,
+  type YAxisProps,
+  type BandAxisProps,
+} from './axis';
 export {
   ChartFrame,
   DEFAULT_CHART_MARGIN,
@@ -39,14 +46,7 @@ export {
   type SeriesPoint,
 } from './line-chart';
 export { BarChart, type BarChartMessages, type BarChartProps, type BarDatum } from './bar-chart';
-export {
-  areaPath,
-  drawableRuns,
-  hasGap,
-  linePath,
-  type DrawnPoint,
-  type PathPoint,
-} from './path';
+export { areaPath, drawableRuns, hasGap, linePath, type DrawnPoint, type PathPoint } from './path';
 export {
   bandScale,
   linearScale,

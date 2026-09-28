@@ -165,8 +165,8 @@ describe('SegmentedControl', () => {
 
   it('marks each segment with its value so the thumb can find it', () => {
     render(<Controlled />);
-    expect(
-      screen.getAllByRole('radio').map((el) => el.getAttribute('data-segment-value')),
-    ).toEqual(['day', 'week', 'month', 'list']);
+    expect(screen.getAllByRole('radio').map((el) => el.getAttribute('data-segment-value'))).toEqual(
+      ['day', 'week', 'month', 'list'],
+    );
   });
 });

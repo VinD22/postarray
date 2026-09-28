@@ -176,9 +176,7 @@ export function ApprovalsIndexScreen(): ReactNode {
               );
             })}
           </ul>
-          <p className="text-body-sm text-text-secondary">
-            {t('web.approvals.index.decidedNote')}
-          </p>
+          <p className="text-body-sm text-text-secondary">{t('web.approvals.index.decidedNote')}</p>
         </div>
       );
   }

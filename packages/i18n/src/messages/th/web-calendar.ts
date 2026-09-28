@@ -33,7 +33,8 @@ export const webCalendarMessages = {
     'การเขียนบน Pinterest ต้องมีการอนุมัติการเข้าถึงแอป และพินต้องมีรูปภาพและบอร์ดของคุณเอง',
   'web.connection.requirement.discord':
     'Post Array โพสต์ในฐานะบอท เพิ่มบอทลงในเซิร์ฟเวอร์และช่องที่คุณต้องการโพสต์',
-  'web.connection.requirement.slack': 'Post Array โพสต์ในฐานะแอป เพิ่มแอปลงในช่องที่คุณต้องการโพสต์',
+  'web.connection.requirement.slack':
+    'Post Array โพสต์ในฐานะแอป เพิ่มแอปลงในช่องที่คุณต้องการโพสต์',
   'web.provider.fake': 'ขั้วต่อทดสอบ',
   'web.accountType.personal_profile': 'โปรไฟล์ส่วนตัว',
   'web.accountType.creator_profile': 'บัญชีผู้สร้าง',

@@ -167,7 +167,13 @@ export function buildPostCreditGrant(input: BuildPostCreditGrantInput): PostCred
     return null;
   }
   if (input.reason === 'signup_grant') {
-    return { workspaceId: input.workspaceId, delta, reason: 'signup_grant', actorId: null, note: null };
+    return {
+      workspaceId: input.workspaceId,
+      delta,
+      reason: 'signup_grant',
+      actorId: null,
+      note: null,
+    };
   }
   return {
     workspaceId: input.workspaceId,
