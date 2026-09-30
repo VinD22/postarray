@@ -120,6 +120,9 @@ export const developerMessages = {
   'developer.consent.deny': 'Do not allow',
   'developer.consent.developerIdentity': 'Published by {developer}',
   'developer.consent.notFirstParty': 'This app is not built by Post Array.',
+  'developer.consent.selfAssertedTitle': 'This app named itself',
+  'developer.consent.selfAsserted':
+    '{app} registered itself automatically. Post Array has not checked who runs it, so only continue if you started this connection yourself, for example by adding Post Array to Claude.',
   'developer.consent.clientId': 'Client ID',
   'developer.consent.selectWorkspace': 'Choose the workspace this app can use',
   'developer.consent.workspaceHelp':

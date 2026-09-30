@@ -22,6 +22,53 @@ export const developerConnectMessages = {
   'developer.connect.client.cursor': 'Cursor',
   'developer.connect.client.genericMcp': 'Any MCP client',
   'developer.connect.client.cli': 'Post Array CLI',
+  'developer.connect.client.claudeAi': 'Claude (web and desktop)',
+
+  // How each client signs in. Claude, Claude Code, Codex, Cursor and any
+  // MCP client that follows the authorization spec sign in with the person's
+  // Post Array account and ask them to approve access; nothing secret goes in
+  // a file. Only the CLI and the REST API use the service account credential.
+  'developer.connect.hint.claudeAi':
+    'In Claude, open Settings, then Connectors, and choose Add custom connector. Paste this URL. Claude asks you to sign in to Post Array and approve access. Claude Desktop uses the same Connectors settings.',
+  'developer.connect.hint.claudeCode':
+    'Run this in a terminal. Then run /mcp in Claude Code and choose postarray to sign in to Post Array and approve access.',
+  'developer.connect.hint.codex':
+    'Add this to ~/.codex/config.toml, then run codex mcp login postarray to sign in to Post Array and approve access.',
+  'developer.connect.hint.oauthFile':
+    'Save this as {filename}. The first time the client connects it opens Post Array so you can sign in and approve access. No credential goes in the file.',
+  'developer.connect.oauthNoCredential':
+    'This client signs in with your Post Array account, so it does not use the credential above. That credential is for the Post Array CLI and the REST API.',
+
+  // Tool titles an MCP client shows next to each tool, for example in
+  // Claude's tool approval prompt. Short, and named for what a person would
+  // recognise, not for the function.
+  'developer.connect.tool.list_accounts': 'List connected accounts',
+  'developer.connect.tool.list_projects': 'List projects',
+  'developer.connect.tool.get_capabilities': 'Check what an account supports',
+  'developer.connect.tool.get_calendar': 'Read the calendar',
+  'developer.connect.tool.preview_post': 'Preview a post',
+  'developer.connect.tool.validate_post': 'Check a post for problems',
+  'developer.connect.tool.get_post_status': 'Check the status of a post',
+  'developer.connect.tool.get_analytics': 'Read analytics',
+  'developer.connect.tool.get_growth_plan': 'Read the growth plan',
+  'developer.connect.tool.list_growth_opportunities': 'List growth opportunities',
+  'developer.connect.tool.list_recent_events': 'List recent activity',
+  'developer.connect.tool.list_recent_receipts': 'List recent publication receipts',
+  'developer.connect.tool.get_receipt': 'Read a publication receipt',
+  'developer.connect.tool.get_media': 'Read a media item',
+  'developer.connect.tool.list_media': 'List media',
+  'developer.connect.tool.preview_commit': 'Preview what scheduling or publishing would do',
+  'developer.connect.tool.suggest_copy': 'Suggest post copy',
+  'developer.connect.tool.review_draft': 'Review a draft',
+  'developer.connect.tool.suggest_posting_time': 'Suggest a posting time',
+  'developer.connect.tool.draft_post': 'Draft a post',
+  'developer.connect.tool.request_approval': 'Ask for approval',
+  'developer.connect.tool.generate_growth_plan': 'Generate a growth plan',
+  'developer.connect.tool.create_campaign_from_plan': 'Create a campaign from a plan',
+  'developer.connect.tool.import_media': 'Import media from a URL',
+  'developer.connect.tool.schedule_post': 'Schedule a post',
+  'developer.connect.tool.publish_post': 'Publish a post now',
+  'developer.connect.tool.cancel_post': 'Cancel a scheduled post',
 
   'developer.connect.step.credential': 'Step 1. Hold the credential',
   'developer.connect.step.config': 'Step 2. Paste this configuration',
