@@ -14,6 +14,8 @@ import { SKILLS } from '../skills';
 
 const EXPECTED_READ = [
   'list_accounts',
+  // draft_post needs a project_id, and this is the only tool that returns one.
+  'list_projects',
   'get_capabilities',
   'get_calendar',
   'preview_post',

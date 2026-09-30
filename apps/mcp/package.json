@@ -18,11 +18,12 @@
     "dev": "tsx watch src/start.ts"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@modelcontextprotocol/sdk": "^1.31.0",
     "@relay/application": "workspace:*",
     "@relay/config": "workspace:*",
     "@relay/contracts": "workspace:*",
     "@relay/database": "workspace:*",
+    "@relay/i18n": "workspace:*",
     "@relay/observability": "workspace:*",
     "@relay/runtime": "workspace:*",
     "ioredis": "^5.4.1",

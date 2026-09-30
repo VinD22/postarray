@@ -54,6 +54,15 @@ export interface PageLike<T> {
   readonly pageInfo: PageInfo;
 }
 
+/** The project fields an agent needs to pick where a draft goes. */
+export interface ProjectSummary {
+  readonly id: string;
+  readonly name: string;
+  readonly defaultTimeZone: string | null;
+  readonly archived: boolean;
+  readonly connectionIds: readonly string[];
+}
+
 export interface ConnectionSummary {
   readonly id: string;
   readonly projectId: string | null;
@@ -242,6 +251,13 @@ export interface PublishConfirmationEvidenceLike {
 }
 
 export interface RelayServicePort {
+  readonly projects: {
+    list(
+      ctx: ActorContextLike,
+      input?: { readonly cursor?: string; readonly limit?: number },
+    ): Promise<PageLike<ProjectSummary>>;
+  };
+
   readonly connections: {
     list(
       ctx: ActorContextLike,

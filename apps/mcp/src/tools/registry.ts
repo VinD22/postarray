@@ -61,6 +61,12 @@ export interface ToolDefinition<Input extends z.ZodType = z.ZodType> {
   readonly approvalLevel: ApprovalLevel;
   readonly requiresIdempotencyKey: boolean;
   readonly requiresHumanConfirmation: boolean;
+  /**
+   * True when the tool reaches something outside Post Array other than a
+   * platform publish, such as fetching a URL someone supplied. Consequential
+   * tools are open world already.
+   */
+  readonly openWorld?: boolean;
   readonly inputSchema: Input;
   /**
    * Declared as a method rather than a property so a specific tool is
@@ -156,8 +162,19 @@ export const MAX_PAGE_LIMIT = 25;
 export const DEFAULT_PAGE_LIMIT = 10;
 
 export const pageInputShape = {
-  cursor: z.string().min(1).max(512).optional(),
-  limit: z.number().int().min(1).max(MAX_PAGE_LIMIT).default(DEFAULT_PAGE_LIMIT),
+  cursor: z
+    .string()
+    .min(1)
+    .max(512)
+    .optional()
+    .describe('Opaque cursor from the previous page. Omit for the first page.'),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(MAX_PAGE_LIMIT)
+    .default(DEFAULT_PAGE_LIMIT)
+    .describe('How many results to return, at most 25.'),
 };
 
 export const idempotencyInputShape = {
@@ -165,7 +182,10 @@ export const idempotencyInputShape = {
     .string()
     .min(8)
     .max(255)
-    .regex(/^[A-Za-z0-9_.:-]+$/, { error: 'INVALID_IDEMPOTENCY_KEY' }),
+    .regex(/^[A-Za-z0-9_.:-]+$/, { error: 'INVALID_IDEMPOTENCY_KEY' })
+    .describe(
+      'A key you choose (8 to 255 of A-Z a-z 0-9 _ . : -). Repeat it when retrying the same action so it happens once.',
+    ),
 };
 
 export function resourceLink(uri: string, name: string, description: string): ResourceLink {

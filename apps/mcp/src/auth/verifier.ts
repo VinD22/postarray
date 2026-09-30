@@ -1,6 +1,12 @@
 import { z } from 'zod';
-import { RelayError, approvalLevelSchema, normalizeScopes, scopeSchema } from '@relay/contracts';
-import type { ApprovalLevel, Scope } from '@relay/contracts';
+import {
+  RelayError,
+  approvalLevelSchema,
+  normalizeScopes,
+  oauthIntrospectionResponseSchema,
+  scopeSchema,
+} from '@relay/contracts';
+import type { ApprovalLevel, OAuthIntrospectionResponse, Scope } from '@relay/contracts';
 
 /**
  * Token verification.
@@ -12,6 +18,11 @@ import type { ApprovalLevel, Scope } from '@relay/contracts';
  * Audience binding is mandatory. A token whose audience we did not check is a
  * token minted for somebody else's service, and accepting it is the classic
  * confused deputy. It is the single most important line in this file.
+ *
+ * An authorization server that cannot answer is not the same as a token that
+ * is not valid. A 5xx, a 429 or a network failure from introspection is a 503
+ * with a retry, never a 401 `invalid_token`: telling Claude its token is bad
+ * makes it throw the token away and send the person back through consent.
  */
 
 export const verifiedGrantSchema = z
@@ -34,23 +45,12 @@ export const verifiedGrantSchema = z
   .strict();
 export type VerifiedGrant = z.infer<typeof verifiedGrantSchema>;
 
-/** Introspection response, parsed at the boundary like any external input. */
-export const introspectionResponseSchema = z
-  .object({
-    active: z.boolean(),
-    sub: z.string().optional(),
-    client_id: z.string().optional(),
-    grant_id: z.string().optional(),
-    workspace_id: z.string().optional(),
-    scope: z.string().optional(),
-    approval_level: z.string().optional(),
-    aud: z.union([z.string(), z.array(z.string())]).optional(),
-    exp: z.number().int().optional(),
-    locale: z.string().optional(),
-    killed: z.boolean().optional(),
-  })
-  .strip();
-export type IntrospectionResponse = z.infer<typeof introspectionResponseSchema>;
+/**
+ * Introspection response, parsed at the boundary like any external input. The
+ * schema is the one the API answers with, from `@relay/contracts`.
+ */
+export const introspectionResponseSchema = oauthIntrospectionResponseSchema;
+export type IntrospectionResponse = OAuthIntrospectionResponse;
 
 export interface TokenVerifier {
   /** Returns a grant or throws. It never returns a partially trusted result. */
@@ -83,6 +83,18 @@ function authRequired(reason: string): RelayError {
   return new RelayError('AUTH_REQUIRED', {
     messageKey: 'error.unauthenticated.message',
     details: { reason },
+  });
+}
+
+/** The authorization server could not answer. Retryable; not the token's fault. */
+function introspectionUnavailable(reason: string, upstreamStatus?: number): RelayError {
+  return new RelayError('PROVIDER_UNAVAILABLE', {
+    messageKey: 'error.internal.message',
+    retryable: true,
+    details: {
+      reason,
+      ...(upstreamStatus === undefined ? {} : { upstreamStatus }),
+    },
   });
 }
 
@@ -126,14 +138,27 @@ export function createIntrospectionVerifier(options: IntrospectionVerifierOption
       }
       cache.delete(bearerToken);
 
-      const response = await options.transport.post(options.introspectionUrl, {
-        token: bearerToken,
-        token_type_hint: 'access_token',
-        client_id: options.clientId,
-        client_secret: options.clientSecret,
-        resource: options.resourceUrl,
-      });
+      let response: { status: number; body: string };
+      try {
+        response = await options.transport.post(options.introspectionUrl, {
+          token: bearerToken,
+          token_type_hint: 'access_token',
+          client_id: options.clientId,
+          client_secret: options.clientSecret,
+          resource: options.resourceUrl,
+        });
+      } catch {
+        throw introspectionUnavailable('INTROSPECTION_UNREACHABLE');
+      }
 
+      if (response.status >= 500 || response.status === 429) {
+        throw introspectionUnavailable('INTROSPECTION_UNAVAILABLE', response.status);
+      }
+      if (response.status === 401 || response.status === 403) {
+        // Our own client was refused: a deployment fault (MCP_CLIENT_ID or
+        // MCP_CLIENT_SECRET not registered), not the caller's token.
+        throw introspectionUnavailable('INTROSPECTION_CLIENT_REJECTED', response.status);
+      }
       if (response.status < 200 || response.status >= 300) {
         throw authRequired('INTROSPECTION_FAILED');
       }
@@ -142,7 +167,7 @@ export function createIntrospectionVerifier(options: IntrospectionVerifierOption
       try {
         body = JSON.parse(response.body) as unknown;
       } catch {
-        throw authRequired('INTROSPECTION_MALFORMED');
+        throw introspectionUnavailable('INTROSPECTION_MALFORMED');
       }
 
       const parsed = introspectionResponseSchema.safeParse(body);

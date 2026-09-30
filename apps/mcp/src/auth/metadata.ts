@@ -22,6 +22,26 @@ export type ProtectedResourceMetadata = z.infer<typeof protectedResourceMetadata
 
 export const PROTECTED_RESOURCE_PATH = '/.well-known/oauth-protected-resource';
 
+/**
+ * Where the metadata for a resource lives (RFC 9728 section 3.1): the
+ * well-known path with the resource's own path appended, so the metadata for
+ * `https://mcp.postarray.com/mcp` is at
+ * `https://mcp.postarray.com/.well-known/oauth-protected-resource/mcp`. The
+ * bare well-known path is served as well for clients that only try the root.
+ */
+export function protectedResourcePaths(resourceUrl: string): readonly string[] {
+  const resourcePath = new URL(resourceUrl).pathname.replace(/\/+$/, '');
+  return resourcePath.length === 0
+    ? [PROTECTED_RESOURCE_PATH]
+    : [`${PROTECTED_RESOURCE_PATH}${resourcePath}`, PROTECTED_RESOURCE_PATH];
+}
+
+/** The metadata URL a 401 challenge points at: the path-specific one. */
+export function protectedResourceMetadataUrl(resourceUrl: string): string {
+  const [preferred] = protectedResourcePaths(resourceUrl);
+  return new URL(preferred ?? PROTECTED_RESOURCE_PATH, resourceUrl).toString();
+}
+
 export interface MetadataInput {
   /** The canonical URL of this MCP resource. Tokens must be bound to it. */
   readonly resourceUrl: string;
