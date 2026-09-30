@@ -102,3 +102,4 @@ export {
 } from './redaction';
 
 export { isLocalDatabaseUrl } from './database-locality';
+export { resolveSessionCookieDomain } from './cookie-domain';

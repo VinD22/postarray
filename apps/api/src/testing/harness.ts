@@ -1,6 +1,7 @@
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { newIdFor, type Scope } from '@relay/contracts';
 import type { Server } from 'node:http';
+import type { RelayConfig } from '@relay/config';
 
 import type { Services } from '../application/port';
 import { createApiApp } from '../bootstrap';
@@ -42,13 +43,15 @@ export interface Harness {
 export interface HarnessOptions {
   /** Replace or extend the refusing service doubles. */
   readonly services?: (base: Services) => Services;
+  /** Adjust the test config, for behaviour that depends on deployment layout. */
+  readonly config?: (base: RelayConfig) => RelayConfig;
 }
 
 export async function createHarness(options: HarnessOptions = {}): Promise<Harness> {
   const clock = new FakeClock();
   const kv = new MemoryKeyValueStore(() => clock.now().getTime());
   const logger = new RecordingLogger();
-  const config = testConfig();
+  const config = options.config === undefined ? testConfig() : options.config(testConfig());
   const identity = new FakeIdentityProvider({ identities: new Map() });
   const base = createRefusingServices();
   const services = options.services === undefined ? base : options.services(base);

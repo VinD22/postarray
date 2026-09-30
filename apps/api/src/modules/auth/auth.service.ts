@@ -370,9 +370,13 @@ export class AuthService {
     tokens: { sessionId: string; refreshToken: string; csrfToken: string },
   ): void {
     const secure = !this.config.core.isDevelopment;
+    // Shared with the web host, which reads the session server side and copies
+    // the CSRF cookie into a header. See `resolveSessionCookieDomain`.
+    const domain = this.config.core.sessionCookieDomain;
     response.append(
       'set-cookie',
       serializeCookie(SESSION_COOKIE, tokens.sessionId, {
+        ...(domain === undefined ? {} : { domain }),
         maxAgeSeconds: SESSION_TTL_SECONDS,
         sameSite: 'Lax',
         secure,
@@ -381,6 +385,7 @@ export class AuthService {
     response.append(
       'set-cookie',
       serializeCookie(REFRESH_COOKIE, tokens.refreshToken, {
+        ...(domain === undefined ? {} : { domain }),
         maxAgeSeconds: REFRESH_ABSOLUTE_TTL_SECONDS,
         sameSite: 'Lax',
         secure,
@@ -392,6 +397,7 @@ export class AuthService {
     response.append(
       'set-cookie',
       serializeCookie(CSRF_COOKIE, tokens.csrfToken, {
+        ...(domain === undefined ? {} : { domain }),
         maxAgeSeconds: SESSION_TTL_SECONDS,
         sameSite: 'Lax',
         secure,
@@ -404,14 +410,21 @@ export class AuthService {
 
   private clearSessionCookies(response: Response): void {
     const secure = !this.config.core.isDevelopment;
-    response.append('set-cookie', expireCookie(SESSION_COOKIE, { secure, sameSite: 'Lax' }));
+    // Expiry must name the same domain the cookie was set with, or the browser
+    // keeps the original.
+    const domain = this.config.core.sessionCookieDomain;
+    const scope = domain === undefined ? {} : { domain };
     response.append(
       'set-cookie',
-      expireCookie(REFRESH_COOKIE, { secure, sameSite: 'Lax', path: '/v1/auth/session' }),
+      expireCookie(SESSION_COOKIE, { ...scope, secure, sameSite: 'Lax' }),
     );
     response.append(
       'set-cookie',
-      expireCookie(CSRF_COOKIE, { secure, sameSite: 'Lax', httpOnly: false }),
+      expireCookie(REFRESH_COOKIE, { ...scope, secure, sameSite: 'Lax', path: '/v1/auth/session' }),
+    );
+    response.append(
+      'set-cookie',
+      expireCookie(CSRF_COOKIE, { ...scope, secure, sameSite: 'Lax', httpOnly: false }),
     );
   }
 }

@@ -11,6 +11,7 @@ import {
   envSchema,
   normalizeEnv,
 } from './schema';
+import { resolveSessionCookieDomain } from './cookie-domain';
 
 /** The six deployable surfaces. Each validates only what it actually uses. */
 export const RELAY_SERVICES = ['web', 'api', 'worker', 'mcp', 'cli', 'links'] as const;
@@ -64,6 +65,8 @@ export interface CoreConfig {
   readonly isTest: boolean;
   readonly appUrl: string | undefined;
   readonly apiUrl: string | undefined;
+  /** `Domain` for the session cookies; `undefined` means host-only. */
+  readonly sessionCookieDomain: string | undefined;
   /** Public canonical origin used by the web surface's SEO metadata. */
   readonly siteOrigin: string | undefined;
   /**
@@ -341,6 +344,11 @@ function toConfig(
       isTest: env.NODE_ENV === 'test',
       appUrl: env.APP_URL,
       apiUrl: env.API_URL,
+      sessionCookieDomain: resolveSessionCookieDomain({
+        explicit: env.SESSION_COOKIE_DOMAIN,
+        appUrl: env.APP_URL,
+        apiUrl: env.API_URL,
+      }),
       siteOrigin: env.NEXT_PUBLIC_SITE_ORIGIN,
       allowFakeConnector: env.POSTARRAY_ALLOW_FAKE_CONNECTOR,
       logLevel: env.LOG_LEVEL,

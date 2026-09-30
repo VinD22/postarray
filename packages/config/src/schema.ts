@@ -167,6 +167,17 @@ const coreShape = {
   POSTARRAY_RUNTIME_PROFILE: z.enum(RUNTIME_PROFILES).optional(),
   APP_URL: httpUrl.optional(),
   API_URL: httpUrl.optional(),
+  /**
+   * `Domain` for the session cookies. Left unset it is derived: scoped to the
+   * APP_URL host when the API is its subdomain, host-only otherwise. See
+   * `resolveSessionCookieDomain`.
+   */
+  SESSION_COOKIE_DOMAIN: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .regex(/^(?!-)[a-z0-9-]+(\.[a-z0-9-]+)+$/)
+    .optional(),
   NEXT_PUBLIC_SITE_ORIGIN: httpOrigin.optional(),
   NEXT_PUBLIC_ENABLE_PSEUDO_LOCALES: booleanish().default(false),
   /**
