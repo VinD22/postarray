@@ -29,6 +29,7 @@ export * from './data';
 export * from './api';
 export * from './events';
 export * from './scopes';
+export * from './oauth';
 export * from './plan-limits';
 export * from './billing';
 export * from './launch-policy';
