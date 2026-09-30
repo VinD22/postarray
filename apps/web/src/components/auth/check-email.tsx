@@ -11,7 +11,7 @@ import { Button, Field, Input } from '@relay/design-system/primitives';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
-import { safeReturnPath } from '@/lib/navigation/safe-return-path';
+import { resolveReturnTarget } from '@/lib/navigation/return-target';
 
 const MAGIC_LINK_MINUTES = 15;
 const RESEND_SECONDS = 60;
@@ -28,7 +28,7 @@ export function CheckEmail() {
   const router = useLocalizedRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get('email') ?? '';
-  const next = safeReturnPath(searchParams.get('next'));
+  const next = resolveReturnTarget(searchParams.get('next'));
 
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
   const [status, setStatus] = useState<'idle' | 'sending' | 'failed'>('idle');
@@ -71,7 +71,11 @@ export function CheckEmail() {
         { identifier: email, code },
         newIdempotencyKey('verify-otp'),
       );
-      router.push(next);
+      if (next.kind === 'authorize') {
+        window.location.assign(next.url);
+      } else {
+        router.push(next.path);
+      }
     } catch (error) {
       setVerificationError(
         ApiError.is(error) && error.isRateLimited

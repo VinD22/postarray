@@ -36,6 +36,9 @@ export const developerConnectMessages = {
     'Add this to ~/.codex/config.toml, then run codex mcp login postarray to sign in to Post Array and approve access.',
   'developer.connect.hint.oauthFile':
     'Save this as {filename}. The first time the client connects it opens Post Array so you can sign in and approve access. No credential goes in the file.',
+  'developer.connect.endpointUnavailable.title': 'The MCP address is not configured',
+  'developer.connect.endpointUnavailable.body':
+    'This deployment has no MCP address set, so there is nothing to paste yet. Ask whoever runs Post Array to set NEXT_PUBLIC_POSTARRAY_MCP_URL.',
   'developer.connect.oauthNoCredential':
     'This client signs in with your Post Array account, so it does not use the credential above. That credential is for the Post Array CLI and the REST API.',
 

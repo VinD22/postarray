@@ -3,32 +3,60 @@ import { describe, expect, it } from 'vitest';
 import { CONNECT_CLIENTS, CREDENTIAL_ENV_VAR, SETUP_CLIENTS, buildSnippet } from './setup-snippets';
 
 const input = {
-  mcpEndpoint: 'https://mcp.relay.example/mcp',
-  apiBaseUrl: 'https://api.relay.example/v1',
+  mcpEndpoint: 'https://mcp.postarray.com/mcp',
+  apiBaseUrl: 'https://api.postarray.com',
   serviceAccountName: 'Content agent',
 };
 
+const oauthClients = SETUP_CLIENTS.filter((client) => client.auth === 'oauth');
+const tokenClients = SETUP_CLIENTS.filter((client) => client.auth === 'token');
+
 describe('client setup snippets', () => {
-  it('never embeds a credential literal, only the environment variable', () => {
-    for (const client of SETUP_CLIENTS) {
+  it('gives MCP clients the endpoint alone: they sign in with OAuth, so no credential appears', () => {
+    // The MCP server verifies OAuth tokens only. A snippet that sent a service
+    // credential as a bearer token would be refused on every call.
+    for (const client of oauthClients) {
       const snippet = buildSnippet(client.id, input);
-      expect(snippet).toContain(CREDENTIAL_ENV_VAR);
+      expect(snippet, client.id).toContain(input.mcpEndpoint);
+      expect(snippet, client.id).not.toContain(CREDENTIAL_ENV_VAR);
+      expect(snippet, client.id).not.toMatch(/authorization|bearer/i);
+    }
+  });
+
+  it('reads the credential from the environment for the CLI and workflows, never a literal', () => {
+    for (const client of tokenClients) {
+      const snippet = buildSnippet(client.id, input);
+      expect(snippet, client.id).toContain(CREDENTIAL_ENV_VAR);
+      expect(snippet, client.id).toContain(input.apiBaseUrl);
       expect(snippet).not.toMatch(/sk-|token="[A-Za-z0-9]{16,}"/);
     }
   });
 
-  it('points every client at the endpoint the workspace was given', () => {
-    for (const client of SETUP_CLIENTS) {
-      const snippet = buildSnippet(client.id, input);
-      const referencesAnEndpoint =
-        snippet.includes(input.mcpEndpoint) || snippet.includes(input.apiBaseUrl);
-      expect(referencesAnEndpoint).toBe(true);
+  it('gives Claude the exact commands and URL it expects', () => {
+    expect(buildSnippet('claude-code', input)).toBe(
+      'claude mcp add --transport http postarray https://mcp.postarray.com/mcp',
+    );
+    expect(buildSnippet('claude-ai', input)).toBe('https://mcp.postarray.com/mcp');
+    expect(buildSnippet('claude-desktop', input)).toBe('https://mcp.postarray.com/mcp');
+  });
+
+  it('writes a Codex table Codex reads, named postarray', () => {
+    const snippet = buildSnippet('codex', input);
+    expect(snippet).toBe('[mcp_servers.postarray]\nurl = "https://mcp.postarray.com/mcp"');
+    expect(snippet).not.toContain('relay');
+    expect(snippet).not.toContain('transport =');
+  });
+
+  it('produces parseable JSON for the JSON clients, named postarray', () => {
+    for (const clientId of ['cursor', 'generic-mcp']) {
+      const parsed = JSON.parse(buildSnippet(clientId, input)) as Record<string, unknown>;
+      expect(JSON.stringify(parsed)).toContain('"postarray"');
     }
   });
 
-  it('produces parseable JSON for the two JSON clients', () => {
-    for (const clientId of ['claude-code', 'claude-desktop', 'cursor', 'generic-mcp']) {
-      expect(() => JSON.parse(buildSnippet(clientId, input))).not.toThrow();
+  it('gives every OAuth client an instruction for what to do with the snippet', () => {
+    for (const client of oauthClients) {
+      expect(client.hintKey, client.id).toMatch(/^developer\.connect\.hint\./);
     }
   });
 
@@ -39,6 +67,7 @@ describe('client setup snippets', () => {
 
   it('offers exactly the clients the connect screen names, and the CLI', () => {
     expect(CONNECT_CLIENTS.map((client) => client.id)).toEqual([
+      'claude-ai',
       'claude-code',
       'claude-desktop',
       'codex',

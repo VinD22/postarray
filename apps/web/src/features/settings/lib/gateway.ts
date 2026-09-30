@@ -12,6 +12,8 @@
  */
 
 import { ApiError, api, newIdempotencyKey, type OAuthAppView as ApiOAuthAppView } from '@/lib/api';
+import { apiConfig } from '@/lib/api/config';
+import { mcpEndpoint } from '@/lib/api/mcp-endpoint';
 import type { BusinessProfileView } from '@/lib/api/types';
 import type { ServiceAccountApiView } from '@/lib/api/resources/service-accounts';
 import { ERROR_CODES } from '@relay/contracts';
@@ -106,8 +108,10 @@ export const workspaceGateway = {
       name: session.workspace.name,
       timeZone: session.workspace.timeZone,
       developerName: session.workspace.name,
-      mcpEndpoint: '',
-      apiBaseUrl: '',
+      // Deployment configuration, not workspace data: every workspace talks to
+      // the same endpoints. See `lib/api/mcp-endpoint.ts`.
+      mcpEndpoint,
+      apiBaseUrl: apiConfig.baseUrl ?? '',
       readOnly: session.workspace.readOnly,
       currentUserId: session.user.id,
     };

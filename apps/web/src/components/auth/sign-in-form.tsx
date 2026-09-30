@@ -19,7 +19,7 @@ import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
-import { safeReturnPath } from '@/lib/navigation/safe-return-path';
+import { resolveReturnTarget, returnTargetParam } from '@/lib/navigation/return-target';
 
 type Method = 'password' | 'magic-link' | 'username';
 
@@ -47,7 +47,16 @@ export function SignInForm() {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
-  const next = safeReturnPath(searchParams.get('next'));
+  const next = resolveReturnTarget(searchParams.get('next'));
+  const goNext = () => {
+    if (next.kind === 'authorize') {
+      // Back to the API to finish an OAuth authorization (for example,
+      // connecting Claude). Only our own API's authorize URL gets here.
+      window.location.assign(next.url);
+      return;
+    }
+    router.push(next.path);
+  };
 
   const fail = (message: string) => {
     setError(message);
@@ -60,7 +69,7 @@ export function SignInForm() {
     setPending(true);
     try {
       await api.auth.signInWithPassword({ identifier, password }, newIdempotencyKey('signin'));
-      router.push(next);
+      goNext();
     } catch (caught) {
       if (ApiError.is(caught) && caught.isOffline) {
         fail(t('auth.failure.network'));
@@ -88,7 +97,7 @@ export function SignInForm() {
         newIdempotencyKey('magiclink'),
       );
       router.push(
-        `/check-email?email=${encodeURIComponent(identifier)}&next=${encodeURIComponent(next)}`,
+        `/check-email?email=${encodeURIComponent(identifier)}&next=${encodeURIComponent(returnTargetParam(next))}`,
       );
     } catch (caught) {
       fail(
