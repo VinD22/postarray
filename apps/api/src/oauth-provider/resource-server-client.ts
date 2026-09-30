@@ -89,3 +89,24 @@ export async function ensureResourceServerClient(
   await kv.set(key, JSON.stringify(record));
   return { clientId, created: existing === null };
 }
+
+/**
+ * Register the MCP server's client at API start-up when it is configured.
+ *
+ * The directory lives in Redis, which a production box keeps on its private
+ * network, so a separate script run from a laptop cannot reach it. Doing it on
+ * every boot also makes rotating the secret "change the env and restart".
+ * Returns `null`, and writes nothing, when no MCP variable is set at all; a
+ * partial configuration is an error the caller logs.
+ */
+export async function registerResourceServerClientAtBoot(
+  kv: KeyValueStore,
+  config: RelayConfig,
+  now: Date,
+): Promise<ResourceServerClientResult | null> {
+  const { clientId, clientSecret, resourceUrl } = config.oauth.resourceServer;
+  if (clientId === undefined && clientSecret === undefined && resourceUrl === undefined) {
+    return null;
+  }
+  return ensureResourceServerClient(kv, config, now);
+}

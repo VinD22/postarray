@@ -8,6 +8,7 @@ import { testConfig } from '../testing/fakes';
 import {
   ResourceServerClientConfigError,
   ensureResourceServerClient,
+  registerResourceServerClientAtBoot,
 } from './resource-server-client';
 
 const SECRET = 'mcp-resource-server-secret-0001';
@@ -75,5 +76,42 @@ describe('ensureResourceServerClient', () => {
       'MCP_CLIENT_SECRET',
     );
     expect(await kv.get(CREDENTIAL_KEYS.oauthClient('rly_rs_mcp_test'))).toBeNull();
+  });
+});
+
+describe('registerResourceServerClientAtBoot', () => {
+  it('does nothing when the MCP server is not configured', async () => {
+    const kv = new MemoryKeyValueStore();
+    const base = testConfig();
+    const config = {
+      ...base,
+      oauth: {
+        ...base.oauth,
+        resourceServer: { clientId: undefined, clientSecret: undefined, resourceUrl: undefined },
+      },
+    };
+
+    await expect(
+      registerResourceServerClientAtBoot(kv, config, new Date('2026-09-30T10:00:00Z')),
+    ).resolves.toBeNull();
+  });
+
+  it('registers the client when it is configured', async () => {
+    const kv = new MemoryKeyValueStore();
+    const result = await registerResourceServerClientAtBoot(
+      kv,
+      configWith(SECRET),
+      new Date('2026-09-30T10:00:00Z'),
+    );
+
+    expect(result?.created).toBe(true);
+  });
+
+  it('refuses a partial configuration rather than starting an API Claude cannot use', async () => {
+    const kv = new MemoryKeyValueStore();
+
+    await expect(
+      registerResourceServerClientAtBoot(kv, configWith(undefined), new Date()),
+    ).rejects.toBeInstanceOf(ResourceServerClientConfigError);
   });
 });

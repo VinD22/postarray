@@ -100,9 +100,8 @@ export async function main(options: StartOptions = {}): Promise<void> {
     introspectionUrl: new URL('/oauth/introspect', issuerUrl).toString(),
     resourceUrl,
     transport: fetchTransport(),
-    // This server's own confidential client. It must be registered in the
-    // API's credential directory (`pnpm --filter @relay/api
-    // oauth:register-mcp-client`), or every introspection is refused.
+    // This server's own confidential client. The API registers it at start-up
+    // from the same variables, or every introspection is refused.
     clientId: requireConfigValue(config.oauth.resourceServer.clientId, 'MCP_CLIENT_ID'),
     clientSecret: requireConfigValue(config.oauth.resourceServer.clientSecret, 'MCP_CLIENT_SECRET'),
     clock: systemClock,

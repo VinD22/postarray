@@ -38,21 +38,19 @@ The flow a client runs, with no pasted URLs beyond the endpoint:
 | --- | --- | --- |
 | `MCP_RESOURCE_URL` | API and MCP | Canonical URL of this endpoint, path included (`https://mcp.postarray.com/mcp`). Tokens are bound to exactly this value. |
 | `MCP_CLIENT_ID` | API and MCP | This server's confidential client. The only client that may introspect tokens it did not request, and only tokens bound to `MCP_RESOURCE_URL`. |
-| `MCP_CLIENT_SECRET` | MCP and the registration script | That client's secret. |
+| `MCP_CLIENT_SECRET` | API and MCP | That client's secret. |
 | `OAUTH_ISSUER_URL` / `API_URL` | MCP | Where `/oauth/introspect` lives. |
 | `MCP_SANDBOX` | MCP | Development only: wire everything to the fake provider. |
 
 The client must exist in the API's credential directory before this server can
-verify anything. From the API's environment (same `REDIS_URL` and
-`OAUTH_SIGNING_LOCAL_KEY`), run once per environment and again after rotating
-the secret:
-
-```sh
-pnpm --filter @relay/api oauth:register-mcp-client
-```
-
-It is idempotent and never prints the secret. Until it has run, every call
-answers 503 (`INTROSPECTION_CLIENT_REJECTED` in the logs), not 401.
+verify anything. The API registers it at start-up whenever the three `MCP_*`
+variables are set, and refuses to start if only some are. Rotating the secret
+is "change it in both services and restart". The API's credential store is
+Redis on the private network, so there is no separate step to run by hand; for
+an API that is already running, `pnpm --filter @relay/api
+oauth:register-mcp-client` does the same thing from its environment. Until the
+client exists, every call answers 503 (`INTROSPECTION_CLIENT_REJECTED` in the
+logs), not 401.
 
 ## Authorization
 
