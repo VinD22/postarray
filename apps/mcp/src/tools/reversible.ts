@@ -215,6 +215,8 @@ export const importMediaTool = defineTool({
   // agent would otherwise store the same file several times over.
   requiresIdempotencyKey: true,
   requiresHumanConfirmation: false,
+  // It fetches a URL somebody else controls.
+  openWorld: true,
   inputSchema: z.object({
     /**
      * A URL the person gave. The application service is what validates the

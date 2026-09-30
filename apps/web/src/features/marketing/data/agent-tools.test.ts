@@ -6,8 +6,8 @@ import { describe, expect, it } from 'vitest';
 import { AGENT_TOOL_COUNT, AGENT_TOOL_TIERS, type AgentToolRisk } from './agent-tools';
 
 /**
- * The home page's agent section names sixteen tools. This is what stops it
- * naming a seventeenth that does not exist, or keeping one that was deleted.
+ * The home page's agent section names every MCP tool. This is what stops it
+ * naming one that does not exist, or keeping one that was deleted.
  *
  * `apps/web` cannot import `apps/mcp`, so the check is a source census in the
  * same spirit as `scene-budget.test.ts` and `inverted-band.test.ts`: read the

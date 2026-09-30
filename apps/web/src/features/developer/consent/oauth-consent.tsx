@@ -4,7 +4,6 @@ import { useMemo, useState, type ReactNode } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { isScope, type Scope } from '@relay/contracts';
 import {
-  Badge,
   Button,
   Code,
   Label,
@@ -45,6 +44,9 @@ async function consentVersionHash(
     data.client.privacyPolicyUrl,
     data.client.termsUrl,
     data.client.firstParty ? '' : t('developer.consent.notFirstParty'),
+    data.client.selfAsserted === true
+      ? t('developer.consent.selfAsserted', { app: data.client.name })
+      : '',
     t('developer.consent.title', { app: data.client.name }),
     t('developer.consent.workspace'),
     workspace?.name ?? '',
@@ -157,49 +159,52 @@ export function OAuthConsentScreen(): ReactNode {
   }
 
   const noWorkspace = data.workspaces.length === 0;
+  const selfAsserted = data.client.selfAsserted === true;
+  // A self-registered app has no reviewed pages, so no link is offered for it.
+  const links = [
+    { labelKey: 'developer.apps.homepage', href: data.client.homepageUrl },
+    { labelKey: 'developer.apps.privacyUrl', href: data.client.privacyPolicyUrl },
+    { labelKey: 'developer.apps.termsUrl', href: data.client.termsUrl },
+  ].filter((link) => link.href.startsWith('https://'));
   const busy = mutation.isPending;
 
   return (
     <ConsentFrame>
       <article className="border-border-default bg-surface-raised flex flex-col gap-6 rounded-xl border p-5 sm:p-8">
         <div className="flex flex-col gap-2">
-          <Badge tone="info">{t('developer.apps.consentPreviewSample')}</Badge>
           <h1 className="text-title-lg text-text-primary">
             {t('developer.consent.title', { app: data.client.name })}
           </h1>
-          <p className="text-body-sm text-text-secondary">
-            {t('developer.consent.developerIdentity', { developer: data.client.name })}
-          </p>
+          {selfAsserted ? null : (
+            <p className="text-body-sm text-text-secondary">
+              {t('developer.consent.developerIdentity', { developer: data.client.name })}
+            </p>
+          )}
           {!data.client.firstParty ? (
             <p className="text-body-sm text-warning-fg">{t('developer.consent.notFirstParty')}</p>
           ) : null}
-          <div className="text-body-sm text-text-tertiary flex flex-wrap gap-x-4 gap-y-1">
-            <a
-              className="inline-flex items-center gap-1 underline underline-offset-2"
-              href={data.client.homepageUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('developer.apps.homepage')} <ExternalLink aria-hidden="true" className="size-3" />
-            </a>
-            <a
-              className="inline-flex items-center gap-1 underline underline-offset-2"
-              href={data.client.privacyPolicyUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('developer.apps.privacyUrl')}{' '}
-              <ExternalLink aria-hidden="true" className="size-3" />
-            </a>
-            <a
-              className="inline-flex items-center gap-1 underline underline-offset-2"
-              href={data.client.termsUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('developer.apps.termsUrl')} <ExternalLink aria-hidden="true" className="size-3" />
-            </a>
-          </div>
+          {selfAsserted ? (
+            <Notice
+              tone="warning"
+              title={t('developer.consent.selfAssertedTitle')}
+              description={t('developer.consent.selfAsserted', { app: data.client.name })}
+            />
+          ) : null}
+          {links.length > 0 ? (
+            <div className="text-body-sm text-text-tertiary flex flex-wrap gap-x-4 gap-y-1">
+              {links.map((link) => (
+                <a
+                  key={link.labelKey}
+                  className="inline-flex items-center gap-1 underline underline-offset-2"
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {t(link.labelKey)} <ExternalLink aria-hidden="true" className="size-3" />
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         <Separator />

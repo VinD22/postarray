@@ -1,4 +1,4 @@
-import { scopeSchema } from '@relay/contracts';
+import { oauthIntrospectionRequestSchema, scopeSchema } from '@relay/contracts';
 import { z } from 'zod';
 
 import { projectIdSchema, connectionIdSchema, workspaceIdSchema } from '../common/schemas';
@@ -19,7 +19,8 @@ export const authorizeQuerySchema = z
     response_type: z.literal('code'),
     client_id: z.string().trim().min(8).max(128),
     redirect_uri: z.string().trim().min(1).max(2048),
-    scope: z.string().trim().min(1).max(2048),
+    /** Omitted means "everything this client registered", narrowed at consent. */
+    scope: z.string().trim().min(1).max(2048).optional(),
     /** Required. At least 16 bytes of entropy from the client's perspective. */
     state: z.string().trim().min(8).max(1024),
     code_challenge: z.string().trim().refine(isValidCodeChallenge, {
@@ -69,6 +70,8 @@ const authorizationCodeGrantSchema = z
     code_verifier: z.string().trim().refine(isValidCodeVerifier, {
       error: 'CODE_VERIFIER_INVALID',
     }),
+    /** RFC 8707. When sent it must name the resource the code was bound to. */
+    resource: z.string().trim().min(1).max(512).optional(),
   })
   .strict();
 
@@ -80,6 +83,8 @@ const refreshTokenGrantSchema = z
     client_secret: z.string().trim().min(16).max(512).optional(),
     /** A refresh may narrow the scope set. It may never widen it. */
     scope: z.string().trim().max(2048).optional(),
+    /** RFC 8707. When sent it must name the resource the grant was bound to. */
+    resource: z.string().trim().min(1).max(512).optional(),
   })
   .strict();
 
@@ -98,15 +103,11 @@ export const revocationRequestSchema = z
   })
   .strict();
 
-export const introspectionRequestSchema = z
-  .object({
-    token: z.string().trim().min(16).max(512),
-    token_type_hint: z.enum(['access_token', 'refresh_token']).optional(),
-    client_id: z.string().trim().min(8).max(128),
-    /** Introspection is offered to confidential clients only, for own tokens. */
-    client_secret: z.string().trim().min(16).max(512),
-  })
-  .strict();
+/**
+ * RFC 7662. The shape is shared with the MCP resource server through
+ * `@relay/contracts`, so the two cannot drift apart again.
+ */
+export const introspectionRequestSchema = oauthIntrospectionRequestSchema;
 
 export interface TokenResponse {
   readonly access_token: string;

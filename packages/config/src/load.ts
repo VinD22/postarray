@@ -11,6 +11,7 @@ import {
   envSchema,
   normalizeEnv,
 } from './schema';
+import { resolveSessionCookieDomain } from './cookie-domain';
 
 /** The six deployable surfaces. Each validates only what it actually uses. */
 export const RELAY_SERVICES = ['web', 'api', 'worker', 'mcp', 'cli', 'links'] as const;
@@ -64,6 +65,8 @@ export interface CoreConfig {
   readonly isTest: boolean;
   readonly appUrl: string | undefined;
   readonly apiUrl: string | undefined;
+  /** `Domain` for the session cookies; `undefined` means host-only. */
+  readonly sessionCookieDomain: string | undefined;
   /** Public canonical origin used by the web surface's SEO metadata. */
   readonly siteOrigin: string | undefined;
   /**
@@ -160,6 +163,12 @@ export interface OAuthIssuerConfig {
   readonly issuerUrl: string | undefined;
   readonly signingKmsKeyId: string | undefined;
   readonly signingLocalKey: string | undefined;
+  /** The MCP resource server, when one is deployed. */
+  readonly resourceServer: {
+    readonly resourceUrl: string | undefined;
+    readonly clientId: string | undefined;
+    readonly clientSecret: string | undefined;
+  };
 }
 
 export interface ShortLinksConfig {
@@ -341,6 +350,11 @@ function toConfig(
       isTest: env.NODE_ENV === 'test',
       appUrl: env.APP_URL,
       apiUrl: env.API_URL,
+      sessionCookieDomain: resolveSessionCookieDomain({
+        explicit: env.SESSION_COOKIE_DOMAIN,
+        appUrl: env.APP_URL,
+        apiUrl: env.API_URL,
+      }),
       siteOrigin: env.NEXT_PUBLIC_SITE_ORIGIN,
       allowFakeConnector: env.POSTARRAY_ALLOW_FAKE_CONNECTOR,
       logLevel: env.LOG_LEVEL,
@@ -405,6 +419,11 @@ function toConfig(
       issuerUrl: env.OAUTH_ISSUER_URL ?? env.API_URL,
       signingKmsKeyId: env.OAUTH_SIGNING_KMS_KEY_ID,
       signingLocalKey: env.OAUTH_SIGNING_LOCAL_KEY,
+      resourceServer: {
+        resourceUrl: env.MCP_RESOURCE_URL,
+        clientId: env.MCP_CLIENT_ID,
+        clientSecret: env.MCP_CLIENT_SECRET,
+      },
     },
     shortLinks: {
       baseUrl: env.SHORT_LINK_BASE_URL,

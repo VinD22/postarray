@@ -21,6 +21,7 @@ import type {
   AuditSink,
   CalendarEntrySummary,
   ConnectionSummary,
+  ProjectSummary,
   ContentItemSummary,
   CreateDraftInputLike,
   MediaAssetSummary,
@@ -221,6 +222,25 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
     },
     get state(): { readonly jobCount: number; readonly receiptCount: number } {
       return { jobCount: state.jobs.size, receiptCount: state.receipts.size };
+    },
+
+    projects: {
+      async list(ctx, input): Promise<PageLike<ProjectSummary>> {
+        assertWorkspace(ctx);
+        const limit = input?.limit ?? 10;
+        return {
+          data: [
+            {
+              id: SANDBOX_PROJECT_ID,
+              name: 'Sandbox project',
+              defaultTimeZone: 'UTC',
+              archived: false,
+              connectionIds: state.connections.map((connection) => connection.id),
+            },
+          ],
+          pageInfo: { nextCursor: null, hasMore: false, limit },
+        };
+      },
     },
 
     connections: {

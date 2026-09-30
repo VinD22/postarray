@@ -311,6 +311,8 @@ export function createRefusingServices(): Services {
       delete: refuse('app'),
       listGrants: page,
       revokeGrant: refuse('grant'),
+      registerDynamicClient: refuse('app'),
+      recordGrant: refuse('grant'),
     },
     billing: {
       getEntitlements: refuse('entitlements'),

@@ -81,20 +81,49 @@ describe('connect panel, credential shown once', () => {
 });
 
 describe('connect panel, client configuration', () => {
-  it('offers the five clients plus the CLI and swaps the file name with the choice', async () => {
+  it('offers Claude first, the other MCP clients and the CLI, and swaps the instruction with the choice', async () => {
     const user = userEvent.setup();
     render(mount(<ConnectPanel {...BASE} credential={null} lastUsedAt={null} />));
 
-    for (const label of ['Claude Code', 'Claude Desktop', 'Codex', 'Cursor', 'Any MCP client']) {
+    for (const label of [
+      'Claude (web and desktop)',
+      'Claude Code',
+      'Claude Desktop',
+      'Codex',
+      'Cursor',
+      'Any MCP client',
+      'Post Array CLI',
+    ]) {
       expect(screen.getByRole('radio', { name: label })).toBeInTheDocument();
     }
 
-    expect(screen.getByText('Save this as .mcp.json.')).toBeInTheDocument();
+    // Claude: paste the URL into Connectors.
+    expect(
+      screen.getByText(/Settings, then Connectors, and choose Add custom connector/),
+    ).toBeInTheDocument();
     await user.click(screen.getByRole('radio', { name: 'Cursor' }));
-    expect(screen.getByText('Save this as .cursor/mcp.json.')).toBeInTheDocument();
+    expect(screen.getByText(/Save this as \.cursor\/mcp\.json\./)).toBeInTheDocument();
+    await user.click(screen.getByRole('radio', { name: 'Claude Code' }));
+    expect(
+      screen.getByText('claude mcp add --transport http postarray https://mcp.relay.example/mcp'),
+    ).toBeInTheDocument();
   });
 
-  it('puts the environment variable in the snippet, never a literal credential', () => {
+  it('tells an OAuth client it signs in instead of using the credential', () => {
+    render(mount(<ConnectPanel {...BASE} credential={null} lastUsedAt={null} />));
+
+    expect(screen.getByText(/does not use the credential above/)).toBeInTheDocument();
+    expect(screen.queryByText(new RegExp(CREDENTIAL_ENV_VAR))).not.toBeInTheDocument();
+  });
+
+  it('says so when the deployment has no MCP address instead of showing an empty snippet', () => {
+    render(mount(<ConnectPanel {...BASE} mcpEndpoint="" credential={null} lastUsedAt={null} />));
+
+    expect(screen.getByText('The MCP address is not configured')).toBeInTheDocument();
+  });
+
+  it('puts the environment variable in the CLI snippet, never a literal credential', async () => {
+    const user = userEvent.setup();
     render(
       mount(
         <ConnectPanel
@@ -105,7 +134,8 @@ describe('connect panel, client configuration', () => {
       ),
     );
 
-    const snippet = screen.getByText(/mcpServers/).textContent ?? '';
+    await user.click(screen.getByRole('radio', { name: 'Post Array CLI' }));
+    const snippet = screen.getByText(/relay config set apiUrl/).textContent ?? '';
     expect(snippet).toContain(CREDENTIAL_ENV_VAR);
     expect(snippet).not.toContain('rly_sa_the_only_copy');
   });

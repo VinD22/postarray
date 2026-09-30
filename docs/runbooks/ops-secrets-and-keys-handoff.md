@@ -77,7 +77,7 @@ For **UI review without the API**, set in `apps/web/.env.local`:
 
 | Variable | Value |
 | --- | --- |
-| `NEXT_PUBLIC_RELAY_DEMO_MODE` | `true` |
+| `NEXT_PUBLIC_POSTARRAY_DEMO_MODE` | `true` |
 | `NEXT_PUBLIC_APP_URL` | `http://localhost:3000` |
 | `NEXT_PUBLIC_SITE_ORIGIN` | `http://localhost:3000` |
 
@@ -109,9 +109,9 @@ Set on the **web** deployment (see `apps/web/.env.example`):
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_ORIGIN` | yes | Canonical HTTPS origin, no trailing slash |
 | `NEXT_PUBLIC_APP_URL` | yes | Same as user-facing app URL for OAuth returns |
-| `NEXT_PUBLIC_RELAY_API_URL` | yes for live data | API base URL; omit only when using local demo mode |
+| `NEXT_PUBLIC_POSTARRAY_API_URL` | yes for live data | API base URL; omit only when using local demo mode |
 | `NEXT_PUBLIC_SHORT_LINK_BASE_URL` | if links used | Short-link service origin |
-| `NEXT_PUBLIC_RELAY_DEMO_MODE` | never in prod | `true` only for local fixture review |
+| `NEXT_PUBLIC_POSTARRAY_DEMO_MODE` | never in prod | `true` only for local fixture review |
 
 Root `.env` values used at build time must stay consistent with these public
 URLs.

@@ -128,6 +128,62 @@ describe('token state', () => {
     expect(grant.approvalLevel).toBe('level_0_read');
   });
 
+  it('sends the resource it serves and its own client credentials', async () => {
+    const transport = transportReturning(ACTIVE);
+    await verifier(transport).verify('t');
+    expect(transport.calls[0]?.form).toMatchObject({
+      resource: RESOURCE,
+      client_id: 'mcp-resource-server',
+      token_type_hint: 'access_token',
+    });
+  });
+
+  it('reports an unreachable or failing authorization server as unavailable, not as a bad token', async () => {
+    const unavailable = (error: unknown): boolean =>
+      RelayError.is(error) && error.code === 'PROVIDER_UNAVAILABLE' && error.status === 503;
+
+    for (const status of [500, 502, 503, 429]) {
+      await expect(verifier(transportReturning({}, status)).verify('t')).rejects.toSatisfy(
+        unavailable,
+      );
+    }
+    // Our own client refused is a deployment fault, not the caller's token.
+    await expect(verifier(transportReturning({}, 401)).verify('t')).rejects.toSatisfy(unavailable);
+
+    const throwing: IntrospectionTransport = {
+      async post() {
+        throw new Error('ECONNREFUSED');
+      },
+    };
+    await expect(verifier(throwing).verify('t')).rejects.toSatisfy(unavailable);
+
+    const garbled: IntrospectionTransport = {
+      async post() {
+        return { status: 200, body: '<html>bad gateway</html>' };
+      },
+    };
+    await expect(verifier(garbled).verify('t')).rejects.toSatisfy(unavailable);
+  });
+
+  it('does not cache a failure: the next call asks again', async () => {
+    let calls = 0;
+    const flaky: IntrospectionTransport = {
+      async post() {
+        calls += 1;
+        return calls === 1
+          ? { status: 503, body: '' }
+          : { status: 200, body: JSON.stringify(ACTIVE) };
+      },
+    };
+    const instance = verifier(flaky);
+    await expect(instance.verify('t')).rejects.toThrow();
+    const grant = await instance.verify('t');
+    expect(grant.grantId).toBe('grant_01');
+    // And a success is cached, so a burst of tool calls costs one introspection.
+    await instance.verify('t');
+    expect(calls).toBe(2);
+  });
+
   it('drops scopes it does not recognise instead of trusting them', async () => {
     const grant = await verifier(
       transportReturning({ ...ACTIVE, scope: 'accounts:read posts:* everything' }),

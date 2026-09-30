@@ -2695,6 +2695,39 @@ export interface OAuthAppService {
   delete(ctx: ActorContext, appId: string): Promise<void>;
   listGrants(ctx: ActorContext, query?: PageQuery): Promise<Paginated<OAuthGrantView>>;
   revokeGrant(ctx: ActorContext, grantId: string): Promise<OAuthGrantView>;
+  /**
+   * RFC 7591 registration of a public client that no workspace owns. The
+   * caller (the authorization server) has already validated and rate limited
+   * the request; this re-checks the redirect URIs and writes the row and its
+   * edge record.
+   */
+  registerDynamicClient(input: {
+    readonly name: string;
+    readonly redirectUris: readonly string[];
+    readonly allowedScopes: readonly Scope[];
+  }): Promise<{
+    readonly appId: string;
+    readonly clientId: string;
+    readonly name: string;
+    readonly redirectUris: readonly string[];
+    readonly allowedScopes: readonly Scope[];
+    readonly createdAt: string;
+  }>;
+  /**
+   * The consent a signed-in member gave an app in their workspace. Upserts the
+   * one grant per (app, person, workspace) and returns its id, which every
+   * token minted from that consent carries.
+   */
+  recordGrant(
+    ctx: ActorContext,
+    input: {
+      readonly appId: string;
+      readonly clientId: string;
+      readonly scopes: readonly Scope[];
+      readonly projectIds: readonly string[];
+      readonly connectionIds: readonly string[];
+    },
+  ): Promise<{ readonly grantId: string }>;
 }
 
 export interface AuditService {

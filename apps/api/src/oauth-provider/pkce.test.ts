@@ -75,6 +75,25 @@ describe('redirect URI matching', () => {
     ).toBe(false);
   });
 
+  it('treats a registered http://localhost like a loopback literal and ignores its port', () => {
+    expect(
+      redirectUriMatches('http://localhost:33418/callback', 'http://localhost:6274/callback'),
+    ).toBe(true);
+    expect(redirectUriMatches('http://localhost/callback', 'http://localhost:6274/callback')).toBe(
+      true,
+    );
+    // Path, scheme and host still match exactly.
+    expect(
+      redirectUriMatches('http://localhost:33418/other', 'http://localhost:6274/callback'),
+    ).toBe(false);
+    expect(
+      redirectUriMatches(
+        'https://partner.example:8443/callback',
+        'https://partner.example/callback',
+      ),
+    ).toBe(false);
+  });
+
   it('resolves against a list and returns null when nothing matches', () => {
     expect(resolveRedirectUri(registered, ['https://other.example/cb', registered])).toBe(
       registered,

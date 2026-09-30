@@ -6,13 +6,15 @@ import { RelayError } from '@relay/contracts';
 import type { HealthReport, Logger } from '@relay/observability';
 
 import {
-  PROTECTED_RESOURCE_PATH,
   buildAuthenticateChallenge,
   buildProtectedResourceMetadata,
+  protectedResourceMetadataUrl,
+  protectedResourcePaths,
 } from './auth/metadata';
 import { bearerFromHeader } from './auth/verifier';
 import type { TokenVerifier, VerifiedGrant } from './auth/verifier';
 import type { Dispatcher } from './dispatch';
+import { CORS_HEADERS, PREFLIGHT_HEADERS, readBody, sendJson } from './http-support';
 import { createMcpServer } from './server';
 import type { ToolRegistry } from './tools/registry';
 
@@ -22,12 +24,25 @@ import type { ToolRegistry } from './tools/registry';
  * Streamable HTTP over TLS, one endpoint, no unauthenticated tools, not even
  * read tools. The server runs stateless: a fresh transport and a fresh protocol
  * server per request, so a token is verified for every single call rather than
- * once when a long-lived connection opened.
+ * once when a long-lived connection opened. Stateless also means there is no
+ * server-to-client stream and no session to delete, so `GET` and `DELETE` on
+ * the endpoint answer 405 with `Allow: POST`, which is what the transport spec
+ * tells a client to expect.
  */
+
+export { MAX_BODY_BYTES } from './http-support';
 
 export const MCP_PATH = '/mcp';
 export const HEALTH_PATH = '/healthz';
-export const MAX_BODY_BYTES = 1024 * 1024;
+
+/**
+ * Every scope a tool in the registry can require, advertised in the metadata
+ * and in challenges. Derived, so a new tool's scope is requestable the day the
+ * tool ships instead of being refused at consent because nobody asked for it.
+ */
+export function scopesOf(registry: ToolRegistry): readonly string[] {
+  return [...new Set(registry.tools.flatMap((tool) => tool.scopes))].sort();
+}
 
 export interface McpHttpOptions {
   readonly registry: ToolRegistry;
@@ -42,98 +57,98 @@ export interface McpHttpOptions {
   readonly health?: (() => HealthReport) | undefined;
 }
 
-function sendJson(
-  response: ServerResponse,
-  status: number,
-  body: unknown,
-  headers: Readonly<Record<string, string>> = {},
-): void {
-  const payload = JSON.stringify(body);
-  response.writeHead(status, {
-    'content-type': 'application/json; charset=utf-8',
-    'cache-control': 'no-store',
-    'x-content-type-options': 'nosniff',
-    ...headers,
-  });
-  response.end(payload);
-}
-
-async function readBody(request: IncomingMessage): Promise<unknown> {
-  const chunks: Buffer[] = [];
-  let size = 0;
-  for await (const chunk of request) {
-    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk));
-    size += buffer.byteLength;
-    if (size > MAX_BODY_BYTES) {
-      throw new RelayError('VALIDATION_FAILED', {
-        messageKey: 'error.request_invalid.message',
-        details: { reason: 'BODY_TOO_LARGE' },
-      });
-    }
-    chunks.push(buffer);
-  }
-  if (chunks.length === 0) {
-    return undefined;
-  }
-  try {
-    return JSON.parse(Buffer.concat(chunks).toString('utf8')) as unknown;
-  } catch {
-    throw new RelayError('VALIDATION_FAILED', {
-      messageKey: 'error.request_invalid.message',
-      details: { reason: 'BODY_NOT_JSON' },
-    });
-  }
-}
-
 export interface McpHttpService {
   readonly server: NodeHttpServer;
   handle(request: IncomingMessage, response: ServerResponse): Promise<void>;
 }
 
+const AUTH_FAILURE_CODES = new Set(['AUTH_REQUIRED', 'AUTH_INVALID_CREDENTIALS', 'FORBIDDEN']);
+
 export function createMcpHttpService(options: McpHttpOptions): McpHttpService {
+  const scopes = scopesOf(options.registry);
   const metadata = buildProtectedResourceMetadata({
     resourceUrl: options.resourceUrl,
     issuerUrl: options.issuerUrl,
-    scopes: [
-      'accounts:read',
-      'drafts:read',
-      'drafts:write',
-      'posts:schedule',
-      'posts:publish',
-      'posts:cancel',
-      'analytics:read',
-      'growth:read',
-      'growth:write',
-    ],
+    scopes,
     documentationUrl: options.documentationUrl,
   });
-  const metadataUrl = new URL(PROTECTED_RESOURCE_PATH, options.resourceUrl).toString();
+  const metadataPaths = new Set(protectedResourcePaths(options.resourceUrl));
+  const metadataUrl = protectedResourceMetadataUrl(options.resourceUrl);
+  const scopeHint = scopes.join(' ');
 
-  const unauthorized = (response: ServerResponse, error: RelayError): void => {
-    const isScope = error.code === 'SCOPE_INSUFFICIENT';
-    sendJson(response, isScope ? 403 : 401, error.toProblemJson(), {
+  /** No credential at all: say where to get one, without calling it invalid. */
+  const challengeMissing = (response: ServerResponse, reason: string): void => {
+    sendJson(
+      response,
+      401,
+      new RelayError('AUTH_REQUIRED', {
+        messageKey: 'error.unauthenticated.message',
+        details: { reason },
+      }).toProblemJson(),
+      {
+        'www-authenticate': buildAuthenticateChallenge({
+          resourceMetadataUrl: metadataUrl,
+          requiredScope: scopeHint,
+        }),
+      },
+    );
+  };
+
+  /** A credential was presented and verification refused or could not decide. */
+  const refuse = (response: ServerResponse, error: RelayError): void => {
+    if (error.code === 'SCOPE_INSUFFICIENT') {
+      sendJson(response, 403, error.toProblemJson(), {
+        'www-authenticate': buildAuthenticateChallenge({
+          resourceMetadataUrl: metadataUrl,
+          error: 'insufficient_scope',
+          requiredScope: scopeHint,
+        }),
+      });
+      return;
+    }
+    if (!AUTH_FAILURE_CODES.has(error.code)) {
+      // The authorization server is down or refused our own client. The token
+      // may be perfectly good, so it is not called invalid: retry later.
+      sendJson(response, error.status >= 500 ? error.status : 503, error.toProblemJson(), {
+        'retry-after': '5',
+      });
+      return;
+    }
+    sendJson(response, 401, error.toProblemJson(), {
       'www-authenticate': buildAuthenticateChallenge({
         resourceMetadataUrl: metadataUrl,
-        error: isScope ? 'insufficient_scope' : 'invalid_token',
+        error: 'invalid_token',
         errorDescription: String(error.details['reason'] ?? error.code),
+        requiredScope: scopeHint,
       }),
     });
   };
 
   const handle = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
     const url = new URL(request.url ?? '/', options.resourceUrl);
+    const method = (request.method ?? 'GET').toUpperCase();
 
-    if (url.pathname === PROTECTED_RESOURCE_PATH && request.method === 'GET') {
+    // Preflight is answered before anything else: a browser sends it without
+    // the Authorization header, so it can never pass authentication.
+    if (method === 'OPTIONS') {
+      response.writeHead(204, PREFLIGHT_HEADERS);
+      response.end();
+      return;
+    }
+
+    if (metadataPaths.has(url.pathname) && method === 'GET') {
       sendJson(response, 200, metadata, { 'cache-control': 'public, max-age=300' });
       return;
     }
 
-    if (url.pathname === HEALTH_PATH && request.method === 'GET') {
-      sendJson(
-        response,
-        200,
-        options.health?.() ?? { status: 'ok', service: 'mcp', sandbox: options.sandbox },
-      );
+    if (url.pathname === HEALTH_PATH && method === 'GET') {
+      const report = options.health?.() ?? {
+        status: 'ok',
+        service: 'mcp',
+        sandbox: options.sandbox,
+      };
+      // A load balancer reads the status code, not the body.
+      sendJson(response, report.status === 'down' ? 503 : 200, report);
       return;
     }
 
@@ -142,10 +157,15 @@ export function createMcpHttpService(options: McpHttpOptions): McpHttpService {
       return;
     }
 
+    if (method !== 'POST') {
+      sendJson(response, 405, { error: 'method_not_allowed' }, { allow: 'POST, OPTIONS' });
+      return;
+    }
+
     // A token in a query parameter ends up in access logs, referrer headers and
     // browser history. Header only, always.
     if (url.searchParams.has('access_token') || url.searchParams.has('token')) {
-      unauthorized(
+      refuse(
         response,
         new RelayError('AUTH_REQUIRED', {
           messageKey: 'error.unauthenticated.message',
@@ -155,15 +175,20 @@ export function createMcpHttpService(options: McpHttpOptions): McpHttpService {
       return;
     }
 
-    const bearer = bearerFromHeader(request.headers['authorization']);
+    const authorization = request.headers['authorization'];
+    const bearer = bearerFromHeader(authorization);
     if (bearer === null) {
-      unauthorized(
-        response,
-        new RelayError('AUTH_REQUIRED', {
-          messageKey: 'error.unauthenticated.message',
-          details: { reason: 'AUTHORIZATION_HEADER_MISSING' },
-        }),
-      );
+      if (authorization === undefined) {
+        challengeMissing(response, 'AUTHORIZATION_HEADER_MISSING');
+      } else {
+        refuse(
+          response,
+          new RelayError('AUTH_REQUIRED', {
+            messageKey: 'error.unauthenticated.message',
+            details: { reason: 'AUTHORIZATION_HEADER_MALFORMED' },
+          }),
+        );
+      }
       return;
     }
 
@@ -171,13 +196,20 @@ export function createMcpHttpService(options: McpHttpOptions): McpHttpService {
     try {
       grant = await options.verifier.verify(bearer);
     } catch (error) {
-      unauthorized(response, RelayError.fromUnknown(error));
+      const relayError = RelayError.fromUnknown(error);
+      if (!AUTH_FAILURE_CODES.has(relayError.code)) {
+        options.logger.warn(
+          { event: 'mcp.verification_unavailable', reason: relayError.details['reason'] },
+          'mcp.verification_unavailable',
+        );
+      }
+      refuse(response, relayError);
       return;
     }
 
     let body: unknown;
     try {
-      body = request.method === 'POST' ? await readBody(request) : undefined;
+      body = await readBody(request);
     } catch (error) {
       sendJson(response, 400, RelayError.fromUnknown(error).toProblemJson());
       return;
@@ -200,6 +232,10 @@ export function createMcpHttpService(options: McpHttpOptions): McpHttpService {
       void transport.close();
       void server.close();
     });
+
+    for (const [name, value] of Object.entries(CORS_HEADERS)) {
+      response.setHeader(name, value);
+    }
 
     try {
       await server.connect(transport);

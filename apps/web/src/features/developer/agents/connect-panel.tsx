@@ -61,6 +61,13 @@ export function ConnectPanel(props: ConnectPanelProps): ReactNode {
     serviceAccountName: props.serviceAccountName,
   });
   const clientLabel = client === undefined ? '' : t(client.labelKey);
+  const signsInWithOAuth = client?.auth === 'oauth';
+  const hint =
+    client?.hintKey !== undefined
+      ? t(client.hintKey, { filename: client.filename ?? '' })
+      : client?.filename === null || client === undefined
+        ? t('developer.connect.cliHint')
+        : t('developer.connect.fileHint', { filename: client.filename });
 
   async function copy(): Promise<void> {
     try {
@@ -129,7 +136,9 @@ export function ConnectPanel(props: ConnectPanelProps): ReactNode {
           />
         )}
         <p className="text-body-sm text-text-secondary">
-          {t('developer.connect.credentialEnv', { variable: CREDENTIAL_ENV_VAR })}
+          {signsInWithOAuth
+            ? t('developer.connect.oauthNoCredential')
+            : t('developer.connect.credentialEnv', { variable: CREDENTIAL_ENV_VAR })}
         </p>
       </section>
 
@@ -138,15 +147,18 @@ export function ConnectPanel(props: ConnectPanelProps): ReactNode {
           {t('developer.connect.step.config')}
         </h4>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-body-sm text-text-tertiary">
-            {client?.filename === null || client === undefined
-              ? t('developer.connect.cliHint')
-              : t('developer.connect.fileHint', { filename: client.filename })}
-          </p>
+          <p className="text-body-sm text-text-tertiary min-w-0 flex-1">{hint}</p>
           <Button size="sm" variant="secondary" onClick={() => void copy()}>
             {t('developer.connect.copy', { client: clientLabel })}
           </Button>
         </div>
+        {signsInWithOAuth && props.mcpEndpoint.length === 0 ? (
+          <Notice
+            tone="warning"
+            title={t('developer.connect.endpointUnavailable.title')}
+            description={t('developer.connect.endpointUnavailable.body')}
+          />
+        ) : null}
         <Code block className="overflow-x-auto">
           {snippet}
         </Code>

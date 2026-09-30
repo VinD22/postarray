@@ -6,6 +6,10 @@ import { createLogger, startTracing } from '@relay/observability';
 import { createApiApp } from './bootstrap';
 import { systemClock } from './common/instant';
 import { NeonIdentityProvider } from './modules/auth/neon-identity.provider';
+import {
+  ResourceServerClientConfigError,
+  registerResourceServerClientAtBoot,
+} from './oauth-provider/resource-server-client';
 import { RedisKeyValueStore } from './runtime/redis-key-value-store';
 import { resolveServices } from './runtime/services';
 
@@ -45,6 +49,26 @@ async function bootstrap(): Promise<void> {
   await startTracing('relay-api');
 
   const kv = await RedisKeyValueStore.connect(config, logger);
+
+  // The MCP server introspects tokens as this client. Without it every Claude
+  // call is refused, so a half-configured MCP stops the API from starting.
+  try {
+    const mcpClient = await registerResourceServerClientAtBoot(kv, config, systemClock.now());
+    if (mcpClient !== null) {
+      logger.info(
+        { event: 'oauth.resource_server_client_ready', ...mcpClient },
+        'oauth.resource_server_client_ready',
+      );
+    }
+  } catch (error) {
+    if (error instanceof ResourceServerClientConfigError) {
+      logger.fatal(
+        { event: 'oauth.resource_server_client_config_missing', missing: error.missing },
+        'oauth.resource_server_client_config_missing',
+      );
+    }
+    throw error;
+  }
   const runtime = resolveServices({ config, logger, kv, clock: systemClock });
 
   const app = await createApiApp({

@@ -179,6 +179,7 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       isTest: true,
       appUrl: 'https://app.relay.test',
       apiUrl: 'https://api.relay.test',
+      sessionCookieDomain: undefined as string | undefined,
       siteOrigin: 'https://relay.test',
       allowFakeConnector: false,
       logLevel: 'silent' as const,
@@ -204,8 +205,9 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
     polar: {
       checkoutEnabled: false,
       accessToken: undefined,
-      // Not a real secret: a fixed string the suite signs its own fixtures with.
-      webhookSecret: 'test-polar-webhook-secret',
+      // Not a real secret: a fixed string the suite signs its own fixtures with,
+      // in Polar's `whsec_<base64>` shape so both of Polar's keys exist for it.
+      webhookSecret: 'whsec_dGVzdC1wb2xhci13ZWJob29rLXNlY3JldC1ub3QtYS1yZWFsLWtleQ==',
       server: 'sandbox' as const,
       monthlyProductId: undefined,
       annualProductId: undefined,
@@ -238,6 +240,13 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       signingKmsKeyId: undefined,
       // Local-only pepper for credential digests in the suite.
       signingLocalKey: 'dGVzdC1zaWduaW5nLWtleS10ZXN0LXNpZ25pbmcta2V5LTEyMzQ=',
+      // The in-suite MCP resource server. Its client record is seeded by the
+      // tests that need it; the secret lives only in those tests.
+      resourceServer: {
+        resourceUrl: 'https://mcp.relay.test/mcp',
+        clientId: 'rly_rs_mcp_test',
+        clientSecret: undefined,
+      },
     },
     shortLinks: { baseUrl: undefined, hashKey: undefined },
     email: {

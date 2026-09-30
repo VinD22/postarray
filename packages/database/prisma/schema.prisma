@@ -2072,7 +2072,8 @@ model OAuthPendingDiscovery {
 /// A third-party developer application registered in our own OAuth console.
 model OAuthClient {
   id               String            @id @default(dbgenerated("app.new_id('app')"))
-  workspaceId      String            @map("workspace_id")
+  /// Null only for a dynamically registered public client (0083).
+  workspaceId      String?           @map("workspace_id")
   name             String
   clientId         String            @unique @map("client_id")
   clientType       OAuthClientType   @map("client_type")
@@ -2087,11 +2088,13 @@ model OAuthClient {
   logoUrl          String?           @map("logo_url")
   supportEmail     String?           @map("support_email")
   status           OAuthClientStatus @default(sandbox)
-  createdByUserId  String            @map("created_by_user_id")
+  /// `managed` or `dynamic` (RFC 7591: self-asserted name, no owning workspace).
+  registration     String            @default("managed")
+  createdByUserId  String?           @map("created_by_user_id")
   createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  workspace Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   grants    OAuthGrant[]
 
   @@index([workspaceId])

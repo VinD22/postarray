@@ -66,7 +66,12 @@ export async function main(options: StartOptions = {}): Promise<void> {
   );
 
   const sandbox = parseBooleanish(process.env['MCP_SANDBOX']) === true;
-  const resourceUrl = requireConfigValue(process.env['MCP_RESOURCE_URL'], 'API_URL');
+  // The canonical URL of this endpoint, path included. Tokens are bound to it,
+  // so it must be exactly what a person pastes into Claude.
+  const resourceUrl = requireConfigValue(
+    config.oauth.resourceServer.resourceUrl,
+    'MCP_RESOURCE_URL',
+  );
   const issuerUrl = requireConfigValue(
     config.oauth.issuerUrl ?? config.core.apiUrl,
     'OAUTH_ISSUER_URL',
@@ -95,8 +100,10 @@ export async function main(options: StartOptions = {}): Promise<void> {
     introspectionUrl: new URL('/oauth/introspect', issuerUrl).toString(),
     resourceUrl,
     transport: fetchTransport(),
-    clientId: requireConfigValue(process.env['MCP_CLIENT_ID'], 'OAUTH_ISSUER_URL'),
-    clientSecret: requireConfigValue(process.env['MCP_CLIENT_SECRET'], 'OAUTH_ISSUER_URL'),
+    // This server's own confidential client. The API registers it at start-up
+    // from the same variables, or every introspection is refused.
+    clientId: requireConfigValue(config.oauth.resourceServer.clientId, 'MCP_CLIENT_ID'),
+    clientSecret: requireConfigValue(config.oauth.resourceServer.clientSecret, 'MCP_CLIENT_SECRET'),
     clock: systemClock,
   });
 

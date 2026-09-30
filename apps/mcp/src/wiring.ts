@@ -37,6 +37,9 @@ export function toRelayServicePort(
   events?: RecentEventsReader,
 ): RelayServicePort {
   return {
+    projects: {
+      list: (ctx, input) => services.projects.list(ctx, input),
+    },
     connections: {
       list: (ctx, input) => services.connections.list(ctx, input),
       getCapabilities: (ctx, connectionId) =>

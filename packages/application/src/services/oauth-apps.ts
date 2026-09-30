@@ -2,7 +2,6 @@ import { createHmac, randomBytes } from 'node:crypto';
 
 import { narrowScopes } from '@relay/authz';
 import { normalizeScopes, type Paginated, type Scope } from '@relay/contracts';
-import { z } from 'zod';
 
 import type { ActorContext, OAuthAppService, PageQuery, ServiceDeps } from '../types';
 import type { CreatedOAuthAppView, OAuthAppView, OAuthGrantView } from '../views';
@@ -11,6 +10,8 @@ import { recordAudit } from '../internal/audit';
 import { invalid, notFound } from '../internal/errors';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized } from '../internal/runtime';
+import { registerDynamicClient, recordGrant } from './oauth-consent';
+import { edgeClientKey, previousEdgeClient, writeEdgeClient } from './oauth-edge-client';
 
 /**
  * Third-party developer applications.
@@ -24,30 +25,6 @@ import { authorized } from '../internal/runtime';
 
 const MAX_REDIRECT_URIS = 5;
 const SECRET_OVERLAP_MS = 24 * 60 * 60 * 1000;
-const EDGE_CLIENT_NAMESPACE = 'relay:edge:client';
-
-const edgeClientSchema = z
-  .object({
-    clientId: z.string(),
-    appId: z.string(),
-    workspaceId: z.string(),
-    name: z.string(),
-    clientType: z.enum(['public', 'confidential']),
-    secretHash: z.string().nullable(),
-    previousSecretHash: z.string().nullable(),
-    previousSecretExpiresAt: z.string().nullable(),
-    redirectUris: z.array(z.string()),
-    homepageUrl: z.string(),
-    privacyPolicyUrl: z.string(),
-    termsUrl: z.string(),
-    logoUrl: z.string().nullable(),
-    supportEmail: z.string(),
-    allowedScopes: z.array(z.string()),
-    firstParty: z.boolean(),
-    disabledAt: z.string().nullable(),
-    createdAt: z.string(),
-  })
-  .strict();
 
 const APP_SELECT = {
   id: true,
@@ -64,13 +41,15 @@ const APP_SELECT = {
   logoUrl: true,
   supportEmail: true,
   status: true,
+  registration: true,
   secretRotatedAt: true,
   createdAt: true,
 } as const;
 
 interface AppRow {
   id: string;
-  workspaceId: string;
+  /** Null only for a dynamically registered client, which no list returns. */
+  workspaceId: string | null;
   name: string;
   clientId: string;
   clientType: string;
@@ -83,6 +62,7 @@ interface AppRow {
   logoUrl: string | null;
   supportEmail: string | null;
   status: string;
+  registration: string;
   secretRotatedAt: Date | null;
   createdAt: Date;
 }
@@ -90,7 +70,7 @@ interface AppRow {
 function toAppView(row: AppRow): OAuthAppView {
   return {
     id: row.id,
-    workspaceId: row.workspaceId,
+    workspaceId: row.workspaceId ?? '',
     name: row.name,
     clientId: row.clientId,
     clientType: row.clientType === 'confidential' ? 'confidential' : 'public',
@@ -107,10 +87,6 @@ function toAppView(row: AppRow): OAuthAppView {
   };
 }
 
-function edgeClientKey(clientId: string): string {
-  return `${EDGE_CLIENT_NAMESPACE}:${clientId}`;
-}
-
 function signingKey(deps: ServiceDeps): string {
   const key = deps.config.oauth.signingLocalKey ?? deps.config.oauth.signingKmsKeyId;
   if (key === undefined) {
@@ -121,49 +97,6 @@ function signingKey(deps: ServiceDeps): string {
 
 function secretHash(secret: string, deps: ServiceDeps): string {
   return createHmac('sha256', signingKey(deps)).update(secret, 'utf8').digest('hex');
-}
-
-async function previousEdgeClient(deps: ServiceDeps, clientId: string) {
-  const raw = await deps.kv.get(edgeClientKey(clientId));
-  if (raw === null) {
-    return null;
-  }
-  try {
-    return edgeClientSchema.safeParse(JSON.parse(raw)).data ?? null;
-  } catch {
-    return null;
-  }
-}
-
-async function writeEdgeClient(
-  deps: ServiceDeps,
-  row: AppRow,
-  previous: { readonly hash: string | null; readonly expiresAt: string | null } = {
-    hash: null,
-    expiresAt: null,
-  },
-): Promise<void> {
-  const record = edgeClientSchema.parse({
-    clientId: row.clientId,
-    appId: row.id,
-    workspaceId: row.workspaceId,
-    name: row.name,
-    clientType: row.clientType === 'confidential' ? 'confidential' : 'public',
-    secretHash: row.secretHash,
-    previousSecretHash: previous.hash,
-    previousSecretExpiresAt: previous.expiresAt,
-    redirectUris: [...row.redirectUris],
-    homepageUrl: row.homepageUrl ?? '',
-    privacyPolicyUrl: row.privacyPolicyUrl ?? '',
-    termsUrl: row.termsUrl ?? '',
-    logoUrl: row.logoUrl,
-    supportEmail: row.supportEmail ?? '',
-    allowedScopes: [...normalizeScopes(row.allowedScopes)],
-    firstParty: false,
-    disabledAt: row.status === 'active' ? null : deps.clock.now().toISOString(),
-    createdAt: row.createdAt.toISOString(),
-  });
-  await deps.kv.set(edgeClientKey(row.clientId), JSON.stringify(record));
 }
 
 const GRANT_SELECT = {
@@ -584,5 +517,9 @@ export function createOAuthAppService(deps: ServiceDeps): OAuthAppService {
         return toGrantView(after);
       });
     },
+
+    registerDynamicClient: (input) => registerDynamicClient(deps, input),
+
+    recordGrant: (ctx, input) => recordGrant(deps, ctx, input),
   };
 }

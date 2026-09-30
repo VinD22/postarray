@@ -235,7 +235,7 @@ forget about.
 
 ```bash
 curl -sI https://postarray.com | head -1
-curl -s https://api.postarray.com/v1/health | head -c 200
+curl -s https://api.postarray.com/healthz | head -c 200
 sudo journalctl -u postarray-worker -n 30 --no-pager
 ```
 

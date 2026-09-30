@@ -71,6 +71,12 @@ export interface RateLimitRule {
   readonly cost?: number;
   /** Also count against the shared per-workspace connector budget. */
   readonly connectorBudget?: boolean;
+  /**
+   * The per-address cap on a public route called without a credential. It
+   * defaults to 60 a minute, which suits a browser; a route whose one caller
+   * is our own resource server (introspection) raises it deliberately.
+   */
+  readonly unauthenticatedIpLimit?: number;
 }
 
 export const RateLimit = (rule: RateLimitRule): MethodDecorator & ClassDecorator =>

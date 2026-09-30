@@ -11,6 +11,12 @@ export interface OAuthConsentClientView {
   readonly termsUrl: string;
   readonly logoUrl: string | null;
   readonly firstParty: boolean;
+  /**
+   * True when the app registered itself (RFC 7591, as Claude does): its name
+   * is its own claim and nobody at Post Array has reviewed it. Optional so an
+   * older API that does not send it reads as a reviewed app.
+   */
+  readonly selfAsserted?: boolean;
 }
 
 export interface OAuthConsentScopeView {
@@ -64,6 +70,7 @@ export const oauthApi = {
         termsUrl: 'https://example.com/terms',
         logoUrl: null,
         firstParty: false,
+        selfAsserted: false,
       },
       consentNonce: 'demo-consent-nonce',
       workspaces: [demoWorkspace],

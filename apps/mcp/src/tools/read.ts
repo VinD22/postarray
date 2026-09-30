@@ -5,6 +5,7 @@ import { RESOURCE_URIS, defineTool, pageInputShape, resourceLink } from './regis
 import type { ToolDefinition, ToolResult } from './registry';
 import type { MetricObservationSummary } from '../ports';
 import { MEDIA_READ_TOOLS } from './read-media';
+import { PROJECT_READ_TOOLS } from './read-projects';
 import { RECEIPT_READ_TOOLS } from './read-receipts';
 import { COMMIT_PREVIEW_TOOLS } from './read-commit-preview';
 import { SUGGESTION_READ_TOOLS } from './read-suggestions';
@@ -524,6 +525,7 @@ export const listRecentEventsTool = defineTool({
 
 export const READ_TOOLS: readonly ToolDefinition[] = [
   listAccountsTool,
+  ...PROJECT_READ_TOOLS,
   getCapabilitiesTool,
   getCalendarTool,
   previewPostTool,

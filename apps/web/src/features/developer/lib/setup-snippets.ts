@@ -1,10 +1,18 @@
 /**
  * Copyable client configuration.
  *
- * Every snippet reads the credential from an environment variable rather than
- * embedding it, because the most common way a service account leaks is a
- * config file committed to a repository. The placeholder name is the same in
- * every one of them, so a user who sets it once is done.
+ * Two ways in, and each client uses exactly one:
+ *
+ * - `oauth`: MCP clients. The remote MCP server verifies OAuth tokens only, so
+ *   Claude, Claude Desktop, Claude Code, Codex, Cursor and any spec-following
+ *   MCP client connect with the endpoint alone. The client discovers the
+ *   authorization server from the server's 401, registers itself, and opens
+ *   Post Array so the person can sign in and approve access. Nothing secret
+ *   goes into a snippet, so there is nothing to leak from a committed file.
+ * - `token`: the CLI and workflow orchestrators, which call the REST API with
+ *   a service account credential read from an environment variable. The
+ *   placeholder name is the same everywhere, so a person who sets it once is
+ *   done.
  *
  * This is the only snippet generator. The product's connect screen and the
  * marketing page both read it, which is what stops the two from documenting
@@ -14,6 +22,9 @@
  */
 
 export const CREDENTIAL_ENV_VAR = 'POSTARRAY_SERVICE_TOKEN';
+
+/** The server name every MCP snippet registers, so tools read `postarray`. */
+export const MCP_SERVER_NAME = 'postarray';
 
 export interface SetupClient {
   readonly id: string;
@@ -26,22 +37,40 @@ export interface SetupClient {
    * is an orchestrator we document but do not walk anyone through.
    */
   readonly audience: 'client' | 'workflow';
+  /** How the client proves who it is. See the module comment. */
+  readonly auth: 'oauth' | 'token';
+  /** What to do with the snippet, when saving it as `filename` is not the answer. */
+  readonly hintKey?: string;
 }
 
 export const SETUP_CLIENTS: readonly SetupClient[] = [
   {
+    id: 'claude-ai',
+    labelKey: 'developer.connect.client.claudeAi',
+    language: 'text',
+    filename: null,
+    audience: 'client',
+    auth: 'oauth',
+    hintKey: 'developer.connect.hint.claudeAi',
+  },
+  {
     id: 'claude-code',
     labelKey: 'developer.connect.client.claudeCode',
-    language: 'json',
-    filename: '.mcp.json',
+    language: 'bash',
+    filename: null,
     audience: 'client',
+    auth: 'oauth',
+    hintKey: 'developer.connect.hint.claudeCode',
   },
   {
     id: 'claude-desktop',
     labelKey: 'developer.connect.client.claudeDesktop',
-    language: 'json',
-    filename: 'claude_desktop_config.json',
+    language: 'text',
+    filename: null,
     audience: 'client',
+    auth: 'oauth',
+    // Claude Desktop adds remote servers through the same Connectors settings.
+    hintKey: 'developer.connect.hint.claudeAi',
   },
   {
     id: 'codex',
@@ -49,6 +78,8 @@ export const SETUP_CLIENTS: readonly SetupClient[] = [
     language: 'toml',
     filename: 'config.toml',
     audience: 'client',
+    auth: 'oauth',
+    hintKey: 'developer.connect.hint.codex',
   },
   {
     id: 'cursor',
@@ -56,6 +87,8 @@ export const SETUP_CLIENTS: readonly SetupClient[] = [
     language: 'json',
     filename: '.cursor/mcp.json',
     audience: 'client',
+    auth: 'oauth',
+    hintKey: 'developer.connect.hint.oauthFile',
   },
   {
     id: 'generic-mcp',
@@ -63,6 +96,8 @@ export const SETUP_CLIENTS: readonly SetupClient[] = [
     language: 'json',
     filename: 'mcp.json',
     audience: 'client',
+    auth: 'oauth',
+    hintKey: 'developer.connect.hint.oauthFile',
   },
   {
     id: 'cli',
@@ -70,6 +105,7 @@ export const SETUP_CLIENTS: readonly SetupClient[] = [
     language: 'bash',
     filename: null,
     audience: 'client',
+    auth: 'token',
   },
   {
     id: 'hermes',
@@ -77,6 +113,7 @@ export const SETUP_CLIENTS: readonly SetupClient[] = [
     language: 'yaml',
     filename: 'hermes.yaml',
     audience: 'workflow',
+    auth: 'token',
   },
   {
     id: 'buzz',
@@ -84,6 +121,7 @@ export const SETUP_CLIENTS: readonly SetupClient[] = [
     language: 'yaml',
     filename: 'workflow.yaml',
     audience: 'workflow',
+    auth: 'token',
   },
 ];
 
@@ -103,66 +141,34 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
   const token = `\${${CREDENTIAL_ENV_VAR}}`;
 
   switch (clientId) {
-    case 'claude-code':
-      return [
-        '{',
-        '  "mcpServers": {',
-        '    "postarray": {',
-        '      "type": "http",',
-        `      "url": "${mcpEndpoint}",`,
-        '      "headers": {',
-        `        "Authorization": "Bearer ${token}"`,
-        '      }',
-        '    }',
-        '  }',
-        '}',
-      ].join('\n');
-
+    case 'claude-ai':
     case 'claude-desktop':
-      return [
-        '{',
-        '  "mcpServers": {',
-        '    "postarray": {',
-        '      "command": "npx",',
-        '      "args": ["-y", "mcp-remote", "' + mcpEndpoint + '"],',
-        '      "env": {',
-        '        "' + CREDENTIAL_ENV_VAR + '": "' + token + '"',
-        '      }',
-        '    }',
-        '  }',
-        '}',
-      ].join('\n');
+      // Pasted into Settings, Connectors, Add custom connector.
+      return mcpEndpoint;
+
+    case 'claude-code':
+      return `claude mcp add --transport http ${MCP_SERVER_NAME} ${mcpEndpoint}`;
 
     case 'cursor':
       return [
         '{',
         '  "mcpServers": {',
-        '    "postarray": {',
-        '      "url": "' + mcpEndpoint + '",',
-        '      "headers": {',
-        '        "Authorization": "Bearer ' + token + '"',
-        '      }',
+        `    "${MCP_SERVER_NAME}": {`,
+        `      "url": "${mcpEndpoint}"`,
         '    }',
         '  }',
         '}',
       ].join('\n');
 
     case 'codex':
-      return [
-        '[mcp_servers.relay]',
-        `url = "${mcpEndpoint}"`,
-        'transport = "http"',
-        '',
-        '[mcp_servers.relay.headers]',
-        `Authorization = "Bearer ${token}"`,
-      ].join('\n');
+      return [`[mcp_servers.${MCP_SERVER_NAME}]`, `url = "${mcpEndpoint}"`].join('\n');
 
     case 'hermes':
       return [
         'tools:',
-        '  - name: relay',
-        '    kind: mcp',
-        `    endpoint: ${mcpEndpoint}`,
+        `  - name: ${MCP_SERVER_NAME}`,
+        '    kind: http',
+        `    endpoint: ${apiBaseUrl}`,
         '    auth:',
         '      type: bearer',
         `      token: ${token}`,
@@ -171,7 +177,7 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
 
     case 'buzz':
       return [
-        `name: publish-with-relay`,
+        `name: publish-with-${MCP_SERVER_NAME}`,
         'steps:',
         '  - id: draft',
         '    uses: relay/create-draft@v1',
@@ -199,12 +205,9 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
     default:
       return [
         '{',
-        '  "name": "postarray",',
+        `  "name": "${MCP_SERVER_NAME}",`,
         '  "transport": "streamable-http",',
-        `  "url": "${mcpEndpoint}",`,
-        '  "headers": {',
-        `    "Authorization": "Bearer ${token}"`,
-        '  }',
+        `  "url": "${mcpEndpoint}"`,
         '}',
       ].join('\n');
   }

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 import { ACTIVE_LOCALE_CODES } from '../locales';
 import { formatLintResult, lintCatalog } from '../lint';
@@ -7,6 +7,13 @@ import { isBetaEnglishFallbackKey } from './beta-fallbacks';
 import { inspectCatalogFamilies, isCatalogFamilyComplete } from './catalog-coverage';
 
 describe('active catalogs', () => {
+  // The first case used to pay for loading every catalog module and warming
+  // the linter, and timed out under a full parallel run. Pay it once here.
+  beforeAll(async () => {
+    await Promise.all(ACTIVE_LOCALE_CODES.map((locale) => loadCatalog(locale)));
+    lintCatalog(en, { locale: 'en', reference: en });
+  }, 120_000);
+
   it.each(ACTIVE_LOCALE_CODES)(
     'loads and lints %s',
     async (locale) => {

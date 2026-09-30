@@ -12,13 +12,15 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vitest run",
-    "clean": "rm -rf dist .turbo"
+    "clean": "rm -rf dist .turbo",
+    "oauth:register-mcp-client": "node --import @swc-node/register/esm-register src/scripts/register-mcp-client.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.2.5",
     "@relay/application": "workspace:*",
+    "@relay/billing": "workspace:*",
     "@relay/config": "workspace:*",
     "@relay/contracts": "workspace:*",
     "@relay/i18n": "workspace:*",
@@ -33,6 +35,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@relay/mcp": "workspace:*",
     "@swc-node/register": "^1.12.1",
     "@swc/core": "^1.15.47",
     "@types/compression": "^1.7.5",

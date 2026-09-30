@@ -1,0 +1,194 @@
+# Post Array backend on Coolify.
+#
+# Paste into Coolify as + New > Docker Compose Empty. Every image is built by
+# .github/workflows/release-images.yml on a push to main and pulled here; the
+# server never builds (1 CPU and under 2 GB of RAM cannot run a typecheck and
+# bundle alongside the apps it already serves).
+#
+# Secrets are Coolify environment variables. Coolify lists every ${VAR} below
+# in the resource's Environment Variables screen; fill them there, never here.
+#
+# Domains are set per service in Coolify, not in this file:
+#   api  -> https://api.postarray.com:3001
+#   mcp  -> https://mcp.postarray.com:3003
+
+x-backend-env: &backend-env
+  NODE_ENV: production
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  # Keep each Node process inside its container limit below. Source maps are
+  # left off: loading one costs about 25 MB per process on a 2 GB box.
+  NODE_OPTIONS: --max-old-space-size=320
+  APP_URL: ${APP_URL:-https://postarray.com}
+  API_URL: ${API_URL:-https://api.postarray.com}
+  OAUTH_ISSUER_URL: ${OAUTH_ISSUER_URL:-https://api.postarray.com}
+  DATABASE_URL: ${DATABASE_URL}
+  DIRECT_DATABASE_URL: ${DIRECT_DATABASE_URL}
+  REDIS_URL: redis://redis:6379
+  TEMPORAL_ADDRESS: temporal:7233
+  TEMPORAL_NAMESPACE: default
+  TEMPORAL_TASK_QUEUE: relay-publishing
+  NEON_AUTH_BASE_URL: ${NEON_AUTH_BASE_URL}
+  NEON_AUTH_COOKIE_SECRET: ${NEON_AUTH_COOKIE_SECRET}
+  NEON_AUTH_JWKS_URL: ${NEON_AUTH_JWKS_URL}
+  NEON_STORAGE_ENDPOINT: ${NEON_STORAGE_ENDPOINT}
+  NEON_STORAGE_REGION: ${NEON_STORAGE_REGION}
+  NEON_STORAGE_BUCKET: ${NEON_STORAGE_BUCKET}
+  NEON_STORAGE_ACCESS_KEY_ID: ${NEON_STORAGE_ACCESS_KEY_ID}
+  NEON_STORAGE_SECRET_ACCESS_KEY: ${NEON_STORAGE_SECRET_ACCESS_KEY}
+  # Production refuses the local key: without KMS no account can be connected.
+  TOKEN_ENCRYPTION_KMS_KEY_ID: ${TOKEN_ENCRYPTION_KMS_KEY_ID}
+  TOKEN_ENCRYPTION_KMS_REGION: ${TOKEN_ENCRYPTION_KMS_REGION}
+  OAUTH_SIGNING_KMS_KEY_ID: ${OAUTH_SIGNING_KMS_KEY_ID}
+  # A random 32-byte base64 secret. It is the pepper for stored credential
+  # digests; without it the pepper falls back to the KMS key id, which is an
+  # identifier, not a secret.
+  OAUTH_SIGNING_LOCAL_KEY: ${OAUTH_SIGNING_LOCAL_KEY}
+  # The MCP server. The URL must be exactly what people paste into Claude. The
+  # API registers the client pair at start-up; set the same pair on both.
+  MCP_RESOURCE_URL: ${MCP_RESOURCE_URL:-https://mcp.postarray.com/mcp}
+  MCP_CLIENT_ID: ${MCP_CLIENT_ID}
+  MCP_CLIENT_SECRET: ${MCP_CLIENT_SECRET}
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  # Checkout stays closed until products, legal copy and webhook are verified.
+  BILLING_CHECKOUT_ENABLED: ${BILLING_CHECKOUT_ENABLED:-false}
+  POLAR_SERVER: production
+  POLAR_ACCESS_TOKEN: ${POLAR_ACCESS_TOKEN}
+  POLAR_WEBHOOK_SECRET: ${POLAR_WEBHOOK_SECRET}
+  # There is no trial. A non-zero value makes checkout promise a deferred charge.
+  POLAR_TRIAL_DAYS: '0'
+  POLAR_MONTHLY_PRODUCT_ID: ${POLAR_MONTHLY_PRODUCT_ID}
+  POLAR_ANNUAL_PRODUCT_ID: ${POLAR_ANNUAL_PRODUCT_ID}
+  POLAR_GROWTH_MONTHLY_PRODUCT_ID: ${POLAR_GROWTH_MONTHLY_PRODUCT_ID}
+  POLAR_GROWTH_ANNUAL_PRODUCT_ID: ${POLAR_GROWTH_ANNUAL_PRODUCT_ID}
+  POLAR_STUDIO_MONTHLY_PRODUCT_ID: ${POLAR_STUDIO_MONTHLY_PRODUCT_ID}
+  POLAR_STUDIO_ANNUAL_PRODUCT_ID: ${POLAR_STUDIO_ANNUAL_PRODUCT_ID}
+  EMAIL_API_KEY: ${EMAIL_API_KEY}
+  EMAIL_FROM: ${EMAIL_FROM:-Post Array <no-reply@postarray.com>}
+  AI_PROVIDER: ${AI_PROVIDER:-deepseek}
+  DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+  SENTRY_DSN: ${SENTRY_DSN}
+  SHORT_LINK_BASE_URL: ${SHORT_LINK_BASE_URL}
+  SHORT_LINK_HASH_KEY: ${SHORT_LINK_HASH_KEY}
+  # Social platforms. One with no credentials is hidden from the connect
+  # screen; it never breaks the others.
+  X_CLIENT_ID: ${X_CLIENT_ID}
+  X_CLIENT_SECRET: ${X_CLIENT_SECRET}
+  LINKEDIN_CLIENT_ID: ${LINKEDIN_CLIENT_ID}
+  LINKEDIN_CLIENT_SECRET: ${LINKEDIN_CLIENT_SECRET}
+  META_APP_ID: ${META_APP_ID}
+  META_APP_SECRET: ${META_APP_SECRET}
+  GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+  GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+  TIKTOK_CLIENT_KEY: ${TIKTOK_CLIENT_KEY}
+  TIKTOK_CLIENT_SECRET: ${TIKTOK_CLIENT_SECRET}
+  PINTEREST_CLIENT_ID: ${PINTEREST_CLIENT_ID}
+  PINTEREST_CLIENT_SECRET: ${PINTEREST_CLIENT_SECRET}
+  REDDIT_CLIENT_ID: ${REDDIT_CLIENT_ID}
+  REDDIT_CLIENT_SECRET: ${REDDIT_CLIENT_SECRET}
+  SLACK_CLIENT_ID: ${SLACK_CLIENT_ID}
+  SLACK_CLIENT_SECRET: ${SLACK_CLIENT_SECRET}
+  TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+  DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+  BLUESKY_SERVICE_URL: https://bsky.social
+
+services:
+  redis:
+    image: redis:7.4-alpine
+    command: [redis-server, --appendonly, 'yes', --maxmemory, 64mb, --maxmemory-policy, noeviction]
+    mem_limit: 96m
+    restart: unless-stopped
+    volumes:
+      - postarray-redis:/data
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  # Temporal's single binary with a SQLite file on a volume: about 100 MB
+  # instead of 600 MB for Temporal plus its own Postgres. Pinned, because this
+  # file holds every pending scheduled post and a silent upgrade could change
+  # its format. Back up the volume.
+  temporal:
+    image: temporalio/temporal:1.9.1
+    user: root
+    command:
+      [
+        server,
+        start-dev,
+        --ip,
+        0.0.0.0,
+        --headless,
+        --db-filename,
+        /data/temporal.db,
+        --namespace,
+        default,
+      ]
+    mem_limit: 256m
+    restart: unless-stopped
+    volumes:
+      - postarray-temporal:/data
+    healthcheck:
+      test: [CMD, temporal, operator, cluster, health, --address, 127.0.0.1:7233]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # Applies pending migrations, then exits. api and worker wait for it.
+  migrate:
+    image: ghcr.io/vind22/postarray-migrate:main
+    pull_policy: always
+    restart: 'no'
+    mem_limit: 256m
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      DIRECT_DATABASE_URL: ${DIRECT_DATABASE_URL}
+
+  api:
+    image: ghcr.io/vind22/postarray-api:main
+    pull_policy: always
+    mem_limit: 448m
+    restart: unless-stopped
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+      temporal: { condition: service_healthy }
+    environment: *backend-env
+    healthcheck:
+      test:
+        [
+          CMD,
+          node,
+          -e,
+          "fetch('http://127.0.0.1:3001/readyz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+  worker:
+    image: ghcr.io/vind22/postarray-worker:main
+    pull_policy: always
+    mem_limit: 512m
+    restart: unless-stopped
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+      temporal: { condition: service_healthy }
+    environment: *backend-env
+
+  mcp:
+    image: ghcr.io/vind22/postarray-mcp:main
+    pull_policy: always
+    mem_limit: 256m
+    restart: unless-stopped
+    depends_on:
+      api: { condition: service_healthy }
+    environment: *backend-env
+
+volumes:
+  postarray-redis:
+  postarray-temporal:

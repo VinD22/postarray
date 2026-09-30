@@ -11,6 +11,10 @@ export { createServices } from './services/index';
 export { createDomainEventService, type DomainEventServiceDeps } from './services/domain-events';
 export { oauthCompletionReady, socialOAuthCallbackUrl } from './services/connections';
 export {
+  MAX_DYNAMIC_REDIRECT_URIS,
+  isAcceptableDynamicRedirectUri,
+} from './services/oauth-consent';
+export {
   createOAuthGateway,
   selectOAuthAccounts,
   type OAuthGateway,

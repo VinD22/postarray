@@ -1,4 +1,11 @@
 import { Body, Controller, Get, HttpCode, Inject, Post, Query, Req } from '@nestjs/common';
+import {
+  WEBHOOK_HEADER_ID,
+  WEBHOOK_HEADER_SIGNATURE,
+  WEBHOOK_HEADER_TIMESTAMP,
+  verifyWebhookSignature,
+  type SignatureFailure,
+} from '@relay/billing';
 import type { RelayConfig } from '@relay/config';
 import { RelayError, ERROR_CODES, ValidationFailedError } from '@relay/contracts';
 import type { Logger } from '@relay/observability';
@@ -25,7 +32,7 @@ import {
 import { toEpochSeconds } from '../../common/instant';
 import { relayState } from '../../common/request.types';
 import { parseBody, parseOrThrow, parseQuery } from '../../common/zod';
-import { bodyHash, verifySignature } from '../../security/signing';
+import { bodyHash } from '../../security/signing';
 import {
   createCheckoutSchema,
   createPortalLinkSchema,
@@ -36,6 +43,21 @@ import { BillingService } from './billing.service';
 
 /** Webhook event ids are remembered for a week, well past any retry schedule. */
 const WEBHOOK_DEDUPE_TTL_SECONDS = 7 * 24 * 60 * 60;
+
+/**
+ * The public reason for a rejected delivery. Deliberately coarse: it tells an
+ * operator which class of problem to look at without describing the check.
+ */
+const REJECTION_REASON: Readonly<
+  Record<SignatureFailure, 'missing' | 'malformed' | 'stale' | 'mismatch'>
+> = {
+  missing_secret: 'missing',
+  missing_headers: 'missing',
+  timestamp_invalid: 'malformed',
+  signature_malformed: 'malformed',
+  timestamp_outside_tolerance: 'stale',
+  no_matching_signature: 'mismatch',
+};
 
 /**
  * Billing: entitlement state, usage, hosted checkout and the customer portal.
@@ -132,6 +154,12 @@ export class BillingController {
  * effect on attacker-controlled input and a handler that parses first has
  * already acted on an unverified message.
  *
+ * Polar signs with Standard Webhooks (`webhook-id`, `webhook-timestamp`,
+ * `webhook-signature: v1,<base64>` over `{id}.{timestamp}.{body}`), with one of
+ * two key derivations depending on when the secret was generated. The scheme
+ * and both keys live in `@relay/billing`, next to the simulator that signs with
+ * them, so the receiver and the fixtures cannot drift apart.
+ *
  * Then: reject anything outside a five minute window, deduplicate on Polar's
  * own event id, and process idempotently. At-least-once delivery is the only
  * guarantee any provider offers, so a handler that is not safe to run twice is
@@ -162,25 +190,31 @@ export class PolarWebhookController {
       throw new RelayError(ERROR_CODES.INTERNAL, { details: { reason: 'webhook_secret_unset' } });
     }
 
+    // The exact bytes the body parser received, never a re-serialization of
+    // the parsed object: key order and whitespace are part of what was signed.
     const raw = relayState(request).rawBody;
-    const verification = verifySignature({
-      secrets: [secret],
-      signatureHeader: header(request, 'webhook-signature'),
-      timestampHeader: header(request, 'webhook-timestamp'),
-      rawBody: raw,
-      nowEpochSeconds: toEpochSeconds(this.clock.now()),
-    });
-    if (!verification.valid || raw === undefined) {
-      this.logger.warn({ reason: verification.reason ?? 'missing_body' }, 'polar_webhook_rejected');
-      throw new RelayError(ERROR_CODES.FORBIDDEN, {
-        details: { reason: `signature_${verification.reason ?? 'missing'}` },
-      });
+    if (raw === undefined) {
+      this.logger.warn({ reason: 'missing_body' }, 'polar_webhook_rejected');
+      throw new RelayError(ERROR_CODES.FORBIDDEN, { details: { reason: 'signature_missing' } });
     }
 
-    const eventId = header(request, 'webhook-id');
-    if (eventId === undefined) {
-      throw new ValidationFailedError({ details: { header: 'webhook-id', reason: 'required' } });
+    const verification = await verifyWebhookSignature({
+      secret,
+      rawBody: raw,
+      headers: {
+        [WEBHOOK_HEADER_ID]: header(request, WEBHOOK_HEADER_ID),
+        [WEBHOOK_HEADER_TIMESTAMP]: header(request, WEBHOOK_HEADER_TIMESTAMP),
+        [WEBHOOK_HEADER_SIGNATURE]: header(request, WEBHOOK_HEADER_SIGNATURE),
+      },
+      nowSeconds: toEpochSeconds(this.clock.now()),
+    });
+    if (verification.state === 'rejected') {
+      this.logger.warn({ reason: verification.reason }, 'polar_webhook_rejected');
+      throw new RelayError(ERROR_CODES.FORBIDDEN, {
+        details: { reason: `signature_${REJECTION_REASON[verification.reason]}` },
+      });
     }
+    const eventId = verification.webhookId;
 
     // Only now, with the bytes proven authentic, is the body parsed.
     const payload = parseOrThrow(polarWebhookSchema, safeJson(raw), { source: 'webhook' });
