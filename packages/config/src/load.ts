@@ -163,6 +163,12 @@ export interface OAuthIssuerConfig {
   readonly issuerUrl: string | undefined;
   readonly signingKmsKeyId: string | undefined;
   readonly signingLocalKey: string | undefined;
+  /** The MCP resource server, when one is deployed. */
+  readonly resourceServer: {
+    readonly resourceUrl: string | undefined;
+    readonly clientId: string | undefined;
+    readonly clientSecret: string | undefined;
+  };
 }
 
 export interface ShortLinksConfig {
@@ -413,6 +419,11 @@ function toConfig(
       issuerUrl: env.OAUTH_ISSUER_URL ?? env.API_URL,
       signingKmsKeyId: env.OAUTH_SIGNING_KMS_KEY_ID,
       signingLocalKey: env.OAUTH_SIGNING_LOCAL_KEY,
+      resourceServer: {
+        resourceUrl: env.MCP_RESOURCE_URL,
+        clientId: env.MCP_CLIENT_ID,
+        clientSecret: env.MCP_CLIENT_SECRET,
+      },
     },
     shortLinks: {
       baseUrl: env.SHORT_LINK_BASE_URL,

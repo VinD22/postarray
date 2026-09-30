@@ -272,6 +272,17 @@ const oauthShape = {
   OAUTH_ISSUER_URL: httpUrl.optional(),
   OAUTH_SIGNING_KMS_KEY_ID: identifier.optional(),
   OAUTH_SIGNING_LOCAL_KEY: base64Key32.optional(),
+  /**
+   * The MCP server as an OAuth resource server. `MCP_RESOURCE_URL` is the
+   * canonical URL tokens for it are bound to (for example
+   * `https://mcp.postarray.com/mcp`). `MCP_CLIENT_ID` and `MCP_CLIENT_SECRET`
+   * are its own confidential client, the only client allowed to introspect a
+   * token it did not request. The API reads the id and the resource; only the
+   * MCP server and the registration script read the secret.
+   */
+  MCP_RESOURCE_URL: httpUrl.optional(),
+  MCP_CLIENT_ID: z.string().min(8, { message: 'expected at least 8 characters' }).optional(),
+  MCP_CLIENT_SECRET: z.string().min(16, { message: 'expected at least 16 characters' }).optional(),
 };
 
 const shortLinksShape = {

@@ -240,6 +240,13 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       signingKmsKeyId: undefined,
       // Local-only pepper for credential digests in the suite.
       signingLocalKey: 'dGVzdC1zaWduaW5nLWtleS10ZXN0LXNpZ25pbmcta2V5LTEyMzQ=',
+      // The in-suite MCP resource server. Its client record is seeded by the
+      // tests that need it; the secret lives only in those tests.
+      resourceServer: {
+        resourceUrl: 'https://mcp.relay.test/mcp',
+        clientId: 'rly_rs_mcp_test',
+        clientSecret: undefined,
+      },
     },
     shortLinks: { baseUrl: undefined, hashKey: undefined },
     email: {
