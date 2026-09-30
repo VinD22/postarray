@@ -732,6 +732,30 @@ export interface OAuthAppService {
   delete(ctx: ActorContext, appId: string): Promise<void>;
   listGrants(ctx: ActorContext, query: CursorQuery): Promise<Paginated<OAuthGrantView>>;
   revokeGrant(ctx: ActorContext, grantId: string): Promise<void>;
+  /** RFC 7591: a public client no workspace owns. Validated and rate limited by the caller. */
+  registerDynamicClient(input: {
+    readonly name: string;
+    readonly redirectUris: readonly string[];
+    readonly allowedScopes: readonly Scope[];
+  }): Promise<{
+    readonly appId: string;
+    readonly clientId: string;
+    readonly name: string;
+    readonly redirectUris: readonly string[];
+    readonly allowedScopes: readonly Scope[];
+    readonly createdAt: string;
+  }>;
+  /** The consent a member gave an app in their workspace. One row per app, person and workspace. */
+  recordGrant(
+    ctx: ActorContext,
+    input: {
+      readonly appId: string;
+      readonly clientId: string;
+      readonly scopes: readonly Scope[];
+      readonly projectIds: readonly string[];
+      readonly connectionIds: readonly string[];
+    },
+  ): Promise<{ readonly grantId: string }>;
 }
 
 export interface BillingService {
