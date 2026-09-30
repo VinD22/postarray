@@ -42,6 +42,9 @@ export const WORKSPACE_RATE_LIMIT: RateLimitRule = { limit: 3000, windowSeconds:
 /** The budget for routes that reach a metered provider. */
 export const CONNECTOR_RATE_LIMIT: RateLimitRule = { limit: 120, windowSeconds: 60 };
 
+/** Requests a minute from one address to one public route, without a credential. */
+export const UNAUTHENTICATED_IP_LIMIT = 60;
+
 interface CounterResult {
   readonly allowed: boolean;
   readonly remaining: number;
@@ -89,7 +92,7 @@ export class RateLimitGuard implements CanActivate {
       // the only stable thing we have before a credential is resolved.
       checks.push({
         key: `ip:${request.ip ?? 'unknown'}|${route}`,
-        rule: { limit: 60, windowSeconds: 60 },
+        rule: { limit: rule.unauthenticatedIpLimit ?? UNAUTHENTICATED_IP_LIMIT, windowSeconds: 60 },
         cost,
       });
     }

@@ -75,8 +75,14 @@ export function redirectUriMatches(presented: string, registered: string): boole
   if (left.pathname !== right.pathname || left.search !== right.search) {
     return false;
   }
+  // `localhost` is a loopback name too, and it is what many native MCP clients
+  // register. The port still may not change for anything that is not loopback.
   const loopback =
-    left.hostname === '127.0.0.1' || left.hostname === '[::1]' || left.hostname === '::1';
+    left.protocol === 'http:' &&
+    (left.hostname === 'localhost' ||
+      left.hostname === '127.0.0.1' ||
+      left.hostname === '[::1]' ||
+      left.hostname === '::1');
   return loopback || left.port === right.port;
 }
 

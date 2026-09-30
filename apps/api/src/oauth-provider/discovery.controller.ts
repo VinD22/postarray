@@ -40,6 +40,9 @@ export class OAuthDiscoveryController {
       issuer: this.oauth.issuer,
       authorization_endpoint: `${base}/oauth/authorize`,
       token_endpoint: `${base}/oauth/token`,
+      // RFC 7591. Public clients only: Claude and other MCP hosts register
+      // themselves here and a person approves them on the consent screen.
+      registration_endpoint: `${base}/oauth/register`,
       revocation_endpoint: `${base}/oauth/revoke`,
       introspection_endpoint: `${base}/oauth/introspect`,
       scopes_supported: ALL_SCOPES,
@@ -51,6 +54,8 @@ export class OAuthDiscoveryController {
       token_endpoint_auth_methods_supported: ['client_secret_post', 'none'],
       revocation_endpoint_auth_methods_supported: ['client_secret_post', 'none'],
       introspection_endpoint_auth_methods_supported: ['client_secret_post'],
+      // RFC 9207: the authorization response names its issuer.
+      authorization_response_iss_parameter_supported: true,
       service_documentation: `${base}/docs`,
       // Keep this list derived from the public locale registry so OAuth
       // clients never advertise a language the web consent surface cannot

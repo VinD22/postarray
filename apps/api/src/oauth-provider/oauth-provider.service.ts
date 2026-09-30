@@ -3,51 +3,41 @@ import type { RelayConfig } from '@relay/config';
 import {
   ForbiddenError,
   ValidationFailedError,
-  newIdFor,
   normalizeScopes,
   scopeStringSchema,
   type Scope,
 } from '@relay/contracts';
-import type { Logger } from '@relay/observability';
 
-import type { Clock, Services } from '../application/port';
-import { CLOCK, LOGGER, RELAY_CONFIG, SERVICES } from '../application/tokens';
-import { instantAfter, requireEpochMillis } from '../common/instant';
+import type { ActorContext, Clock, Services } from '../application/port';
+import { CLOCK, RELAY_CONFIG, SERVICES } from '../application/tokens';
+import { instantAfter } from '../common/instant';
 import { CredentialDirectory, tokenLookupHash } from '../security/credential-directory';
 import {
   CREDENTIAL_PREFIXES,
   constantTimeEquals,
   randomBase62,
   randomToken,
-  secretMatches,
 } from '../security/credentials';
 import {
   authorizationCodeRecordSchema,
   authorizationRequestRecordSchema,
-  type AuthorizationCodeRecord,
   type OAuthClientRecord,
 } from '../security/records';
-import { resolveRedirectUri, verifyCodeVerifier } from './pkce';
-import type { AuthorizeQuery, ConsentDecision, TokenRequest, TokenResponse } from './oauth.schemas';
+import { resolveRedirectUri } from './pkce';
+import type { AuthorizeQuery, ConsentDecision } from './oauth.schemas';
+import { OAuthResourceRegistry } from './resources';
 
 /**
- * Post Array's own OAuth 2.1 authorization server.
- *
- * Lifetimes, from section 7.4 of the security plan: a 60 second single-use
- * authorization code, a 30 minute opaque reference access token, and a 30 day
- * sliding refresh token with a 60 day absolute cap and mandatory rotation.
+ * Post Array's own OAuth 2.1 authorization server: the authorization request
+ * and the consent decision. The token endpoint lives in `oauth-token.service`,
+ * introspection and revocation in `oauth-introspection.service`.
  *
  * Access tokens are opaque references, not JWTs. A self-contained token cannot
  * be revoked before it expires, and "revoke this app" taking effect within
- * seconds is the entire point of the grant screen. The cost is one lookup per
- * request, which is the right trade for a product that holds publishing rights
- * over other people's projects.
+ * seconds is the entire point of the grant screen.
  */
 
 export const AUTHORIZATION_CODE_TTL_SECONDS = 60;
-export const ACCESS_TOKEN_TTL_SECONDS = 30 * 60;
-export const REFRESH_SLIDING_TTL_SECONDS = 30 * 24 * 60 * 60;
-export const REFRESH_ABSOLUTE_TTL_SECONDS = 60 * 24 * 60 * 60;
 export const AUTHORIZATION_REQUEST_TTL_SECONDS = 15 * 60;
 
 /**
@@ -66,14 +56,21 @@ export interface PendingAuthorization {
   readonly state: string;
 }
 
+export interface ConsentOutcome {
+  readonly redirectUri: string;
+  readonly code: string | null;
+  readonly state: string | null;
+  readonly denied: boolean;
+}
+
 @Injectable()
 export class OAuthProviderService {
   constructor(
     @Inject(SERVICES) private readonly services: Services,
     @Inject(CLOCK) private readonly clock: Clock,
     @Inject(RELAY_CONFIG) private readonly config: RelayConfig,
-    @Inject(LOGGER) private readonly logger: Logger,
     private readonly directory: CredentialDirectory,
+    private readonly resources: OAuthResourceRegistry,
   ) {}
 
   get issuer(): string {
@@ -82,7 +79,42 @@ export class OAuthProviderService {
 
   /** The resource identifier this server mints tokens for by default. */
   get defaultAudience(): string {
-    return this.config.core.apiUrl ?? 'urn:relay:api';
+    return this.resources.apiAudience;
+  }
+
+  /**
+   * The scopes this request will ask the person for.
+   *
+   * What the client asked for, intersected with what it registered and, for a
+   * third party, with what a third party may ever hold. Asking for more than
+   * that narrows the request instead of failing it, so a client that reads our
+   * full `scopes_supported` still reaches the consent screen. Only a request
+   * left with nothing is refused.
+   */
+  private requestedScopes(query: AuthorizeQuery, client: OAuthClientRecord): readonly Scope[] {
+    let asked: readonly Scope[] = client.allowedScopes;
+    if (query.scope !== undefined) {
+      const parsed = scopeStringSchema.safeParse(query.scope);
+      if (!parsed.success || parsed.data.length === 0) {
+        throw new ValidationFailedError({ details: { field: 'scope', reason: 'unknown_scope' } });
+      }
+      asked = normalizeScopes(parsed.data);
+    }
+    const permitted = asked.filter(
+      (scope) => client.firstParty || !THIRD_PARTY_FORBIDDEN_SCOPES.includes(scope),
+    );
+    if (permitted.length === 0) {
+      throw new ValidationFailedError({
+        details: { field: 'scope', reason: 'invalid_scope', scopes: [...asked] },
+      });
+    }
+    const registered = permitted.filter((scope) => client.allowedScopes.includes(scope));
+    if (registered.length === 0) {
+      throw new ValidationFailedError({
+        details: { field: 'scope', reason: 'not_registered', scopes: [...permitted] },
+      });
+    }
+    return registered;
   }
 
   /**
@@ -90,16 +122,14 @@ export class OAuthProviderService {
    *
    * Everything that could redirect a browser somewhere is checked before
    * anything is stored: the client must exist and be enabled, and the redirect
-   * URI must match one of its registered values exactly. Only after both hold
-   * is it safe to redirect at all, which is why an unknown client or an
-   * unmatched URI is rendered as an error page rather than as a redirect.
+   * URI must match one of its registered values exactly.
    */
   async beginAuthorization(
     query: AuthorizeQuery,
     subjectUserId: string,
   ): Promise<PendingAuthorization> {
     const client = await this.directory.getOAuthClient(query.client_id);
-    if (client === null) {
+    if (client === null || client.registration === 'resource_server') {
       throw new ValidationFailedError({ details: { field: 'client_id', reason: 'unknown' } });
     }
 
@@ -110,24 +140,11 @@ export class OAuthProviderService {
       });
     }
 
-    const parsedScopes = scopeStringSchema.safeParse(query.scope);
-    if (!parsedScopes.success || parsedScopes.data.length === 0) {
-      throw new ValidationFailedError({ details: { field: 'scope', reason: 'unknown_scope' } });
+    const audience = this.resources.resolve(query.resource);
+    if (audience === null) {
+      throw new ValidationFailedError({ details: { field: 'resource', reason: 'invalid_target' } });
     }
-    const requested = normalizeScopes(parsedScopes.data);
-
-    const forbidden = requested.filter((scope) => THIRD_PARTY_FORBIDDEN_SCOPES.includes(scope));
-    if (forbidden.length > 0 && !client.firstParty) {
-      throw new ValidationFailedError({
-        details: { field: 'scope', reason: 'invalid_scope', scopes: forbidden },
-      });
-    }
-    const outsideRegistration = requested.filter((scope) => !client.allowedScopes.includes(scope));
-    if (outsideRegistration.length > 0) {
-      throw new ValidationFailedError({
-        details: { field: 'scope', reason: 'not_registered', scopes: outsideRegistration },
-      });
-    }
+    const requested = this.requestedScopes(query, client);
 
     const now = this.clock.now();
     const record = authorizationRequestRecordSchema.parse({
@@ -138,7 +155,7 @@ export class OAuthProviderService {
       codeChallenge: query.code_challenge,
       codeChallengeMethod: query.code_challenge_method,
       requestedScopes: requested,
-      resource: query.resource ?? null,
+      resource: audience,
       consentNonce: randomToken(24),
       subjectUserId,
       createdAt: now.toISOString(),
@@ -183,15 +200,15 @@ export class OAuthProviderService {
    * Record the user's decision and mint a code.
    *
    * The granted scopes are intersected with what was requested and with what
-   * the client registered. Nothing here can widen: a consent screen that could
-   * grant more than the app asked for is a consent screen nobody can reason
-   * about.
+   * the client registered. Nothing here can widen. An approval writes the
+   * durable grant row first: every token carries its id, and the application
+   * layer refuses any call whose grant row does not exist or was revoked.
    */
   async completeConsent(
     decision: ConsentDecision,
+    ctx: ActorContext,
     subjectUserId: string,
-    locale: string,
-  ): Promise<{ redirectUri: string; code: string | null; state: string | null; denied: boolean }> {
+  ): Promise<ConsentOutcome> {
     const request = await this.directory.getAuthorizationRequest(decision.requestId);
     if (request === null || request.subjectUserId !== subjectUserId) {
       throw new ValidationFailedError({ details: { field: 'requestId', reason: 'unknown' } });
@@ -201,8 +218,14 @@ export class OAuthProviderService {
     }
     await this.directory.deleteAuthorizationRequest(decision.requestId);
 
+    const denied: ConsentOutcome = {
+      redirectUri: request.redirectUri,
+      code: null,
+      state: request.state,
+      denied: true,
+    };
     if (decision.decision === 'deny') {
-      return { redirectUri: request.redirectUri, code: null, state: request.state, denied: true };
+      return denied;
     }
 
     const client = await this.directory.getOAuthClient(request.clientId);
@@ -217,8 +240,16 @@ export class OAuthProviderService {
         (client.firstParty || !THIRD_PARTY_FORBIDDEN_SCOPES.includes(scope)),
     );
     if (granted.length === 0) {
-      return { redirectUri: request.redirectUri, code: null, state: request.state, denied: true };
+      return denied;
     }
+
+    const { grantId } = await this.services.oauthApps.recordGrant(ctx, {
+      appId: client.appId,
+      clientId: client.clientId,
+      scopes: granted,
+      projectIds: decision.projectIds,
+      connectionIds: decision.connectionIds,
+    });
 
     const now = this.clock.now();
     const code = `${CREDENTIAL_PREFIXES.authorizationCode}${randomBase62(6).slice(0, 8).padEnd(8, '0')}_${randomBase62(32)}`;
@@ -229,15 +260,16 @@ export class OAuthProviderService {
       codeChallengeMethod: request.codeChallengeMethod,
       scopes: granted,
       subjectUserId,
-      workspaceId: decision.workspaceId,
+      workspaceId: ctx.workspaceId,
       projectIds: decision.projectIds,
       connectionIds: decision.connectionIds,
-      // A grant never starts above "may schedule". Immediate publish stays a
-      // human confirmation, which is what the consent screen promises.
+      // A grant never starts above "may schedule": the consent screen offers no
+      // other level yet, and immediate publish stays a human confirmation.
       approvalLevel: 'level_2_scheduled',
       audience: request.resource ?? this.defaultAudience,
       consentVersionHash: decision.consentVersionHash,
-      locale,
+      locale: ctx.locale,
+      grantId,
       issuedAt: now.toISOString(),
       expiresAt: instantAfter(now, AUTHORIZATION_CODE_TTL_SECONDS),
       consumedAt: null,
@@ -246,265 +278,6 @@ export class OAuthProviderService {
     await this.directory.putAuthorizationCode(tokenLookupHash(code), record);
 
     return { redirectUri: request.redirectUri, code, state: request.state, denied: false };
-  }
-
-  /** Exchange a code or a refresh token for a new token pair. */
-  async token(request: TokenRequest): Promise<TokenResponse> {
-    const client = await this.authenticateClient(request.client_id, request.client_secret);
-    return request.grant_type === 'authorization_code'
-      ? this.exchangeAuthorizationCode(request, client)
-      : this.exchangeRefreshToken(request, client);
-  }
-
-  private async authenticateClient(
-    clientId: string,
-    clientSecret: string | undefined,
-  ): Promise<OAuthClientRecord> {
-    const client = await this.directory.getOAuthClient(clientId);
-    if (client === null) {
-      throw new ForbiddenError({ details: { reason: 'invalid_client' } });
-    }
-    if (client.clientType === 'public') {
-      // A public client has no secret. PKCE is what binds the exchange.
-      return client;
-    }
-    if (clientSecret === undefined) {
-      throw new ForbiddenError({ details: { reason: 'invalid_client' } });
-    }
-    const pepper = this.directory.pepper;
-    const currentMatches =
-      client.secretHash !== null && secretMatches(clientSecret, client.secretHash, pepper);
-    const previousLive =
-      client.previousSecretExpiresAt !== null &&
-      requireEpochMillis(client.previousSecretExpiresAt) > this.clock.now().getTime();
-    const previousMatches =
-      previousLive &&
-      client.previousSecretHash !== null &&
-      secretMatches(clientSecret, client.previousSecretHash, pepper);
-    if (!currentMatches && !previousMatches) {
-      throw new ForbiddenError({ details: { reason: 'invalid_client' } });
-    }
-    return client;
-  }
-
-  private async exchangeAuthorizationCode(
-    request: Extract<TokenRequest, { grant_type: 'authorization_code' }>,
-    client: OAuthClientRecord,
-  ): Promise<TokenResponse> {
-    const codeHash = tokenLookupHash(request.code);
-    const record = await this.directory.getAuthorizationCode(codeHash);
-    if (record === null) {
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-
-    if (record.consumedAt !== null) {
-      // A second presentation of a used code. Every token minted from it dies,
-      // because we cannot tell the legitimate client from the attacker.
-      for (const hash of record.issuedTokenHashes) {
-        await this.directory.deleteAccessToken(hash);
-      }
-      this.logger.warn({ clientId: record.clientId }, 'security.oauth_code_replay');
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-    if (requireEpochMillis(record.expiresAt) <= this.clock.now().getTime()) {
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-    if (record.clientId !== client.clientId) {
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-    if (resolveRedirectUri(request.redirect_uri, [record.redirectUri]) === null) {
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-    if (!verifyCodeVerifier(request.code_verifier, record.codeChallenge)) {
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-
-    const issued = await this.issueTokens(record, record.scopes);
-    await this.directory.putAuthorizationCode(codeHash, {
-      ...record,
-      consumedAt: this.clock.now().toISOString(),
-      issuedTokenHashes: [issued.accessTokenHash, issued.refreshTokenHash],
-    });
-    return issued.response;
-  }
-
-  private async exchangeRefreshToken(
-    request: Extract<TokenRequest, { grant_type: 'refresh_token' }>,
-    client: OAuthClientRecord,
-  ): Promise<TokenResponse> {
-    const hash = tokenLookupHash(request.refresh_token);
-    const record = await this.directory.getRefreshToken(hash);
-    if (record === null || record.clientId !== client.clientId) {
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-    if (record.consumedAt !== null) {
-      await this.directory.revokeRefreshFamily(record.familyId);
-      this.logger.warn(
-        { clientId: record.clientId, grantId: record.grantId },
-        'security.refresh_reuse_detected',
-      );
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-    if (requireEpochMillis(record.expiresAt) <= this.clock.now().getTime()) {
-      throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
-    }
-
-    // A refresh may narrow the scope set. It can never widen it: the ceiling is
-    // whatever the user consented to, and the token request is not a consent.
-    let scopes = record.scopes;
-    if (request.scope !== undefined && request.scope.length > 0) {
-      const parsed = scopeStringSchema.safeParse(request.scope);
-      if (!parsed.success) {
-        throw new ValidationFailedError({ details: { field: 'scope', reason: 'unknown_scope' } });
-      }
-      scopes = normalizeScopes(parsed.data).filter((scope) => record.scopes.includes(scope));
-      if (scopes.length === 0) {
-        throw new ValidationFailedError({ details: { field: 'scope', reason: 'not_granted' } });
-      }
-    }
-
-    await this.directory.putRefreshToken(hash, {
-      ...record,
-      consumedAt: this.clock.now().toISOString(),
-    });
-
-    const issued = await this.issueTokens(
-      {
-        clientId: record.clientId,
-        subjectUserId: record.subjectUserId,
-        workspaceId: record.workspaceId,
-        audience: record.audience,
-        projectIds: [],
-        connectionIds: [],
-        approvalLevel: 'level_2_scheduled',
-        locale: 'en',
-      },
-      scopes,
-      {
-        grantId: record.grantId,
-        familyId: record.familyId,
-        absoluteExpiresAt: record.absoluteExpiresAt,
-      },
-    );
-    return issued.response;
-  }
-
-  private async issueTokens(
-    source: {
-      clientId: string;
-      subjectUserId: string;
-      workspaceId: string;
-      audience: string;
-      projectIds: readonly string[];
-      connectionIds: readonly string[];
-      approvalLevel: AuthorizationCodeRecord['approvalLevel'];
-      locale: string;
-    },
-    scopes: readonly Scope[],
-    existing?: { grantId: string; familyId: string; absoluteExpiresAt: string },
-  ): Promise<{ response: TokenResponse; accessTokenHash: string; refreshTokenHash: string }> {
-    const now = this.clock.now();
-    const grantId = existing?.grantId ?? newIdFor('oauthGrant');
-    const familyId = existing?.familyId ?? randomToken(16);
-
-    const accessToken = `${CREDENTIAL_PREFIXES.accessToken}${randomBase62(6).slice(0, 8).padEnd(8, '0')}_${randomBase62(32)}`;
-    const refreshToken = `${CREDENTIAL_PREFIXES.refreshToken}${randomBase62(6).slice(0, 8).padEnd(8, '0')}_${randomBase62(32)}`;
-    const accessTokenHash = tokenLookupHash(accessToken);
-    const refreshTokenHash = tokenLookupHash(refreshToken);
-
-    await this.directory.putAccessToken(accessTokenHash, {
-      grantId,
-      clientId: source.clientId,
-      subjectUserId: source.subjectUserId,
-      workspaceId: source.workspaceId,
-      scopes: [...scopes],
-      approvalLevel: source.approvalLevel,
-      projectIds: [...source.projectIds],
-      connectionIds: [...source.connectionIds],
-      audience: source.audience,
-      locale: source.locale,
-      issuedAt: now.toISOString(),
-      expiresAt: instantAfter(now, ACCESS_TOKEN_TTL_SECONDS),
-    });
-
-    await this.directory.putRefreshToken(refreshTokenHash, {
-      familyId,
-      grantId,
-      clientId: source.clientId,
-      subjectUserId: source.subjectUserId,
-      workspaceId: source.workspaceId,
-      scopes: [...scopes],
-      audience: source.audience,
-      issuedAt: now.toISOString(),
-      expiresAt: instantAfter(now, REFRESH_SLIDING_TTL_SECONDS),
-      absoluteExpiresAt:
-        existing?.absoluteExpiresAt ?? instantAfter(now, REFRESH_ABSOLUTE_TTL_SECONDS),
-      consumedAt: null,
-    });
-
-    return {
-      accessTokenHash,
-      refreshTokenHash,
-      response: {
-        access_token: accessToken,
-        token_type: 'Bearer',
-        expires_in: ACCESS_TOKEN_TTL_SECONDS,
-        refresh_token: refreshToken,
-        scope: scopes.join(' '),
-      },
-    };
-  }
-
-  /**
-   * RFC 7009 revocation. Always answers 200, even for an unknown token: telling
-   * a caller that a token was not found is an oracle for guessing tokens.
-   */
-  async revoke(token: string, clientId: string, clientSecret: string | undefined): Promise<void> {
-    const client = await this.authenticateClient(clientId, clientSecret);
-    const hash = tokenLookupHash(token);
-
-    const access = await this.directory.getAccessToken(hash);
-    if (access !== null && access.clientId === client.clientId) {
-      await this.directory.deleteAccessToken(hash);
-      return;
-    }
-    const refresh = await this.directory.getRefreshToken(hash);
-    if (refresh !== null && refresh.clientId === client.clientId) {
-      // Revoking a refresh token revokes its whole family: the client asked for
-      // this credential lineage to stop working.
-      await this.directory.revokeRefreshFamily(refresh.familyId);
-      await this.directory.revokeGrantTokens(refresh.grantId);
-    }
-  }
-
-  /**
-   * RFC 7662 introspection, for confidential clients inspecting their own
-   * tokens. A token belonging to another client always reads as inactive.
-   */
-  async introspect(
-    token: string,
-    clientId: string,
-    clientSecret: string,
-  ): Promise<Record<string, unknown>> {
-    const client = await this.authenticateClient(clientId, clientSecret);
-    if (client.clientType !== 'confidential') {
-      throw new ForbiddenError({ details: { reason: 'introspection_confidential_only' } });
-    }
-    const record = await this.directory.getAccessToken(tokenLookupHash(token));
-    if (record === null || record.clientId !== client.clientId) {
-      return { active: false };
-    }
-    return {
-      active: true,
-      scope: record.scopes.join(' '),
-      client_id: record.clientId,
-      sub: record.subjectUserId,
-      aud: record.audience,
-      iss: this.issuer,
-      token_type: 'Bearer',
-      exp: Math.floor(requireEpochMillis(record.expiresAt) / 1000),
-      iat: Math.floor(requireEpochMillis(record.issuedAt) / 1000),
-    };
   }
 
   /** Used by the consent screen to list the workspaces a user may choose. */

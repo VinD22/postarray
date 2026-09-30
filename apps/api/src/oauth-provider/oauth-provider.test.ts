@@ -5,96 +5,52 @@ import { ACTIVE_LOCALE_CODES } from '@relay/i18n';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { oauthClientRecordSchema } from '../security/records';
+import { createHarness, seedSession, type Harness } from '../testing/harness';
 import {
-  TEST_ACCEPT_LANGUAGE,
-  TEST_ORIGIN,
-  TEST_USER_AGENT,
-  createHarness,
-  seedSession,
-  type Harness,
-} from '../testing/harness';
-import { deriveChallenge } from './pkce';
+  TEST_CLIENT_ID as CLIENT_ID,
+  TEST_REDIRECT_URI as REDIRECT_URI,
+  approveAuthorization,
+  authed,
+  clientRecord,
+  pkcePair,
+  redirectLocation,
+  withRecordedGrants,
+} from '../testing/oauth-flow';
 
 /**
  * The authorization code flow with PKCE, end to end.
  *
  * Everything from the discovery document to a working access token, plus the
  * three failures that matter: a replayed code, a wrong verifier, and a redirect
- * URI that is nearly right.
+ * URI that is nearly right. Failures on the token endpoint answer in the RFC
+ * 6749 shape (`400 {"error":"invalid_grant"}`), which is what OAuth client
+ * libraries read.
  */
 
 let harness: Harness;
-const CLIENT_ID = 'rly_pk_testclient';
-const REDIRECT_URI = 'https://partner.example/callback';
-
-async function registerClient(
-  overrides: Partial<{
-    redirectUris: string[];
-    clientType: 'public' | 'confidential';
-    allowedScopes: string[];
-  }> = {},
-): Promise<void> {
-  await harness.directory.putOAuthClient(
-    oauthClientRecordSchema.parse({
-      clientId: CLIENT_ID,
-      appId: newIdFor('oauthClient'),
-      workspaceId: newIdFor('workspace'),
-      name: 'Partner App',
-      clientType: overrides.clientType ?? 'public',
-      secretHash: null,
-      previousSecretHash: null,
-      previousSecretExpiresAt: null,
-      redirectUris: overrides.redirectUris ?? [REDIRECT_URI],
-      homepageUrl: 'https://partner.example',
-      privacyPolicyUrl: 'https://partner.example/privacy',
-      termsUrl: 'https://partner.example/terms',
-      logoUrl: null,
-      supportEmail: 'support@partner.example',
-      allowedScopes: overrides.allowedScopes ?? ['drafts:read', 'drafts:write'],
-      firstParty: false,
-      disabledAt: null,
-      createdAt: harness.clock.now().toISOString(),
-    }),
-  );
-}
-
-interface Session {
-  cookie: string;
-  csrfToken: string;
-  workspaceId: string;
-}
-
-function authed(call: request.Test, session: Session): request.Test {
-  return call
-    .set('cookie', session.cookie)
-    .set('origin', TEST_ORIGIN)
-    .set('x-relay-csrf-token', session.csrfToken)
-    .set('user-agent', TEST_USER_AGENT)
-    .set('accept-language', TEST_ACCEPT_LANGUAGE);
-}
+let recorded: { grantId: string; workspaceId: string }[];
 
 beforeEach(async () => {
-  harness = await createHarness();
-  await registerClient();
+  recorded = [];
+  harness = await createHarness({ services: withRecordedGrants(recorded) });
+  await harness.directory.putOAuthClient(clientRecord(harness));
 });
 
 afterEach(async () => {
   await harness.close();
 });
 
-function pkcePair(): { verifier: string; challenge: string } {
-  const verifier = randomBytes(48).toString('base64url');
-  return { verifier, challenge: deriveChallenge(verifier) };
-}
-
-/** Reads the Location header of a redirect, failing the test if it is absent. */
-function redirectLocation(response: { headers: Record<string, string | undefined> }): string {
-  const location = response.headers['location'];
-  if (location === undefined) {
-    throw new Error('expected a Location header on this redirect response');
-  }
-  return location;
+function authorizeQuery(challenge: string, overrides: Record<string, string> = {}) {
+  return {
+    response_type: 'code',
+    client_id: CLIENT_ID,
+    redirect_uri: REDIRECT_URI,
+    scope: 'drafts:read',
+    state: randomBytes(16).toString('base64url'),
+    code_challenge: challenge,
+    code_challenge_method: 'S256',
+    ...overrides,
+  };
 }
 
 describe('discovery', () => {
@@ -106,6 +62,7 @@ describe('discovery', () => {
     // Advertising `plain` would invite a client to use it; we do not accept it.
     expect(response.body.grant_types_supported).toEqual(['authorization_code', 'refresh_token']);
     expect(response.body.token_endpoint).toContain('/oauth/token');
+    expect(response.body.registration_endpoint).toBe('https://api.relay.test/oauth/register');
     expect(response.body.ui_locales_supported).toEqual([...ACTIVE_LOCALE_CODES]);
   });
 
@@ -122,25 +79,17 @@ describe('authorization code flow with PKCE', () => {
   it('completes: authorize, consent, token, and the token works', async () => {
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
     const { verifier, challenge } = pkcePair();
-    const state = randomBytes(16).toString('base64url');
+    const query = authorizeQuery(challenge);
 
     const authorize = await authed(
-      request(harness.server).get('/oauth/authorize').query({
-        response_type: 'code',
-        client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
-        scope: 'drafts:read',
-        state,
-        code_challenge: challenge,
-        code_challenge_method: 'S256',
-      }),
+      request(harness.server).get('/oauth/authorize').query(query),
       session,
     );
-
     expect(authorize.status).toBe(302);
-    const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
-      'request_id',
-    );
+    // The consent screen is in the web app, not on the API host.
+    const location = new URL(redirectLocation(authorize));
+    expect(`${location.origin}${location.pathname}`).toBe('https://app.relay.test/consent');
+    const requestId = location.searchParams.get('request_id');
     expect(requestId).not.toBeNull();
 
     const consentData = await authed(
@@ -149,6 +98,7 @@ describe('authorization code flow with PKCE', () => {
     );
     expect(consentData.status).toBe(200);
     expect(consentData.body.client.firstParty).toBe(false);
+    expect(consentData.body.client.selfAsserted).toBe(false);
     expect(consentData.body.scopes).toEqual([
       { scope: 'drafts:read', risk: 'read', descriptionKey: 'scopes.drafts_read' },
     ]);
@@ -165,9 +115,12 @@ describe('authorization code flow with PKCE', () => {
 
     const redirect = new URL(consent.body.redirectTo);
     expect(redirect.origin + redirect.pathname).toBe(REDIRECT_URI);
-    expect(redirect.searchParams.get('state')).toBe(state);
+    expect(redirect.searchParams.get('state')).toBe(query.state);
+    expect(redirect.searchParams.get('iss')).toBe('https://api.relay.test');
     const code = redirect.searchParams.get('code');
     expect(code).not.toBeNull();
+    // Approving wrote the durable grant, in the workspace the person chose.
+    expect(recorded).toEqual([{ grantId: expect.any(String), workspaceId: session.workspaceId }]);
 
     const token = await request(harness.server).post('/oauth/token').send({
       grant_type: 'authorization_code',
@@ -191,27 +144,28 @@ describe('authorization code flow with PKCE', () => {
     expect(authenticated.status).toBe(200);
   });
 
-  it('rejects a replayed code and kills the tokens it produced', async () => {
+  it('accepts the token request form-encoded, as OAuth clients send it', async () => {
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
-    const { verifier, challenge } = pkcePair();
+    const flow = await approveAuthorization(harness, session);
 
+    const token = await request(harness.server).post('/oauth/token').type('form').send({
+      grant_type: 'authorization_code',
+      code: flow.code,
+      redirect_uri: REDIRECT_URI,
+      client_id: CLIENT_ID,
+      code_verifier: flow.verifier,
+    });
+    expect(token.status).toBe(200);
+  });
+
+  it('refuses a consent for a workspace the person does not belong to', async () => {
+    const session = await seedSession(harness, { scopes: ['drafts:read'] });
+    const { challenge } = pkcePair();
     const authorize = await authed(
-      request(harness.server)
-        .get('/oauth/authorize')
-        .query({
-          response_type: 'code',
-          client_id: CLIENT_ID,
-          redirect_uri: REDIRECT_URI,
-          scope: 'drafts:read',
-          state: randomBytes(16).toString('base64url'),
-          code_challenge: challenge,
-          code_challenge_method: 'S256',
-        }),
+      request(harness.server).get('/oauth/authorize').query(authorizeQuery(challenge)),
       session,
     );
-    const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
-      'request_id',
-    );
+    const requestId = new URL(redirectLocation(authorize)).searchParams.get('request_id');
     const consentData = await authed(
       request(harness.server).get('/oauth/consent').query({ request_id: requestId }),
       session,
@@ -220,29 +174,31 @@ describe('authorization code flow with PKCE', () => {
       requestId,
       consentNonce: consentData.body.consentNonce,
       decision: 'approve',
-      workspaceId: session.workspaceId,
+      workspaceId: newIdFor('workspace'),
       grantedScopes: ['drafts:read'],
       consentVersionHash: 'b'.repeat(64),
     });
-    const code = new URL(consent.body.redirectTo).searchParams.get('code');
+    expect(consent.status).toBe(404);
+    expect(recorded).toHaveLength(0);
+  });
 
-    const first = await request(harness.server).post('/oauth/token').send({
+  it('rejects a replayed code with invalid_grant and kills the tokens it produced', async () => {
+    const session = await seedSession(harness, { scopes: ['drafts:read'] });
+    const flow = await approveAuthorization(harness, session);
+    const exchange = {
       grant_type: 'authorization_code',
-      code,
+      code: flow.code,
       redirect_uri: REDIRECT_URI,
       client_id: CLIENT_ID,
-      code_verifier: verifier,
-    });
+      code_verifier: flow.verifier,
+    };
+
+    const first = await request(harness.server).post('/oauth/token').send(exchange);
     expect(first.status).toBe(200);
 
-    const replay = await request(harness.server).post('/oauth/token').send({
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: REDIRECT_URI,
-      client_id: CLIENT_ID,
-      code_verifier: verifier,
-    });
-    expect(replay.status).toBe(403);
+    const replay = await request(harness.server).post('/oauth/token').send(exchange);
+    expect(replay.status).toBe(400);
+    expect(replay.body).toEqual({ error: 'invalid_grant' });
 
     // The tokens from the first exchange die too: we cannot tell which holder
     // was the attacker, so neither keeps access.
@@ -253,52 +209,20 @@ describe('authorization code flow with PKCE', () => {
     expect(harness.logger.messages('warn')).toContain('security.oauth_code_replay');
   });
 
-  it('rejects a wrong code verifier', async () => {
+  it('rejects a wrong code verifier with invalid_grant', async () => {
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
-    const { challenge } = pkcePair();
-    const wrong = pkcePair().verifier;
+    const flow = await approveAuthorization(harness, session);
 
-    const authorize = await authed(
-      request(harness.server)
-        .get('/oauth/authorize')
-        .query({
-          response_type: 'code',
-          client_id: CLIENT_ID,
-          redirect_uri: REDIRECT_URI,
-          scope: 'drafts:read',
-          state: randomBytes(16).toString('base64url'),
-          code_challenge: challenge,
-          code_challenge_method: 'S256',
-        }),
-      session,
-    );
-    const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
-      'request_id',
-    );
-    const consentData = await authed(
-      request(harness.server).get('/oauth/consent').query({ request_id: requestId }),
-      session,
-    );
-    const consent = await authed(request(harness.server).post('/oauth/consent'), session).send({
-      requestId,
-      consentNonce: consentData.body.consentNonce,
-      decision: 'approve',
-      workspaceId: session.workspaceId,
-      grantedScopes: ['drafts:read'],
-      consentVersionHash: 'b'.repeat(64),
+    const token = await request(harness.server).post('/oauth/token').send({
+      grant_type: 'authorization_code',
+      code: flow.code,
+      redirect_uri: REDIRECT_URI,
+      client_id: CLIENT_ID,
+      code_verifier: pkcePair().verifier,
     });
 
-    const token = await request(harness.server)
-      .post('/oauth/token')
-      .send({
-        grant_type: 'authorization_code',
-        code: new URL(consent.body.redirectTo).searchParams.get('code'),
-        redirect_uri: REDIRECT_URI,
-        client_id: CLIENT_ID,
-        code_verifier: wrong,
-      });
-
-    expect(token.status).toBe(403);
+    expect(token.status).toBe(400);
+    expect(token.body).toEqual({ error: 'invalid_grant' });
   });
 
   it('rejects `plain` as a challenge method', async () => {
@@ -307,15 +231,7 @@ describe('authorization code flow with PKCE', () => {
     const response = await authed(
       request(harness.server)
         .get('/oauth/authorize')
-        .query({
-          response_type: 'code',
-          client_id: CLIENT_ID,
-          redirect_uri: REDIRECT_URI,
-          scope: 'drafts:read',
-          state: randomBytes(16).toString('base64url'),
-          code_challenge: pkcePair().challenge,
-          code_challenge_method: 'plain',
-        }),
+        .query(authorizeQuery(pkcePair().challenge, { code_challenge_method: 'plain' })),
       session,
     );
 
@@ -334,15 +250,7 @@ describe('authorization code flow with PKCE', () => {
       const response = await authed(
         request(harness.server)
           .get('/oauth/authorize')
-          .query({
-            response_type: 'code',
-            client_id: CLIENT_ID,
-            redirect_uri: candidate,
-            scope: 'drafts:read',
-            state: randomBytes(16).toString('base64url'),
-            code_challenge: pkcePair().challenge,
-            code_challenge_method: 'S256',
-          }),
+          .query(authorizeQuery(pkcePair().challenge, { redirect_uri: candidate })),
         session,
       );
       expect(response.status).toBe(422);
@@ -350,21 +258,13 @@ describe('authorization code flow with PKCE', () => {
     }
   });
 
-  it('refuses a scope the application did not register', async () => {
+  it('refuses a request left with no scope the application registered', async () => {
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
 
     const response = await authed(
       request(harness.server)
         .get('/oauth/authorize')
-        .query({
-          response_type: 'code',
-          client_id: CLIENT_ID,
-          redirect_uri: REDIRECT_URI,
-          scope: 'posts:publish',
-          state: randomBytes(16).toString('base64url'),
-          code_challenge: pkcePair().challenge,
-          code_challenge_method: 'S256',
-        }),
+        .query(authorizeQuery(pkcePair().challenge, { scope: 'posts:publish' })),
       session,
     );
 
@@ -372,44 +272,41 @@ describe('authorization code flow with PKCE', () => {
     expect(response.body.detail).toMatchObject({ reason: 'not_registered' });
   });
 
+  it('narrows a request for more than the application registered instead of failing it', async () => {
+    const session = await seedSession(harness, { scopes: ['drafts:read'] });
+    const authorize = await authed(
+      request(harness.server)
+        .get('/oauth/authorize')
+        .query(
+          authorizeQuery(pkcePair().challenge, {
+            scope: 'drafts:read drafts:write posts:publish connections:admin',
+          }),
+        ),
+      session,
+    );
+    expect(authorize.status).toBe(302);
+    const requestId = new URL(redirectLocation(authorize)).searchParams.get('request_id');
+    const consentData = await authed(
+      request(harness.server).get('/oauth/consent').query({ request_id: requestId }),
+      session,
+    );
+    expect(consentData.body.scopes.map((entry: { scope: string }) => entry.scope)).toEqual([
+      'drafts:read',
+      'drafts:write',
+    ]);
+  });
+
   it('never grants a third party the credential administration scope', async () => {
+    // Even with it registered, a third party cannot hold it.
     await harness.directory.putOAuthClient(
-      oauthClientRecordSchema.parse({
-        clientId: CLIENT_ID,
-        appId: newIdFor('oauthClient'),
-        workspaceId: newIdFor('workspace'),
-        name: 'Partner App',
-        clientType: 'public',
-        secretHash: null,
-        previousSecretHash: null,
-        previousSecretExpiresAt: null,
-        redirectUris: [REDIRECT_URI],
-        homepageUrl: 'https://partner.example',
-        privacyPolicyUrl: 'https://partner.example/privacy',
-        termsUrl: 'https://partner.example/terms',
-        logoUrl: null,
-        supportEmail: 'support@partner.example',
-        // Even with it registered, a third party cannot hold it.
-        allowedScopes: ['connections:admin'],
-        firstParty: false,
-        disabledAt: null,
-        createdAt: harness.clock.now().toISOString(),
-      }),
+      clientRecord(harness, { allowedScopes: ['connections:admin'] }),
     );
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
 
     const response = await authed(
       request(harness.server)
         .get('/oauth/authorize')
-        .query({
-          response_type: 'code',
-          client_id: CLIENT_ID,
-          redirect_uri: REDIRECT_URI,
-          scope: 'connections:admin',
-          state: randomBytes(16).toString('base64url'),
-          code_challenge: pkcePair().challenge,
-          code_challenge_method: 'S256',
-        }),
+        .query(authorizeQuery(pkcePair().challenge, { scope: 'connections:admin' })),
       session,
     );
 
@@ -421,46 +318,14 @@ describe('authorization code flow with PKCE', () => {
 describe('refresh rotation', () => {
   it('rotates on use and destroys the family when a consumed token is replayed', async () => {
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
-    const { verifier, challenge } = pkcePair();
-
-    const authorize = await authed(
-      request(harness.server)
-        .get('/oauth/authorize')
-        .query({
-          response_type: 'code',
-          client_id: CLIENT_ID,
-          redirect_uri: REDIRECT_URI,
-          scope: 'drafts:read',
-          state: randomBytes(16).toString('base64url'),
-          code_challenge: challenge,
-          code_challenge_method: 'S256',
-        }),
-      session,
-    );
-    const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
-      'request_id',
-    );
-    const consentData = await authed(
-      request(harness.server).get('/oauth/consent').query({ request_id: requestId }),
-      session,
-    );
-    const consent = await authed(request(harness.server).post('/oauth/consent'), session).send({
-      requestId,
-      consentNonce: consentData.body.consentNonce,
-      decision: 'approve',
-      workspaceId: session.workspaceId,
-      grantedScopes: ['drafts:read'],
-      consentVersionHash: 'b'.repeat(64),
+    const flow = await approveAuthorization(harness, session);
+    const issued = await request(harness.server).post('/oauth/token').send({
+      grant_type: 'authorization_code',
+      code: flow.code,
+      redirect_uri: REDIRECT_URI,
+      client_id: CLIENT_ID,
+      code_verifier: flow.verifier,
     });
-    const issued = await request(harness.server)
-      .post('/oauth/token')
-      .send({
-        grant_type: 'authorization_code',
-        code: new URL(consent.body.redirectTo).searchParams.get('code'),
-        redirect_uri: REDIRECT_URI,
-        client_id: CLIENT_ID,
-        code_verifier: verifier,
-      });
 
     const rotated = await request(harness.server).post('/oauth/token').send({
       grant_type: 'refresh_token',
@@ -475,7 +340,8 @@ describe('refresh rotation', () => {
       refresh_token: issued.body.refresh_token,
       client_id: CLIENT_ID,
     });
-    expect(replayed.status).toBe(403);
+    expect(replayed.status).toBe(400);
+    expect(replayed.body).toEqual({ error: 'invalid_grant' });
     expect(harness.logger.messages('warn')).toContain('security.refresh_reuse_detected');
 
     // The rotated token is dead too: the whole family was revoked.
@@ -484,6 +350,6 @@ describe('refresh rotation', () => {
       refresh_token: rotated.body.refresh_token,
       client_id: CLIENT_ID,
     });
-    expect(afterFamilyRevocation.status).toBe(403);
+    expect(afterFamilyRevocation.status).toBe(400);
   });
 });

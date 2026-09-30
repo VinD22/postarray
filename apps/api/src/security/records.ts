@@ -127,9 +127,20 @@ export const refreshTokenRecordSchema = z
     /** Hard cap independent of sliding renewal. */
     absoluteExpiresAt: isoInstantSchema,
     consumedAt: isoInstantSchema.nullable(),
+    /**
+     * What the grant was approved at, carried so a refresh mints the same
+     * ceiling rather than a hardcoded one. Defaulted for records written
+     * before these fields existed; the default is never wider than what those
+     * records were issued with.
+     */
+    approvalLevel: approvalLevelSchema.default('level_2_scheduled'),
+    locale: localeSchema.default('en'),
+    projectIds: z.array(idSchema(ID_PREFIXES.project)).max(200).default([]),
+    connectionIds: z.array(idSchema(ID_PREFIXES.connection)).max(200).default([]),
   })
   .strict();
 export type RefreshTokenRecord = z.infer<typeof refreshTokenRecordSchema>;
+export type RefreshTokenRecordInput = z.input<typeof refreshTokenRecordSchema>;
 
 /**
  * A rotating refresh token for a web session.
@@ -170,6 +181,8 @@ export const authorizationCodeRecordSchema = z
     audience: z.string().min(1).max(512),
     consentVersionHash: z.string().regex(/^[0-9a-f]{64}$/),
     locale: localeSchema,
+    /** The durable consent row (`oauth_grants.id`) the tokens are minted under. */
+    grantId: idSchema(ID_PREFIXES.oauthGrant).optional(),
     issuedAt: isoInstantSchema,
     expiresAt: isoInstantSchema,
     /** Set on first exchange. A second presentation is a replay. */
@@ -185,7 +198,8 @@ export const oauthClientRecordSchema = z
   .object({
     clientId: z.string().min(8).max(128),
     appId: idSchema(ID_PREFIXES.oauthClient),
-    workspaceId,
+    /** Null for a dynamically registered client and for the resource server. */
+    workspaceId: workspaceId.nullable(),
     name: z.string().min(1).max(120),
     clientType: z.enum(['public', 'confidential']),
     /** Present only for confidential clients. Keyed digest, never plaintext. */
@@ -199,17 +213,28 @@ export const oauthClientRecordSchema = z
       .regex(/^[0-9a-f]{64}$/)
       .nullable(),
     previousSecretExpiresAt: isoInstantSchema.nullable(),
-    /** Exact match only. No wildcard, no prefix, no subdomain tolerance. */
-    redirectUris: z.array(z.string().min(1).max(2048)).min(1).max(5),
-    homepageUrl: z.string().min(1).max(2048),
-    privacyPolicyUrl: z.string().min(1).max(2048),
-    termsUrl: z.string().min(1).max(2048),
+    /**
+     * Exact match only. No wildcard, no prefix, no subdomain tolerance. Empty
+     * only for the resource server, which never runs the authorization flow.
+     */
+    redirectUris: z.array(z.string().min(1).max(2048)).max(5),
+    /** Empty for a dynamically registered client: it has no verified identity. */
+    homepageUrl: z.string().max(2048),
+    privacyPolicyUrl: z.string().max(2048),
+    termsUrl: z.string().max(2048),
     logoUrl: z.string().min(1).max(2048).nullable(),
-    supportEmail: z.string().min(3).max(320),
+    supportEmail: z.string().max(320),
     /** The maximum set the client may ever request. */
     allowedScopes: scopes,
     /** First party clients (our CLI) may use the device authorization grant. */
     firstParty: z.boolean(),
+    /**
+     * `managed`: created by a workspace member in Developer apps. `dynamic`:
+     * self-registered over RFC 7591, so its name is self-asserted and the
+     * consent screen says so. `resource_server`: the MCP server's own client,
+     * which may introspect tokens bound to its resource.
+     */
+    registration: z.enum(['managed', 'dynamic', 'resource_server']).default('managed'),
     disabledAt: isoInstantSchema.nullable(),
     createdAt: isoInstantSchema,
   })
