@@ -68,6 +68,9 @@ importers:
       '@relay/application':
         specifier: workspace:*
         version: link:../../packages/application
+      '@relay/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@relay/config':
         specifier: workspace:*
         version: link:../../packages/config

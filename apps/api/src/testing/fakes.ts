@@ -205,8 +205,9 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
     polar: {
       checkoutEnabled: false,
       accessToken: undefined,
-      // Not a real secret: a fixed string the suite signs its own fixtures with.
-      webhookSecret: 'test-polar-webhook-secret',
+      // Not a real secret: a fixed string the suite signs its own fixtures with,
+      // in Polar's `whsec_<base64>` shape so both of Polar's keys exist for it.
+      webhookSecret: 'whsec_dGVzdC1wb2xhci13ZWJob29rLXNlY3JldC1ub3QtYS1yZWFsLWtleQ==',
       server: 'sandbox' as const,
       monthlyProductId: undefined,
       annualProductId: undefined,
